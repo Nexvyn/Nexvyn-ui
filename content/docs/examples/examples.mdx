@@ -1,0 +1,370 @@
+---
+title: Examples
+description: Real-world examples and use cases for the UI library components
+---
+
+# Examples
+
+Explore real-world examples and use cases for the UI library.
+
+## Login Form
+
+A complete login form with validation:
+
+<Preview>
+  <Card className="max-w-md">
+    <CardHeader>
+      <CardTitle>Sign In</CardTitle>
+    </CardHeader>
+    <form>
+      <CardContent className="space-y-4">
+        <Input
+          label="Email"
+          type="email"
+          placeholder="you@example.com"
+          required
+        />
+        <Input
+          label="Password"
+          type="password"
+          placeholder="••••••••"
+          required
+        />
+      </CardContent>
+      <CardFooter>
+        <Button type="submit" className="w-full">
+          Sign In
+        </Button>
+      </CardFooter>
+    </form>
+  </Card>
+</Preview>
+
+```tsx
+import { Input } from '@/components/Input';
+import { Button } from '@/components/Button';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/Card';
+
+export default function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle login
+  };
+
+  return (
+    <Card className="max-w-md mx-auto">
+      <CardHeader>
+        <CardTitle>Sign In</CardTitle>
+      </CardHeader>
+      <form onSubmit={handleSubmit}>
+        <CardContent className="space-y-4">
+          <Input
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Input
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            error={error}
+            required
+          />
+        </CardContent>
+        <CardFooter>
+          <Button type="submit" className="w-full">
+            Sign In
+          </Button>
+        </CardFooter>
+      </form>
+    </Card>
+  );
+}
+```
+
+## Product Card
+
+A product card with image and actions:
+
+<Preview>
+  <Card className="max-w-sm">
+    <CardHeader>
+      <div className="w-full h-48 bg-muted rounded-t-lg flex items-center justify-center">
+        <span className="text-4xl">📦</span>
+      </div>
+    </CardHeader>
+    <CardContent>
+      <CardTitle>Product Name</CardTitle>
+      <p className="text-muted-foreground mt-2">Product description goes here</p>
+      <p className="text-2xl font-bold mt-4">$99.99</p>
+    </CardContent>
+    <CardFooter className="flex gap-2">
+      <Button variant="outline" className="flex-1">
+        View Details
+      </Button>
+      <Button className="flex-1">
+        Add to Cart
+      </Button>
+    </CardFooter>
+  </Card>
+</Preview>
+
+```tsx
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/Card';
+import { Button } from '@/components/Button';
+
+export default function ProductCard({ product }) {
+  return (
+    <Card>
+      <CardHeader>
+        <img src={product.image} alt={product.name} className="w-full h-48 object-cover rounded-t-lg" />
+      </CardHeader>
+      <CardContent>
+        <CardTitle>{product.name}</CardTitle>
+        <p className="text-muted-foreground mt-2">{product.description}</p>
+        <p className="text-2xl font-bold mt-4">${product.price}</p>
+      </CardContent>
+      <CardFooter className="flex gap-2">
+        <Button variant="outline" className="flex-1">
+          View Details
+        </Button>
+        <Button className="flex-1">
+          Add to Cart
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+## Search Interface
+
+A search interface with debounced input:
+
+<Preview>
+  <div className="space-y-4">
+    <Input
+      label="Search"
+      placeholder="Type to search..."
+    />
+  </div>
+</Preview>
+
+```tsx
+import { useState } from 'react';
+import { Input } from '@/components/Input';
+import { Button } from '@/components/Button';
+import { debounce } from '@/lib/utils/helpers';
+
+export default function SearchInterface() {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+
+  const handleSearch = debounce((searchQuery) => {
+    // Perform search
+    console.log('Searching for:', searchQuery);
+    // setResults(searchResults);
+  }, 300);
+
+  return (
+    <div className="space-y-4">
+      <Input
+        label="Search"
+        placeholder="Type to search..."
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          handleSearch(e.target.value);
+        }}
+      />
+      {/* Display results */}
+    </div>
+  );
+}
+```
+
+## Dashboard Layout
+
+A dashboard layout with cards:
+
+<Preview>
+  <div className="grid grid-cols-1 center md:grid-cols-3 gap-6">
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          Total Users
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">1,234</div>
+        <div className="text-sm text-muted-foreground mt-1">
+          +12% from last month
+        </div>
+      </CardContent>
+    </Card>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          Revenue
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">$45,678</div>
+        <div className="text-sm text-muted-foreground mt-1">
+          +8% from last month
+        </div>
+      </CardContent>
+    </Card>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          Orders
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">567</div>
+        <div className="text-sm text-muted-foreground mt-1">
+          +15% from last month
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+</Preview>
+
+```tsx
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/Card';
+
+export default function Dashboard() {
+  const stats = [
+    { title: 'Total Users', value: '1,234', change: '+12%' },
+    { title: 'Revenue', value: '$45,678', change: '+8%' },
+    { title: 'Orders', value: '567', change: '+15%' },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {stats.map((stat, index) => (
+        <Card key={index}>
+          <CardHeader>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              {stat.title}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stat.value}</div>
+            <p className="text-sm text-muted-foreground mt-1">
+              {stat.change} from last month
+            </p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+```
+
+## Form with Validation
+
+A form with multiple inputs and validation:
+
+<Preview>
+  <Card className="max-w-2xl">
+    <CardHeader>
+      <CardTitle>Contact Us</CardTitle>
+    </CardHeader>
+    <form>
+      <CardContent className="space-y-4">
+        <Input
+          label="Name"
+          placeholder="Enter your name"
+        />
+        <Input
+          label="Email"
+          type="email"
+          placeholder="you@example.com"
+        />
+        <Input
+          label="Message"
+          placeholder="Enter your message"
+        />
+      </CardContent>
+      <CardFooter>
+        <Button type="submit">Send Message</Button>
+      </CardFooter>
+    </form>
+  </Card>
+</Preview>
+
+```tsx
+import { useState } from 'react';
+import { Input } from '@/components/Input';
+import { Button } from '@/components/Button';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/Card';
+
+export default function ContactForm() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.name) newErrors.name = 'Name is required';
+    if (!formData.email) newErrors.email = 'Email is required';
+    if (!formData.message) newErrors.message = 'Message is required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      // Submit form
+    }
+  };
+
+  return (
+    <Card className="max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>Contact Us</CardTitle>
+      </CardHeader>
+      <form onSubmit={handleSubmit}>
+        <CardContent className="space-y-4">
+          <Input
+            label="Name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            error={errors.name}
+          />
+          <Input
+            label="Email"
+            type="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            error={errors.email}
+          />
+          <Input
+            label="Message"
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            error={errors.message}
+          />
+        </CardContent>
+        <CardFooter>
+          <Button type="submit">Send Message</Button>
+        </CardFooter>
+      </form>
+    </Card>
+  );
+}
+```
+

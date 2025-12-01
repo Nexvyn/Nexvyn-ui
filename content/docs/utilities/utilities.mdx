@@ -1,0 +1,129 @@
+---
+title: Utilities
+description: Helper functions and utilities for working with the UI library
+---
+
+# Utilities
+
+A collection of utility functions to help you work with the UI library.
+
+## Class Name Utility (cn)
+
+The `cn` function merges Tailwind CSS classes and resolves conflicts.
+
+```tsx
+import { cn } from '@/lib/utils/cn';
+
+// Merge classes
+const className = cn('px-2 py-1', 'bg-red-500', {
+  'text-white': isActive,
+  'text-black': !isActive,
+});
+```
+
+### Usage
+
+```tsx
+import { cn } from '@/lib/utils/cn';
+
+function MyComponent({ className, isActive }) {
+  return (
+    <div
+      className={cn(
+        'base-styles',
+        isActive && 'active-styles',
+        className
+      )}
+    >
+      Content
+    </div>
+  );
+}
+```
+
+## Helper Functions
+
+### formatDate
+
+Format a date to a readable string:
+
+```tsx
+import { formatDate } from '@/lib/utils/helpers';
+
+const date = new Date();
+const formatted = formatDate(date); // "January 1, 2024"
+```
+
+### debounce
+
+Limit function calls to improve performance:
+
+```tsx
+import { debounce } from '@/lib/utils/helpers';
+
+const handleSearch = debounce((query) => {
+  // Perform search
+  console.log('Searching for:', query);
+}, 300);
+
+// Usage
+handleSearch('react');
+```
+
+### throttle
+
+Limit function calls with throttling:
+
+```tsx
+import { throttle } from '@/lib/utils/helpers';
+
+const handleScroll = throttle(() => {
+  // Handle scroll event
+  console.log('Scrolled');
+}, 100);
+
+window.addEventListener('scroll', handleScroll);
+```
+
+### generateId
+
+Generate a unique ID:
+
+```tsx
+import { generateId } from '@/lib/utils/helpers';
+
+const id = generateId(); // "1234567890-abc123def"
+```
+
+## Constants
+
+Access shared constants:
+
+```tsx
+import { COMPONENT_SIZES, COLOR_VARIANTS, ANIMATION_DURATION } from '@/lib/utils/constants';
+
+// Component sizes
+COMPONENT_SIZES; // ['sm', 'md', 'lg']
+
+// Color variants
+COLOR_VARIANTS; // ['primary', 'secondary', 'success', ...]
+
+// Animation durations
+ANIMATION_DURATION.fast; // 150
+ANIMATION_DURATION.normal; // 300
+ANIMATION_DURATION.slow; // 500
+```
+
+## Types
+
+Use shared TypeScript types:
+
+```tsx
+import type { Size, Variant, BaseComponentProps } from '@/lib/utils/types';
+
+interface MyComponentProps extends BaseComponentProps {
+  size?: Size;
+  variant?: Variant;
+}
+```
+

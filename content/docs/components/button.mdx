@@ -1,0 +1,215 @@
+---
+title: Button
+description: A highly versatile button component with multiple variants, sizes, effects, and icon support
+---
+
+# Button
+
+A feature-rich button component that supports multiple variants, sizes, visual effects, and icons.
+
+## Basic Usage
+
+<Preview>
+  <Button>Click me</Button>
+</Preview>
+
+```tsx
+import { Button } from '@/components/Button';
+
+export default function Example() {
+  return <Button>Click me</Button>;
+}
+```
+
+## Variants
+
+The Button component supports six different style variants:
+
+<Preview>
+  <div className="flex flex-wrap gap-2">
+    <Button variant="default">Default</Button>
+    <Button variant="destructive">Destructive</Button>
+    <Button variant="outline">Outline</Button>
+    <Button variant="secondary">Secondary</Button>
+    <Button variant="ghost">Ghost</Button>
+    <Button variant="link">Link</Button>
+  </div>
+</Preview>
+
+```tsx
+<Button variant="default">Default</Button>
+<Button variant="destructive">Destructive</Button>
+<Button variant="outline">Outline</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="link">Link</Button>
+```
+
+## Sizes
+
+Four size options are available:
+
+<Preview>
+  <div className="flex flex-wrap gap-2 items-center">
+    <Button size="sm">Small</Button>
+    <Button size="default">Default</Button>
+    <Button size="lg">Large</Button>
+    <Button size="icon">🔍</Button>
+  </div>
+</Preview>
+
+```tsx
+<Button size="sm">Small</Button>
+<Button size="default">Default</Button>
+<Button size="lg">Large</Button>
+<Button size="icon">🔍</Button>
+```
+
+## Visual Effects
+
+The Button supports various animation and hover effects for enhanced interactivity:
+
+### Ring Hover Effect
+
+<Preview>
+  <Button effect="ringHover">Hover for Ring</Button>
+</Preview>
+
+```tsx
+<Button effect="ringHover">Hover for Ring</Button>
+```
+
+### Shine Effects
+
+<Preview>
+  <div className="flex flex-wrap gap-2">
+    <Button effect="shine">Continuous Shine</Button>
+    <Button effect="shineHover">Shine on Hover</Button>
+  </div>
+</Preview>
+
+```tsx
+<Button effect="shine">Continuous Shine</Button>
+<Button effect="shineHover">Shine on Hover</Button>
+```
+
+### Gooey Effects
+
+<Preview>
+  <div className="flex flex-wrap gap-2">
+    <Button effect="gooeyRight">Gooey Right</Button>
+    <Button effect="gooeyLeft">Gooey Left</Button>
+  </div>
+</Preview>
+
+```tsx
+<Button effect="gooeyRight">Gooey Right</Button>
+<Button effect="gooeyLeft">Gooey Left</Button>
+```
+
+### Underline Effects
+
+<Preview>
+  <div className="flex flex-wrap gap-2">
+    <Button effect="underline" variant="link">Disappearing Underline</Button>
+    <Button effect="hoverUnderline" variant="link">Appearing Underline</Button>
+  </div>
+</Preview>
+
+```tsx
+<Button effect="underline" variant="link">Disappearing Underline</Button>
+<Button effect="hoverUnderline" variant="link">Appearing Underline</Button>
+```
+
+### Gradient Animation
+
+<Preview>
+  <Button effect="gradientSlideShow">Animated Gradient</Button>
+</Preview>
+
+```tsx
+<Button effect="gradientSlideShow">Animated Gradient</Button>
+```
+
+## Icon Support
+
+Add icons to your buttons with `icon` and `iconPlacement` props:
+
+<Preview>
+  <div className="flex flex-wrap gap-2">
+    <Button>
+      <span className="mr-2">←</span>
+      Icon Left
+    </Button>
+    <Button>
+      Icon Right
+      <span className="ml-2">→</span>
+    </Button>
+  </div>
+</Preview>
+
+```tsx
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+
+<Button icon={ArrowLeft} iconPlacement="left">
+  Previous
+</Button>
+
+<Button icon={ArrowRight} iconPlacement="right">
+  Next
+</Button>
+```
+
+### Expand Icon Effect
+
+The `expandIcon` effect makes icons expand into view on hover:
+
+```tsx
+<Button effect="expandIcon" icon={ArrowRight} iconPlacement="right">
+  Hover to See Icon
+</Button>
+```
+
+## Disabled State
+
+<Preview>
+  <div className="flex flex-wrap gap-2">
+    <Button disabled>Disabled</Button>
+    <Button variant="outline" disabled>Disabled Outline</Button>
+  </div>
+</Preview>
+
+```tsx
+<Button disabled>Disabled Button</Button>
+```
+
+## Advanced Usage
+
+### As Child (Polymorphic)
+
+Use `asChild` to render the button as a different element:
+
+```tsx
+import Link from 'next/link';
+
+<Button asChild>
+  <Link href="/docs">View Docs</Link>
+</Button>
+```
+
+### Combining Multiple Props
+
+```tsx
+<Button 
+  variant="outline" 
+  size="lg" 
+  effect="ringHover"
+>
+  Enhanced Button
+</Button>
+```
+
+## API Reference
+
+
+

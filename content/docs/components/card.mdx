@@ -1,0 +1,182 @@
+---
+title: Card
+description: A flexible card component with header, content, and footer sections
+---
+
+# Card
+
+A card component that provides a container for displaying content with optional header and footer sections.
+
+## Usage
+
+<Preview>
+  <Card>
+    <CardHeader>
+      <CardTitle>Card Title</CardTitle>
+      <CardDescription>Card description</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <p>Card content goes here</p>
+    </CardContent>
+    <CardFooter>
+      <Button>Action</Button>
+    </CardFooter>
+  </Card>
+</Preview>
+
+```tsx
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '@/components/Card';
+
+export default function Example() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Card Title</CardTitle>
+        <CardDescription>Card description</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p>Card content goes here</p>
+      </CardContent>
+      <CardFooter>
+        <Button>Action</Button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+## Basic Card
+
+A simple card with just content:
+
+<Preview>
+  <Card>
+    <CardContent>
+      <p>Simple card content</p>
+    </CardContent>
+  </Card>
+</Preview>
+
+```tsx
+<Card>
+  <CardContent>
+    <p>Simple card content</p>
+  </CardContent>
+</Card>
+```
+
+## Card with Header
+
+<Preview>
+  <Card>
+    <CardHeader>
+      <CardTitle>Featured Article</CardTitle>
+      <CardDescription>Published on January 1, 2024</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <p>Article content...</p>
+    </CardContent>
+  </Card>
+</Preview>
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Featured Article</CardTitle>
+    <CardDescription>Published on January 1, 2024</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p>Article content...</p>
+  </CardContent>
+</Card>
+```
+
+## Card with Footer
+
+<Preview>
+  <Card>
+    <CardContent>
+      <p>Card content</p>
+    </CardContent>
+    <CardFooter>
+      <Button variant="outline">Cancel</Button>
+      <Button>Save</Button>
+    </CardFooter>
+  </Card>
+</Preview>
+
+```tsx
+<Card>
+  <CardContent>
+    <p>Card content</p>
+  </CardContent>
+  <CardFooter>
+    <Button variant="outline">Cancel</Button>
+    <Button>Save</Button>
+  </CardFooter>
+</Card>
+```
+
+## API Reference
+
+### Card
+
+Main container component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| className | string | - | Additional CSS classes |
+| children | React.ReactNode | - | Card content |
+
+### CardHeader
+
+Header section with padding.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| className | string | - | Additional CSS classes |
+| children | React.ReactNode | - | Header content |
+
+### CardTitle
+
+Title heading component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| className | string | - | Additional CSS classes |
+| children | React.ReactNode | - | Title text |
+
+### CardDescription
+
+Description text component.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| className | string | - | Additional CSS classes |
+| children | React.ReactNode | - | Description text |
+
+### CardContent
+
+Main content area.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| className | string | - | Additional CSS classes |
+| children | React.ReactNode | - | Content |
+
+### CardFooter
+
+Footer section for actions.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| className | string | - | Additional CSS classes |
+| children | React.ReactNode | - | Footer content |
+

@@ -1,0 +1,72 @@
+---
+title: Installation
+description: Learn how to install and set up the UI library in your project
+---
+
+# Installation
+
+Get started with the UI library by installing it in your project.
+
+## Prerequisites
+
+Before installing, make sure you have:
+
+- Node.js 18+ installed
+- A React 18+ project
+- Tailwind CSS configured (if using styled components)
+
+## Install via npm
+
+```bash
+npm install @your-library/ui
+```
+
+## Install via yarn
+
+```bash
+yarn add @your-library/ui
+```
+
+## Install via pnpm
+
+```bash
+pnpm add @your-library/ui
+```
+
+## Configuration
+
+After installation, you'll need to configure your project to use the components.
+
+### Tailwind CSS Setup
+
+If you're using Tailwind CSS, make sure your `tailwind.config.js` includes the library's content paths:
+
+```js
+module.exports = {
+  content: [
+    './node_modules/@your-library/ui/**/*.{js,ts,jsx,tsx}',
+    // ... your other content paths
+  ],
+}
+```
+
+### Import Components
+
+You can import components individually:
+
+```tsx
+import { Button } from '@your-library/ui/components/Button';
+import { Card } from '@your-library/ui/components/Card';
+```
+
+Or import from the main entry point:
+
+```tsx
+import { Button, Card, Input } from '@your-library/ui';
+```
+
+## Next Steps
+
+- [Quick Start Guide](/docs/getting-started/quick-start) - Build your first component
+- [Component Documentation](/docs/components) - Browse all available components
+
