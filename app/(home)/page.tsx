@@ -1,16 +1,17 @@
-import Link from 'next/link';
+import { getAllComponents } from "@/lib/get-components"
+import { LandingHero } from "./components/landing-hero"
+import { HeaderCard } from "./components/header-card"
 
-export default function HomePage() {
+export default async function Home() {
+  const allComps = await getAllComponents()
+
   return (
-    <div className="flex flex-col justify-center text-center flex-1">
-      <h1 className="text-2xl font-bold mb-4">Hello World</h1>
-      <p>
-        You can open{' '}
-        <Link href="/docs" className="font-medium underline">
-          /docs
-        </Link>{' '}
-        and see the documentation.
-      </p>
+    <div className="h-screen w-full flex flex-col md:p-1 md:pb-1 gap-1 max-w-(--breakpoint-2xl)">
+      <HeaderCard />
+
+      <main className="flex-1 bg-white md:rounded-xl shadow-card-inset overflow-hidden relative">
+        <LandingHero allComps={allComps} />
+      </main>
     </div>
-  );
+  )
 }
