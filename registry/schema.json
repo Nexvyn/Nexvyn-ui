@@ -1,0 +1,83 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Registry Schema",
+    "description": "Schema for UI component registry",
+    "type": "object",
+    "required": [
+        "name",
+        "type",
+        "files"
+    ],
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "The name of the component"
+        },
+        "type": {
+            "type": "string",
+            "enum": [
+                "registry:ui",
+                "registry:lib",
+                "registry:example"
+            ],
+            "description": "The type of registry entry"
+        },
+        "description": {
+            "type": "string",
+            "description": "A brief description of the component"
+        },
+        "dependencies": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "NPM dependencies required by the component"
+        },
+        "devDependencies": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "NPM dev dependencies"
+        },
+        "registryDependencies": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "Other components from this registry that are required"
+        },
+        "files": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "path",
+                    "type"
+                ],
+                "properties": {
+                    "path": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "registry:ui",
+                            "registry:lib",
+                            "registry:example"
+                        ]
+                    }
+                }
+            },
+            "description": "Files that make up the component"
+        },
+        "tailwind": {
+            "type": "object",
+            "description": "Tailwind configuration needed"
+        },
+        "cssVars": {
+            "type": "object",
+            "description": "CSS variables for theming"
+        }
+    }
+}
