@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { Button } from '@/components/Button/index';
+import Link from "next/link";
+import { Button } from "@/components/Button/index";
 
 export function Hero() {
   return (
@@ -9,22 +9,20 @@ export function Hero() {
           Beautiful UI Components
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          A modern, accessible, and customizable React component library built with TypeScript and Tailwind CSS.
+          A modern, accessible, and customizable React component library built
+          with TypeScript and Tailwind CSS.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-          <Button size="lg" variant="default" asChild>
-            <Link href="/docs/getting-started/installation">
+          <Link href="/docs/getting-started/installation">
+            <Button size="lg" variant="default" asChild>
               Get Started
-            </Link>
-          </Button>
+            </Button>
+          </Link>
           <Button size="lg" variant="outline" asChild>
-            <Link href="/docs">
-              View Documentation
-            </Link>
+            <Link href="/docs">View Documentation</Link>
           </Button>
         </div>
       </div>
     </section>
   );
 }
-

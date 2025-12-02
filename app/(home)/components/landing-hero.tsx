@@ -1,18 +1,20 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { LayoutGroup, motion } from "motion/react"
+import Link from "next/link";
+import { LayoutGroup, motion } from "motion/react";
 
-import type { Component } from "@/lib/get-components"
-import { HeroImages } from "./hero-images"
-import TextRotate from "./text-rotate"
-import VoronoiBackground from "./voronoi-background"
+import type { Component } from "@/lib/get-components";
+import { HeroImages } from "./hero-images";
+import TextRotate from "./text-rotate";
+import VoronoiBackground from "./voronoi-background";
+import { Button } from "@/components";
+import { ArrowRightIcon } from "lucide-react";
 
-const MotionLink = motion.create(Link)
+const MotionLink = motion.create(Link);
 
 export function LandingHero({ allComps }: { allComps: Component[] | null }) {
   return (
-    <section className="w-full h-screen overflow-hidden md:overflow-clip overscroll-none flex flex-col items-center justify-center relative">
+    <section className="w-full h-screen  rounded-2xl overflow-hidden md:overflow-clip overscroll-none flex flex-col items-center justify-center relative">
       <VoronoiBackground />
 
       {allComps && <HeroImages allComps={allComps} />}
@@ -39,19 +41,18 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
                 texts={[
                   "pixel",
                   "fun",
-                  "lovely ♥",
+                  "lovely",
                   "weird",
-                  "🪩 pixel",
-                  "💃🕺",
+                  "pixel 2",
+                  "dancing",
                   "sexy",
-                  "🕶️ cool",
-                  "go 🚀",
-                  "🔥🔥🔥",
-                  "over-animated?",
-                  "pop ✨",
-                  "rock 🤘",
+                  "cool",
+                  "go",
+                  "fire",
+                  "pop",
+                  "rock",
                 ]}
-                mainClassName="overflow-hidden pr-3 text-blue dark:text-blue-500 py-0 pb-2 md:pb-4 rounded-xl"
+                mainClassName="overflow-hidden pr-3  dark:text-blue-500 py-0 pb-2 md:pb-4 rounded-xl"
                 staggerDuration={0.03}
                 staggerFrom="last"
                 rotationInterval={3000}
@@ -61,59 +62,22 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
           </LayoutGroup>
         </motion.h1>
         <motion.p
-          className="text-sm sm:text-lg md:text-xl lg:text-2xl text-center font-overused-grotesk pt-4 sm:pt-8 md:pt-10 lg:pt-12"
+          className="text-sm sm:text-lg md:text-xl lg:text-2xl text-center font-overused-grotesk  "
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: "easeOut", delay: 0.5 }}
         >
-          with a growing library of ready-to-use react components & microinteractions. free & open source.
+          with a growing library of ready-to-use react components &
+          microinteractions. free & open source.
         </motion.p>
 
-        <div className="flex flex-row justify-center space-x-4 items-center mt-10 sm:mt-16 md:mt-20 lg:mt-20 text-xs">
-          <MotionLink
-            href="/docs"
-            className="w-28 sm:w-32 md:w-36 lg:w-40 sm:text-base md:text-lg lg:text-xl font-medium tracking-tight text-background bg-foreground px-3 py-1.5 sm:px-4 sm:py-2 md:px-4 md:py-2 lg:px-5 lg:py-2.5 rounded-lg md:rounded-xl z-20 shadow-2xl whitespace-nowrap cursor-pointer inline-block text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-foreground"
-            animate={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            transition={{
-              duration: 0.2,
-              ease: "easeOut",
-              delay: 0.7,
-              scale: {
-                duration: 0.2,
-              },
-            }}
-            whileTap={{ scale: 0.95 }}
-            whileHover={{
-              scale: 1.05,
-              transition: { type: "spring", damping: 30, stiffness: 400 },
-            }}
-          >
-            Check docs <span className="font-serif ml-1">→</span>
-          </MotionLink>
-          <MotionLink
-            href="https://github.com/danielpetho/fancy"
-            className="w-28 sm:w-32 md:w-36 lg:w-40 sm:text-base md:text-lg lg:text-xl font-medium tracking-tight text-white bg-blue dark:bg-blue-500 px-3 py-1.5 sm:px-4 sm:py-2 md:px-4 md:py-2 lg:px-5 lg:py-2.5 rounded-lg md:rounded-xl z-20 shadow-2xl whitespace-nowrap cursor-pointer inline-block text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-blue"
-            animate={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            transition={{
-              duration: 0.2,
-              ease: "easeOut",
-              delay: 0.7,
-              scale: {
-                duration: 0.2,
-              },
-            }}
-            whileTap={{ scale: 0.95 }}
-            whileHover={{
-              scale: 1.05,
-              transition: { type: "spring", damping: 30, stiffness: 400 },
-            }}
-          >
-            ★ on GitHub
-          </MotionLink>
+        <div className="flex flex-row justify-center space-x-4 items-center  mt-14 text-xs">
+          <Button variant={"secondary"}>Browse Components</Button>
+          <Link href={"https://github.com/Nexvyn/ui.git"}>
+            <Button>Want Custom Components</Button>
+          </Link>
         </div>
       </div>
     </section>
-  )
+  );
 }
