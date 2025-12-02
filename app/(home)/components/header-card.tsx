@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import Image from "next/image";
-import { Github, Twitter } from "lucide-react";
+import { Github } from "lucide-react";
 import { ModeToggle } from "./light-dark-mode";
 import { Button } from "@/components";
+import { FaXTwitter } from "react-icons/fa6";
 
 const MotionLink = motion.create(Link);
 
@@ -33,8 +34,8 @@ export function HeaderCard() {
       </Link>
 
       <nav className="flex items-center">
-        <Button variant="ghost" size="icon">
-          <Twitter />
+        <Button variant="ghost" size={"sm"}>
+          <FaXTwitter />
         </Button>
         <Button variant="ghost" size={"sm"}>
           <Github />

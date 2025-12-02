@@ -8,7 +8,6 @@ import { HeroImages } from "./hero-images";
 import TextRotate from "./text-rotate";
 import VoronoiBackground from "./voronoi-background";
 import { Button } from "@/components";
-import { ArrowRightIcon } from "lucide-react";
 
 const MotionLink = motion.create(Link);
 
@@ -72,7 +71,9 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
         </motion.p>
 
         <div className="flex flex-row justify-center space-x-4 items-center  mt-14 text-xs">
-          <Button variant={"secondary"}>Browse Components</Button>
+          <Link href="/docs">
+            <Button variant={"secondary"}>Browse Components</Button>
+          </Link>
           <Link href={"https://github.com/Nexvyn/ui.git"}>
             <Button>Want Custom Components</Button>
           </Link>
