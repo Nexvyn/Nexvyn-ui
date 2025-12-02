@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { GrainGradient } from "@paper-design/shaders-react"
+import { useEffect, useState } from "react";
+import { GrainGradient } from "@paper-design/shaders-react";
 
-const DEFAULT_COLORS = ["#e8f4ff", "#5a9fd4", "#1e3a5f"]
+const DEFAULT_COLORS = ["#e8f4ff", "#5a9fd4", "#1e3a5f"];
 
 const VoronoiBackground = () => {
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
     const updateDimensions = () => {
       setDimensions({
         width: window.innerWidth,
         height: window.innerHeight,
-      })
-    }
+      });
+    };
 
-    updateDimensions()
-    window.addEventListener("resize", updateDimensions)
-    return () => window.removeEventListener("resize", updateDimensions)
-  }, [])
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
 
   if (dimensions.width === 0 || dimensions.height === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -33,13 +33,13 @@ const VoronoiBackground = () => {
         colors={DEFAULT_COLORS}
         colorBack="#c5e3ff"
         softness={0.6}
-        intensity={0.8}
-        noise={0.7}
+        intensity={0.3}
+        noise={0.2}
         shape="wave"
         speed={1.4}
       />
     </div>
-  )
-}
+  );
+};
 
-export default VoronoiBackground
+export default VoronoiBackground;
