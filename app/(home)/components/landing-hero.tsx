@@ -7,20 +7,20 @@ import type { Component } from "@/lib/get-components";
 import { HeroImages } from "./hero-images";
 import TextRotate from "./text-rotate";
 import VoronoiBackground from "./voronoi-background";
-import { Button } from "@/components";
+import { Button } from "@/components/ui/button";
 
 const MotionLink = motion.create(Link);
 
 export function LandingHero({ allComps }: { allComps: Component[] | null }) {
   return (
-    <section className="w-full h-screen  rounded-2xl overflow-hidden md:overflow-clip overscroll-none flex flex-col items-center justify-center relative">
+    <section className="w-full h-screen  rounded-2xl overflow-hidden md:overflow-clip overscroll-none flex flex-col items-center justify-center relative ">
       <VoronoiBackground />
 
       {allComps && <HeroImages allComps={allComps} />}
 
       <div className="flex flex-col justify-center items-center w-[250px] sm:w-[300px] md:w-[500px] lg:w-[700px] z-50 pointer-events-auto">
         <motion.h1
-          className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl text-center w-full justify-center items-center flex-col flex whitespace-pre leading-tight font-calendas tracking-tight"
+          className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl text-center w-full justify-center items-center flex-col flex whitespace-pre leading-tight  tracking-tight"
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: "easeOut", delay: 0.3 }}
@@ -61,7 +61,7 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
           </LayoutGroup>
         </motion.h1>
         <motion.p
-          className="text-sm sm:text-lg md:text-xl lg:text-2xl text-center font-overused-grotesk  "
+          className="text-sm sm:text-lg md:text-xl lg:text-2xl text-center "
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: "easeOut", delay: 0.5 }}

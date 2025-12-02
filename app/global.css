@@ -1,12 +1,11 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -38,16 +37,18 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
 }
 
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
+  --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
+  --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -55,11 +56,11 @@
   --muted-foreground: oklch(0.708 0 0);
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
+  --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -71,8 +72,8 @@
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
 }
 
 @theme inline {
@@ -135,19 +136,23 @@
 
   /* Custom inset shadow for sophisticated card depth effect */
   .shadow-card-inset {
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), inset 0 2px 3px rgba(255, 255, 255, 0.1), inset 0 -4px 1px rgba(0, 0, 0, 0.16);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+      inset 0 2px 3px rgba(255, 255, 255, 0.1),
+      inset 0 -4px 1px rgba(0, 0, 0, 0.16);
   }
 
   /* Adding gradient background with film grain texture */
   .gradient-blue-cinematic {
-    background: linear-gradient(135deg,
-        #e8f4ff 0%,
-        #c5e3ff 15%,
-        #8dc5f5 35%,
-        #5a9fd4 55%,
-        #2563b5 75%,
-        #1e3a5f 90%,
-        #0f1419 100%);
+    background: linear-gradient(
+      135deg,
+      #e8f4ff 0%,
+      #c5e3ff 15%,
+      #8dc5f5 35%,
+      #5a9fd4 55%,
+      #2563b5 75%,
+      #1e3a5f 90%,
+      #0f1419 100%
+    );
   }
 
   /* Film grain texture overlay */
@@ -179,7 +184,7 @@
     mix-blend-mode: soft-light;
   }
 
-  .grain>* {
+  .grain > * {
     position: relative;
     z-index: 2;
   }
