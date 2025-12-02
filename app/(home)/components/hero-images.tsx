@@ -12,7 +12,6 @@ interface HeroImage {
   depth: number;
   className: string;
   imageClassName: string;
-  delay: number;
   rotation?: string;
 }
 
@@ -28,8 +27,7 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
       depth: 0.5,
       className: "top-[15%] left-[2%] md:top-[25%] md:left-[5%]",
       imageClassName:
-        "w-16 h-12 sm:w-24 sm:h-16 md:w-28 md:h-20 lg:w-32 lg:h-24",
-      delay: 0.5,
+        "w-16 h-12 sm:w-24 sm:h-16 md:w-28 md:h-20 lg:w-32 lg:h-24 aspect-square",
       rotation: "-rotate-[3deg]",
     },
     {
@@ -38,7 +36,6 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
       className: "top-[0%] left-[8%] md:top-[6%] md:left-[11%]",
       imageClassName:
         "w-40 h-28 sm:w-48 sm:h-36 md:w-56 md:h-44 lg:w-60 lg:h-48",
-      delay: 0.7,
     },
     {
       url: "https://i.pinimg.com/originals/f8/ba/9b/f8ba9b7f92fa91361e251c72e213c11a.gif",
@@ -46,7 +43,6 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
       className: "top-[90%] left-[6%] md:top-[80%] md:left-[8%]",
       imageClassName:
         "w-40 h-40 sm:w-48 sm:h-48 md:w-60 md:h-60 lg:w-64 lg:h-64",
-      delay: 0.9,
       rotation: "-rotate-[4deg]",
     },
     {
@@ -55,7 +51,6 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
       className: "top-[0%] left-[87%] md:top-[2%] md:left-[83%]",
       imageClassName:
         "w-40 h-36 sm:w-48 sm:h-44 md:w-60 md:h-52 lg:w-64 lg:h-56",
-      delay: 1.1,
       rotation: "rotate-[6deg]",
     },
     {
@@ -64,7 +59,6 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
       className: "top-[78%] left-[83%] md:top-[68%] md:left-[83%]",
       imageClassName:
         "w-44 h-44 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80",
-      delay: 1.3,
       rotation: "rotate-[19deg]",
     },
   ];
@@ -87,7 +81,7 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
               thumbnail={image.url}
               videoSrc={image.url}
               className={`${image.imageClassName} object-cover hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rounded-xl`}
-              delay={image.delay}
+              delay={0.8}
             />
           </Link>
         </FloatingElement>
