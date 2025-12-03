@@ -8,3 +8,5 @@ fi
 
 echo "ESLint passed. Proceeding with push."
 
+npm run build
+
