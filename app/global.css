@@ -189,3 +189,8 @@
     z-index: 2;
   }
 }
+.font-pixelify {
+  font-family: var(--font-pixelify);
+}
+
+
