@@ -7,6 +7,7 @@ import { Github } from "lucide-react";
 import { LightDarkMode } from "./light-dark-mode";
 import { FaXTwitter } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
+import { StarsCount } from "./stars-count";
 
 export function Navbar() {
   return (
@@ -47,7 +48,7 @@ export function Navbar() {
         </Button>
         <Button variant="ghost" size={"sm"}>
           <Github />
-          1.1k
+          {/* <StarsCount /> */}
         </Button>
         <LightDarkMode />
       </div>
