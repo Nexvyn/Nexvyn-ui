@@ -12,7 +12,7 @@ import { StarsCount } from "./stars-count";
 export function Navbar() {
   return (
     <motion.header
-      className="w-full  md:rounded-xl   px-2  py-1 flex items-center justify-between z-50  backdrop-blur-lg "
+      className=" font-pixelify    fixed top-0 inset-x-2  px-2  py-1 flex items-center justify-between z-50   h-12 pt-4 "
       style={{
         transform: "translateZ(0)",
         transformStyle: "preserve-3d",
@@ -29,7 +29,7 @@ export function Navbar() {
           height={32}
           className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8"
         />
-        <span className="  font-semibold">Pixel Perfect</span>
+        <span className="  font-semibold ">Pixel Perfect</span>
       </Link>
       <Link href="/" className=" flex items-center gap-2 dark:flex hidden">
         <Image
@@ -39,7 +39,7 @@ export function Navbar() {
           height={32}
           className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8"
         />
-        <span className="  font-semibold">Pixel Perfect</span>
+        <span className="  font-semibold text-2xl">Pixel Perfect</span>
       </Link>
 
       <div className="flex items-center">
