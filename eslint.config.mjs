@@ -1,3 +1,6 @@
+import tseslint from 'typescript-eslint';
+import js from '@eslint/js';
+
 export default [
   {
     ignores: [
@@ -8,6 +11,8 @@ export default [
       '**/build/**',
     ],
   },
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
   {
     files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
     languageOptions: {
@@ -21,8 +26,11 @@ export default [
     },
     rules: {
       // Basic rules - Next.js specific rules can be added later
-      'no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      'no-unused-vars': 'off', // Turn off base rule as it conflicts with @typescript-eslint version
       'no-console': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn', // Allow 'any' type but warn about it
+      '@typescript-eslint/no-empty-object-type': 'warn', // Allow empty object types but warn
     },
   },
 ];
