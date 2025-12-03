@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { GrainGradient } from "@paper-design/shaders-react";
 
 const LIGHT_MODE_COLORS = ["#e8f4ff", "#5a9fd4", "#1e3a5f"];
-const DARK_MODE_COLORS = ["#1a1a2e", "#16213e", "#5a9fd4"];
+// const DARK_MODE_COLORS = ["#1a1a2e", "#16213e", "#5a9fd4"];
+const DARK_MODE_COLORS = ["#1a1a2e", "#5a9fd4", "#1e3a5f"];
+
 
 const VoronoiBackground = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
