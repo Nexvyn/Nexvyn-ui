@@ -5,7 +5,7 @@ import { useEffect, useRef, type RefObject } from "react"
  * Returns a ref object containing the normalized mouse position (-1 to 1)
  * @param containerRef - Ref to the container element to track mouse position within
  */
-export function useMousePositionRef(containerRef: RefObject<HTMLElement>) {
+export function useMousePositionRef(containerRef: RefObject<HTMLElement | null>) {
     const mousePositionRef = useRef({ x: 0, y: 0 })
 
     useEffect(() => {
