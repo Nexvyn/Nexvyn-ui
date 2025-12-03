@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react"
  * @param callback - Function to call on each animation frame
  */
 export function useAnimationFrame(callback: () => void) {
-    const requestRef = useRef<number>()
+    const requestRef = useRef<number | undefined>(undefined)
     const callbackRef = useRef(callback)
 
     // Update callback ref on each render to always have the latest callback
