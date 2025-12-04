@@ -139,14 +139,16 @@
   }
 
   .gradient-blue-cinematic {
-    background: linear-gradient(135deg,
-        #e8f4ff 0%,
-        #c5e3ff 15%,
-        #8dc5f5 35%,
-        #5a9fd4 55%,
-        #2563b5 75%,
-        #1e3a5f 90%,
-        #0f1419 100%);
+    background: linear-gradient(
+      135deg,
+      #e8f4ff 0%,
+      #c5e3ff 15%,
+      #8dc5f5 35%,
+      #5a9fd4 55%,
+      #2563b5 75%,
+      #1e3a5f 90%,
+      #0f1419 100%
+    );
   }
 
   .grain {
@@ -175,7 +177,7 @@
     mix-blend-mode: soft-light;
   }
 
-  .grain>* {
+  .grain > * {
     position: relative;
     z-index: 2;
   }
@@ -183,4 +185,18 @@
 
 .font-pixelify {
   font-family: var(--font-pixelify);
+}
+
+/* Hide all scrollbars while preserving scrolling */
+*,
+*::before,
+*::after {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+  scrollbar-color: transparent transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
