@@ -1,36 +1,36 @@
 "use client";
 
-import { Model3D } from "@/components/ui/3dmodel";
 import { Button } from "@/components/ui/button";
 import { Github, Heart } from "lucide-react";
-import Image from "next/image";
 import { FaDiscord, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 
 export function Footer() {
   return (
-    <footer className=" grain p-4   overflow-hidden">
+    <footer className=" grain p-3 overflow-hidden">
       {" "}
-      <div className="   font-pixelify   text-[170px] flex justify-center dark:text-[#2b2b2b] text-[#e8e9f0] text-shadow-blue-700  text-nowrap  absolute right-1/2 translate-x-1/2 top-1/2 -translate-y-1/2">
-        PIXEL PERFECT
+      <div className="font-pixelify absolute bottom-0 left-0 right-0 mx-auto translate-y-[5%] select-none text-center font-bold leading-none tracking-tighter text-muted text-[80px] lg:text-[140px]">
+        pixel perfect
       </div>
-      <div className=" flex gap-2">
-        <Button variant={"outline"} size={"icon"}>
-          <Github />
-        </Button>
-        <Button variant={"outline"} size={"icon"}>
-          <FaXTwitter />
-        </Button>
-        <Button variant={"outline"} size={"icon"}>
-          <FaLinkedinIn />
-        </Button>
-        <Button variant={"outline"} size={"icon"}>
-          <FaDiscord />
-        </Button>
+      <div className=" flex w-full justify-between">
+        <div className=" text-sm">
+          Build beautiful, responsive interfaces in minutes. <br /> A
+          pixel-perfect React component library for modern web apps.
+        </div>{" "}
+        <div className=" flex gap-2">
+          <Button variant={"outline"} size={"icon"}>
+            <Github />
+          </Button>
+          <Button variant={"outline"} size={"icon"}>
+            <FaXTwitter />
+          </Button>
+          <Button variant={"outline"} size={"icon"}>
+            <FaLinkedinIn />
+          </Button>
+          <Button variant={"outline"} size={"icon"}>
+            <FaDiscord />
+          </Button>
+        </div>{" "}
       </div>
-      <div className="mt-2 text-sm">
-        Build beautiful, responsive interfaces in minutes. <br /> A
-        pixel-perfect React component library for modern web apps.
-      </div>{" "}
       <div className=" flex justify-end mt-20">
         <span className=" mt-2 flex items-center gap-1 text-sm  text-muted-foreground">
           Made with <Heart className="" size={13} /> by{" "}
