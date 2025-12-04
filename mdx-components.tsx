@@ -9,8 +9,8 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/Card';
-import { Input } from '@/components/Input';
 import { Preview } from '@/components/Preview';
+import { Input } from '@/components/Input';
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -23,8 +23,9 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     CardDescription,
     CardContent,
     CardFooter,
-    Input,
     Preview,
+    Input,
     ...components,
   };
 }
+
