@@ -1,7 +1,18 @@
 import { getAllComponents } from "@/lib/get-components";
-import { Navbar } from "./components/navbar";
-import { HeroSection } from "./components/hero-section";
-import { Footer } from "./components/footer";
+import dynamic from "next/dynamic";
+
+const HeroSection = dynamic(() => import("@/app/(home)/components/hero-section").then(mod => ({ default: mod.HeroSection })), {
+  loading: () => (
+    <div className="w-full h-[calc(100vh-64px)] mt-12 rounded-2xl flex items-center justify-center">
+      <div className="animate-pulse">Loading...</div>
+    </div>
+  ),
+  ssr: true,
+});
+
+const Footer = dynamic(() => import("@/app/(home)/components/footer").then(mod => ({ default: mod.Footer })), {
+  ssr: true,
+});
 
 export default async function Home() {
   const allComps = await getAllComponents();
