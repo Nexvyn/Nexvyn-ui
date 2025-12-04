@@ -2,8 +2,16 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Command } from "cmdk";
-import { Search, File, X, ArrowRight, Sparkles } from "lucide-react";
+import { Search, File, Sparkles } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "@/components/ui/command";
 
 interface SearchItem {
   title: string;
@@ -107,130 +115,75 @@ export function CommandPalette() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50">
-          <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setOpen(false)}
-          />
-
-          <div className="fixed left-1/2 top-1/4 -translate-x-1/2 w-full max-w-lg">
-            <Command
-              className="rounded-xl border border-border bg-background shadow-2xl overflow-hidden"
-              shouldFilter={false}
-            >
-              <div className="flex items-center border-b border-border px-3">
-                <Search className="h-4 w-4 text-muted-foreground shrink-0" />
-                <Command.Input
-                  value={search}
-                  onValueChange={setSearch}
-                  placeholder="Search components, docs..."
-                  className="flex-1 h-12 px-3 text-sm bg-transparent outline-none placeholder:text-muted-foreground"
-                  autoFocus
-                />
-                {search && (
-                  <button
-                    onClick={() => setSearch("")}
-                    className="p-1 hover:bg-muted rounded"
-                  >
-                    <X className="h-4 w-4 text-muted-foreground" />
-                  </button>
-                )}
-              </div>
-
-              <Command.List className="max-h-80 overflow-y-auto p-2">
-                <Command.Empty className="py-6 text-center text-sm text-muted-foreground">
+        <>
+          <div className=" w-full max-w-lg  fixed  top-1/2 right-1/2 translate-y-1/2 translate-x-1/2">
+            <Command className="rounded-xl  border border-border bg-background shadow-2xl overflow-hidden">
+              <CommandInput
+                value={search}
+                onValueChange={setSearch}
+                placeholder="Search components, docs..."
+                className="text-sm"
+                autoFocus
+              />
+              <CommandList className="max-h-80">
+                <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">
                   No results found.
-                </Command.Empty>
+                </CommandEmpty>
 
                 {filteredItems.filter((i) => i.type === "component").length >
                   0 && (
-                  <Command.Group heading="Components">
-                    <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-                      Components
-                    </p>
+                  <CommandGroup heading="Components">
                     {filteredItems
                       .filter((item) => item.type === "component")
                       .map((item) => (
-                        <Command.Item
+                        <CommandItem
                           key={item.url}
                           value={item.title}
                           onSelect={() => handleSelect(item.url)}
-                          className="flex items-center gap-3 px-2 py-2 rounded-lg cursor-pointer hover:bg-muted data-[selected=true]:bg-muted"
                         >
-                          <div className="flex items-center justify-center w-8 h-8 rounded-md bg-primary/10 text-primary">
-                            <Sparkles className="h-4 w-4" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">
-                              {item.title}
-                            </p>
-                            {item.description && (
-                              <p className="text-xs text-muted-foreground truncate">
-                                {item.description}
-                              </p>
-                            )}
-                          </div>
-                          <ArrowRight className="h-4 w-4 text-muted-foreground shrink-0" />
-                        </Command.Item>
+                          <Sparkles className="h-4 w-4 mr-2 text-primary" />
+                          <span>{item.title}</span>
+                          {item.description && (
+                            <span className="ml-auto text-xs text-muted-foreground">
+                              {item.description}
+                            </span>
+                          )}
+                        </CommandItem>
                       ))}
-                  </Command.Group>
+                  </CommandGroup>
                 )}
 
+                {filteredItems.filter((i) => i.type === "component").length >
+                  0 &&
+                  filteredItems.filter((i) => i.type === "doc").length > 0 && (
+                    <CommandSeparator />
+                  )}
+
                 {filteredItems.filter((i) => i.type === "doc").length > 0 && (
-                  <Command.Group heading="Documentation">
-                    <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-                      Documentation
-                    </p>
+                  <CommandGroup heading="Documentation">
                     {filteredItems
                       .filter((item) => item.type === "doc")
                       .map((item) => (
-                        <Command.Item
+                        <CommandItem
                           key={item.url}
                           value={item.title}
                           onSelect={() => handleSelect(item.url)}
-                          className="flex items-center gap-3 px-2 py-2 rounded-lg cursor-pointer hover:bg-muted data-[selected=true]:bg-muted"
                         >
-                          <div className="flex items-center justify-center w-8 h-8 rounded-md bg-muted text-muted-foreground">
-                            <File className="h-4 w-4" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">
-                              {item.title}
-                            </p>
-                            {item.description && (
-                              <p className="text-xs text-muted-foreground truncate">
-                                {item.description}
-                              </p>
-                            )}
-                          </div>
-                          <ArrowRight className="h-4 w-4 text-muted-foreground shrink-0" />
-                        </Command.Item>
+                          <File className="h-4 w-4 mr-2 text-muted-foreground" />
+                          <span>{item.title}</span>
+                          {item.description && (
+                            <span className="ml-auto text-xs text-muted-foreground">
+                              {item.description}
+                            </span>
+                          )}
+                        </CommandItem>
                       ))}
-                  </Command.Group>
+                  </CommandGroup>
                 )}
-              </Command.List>
-
-              <div className="flex items-center justify-between px-3 py-2 border-t border-border text-xs text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <kbd className="px-1.5 py-0.5 bg-muted rounded border">
-                    ↑↓
-                  </kbd>
-                  <span>Navigate</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <kbd className="px-1.5 py-0.5 bg-muted rounded border">↵</kbd>
-                  <span>Select</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <kbd className="px-1.5 py-0.5 bg-muted rounded border">
-                    Esc
-                  </kbd>
-                  <span>Close</span>
-                </div>
-              </div>
+              </CommandList>
             </Command>
           </div>
-        </div>
+        </>
       )}
     </>
   );
