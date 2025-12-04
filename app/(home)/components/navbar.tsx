@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { Github } from "lucide-react";
-import { LightDarkMode } from "./light-dark-mode";
+import { LightDarkMode } from "@/components/ui/light-dark-mode";
 import { FaXTwitter } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
-import { StarsCount } from "./stars-count";
+import { CommandPalette } from "@/components/ui/command-palette";
 
 export function Navbar() {
   return (
@@ -43,10 +43,13 @@ export function Navbar() {
       </Link>
 
       <div className="flex items-center">
-        <Button variant="ghost" size={"sm"}>
+        <div className="hidden sm:block gap-x-2">
+          <CommandPalette />
+        </div>
+        <Button variant="ghost" size={"sm"} aria-label="Twitter">
           <FaXTwitter />
         </Button>
-        <Button variant="ghost" size={"sm"}>
+        <Button variant="ghost" size={"sm"} aria-label="GitHub">
           <Github />
           {/* <StarsCount /> */}
         </Button>
