@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Github } from "lucide-react";
@@ -11,50 +10,46 @@ import { CommandPalette } from "@/components/ui/command-palette";
 
 export function Navbar() {
   return (
-    <motion.header
-      className=" font-pixelify    fixed top-0 inset-x-2  px-2  py-1 flex items-center justify-between z-50   h-12 pt-4 "
+    <header
+      className=" font-pixelify      w-full  p-2 flex items-center justify-between z-50   h-12  "
       style={{
-        transform: "translateZ(0)",
         transformStyle: "preserve-3d",
       }}
-      animate={{ opacity: 1, y: 0 }}
-      initial={{ opacity: 0, y: -10 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
     >
-      <Link href="/" className=" flex items-center gap-2 dark:hidden flex">
+      <div className=" flex items-center gap-2">
         <Image
           src="/logo/final-light.png"
           alt="Pixel Perfect Logo"
           width={32}
           height={32}
-          className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8"
-        />
-        <span className="  font-semibold ">Pixel Perfect</span>
-      </Link>
-      <Link href="/" className=" flex items-center gap-2 dark:flex hidden">
+          className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 dark:hidden block"
+        />{" "}
         <Image
           src="/logo/final-dark.png"
           alt="Pixel Perfect Logo"
           width={32}
           height={32}
-          className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8"
+          className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 hidden dark:block"
         />
-        <span className="  font-semibold text-2xl">Pixel Perfect</span>
-      </Link>
-
-      <div className="flex items-center">
+        <span className=" text-xl ">Pixel Perfect</span>{" "}
+      </div>
+      <div className="flex items-center gap-2">
+        <Button variant="ghost" size={"icon"} aria-label="Twitter">
+          <FaXTwitter />
+        </Button>
         <div className="hidden sm:block gap-x-2">
           <CommandPalette />
         </div>
-        <Button variant="ghost" size={"sm"} aria-label="Twitter">
-          <FaXTwitter />
-        </Button>
-        <Button variant="ghost" size={"sm"} aria-label="GitHub">
-          <Github />
-          {/* <StarsCount /> */}
+        <Button variant="ghost" aria-label="GitHub">
+          <Github />9
         </Button>
         <LightDarkMode />
       </div>
-    </motion.header>
+
+      <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2 "></span>
+      <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2 "></span>
+      <span className="border-primary absolute -bottom-px -left-px block size-2 border-b-2 border-l-2"></span>
+      <span className="border-primary absolute -bottom-px -right-px block size-2 border-b-2 border-r-2"></span>
+    </header>
   );
 }
