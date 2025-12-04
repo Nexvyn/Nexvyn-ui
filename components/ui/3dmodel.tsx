@@ -1,13 +1,8 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  useGLTF,
-  PerspectiveCamera,
-  OrbitControls,
-  Float,
-} from "@react-three/drei";
-import { useRef, useState } from "react";
+import { useGLTF, PerspectiveCamera, Float } from "@react-three/drei";
+import { useRef } from "react";
 import * as THREE from "three";
 
 interface Model3DProps {
@@ -26,18 +21,18 @@ function AnimatedModel({
   animationSpeed = 2,
 }: Omit<Model3DProps, "className">) {
   const groupRef = useRef<THREE.Group>(null);
-  const [hovered, setHovered] = useState(false);
 
   // Load the 3D model
   const { scene } = useGLTF(modelPath);
 
+  useFrame((state, delta) => {
+    if (autoRotate && groupRef.current) {
+      groupRef.current.rotation.y += delta * (animationSpeed / 10);
+    }
+  });
+
   return (
-    <group
-      ref={groupRef}
-      scale={scale}
-      onPointerEnter={() => setHovered(true)}
-      onPointerLeave={() => setHovered(false)}
-    >
+    <group ref={groupRef} scale={scale}>
       <primitive object={scene} />
     </group>
   );
