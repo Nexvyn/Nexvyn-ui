@@ -6,6 +6,14 @@ const withMDX = createMDX();
 const config = {
   reactStrictMode: true,
   devIndicators: false,
+  experimental: {
+    optimizePackageImports: [
+      "motion",
+      "@paper-design/shaders-react",
+      "lucide-react",
+      "react-icons/fa6"
+    ],
+  },
 };
 
 export default withMDX(config);
