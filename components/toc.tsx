@@ -1,24 +1,24 @@
-'use client';
+"use client";
 import {
-    type ComponentProps,
-    createContext,
-    type ReactNode,
-    type RefObject,
-    useCallback,
-    useContext,
-    useEffect,
-    useLayoutEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
-import scrollIntoView from 'scroll-into-view-if-needed';
-import { mergeRefs } from '@/utils/merge-refs';
+  type ComponentProps,
+  createContext,
+  type ReactNode,
+  type RefObject,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import scrollIntoView from "scroll-into-view-if-needed";
+import { mergeRefs } from "fumadocs-ui/utils/merge-refs";
 
 export interface TOCItemType {
-    title: ReactNode;
-    url: string;
-    depth: number;
+  title: ReactNode;
+  url: string;
+  depth: number;
 }
 
 export type TableOfContents = TOCItemType[];
@@ -26,113 +26,113 @@ export type TableOfContents = TOCItemType[];
 const ActiveAnchorContext = createContext<string[]>([]);
 
 const ScrollContext = createContext<RefObject<HTMLElement | null>>({
-    current: null,
+  current: null,
 });
 
 /**
  * The estimated active heading ID
  */
 export function useActiveAnchor(): string | undefined {
-    return useContext(ActiveAnchorContext)[0];
+  return useContext(ActiveAnchorContext)[0];
 }
 
 /**
  * The id of visible anchors
  */
 export function useActiveAnchors(): string[] {
-    return useContext(ActiveAnchorContext);
+  return useContext(ActiveAnchorContext);
 }
 
 export interface AnchorProviderProps {
-    toc: TableOfContents;
-    /**
-     * Only accept one active item at most
-     *
-     * @defaultValue false
-     */
-    single?: boolean;
-    children?: ReactNode;
+  toc: TableOfContents;
+  /**
+   * Only accept one active item at most
+   *
+   * @defaultValue false
+   */
+  single?: boolean;
+  children?: ReactNode;
 }
 
 export interface ScrollProviderProps {
-    /**
-     * Scroll into the view of container when active
-     */
-    containerRef: RefObject<HTMLElement | null>;
+  /**
+   * Scroll into the view of container when active
+   */
+  containerRef: RefObject<HTMLElement | null>;
 
-    children?: ReactNode;
+  children?: ReactNode;
 }
 
 export function ScrollProvider({
-    containerRef,
-    children,
+  containerRef,
+  children,
 }: ScrollProviderProps) {
-    return (
-        <ScrollContext.Provider value={containerRef}>
-            {children}
-        </ScrollContext.Provider>
-    );
+  return (
+    <ScrollContext.Provider value={containerRef}>
+      {children}
+    </ScrollContext.Provider>
+  );
 }
 
 export function AnchorProvider({
-    toc,
-    single = false,
-    children,
+  toc,
+  single = false,
+  children,
 }: AnchorProviderProps) {
-    const headings = useMemo(() => {
-        return toc.map((item) => item.url.split('#')[1]);
-    }, [toc]);
+  const headings = useMemo(() => {
+    return toc.map((item) => item.url.split("#")[1]);
+  }, [toc]);
 
-    return (
-        <ActiveAnchorContext.Provider value={useAnchorObserver(headings, single)}>
-            {children}
-        </ActiveAnchorContext.Provider>
-    );
+  return (
+    <ActiveAnchorContext.Provider value={useAnchorObserver(headings, single)}>
+      {children}
+    </ActiveAnchorContext.Provider>
+  );
 }
 
-export interface TOCItemProps extends Omit<ComponentProps<'a'>, 'href'> {
-    href: string;
-    onActiveChange?: (v: boolean) => void;
+export interface TOCItemProps extends Omit<ComponentProps<"a">, "href"> {
+  href: string;
+  onActiveChange?: (v: boolean) => void;
 }
 
 export function TOCItem({
-    ref,
-    onActiveChange = () => null,
-    ...props
+  ref,
+  onActiveChange = () => null,
+  ...props
 }: TOCItemProps) {
-    const containerRef = useContext(ScrollContext);
-    const anchorRef = useRef<HTMLAnchorElement>(null);
-    const activeOrder = useActiveAnchors().indexOf(props.href.slice(1));
-    const isActive = activeOrder !== -1;
-    const shouldScroll = activeOrder === 0;
+  const containerRef = useContext(ScrollContext);
+  const anchorRef = useRef<HTMLAnchorElement>(null);
+  const activeOrder = useActiveAnchors().indexOf(props.href.slice(1));
+  const isActive = activeOrder !== -1;
+  const shouldScroll = activeOrder === 0;
 
-    // Store callback in ref to avoid stale closures
-    const onActiveChangeRef = useRef(onActiveChange);
-    onActiveChangeRef.current = onActiveChange;
+  // Store callback in ref to avoid stale closures
+  const onActiveChangeRef = useRef(onActiveChange);
+  onActiveChangeRef.current = onActiveChange;
 
-    useLayoutEffect(() => {
-        const anchor = anchorRef.current;
-        const container = containerRef.current;
+  useLayoutEffect(() => {
+    const anchor = anchorRef.current;
+    const container = containerRef.current;
 
-        if (container && anchor && shouldScroll)
-            scrollIntoView(anchor, {
-                behavior: 'smooth',
-                block: 'center',
-                inline: 'center',
-                scrollMode: 'always',
-                boundary: container,
-            });
-    }, [containerRef, shouldScroll]);
+    if (container && anchor && shouldScroll)
+      scrollIntoView(anchor, {
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+        scrollMode: "always",
+        boundary: container,
+      });
+  }, [containerRef, shouldScroll]);
 
-    useEffect(() => {
-        onActiveChangeRef.current(isActive);
-    }, [isActive]);
+  useEffect(() => {
+    onActiveChangeRef.current(isActive);
+  }, [isActive]);
 
-    return (
-        <a ref={mergeRefs(anchorRef, ref)} data-active={isActive} {...props}>
-            {props.children}
-        </a>
-    );
+  return (
+    <a ref={mergeRefs(anchorRef, ref)} data-active={isActive} {...props}>
+      {props.children}
+    </a>
+  );
 }
 
 /**
@@ -145,75 +145,78 @@ export function TOCItem({
  * @returns Active anchor
  */
 function useAnchorObserver(watch: string[], single: boolean): string[] {
-    const observerRef = useRef<IntersectionObserver | null>(null);
-    const [activeAnchor, setActiveAnchor] = useState<string[]>(() => []);
-    const stateRef = useRef<{
-        visible: Set<string>;
-    } | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const [activeAnchor, setActiveAnchor] = useState<string[]>(() => []);
+  const stateRef = useRef<{
+    visible: Set<string>;
+  } | null>(null);
 
-    const onChange = useCallback((entries: IntersectionObserverEntry[]) => {
-        stateRef.current ??= {
-            visible: new Set(),
-        };
-        const state = stateRef.current;
+  const onChange = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      stateRef.current ??= {
+        visible: new Set(),
+      };
+      const state = stateRef.current;
 
-        for (const entry of entries) {
-            if (entry.isIntersecting) {
-                state.visible.add(entry.target.id);
-            } else {
-                state.visible.delete(entry.target.id);
-            }
-        }
-
-        if (state.visible.size === 0) {
-            const viewTop =
-                entries.length > 0 ? (entries[0]?.rootBounds?.top ?? 0) : 0;
-            let fallback: Element | undefined;
-            let min = -1;
-
-            for (const id of watch) {
-                const element = document.getElementById(id);
-                if (!element) continue;
-
-                const d = Math.abs(viewTop - element.getBoundingClientRect().top);
-                if (min === -1 || d < min) {
-                    fallback = element;
-                    min = d;
-                }
-            }
-
-            setActiveAnchor(fallback ? [fallback.id] : []);
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          state.visible.add(entry.target.id);
         } else {
-            const items = watch.filter((item) => state.visible.has(item));
-            setActiveAnchor(single ? items.slice(0, 1) : items);
+          state.visible.delete(entry.target.id);
         }
-    }, [watch, single]);
+      }
 
-    useEffect(() => {
-        if (observerRef.current) return;
-        observerRef.current = new IntersectionObserver(onChange, {
-            rootMargin: '0px',
-            threshold: 0.98,
-        });
+      if (state.visible.size === 0) {
+        const viewTop =
+          entries.length > 0 ? entries[0]?.rootBounds?.top ?? 0 : 0;
+        let fallback: Element | undefined;
+        let min = -1;
 
-        return () => {
-            observerRef.current?.disconnect();
-            observerRef.current = null;
-        };
-    }, [onChange]);
+        for (const id of watch) {
+          const element = document.getElementById(id);
+          if (!element) continue;
 
-    useEffect(() => {
-        const observer = observerRef.current;
-        if (!observer) return;
-        const elements = watch.flatMap(
-            (heading) => document.getElementById(heading) ?? [],
-        );
+          const d = Math.abs(viewTop - element.getBoundingClientRect().top);
+          if (min === -1 || d < min) {
+            fallback = element;
+            min = d;
+          }
+        }
 
-        for (const element of elements) observer.observe(element);
-        return () => {
-            for (const element of elements) observer.unobserve(element);
-        };
-    }, [watch]);
+        setActiveAnchor(fallback ? [fallback.id] : []);
+      } else {
+        const items = watch.filter((item) => state.visible.has(item));
+        setActiveAnchor(single ? items.slice(0, 1) : items);
+      }
+    },
+    [watch, single]
+  );
 
-    return activeAnchor;
+  useEffect(() => {
+    if (observerRef.current) return;
+    observerRef.current = new IntersectionObserver(onChange, {
+      rootMargin: "0px",
+      threshold: 0.98,
+    });
+
+    return () => {
+      observerRef.current?.disconnect();
+      observerRef.current = null;
+    };
+  }, [onChange]);
+
+  useEffect(() => {
+    const observer = observerRef.current;
+    if (!observer) return;
+    const elements = watch.flatMap(
+      (heading) => document.getElementById(heading) ?? []
+    );
+
+    for (const element of elements) observer.observe(element);
+    return () => {
+      for (const element of elements) observer.unobserve(element);
+    };
+  }, [watch]);
+
+  return activeAnchor;
 }
