@@ -82,7 +82,6 @@
   /* Adding custom font families to match Fancy Components */
   --font-calendas: ui-serif, Georgia, "Times New Roman", serif;
   --font-overused-grotesk: "Geist", ui-sans-serif, system-ui, sans-serif;
-  /* Adding the vibrant blue color used in the design */
   --color-blue: #0000ff;
   --color-blue-500: #3b82f6;
   --color-background: var(--background);
@@ -113,7 +112,6 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  /* Adding max width breakpoint for container */
   --breakpoint-2xl: 1536px;
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -134,33 +132,27 @@
     @apply bg-background text-foreground;
   }
 
-  /* Custom inset shadow for sophisticated card depth effect */
   .shadow-card-inset {
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12),
       inset 0 2px 3px rgba(255, 255, 255, 0.1),
       inset 0 -4px 1px rgba(0, 0, 0, 0.16);
   }
 
-  /* Adding gradient background with film grain texture */
   .gradient-blue-cinematic {
-    background: linear-gradient(
-      135deg,
-      #e8f4ff 0%,
-      #c5e3ff 15%,
-      #8dc5f5 35%,
-      #5a9fd4 55%,
-      #2563b5 75%,
-      #1e3a5f 90%,
-      #0f1419 100%
-    );
+    background: linear-gradient(135deg,
+        #e8f4ff 0%,
+        #c5e3ff 15%,
+        #8dc5f5 35%,
+        #5a9fd4 55%,
+        #2563b5 75%,
+        #1e3a5f 90%,
+        #0f1419 100%);
   }
 
-  /* Film grain texture overlay */
   .grain {
     position: relative;
   }
 
-  /* Enhanced heavy grain with intense sandpaper texture - increased frequency and opacity */
   .grain::before {
     content: "";
     position: absolute;
@@ -172,7 +164,6 @@
     mix-blend-mode: overlay;
   }
 
-  /* Intense coarse grain layer with higher frequency for rough sandpaper feel */
   .grain::after {
     content: "";
     position: absolute;
@@ -184,8 +175,12 @@
     mix-blend-mode: soft-light;
   }
 
-  .grain > * {
+  .grain>* {
     position: relative;
     z-index: 2;
   }
+}
+
+.font-pixelify {
+  font-family: var(--font-pixelify);
 }

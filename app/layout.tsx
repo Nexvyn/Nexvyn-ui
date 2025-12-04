@@ -1,17 +1,20 @@
-import { RootProvider } from "fumadocs-ui/provider/next";
+import { RootProvider } from "fumadocs-ui/provider";
 import "./global.css";
 import { Inter_Tight, Pixelify_Sans } from "next/font/google";
 import { ThemeProvider } from "./providers/theme-provider";
+import { SearchRegistryProvider } from "@/hooks/use-search-registry";
 import type { Metadata } from "next";
 
 const interTight = Inter_Tight({
   subsets: ["latin"],
+  display: "swap",
 });
 
 const pixelify = Pixelify_Sans({
   variable: "--font-pixelify",
   subsets: ["latin"],
   weight: ["400", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -36,7 +39,11 @@ export default function Layout({ children }: LayoutProps<"/">) {
           enableSystem
           disableTransitionOnChange
         >
-          <RootProvider>{children}</RootProvider>
+          <SearchRegistryProvider>
+            <RootProvider search={{ enabled: false }}>
+              {children}
+            </RootProvider>
+          </SearchRegistryProvider>
         </ThemeProvider>
       </body>
     </html>
