@@ -7,6 +7,7 @@ import { FaDiscord, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 export function Footer() {
   return (
     <footer className="grain p-3 sm:p-4 overflow-hidden relative">
+      {/* TODO- in the light mode add the grain effect */}
       <div className="font-pixelify absolute bottom-0 left-0 right-0 mx-auto translate-y-[5%] select-none text-center font-bold leading-none tracking-tighter text-muted text-[40px] sm:text-[60px] md:text-[80px] lg:text-[120px] xl:text-[140px]">
         pixel perfect
       </div>
