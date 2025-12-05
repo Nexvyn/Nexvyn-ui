@@ -1,6 +1,6 @@
-import defaultMdxComponents from 'fumadocs-ui/mdx';
-import type { MDXComponents } from 'mdx/types';
-import { Button } from '@/components/Button';
+import defaultMdxComponents from "fumadocs-ui/mdx";
+import type { MDXComponents } from "mdx/types";
+import { Button } from "@/components/pixel components/button";
 import {
   Card,
   CardHeader,
@@ -8,9 +8,9 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from '@/components/Card';
-import { Preview } from '@/components/Preview';
-import { Input } from '@/components/Input';
+} from "@/components/pixel components/card";
+import { Preview } from "@/components/pixel components/Preview";
+import { Input } from "@/components/pixel components/input";
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -28,4 +28,3 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ...components,
   };
 }
-
