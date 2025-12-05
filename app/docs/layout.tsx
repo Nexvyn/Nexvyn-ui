@@ -1,39 +1,51 @@
 import { source } from "@/lib/source";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { docsConfig } from "@/app/config/docs";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Footer } from "../(home)/components/footer";
 import { Navbar } from "../(home)/components/navbar";
-import { DocsSidebarNav } from "@/components/sidebar-nav";
+import { CollapsibleSidebar } from "@/components/collapsible-sidebar";
+import Image from "next/image";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative w-full p-4">
       <Navbar />
-      <div className="">
-        <div className="items-start lg:grid lg:grid-cols-[300px_minmax(0,1fr)]">
-          <aside className="sticky top-0 z-30 hidden h-screen w-full  lg:block py-4  ">
-            <div className="backdrop-blur-sm h-full">
-              <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2 "></span>
-              <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2 "></span>
-              <span className="border-primary absolute -bottom-px -left-px block size-2 border-b-2 border-l-2"></span>
-              <span className="border-primary absolute -bottom-px -right-px block size-2 border-b-2 border-r-2"></span>
-              <ScrollArea className="h-full">
-                <DocsSidebarNav items={docsConfig} />
-              </ScrollArea>
-            </div>
-          </aside>
+      {/* Main card container with gradient background */}
+      <div
+        className="relative grain mt-4 pb-4 "
+        style={{
+          backgroundImage: "url()",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-background/60 dark:bg-background/60" />
 
-          <DocsLayout
-            tree={source.pageTree}
-            nav={{ enabled: false }}
-            sidebar={{ enabled: false }}
-          >
-            {children}
-          </DocsLayout>
+        <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2 z-10"></span>
+        <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2 z-10"></span>
+        <span className="border-primary absolute -bottom-px -left-px block size-2 border-b-2 border-l-2 z-10"></span>
+        <span className="border-primary absolute -bottom-px -right-px block size-2 border-b-2 border-r-2 z-10"></span>
+
+        <div className="flex items-start">
+          {/* Collapsible Sidebar with Ctrl+B toggle */}
+          <CollapsibleSidebar items={docsConfig} />
+
+          {/* Main content area */}
+          <div className="flex-1 min-w-0">
+            <DocsLayout
+              tree={source.pageTree}
+              nav={{ enabled: false }}
+              sidebar={{ enabled: false }}
+            >
+              {children}
+            </DocsLayout>
+          </div>
         </div>
       </div>
-      <Footer />
+      <div className="mt-6">
+        <Footer />
+      </div>
     </div>
   );
 }
