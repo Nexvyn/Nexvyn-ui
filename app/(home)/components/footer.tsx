@@ -6,70 +6,75 @@ import { FaDiscord, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 
 export function Footer() {
   return (
-    <footer className=" grain p-3 overflow-hidden">
-      {" "}
-      <div className="font-pixelify absolute bottom-0 left-0 right-0 mx-auto translate-y-[5%] select-none text-center font-bold leading-none tracking-tighter text-muted text-[80px] lg:text-[140px]">
+    <footer className="grain p-3 sm:p-4 overflow-hidden relative">
+      <div className="font-pixelify absolute bottom-0 left-0 right-0 mx-auto translate-y-[5%] select-none text-center font-bold leading-none tracking-tighter text-muted text-[40px] sm:text-[60px] md:text-[80px] lg:text-[120px] xl:text-[140px]">
         pixel perfect
       </div>
-      <div className=" flex w-full justify-between">
-        <div className=" text-sm">
-          Build beautiful, responsive interfaces in minutes. <br /> A
-          pixel-perfect React component library for modern web apps.
-        </div>{" "}
-        <div className=" flex gap-2">
-          <Button variant={"outline"} size={"icon"}>
-            <Github />
+
+      <div className="flex flex-col sm:flex-row w-full justify-between gap-4 sm:gap-6">
+        <div className="text-xs sm:text-sm max-w-xs sm:max-w-sm">
+          Build beautiful, responsive interfaces in minutes.{" "}
+          <span className="hidden sm:inline">
+            <br />
+          </span>
+          A pixel-perfect React component library for modern web apps.
+        </div>
+
+        <div className="flex gap-2">
+          <Button variant="outline" size="icon" className="size-8 sm:size-9">
+            <Github className="size-4" />
           </Button>
-          <Button variant={"outline"} size={"icon"}>
-            <FaXTwitter />
+          <Button variant="outline" size="icon" className="size-8 sm:size-9">
+            <FaXTwitter className="size-4" />
           </Button>
-          <Button variant={"outline"} size={"icon"}>
-            <FaLinkedinIn />
+          <Button variant="outline" size="icon" className="size-8 sm:size-9">
+            <FaLinkedinIn className="size-4" />
           </Button>
-          <Button variant={"outline"} size={"icon"}>
-            <FaDiscord />
+          <Button variant="outline" size="icon" className="size-8 sm:size-9">
+            <FaDiscord className="size-4" />
           </Button>
-        </div>{" "}
+        </div>
       </div>
-      <div className=" flex justify-end mt-20">
-        <span className=" mt-2 flex items-center gap-1 text-sm  text-muted-foreground">
-          Made with <Heart className="" size={13} /> by{" "}
-          <span className="group">
-            <span className=" cursor-pointer group-hover:text-accent-foreground ">
-              Aman(Nexvyn){" "}
+
+      <div className="flex justify-center sm:justify-end mt-12 sm:mt-16 md:mt-20">
+        <span className="mt-2 flex flex-wrap items-center justify-center gap-1 text-xs sm:text-sm text-muted-foreground">
+          Made with <Heart className="text-red-500" size={12} /> by{" "}
+          <span className="group relative">
+            <span className="cursor-pointer hover:text-accent-foreground transition-colors">
+              Aman(Nexvyn)
             </span>
-            <div className=" w-12 object-cover  absolute  bottom-3 -rotate-6  opacity-0 group-hover:opacity-100 duration-150 transition-all ">
+            <div className="w-10 sm:w-12 object-cover absolute bottom-3 -rotate-6 opacity-0 group-hover:opacity-100 duration-150 transition-all hidden sm:block">
               <img
                 src="https://res.cloudinary.com/dz12pywzs/image/upload/v1762336185/Gemini_Generated_Image_qxos2hqxos2hqxos_rlosmn.png"
-                alt=""
-              />{" "}
-              <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2"></span>
-              <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2"></span>
-              <span className="border-primary absolute -bottom-px -left-px block size-2 border-b-2 border-l-2"></span>
-              <span className="border-primary absolute -bottom-px -right-px block size-2 border-b-2 border-r-2"></span>
-            </div>{" "}
-          </span>{" "}
-          &{" "}
-          <span className=" group ">
-            {" "}
-            <div className=" w-12 object-cover  absolute  bottom-5 rotate-12  opacity-0 group-hover:opacity-100 duration-150 transition-all ">
-              <img
-                src="https://res.cloudinary.com/dz12pywzs/image/upload/v1762336185/Gemini_Generated_Image_qxos2hqxos2hqxos_rlosmn.png"
-                alt=""
-              />{" "}
+                alt="Aman"
+              />
               <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2"></span>
               <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2"></span>
               <span className="border-primary absolute -bottom-px -left-px block size-2 border-b-2 border-l-2"></span>
               <span className="border-primary absolute -bottom-px -right-px block size-2 border-b-2 border-r-2"></span>
             </div>
-            <span className=" cursor-pointer group-hover:text-accent-foreground ">
-              Vansh Nagar{" "}
+          </span>
+          &amp;
+          <span className="group relative">
+            <div className="w-10 sm:w-12 object-cover absolute bottom-5 rotate-12 opacity-0 group-hover:opacity-100 duration-150 transition-all hidden sm:block">
+              <img
+                src="https://res.cloudinary.com/dz12pywzs/image/upload/v1762336185/Gemini_Generated_Image_qxos2hqxos2hqxos_rlosmn.png"
+                alt="Vansh"
+              />
+              <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2"></span>
+              <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2"></span>
+              <span className="border-primary absolute -bottom-px -left-px block size-2 border-b-2 border-l-2"></span>
+              <span className="border-primary absolute -bottom-px -right-px block size-2 border-b-2 border-r-2"></span>
+            </div>
+            <span className="cursor-pointer hover:text-accent-foreground transition-colors">
+              Vansh Nagar
             </span>
           </span>
         </span>
       </div>
-      <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2 "></span>
-      <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2 "></span>
+
+      <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2"></span>
+      <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2"></span>
       <span className="border-primary absolute -bottom-px -left-px block size-2 border-b-2 border-l-2"></span>
       <span className="border-primary absolute -bottom-px -right-px block size-2 border-b-2 border-r-2"></span>
     </footer>
