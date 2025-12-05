@@ -187,16 +187,151 @@
   font-family: var(--font-pixelify);
 }
 
-/* Hide all scrollbars while preserving scrolling */
 *,
 *::before,
 *::after {
-  -ms-overflow-style: none; /* IE, Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
   scrollbar-color: transparent transparent;
 }
 
 *::-webkit-scrollbar {
   width: 0;
   height: 0;
+}
+
+/* ========================================
+   CUSTOM MDX STYLES
+   Target elements inside .prose or fumadocs content areas
+   ======================================== */
+
+/* Headings */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  scroll-margin-top: 80px;
+}
+
+.prose h2 {
+  margin-top: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose h3 {
+  margin-top: 1.5rem;
+}
+
+/* Paragraphs */
+.prose p {
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+/* Links */
+.prose a:not([class]) {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s;
+}
+
+.prose a:not([class]):hover {
+  opacity: 0.8;
+}
+
+/* Code - inline */
+.prose code:not(pre code) {
+  background: var(--muted);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+/* Code blocks */
+.prose pre {
+  background: var(--muted) !important;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 1rem;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Blockquotes */
+.prose blockquote {
+  border-left: 4px solid var(--primary);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--muted-foreground);
+}
+
+/* Lists */
+.prose ul,
+.prose ol {
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.prose li {
+  margin: 0.5rem 0;
+  line-height: 1.7;
+}
+
+.prose ul li::marker {
+  color: var(--primary);
+}
+
+.prose ol li::marker {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Tables */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.prose th {
+  background: var(--muted);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+}
+
+.prose td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+}
+
+.prose tr:hover td {
+  background: var(--muted);
+}
+
+/* Horizontal rules */
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* Images */
+.prose img {
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+/* Strong/Bold */
+.prose strong {
+  font-weight: 600;
+  color: var(--foreground);
 }
