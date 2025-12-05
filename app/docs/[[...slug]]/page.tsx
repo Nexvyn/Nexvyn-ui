@@ -38,6 +38,7 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
               markdownUrl={`${page.url}.mdx`}
               githubUrl={`https://github.com/${owner}/${repo}/blob/dev/apps/docs/content/docs/${page.path}`}
             />
+            {/* // TODO- add the v0 button */}
           </div>
           <DocsBody>
             <MDX

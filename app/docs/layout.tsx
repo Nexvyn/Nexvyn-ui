@@ -19,6 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           backgroundPosition: "center",
         }}
       >
+        {/* TODO- grain and also but blue or the color of the home card */}
         {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-background/60 dark:bg-background/60" />
 
