@@ -21,7 +21,7 @@ const VoronoiBackground = dynamic(
 
 export function HeroSection({ allComps }: { allComps: Component[] | null }) {
   return (
-    <section className="w-full grain h-[calc(100vh-72px)]  overflow-hidden font-pixelify md:overflow-clip overscroll-none flex flex-col items-center justify-center relative px-4 sm:px-6 md:px-8 ">
+    <section className="w-full grain h-[calc(100vh-64px)]  overflow-hidden font-pixelify md:overflow-clip overscroll-none flex flex-col items-center justify-center relative px-4 sm:px-6 md:px-8 ">
       <VoronoiBackground className="absolute inset-0 w-full h-full z-0  mask-b-from-50%" />
 
       <div className="flex flex-col justify-center items-center w-full max-w-[280px] sm:max-w-[350px] md:max-w-[550px] lg:max-w-[750px] xl:max-w-[850px] z-10 relative pointer-events-auto">

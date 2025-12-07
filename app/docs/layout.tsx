@@ -22,8 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       >
         {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-background/60 dark:bg-background/60" />
-              <BoxyBorder />
-
+        <BoxyBorder />
 
         <div className="flex items-start">
           {/* Collapsible Sidebar with Ctrl+B toggle */}
