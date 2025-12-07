@@ -187,11 +187,12 @@
   font-family: var(--font-pixelify);
 }
 
+/* Hide all scrollbars while preserving scrolling */
 *,
 *::before,
 *::after {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
   scrollbar-color: transparent transparent;
 }
 
@@ -200,12 +201,6 @@
   height: 0;
 }
 
-/* ========================================
-   CUSTOM MDX STYLES
-   Target elements inside .prose or fumadocs content areas
-   ======================================== */
-
-/* Headings */
 .prose h1,
 .prose h2,
 .prose h3,

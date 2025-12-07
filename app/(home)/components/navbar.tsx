@@ -50,6 +50,7 @@ export function Navbar() {
             <FlaskConical />
           </Button>
         </Link>
+
         <LightDarkMode />
       </div>
     </header>
