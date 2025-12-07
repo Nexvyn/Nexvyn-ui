@@ -200,12 +200,6 @@
   height: 0;
 }
 
-/* ========================================
-   CUSTOM MDX STYLES
-   Target elements inside .prose or fumadocs content areas
-   ======================================== */
-
-/* Headings */
 .prose h1,
 .prose h2,
 .prose h3,
@@ -252,17 +246,6 @@
   font-weight: 500;
 }
 
-/* Code blocks */
-.prose pre {
-  background: var(--muted) !important;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 1rem;
-  overflow-x: auto;
-  font-size: 1rem;
-  font-family: 'Courier New', Courier, monospace;
-}
-
 /* Blockquotes */
 .prose blockquote {
   border-left: 4px solid var(--primary);
@@ -270,6 +253,7 @@
   margin: 1.5rem 0;
   font-style: italic;
   color: var(--muted-foreground);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Lists */

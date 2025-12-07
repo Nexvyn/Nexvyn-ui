@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Github } from "lucide-react";
+import { FlaskConical, Github, Play } from "lucide-react";
 import { LightDarkMode } from "@/components/ui/light-dark-mode";
 import { FaXTwitter } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
@@ -33,17 +33,24 @@ export function Navbar() {
         />
         <span className=" text-xl ">Pixel Perfect</span>{" "}
       </Link>
+
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size={"icon"} aria-label="Twitter">
-          <FaXTwitter />
-        </Button>
         <div className="hidden sm:block gap-x-2">
           <CommandPalette />
         </div>
-        <Button variant="ghost" aria-label="GitHub">
-          <Github />
-          11
-        </Button>
+
+        <Link href={"https://github.com/Nexvyn/pro-pixel-perfect"}>
+          <Button variant="ghost" aria-label="GitHub">
+            <Github />
+            11
+          </Button>
+        </Link>
+        <Link href={"/playground"}>
+          <Button variant={"ghost"} size={"icon"}>
+            <FlaskConical />
+          </Button>
+        </Link>
+
         <LightDarkMode />
       </div>
       {/* <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2  "></span>

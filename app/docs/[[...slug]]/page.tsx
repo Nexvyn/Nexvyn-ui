@@ -23,7 +23,7 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   const MDX = page.data.body;
 
   return (
-    <div className="flex flex-row gap-8">
+    <div className="flex flex-row gap-8  ">
       <div className="flex-1 min-w-0">
         <DocsPage
           toc={page.data.toc}
@@ -38,7 +38,6 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
               markdownUrl={`${page.url}.mdx`}
               githubUrl={`https://github.com/${owner}/${repo}/blob/dev/apps/docs/content/docs/${page.path}`}
             />
-            {/* // TODO- add the v0 button */}
           </div>
           <DocsBody>
             <MDX

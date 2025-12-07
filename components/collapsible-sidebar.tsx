@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DocsSidebarNav, type SidebarNavItem } from "@/components/sidebar-nav";
 import { cn } from "@/lib/cn";
-import { Menu, X } from "lucide-react";
+import { Menu, SidebarClose, SidebarOpen, X } from "lucide-react";
+import { Button } from "./ui/button";
 
 interface CollapsibleSidebarProps {
   items: SidebarNavItem[];
@@ -110,33 +111,21 @@ export function CollapsibleSidebar({ items }: CollapsibleSidebarProps) {
       </aside>
 
       {/* Desktop toggle button */}
-      <button
+      <Button
+        variant={"ghost"}
         onClick={toggleSidebar}
         className={cn(
-          "absolute left-4 top-4 z-40 hidden lg:flex",
-          "size-8 items-center justify-center rounded-md",
-          "border border-border bg-background/80 backdrop-blur-sm",
-          "text-muted-foreground hover:text-foreground hover:bg-muted",
+          "absolute left-4 top-0 z-40 hidden lg:flex",
+          "size-8 items-center justify-center ",
+          "text-muted-foreground hover:text-foreground ",
           "transition-all duration-200",
-          isOpen && "left-[310px] "
+          isOpen && "left-[230px] "
         )}
         title={isOpen ? "Hide sidebar (Ctrl+B)" : "Show sidebar (Ctrl+B)"}
         aria-label={isOpen ? "Hide sidebar" : "Show sidebar"}
       >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M6.245 2.5H14.5V12.5C14.5 13.0523 14.0523 13.5 13.5 13.5H6.245V2.5ZM4.995 2.5H1.5V12.5C1.5 13.0523 1.94772 13.5 2.5 13.5H4.995V2.5ZM0 1H1.5H14.5H16V2.5V12.5C16 13.8807 14.8807 15 13.5 15H2.5C1.11929 15 0 13.8807 0 12.5V2.5V1Z"
-          />
-        </svg>
-      </button>
+        {isOpen ? <SidebarOpen /> : <SidebarClose />}
+      </Button>
 
       {/* Desktop sidebar */}
       <aside
