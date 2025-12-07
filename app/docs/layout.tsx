@@ -1,35 +1,49 @@
-import { source } from "@/lib/source"
-import { DocsLayout } from "fumadocs-ui/layouts/docs"
-import { docsConfig } from "@/app/config/docs"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Footer } from "../(home)/components/footer"
-import { Navbar } from "../(home)/components/navbar"
-import { DocsSidebarNav } from "@/components/sidebar-nav"
+import { source } from "@/lib/source";
+import { DocsLayout } from "fumadocs-ui/layouts/docs";
+import { docsConfig } from "@/app/config/docs";
+import { Footer } from "../(home)/components/footer";
+import { Navbar } from "../(home)/components/navbar";
+import { CollapsibleSidebar } from "@/components/collapsible-sidebar";
+import Image from "next/image";
+import { BoxyBorder } from "@/components/ui/boxy-border";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full p-4">
       <Navbar />
-      <div className="pt-16">
-        <div className="items-start lg:grid lg:grid-cols-[340px_minmax(0,1fr)]">
-          <aside className="sticky top-16 pb-4 z-30 hidden h-[calc(100vh-6rem)] w-full shrink-0 lg:block pt-4 pl-4">
-            <div className="rounded-2xl bg-background/80 backdrop-blur-sm h-full border-border border shadow-sm">
-              <ScrollArea className="h-full">
-                <DocsSidebarNav items={docsConfig} />
-              </ScrollArea>
-            </div>
-          </aside>
+      {/* Main card container with gradient background */}
+      <div
+        className="relative grain mt-4 py-4 "
+        style={{
+          backgroundImage: "url()",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-background/60 dark:bg-background/60" />
+              <BoxyBorder />
 
-          <DocsLayout
-            tree={source.pageTree}
-            nav={{ enabled: false }}
-            sidebar={{ enabled: false }}
-          >
-            <div className="p-4">{children}</div>
-          </DocsLayout>
+
+        <div className="flex items-start">
+          {/* Collapsible Sidebar with Ctrl+B toggle */}
+          <CollapsibleSidebar items={docsConfig} />
+
+          {/* Main content area */}
+          <div className="flex-1 min-w-0">
+            <DocsLayout
+              tree={source.pageTree}
+              nav={{ enabled: false }}
+              sidebar={{ enabled: false }}
+            >
+              {children}
+            </DocsLayout>
+          </div>
         </div>
       </div>
-      <Footer />
+      <div className="mt-6">
+        <Footer />
+      </div>
     </div>
-  )
+  );
 }
