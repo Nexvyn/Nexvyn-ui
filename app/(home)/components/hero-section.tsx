@@ -5,6 +5,7 @@ import { LayoutGroup, motion } from "motion/react";
 import type { Component } from "@/lib/get-components";
 import { Button } from "@/components/ui/button";
 import dynamic from "next/dynamic";
+import { BoxyBorder } from "@/components/ui/boxy-border";
 
 const MotionLink = motion.create(Link);
 
@@ -49,11 +50,7 @@ export function HeroSection({ allComps }: { allComps: Component[] | null }) {
           </Link>
         </div>
       </div>
-
-      <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2  "></span>
-      <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2 "></span>
-      <span className="border-primary absolute -bottom-px -left-px block size-2 border-b-2 border-l-2"></span>
-      <span className="border-primary absolute -bottom-px -right-px block size-2 border-b-2 border-r-2"></span>
+      <BoxyBorder />
     </section>
   );
 }

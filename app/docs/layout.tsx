@@ -5,6 +5,7 @@ import { Footer } from "../(home)/components/footer";
 import { Navbar } from "../(home)/components/navbar";
 import { CollapsibleSidebar } from "@/components/collapsible-sidebar";
 import Image from "next/image";
+import { BoxyBorder } from "@/components/ui/boxy-border";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,21 +13,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Navbar />
       {/* Main card container with gradient background */}
       <div
-        className="relative grain mt-4 pb-4 "
+        className="relative grain mt-4 py-4 "
         style={{
           backgroundImage: "url()",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        {/* TODO- grain and also but blue or the color of the home card */}
         {/* Dark overlay for better text readability */}
         <div className="absolute inset-0 bg-background/60 dark:bg-background/60" />
-
-        <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2 z-10"></span>
-        <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2 z-10"></span>
-        <span className="border-primary absolute -bottom-px -left-px block size-2 border-b-2 border-l-2 z-10"></span>
-        <span className="border-primary absolute -bottom-px -right-px block size-2 border-b-2 border-r-2 z-10"></span>
+        <BoxyBorder />
 
         <div className="flex items-start">
           {/* Collapsible Sidebar with Ctrl+B toggle */}

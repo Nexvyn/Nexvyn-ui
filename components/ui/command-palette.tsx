@@ -117,7 +117,7 @@ export function CommandPalette() {
       {open && (
         <>
           <div className=" w-full max-w-lg  fixed  top-1/2 right-1/2 translate-y-1/2 translate-x-1/2">
-            <Command className="rounded-xl  border border-border bg-background shadow-2xl overflow-hidden">
+            <Command className="rounded-xl  border border-border bg-background shadow-2xl overflow-hidden z-50">
               <CommandInput
                 value={search}
                 onValueChange={setSearch}

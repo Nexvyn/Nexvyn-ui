@@ -30,6 +30,7 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.5.0",
+    "recharts": "^2.15.4",
     "scroll-into-view-if-needed": "^3.1.0",
     "tailwind-merge": "^3.4.0",
     "three": "^0.181.2"

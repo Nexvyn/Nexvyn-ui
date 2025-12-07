@@ -1,5 +1,6 @@
 "use client";
 
+import { BoxyBorder } from "@/components/ui/boxy-border";
 import { Button } from "@/components/ui/button";
 import { Github, Heart } from "lucide-react";
 import { FaDiscord, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
@@ -7,7 +8,6 @@ import { FaDiscord, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 export function Footer() {
   return (
     <footer className="grain p-3 sm:p-4 overflow-hidden relative">
-      {/* TODO- in the light mode add the grain effect */}
       <div className="font-pixelify absolute bottom-0 left-0 right-0 mx-auto translate-y-[5%] select-none text-center font-bold leading-none tracking-tighter text-muted text-[40px] sm:text-[60px] md:text-[80px] lg:text-[120px] xl:text-[140px]">
         pixel perfect
       </div>
@@ -49,10 +49,7 @@ export function Footer() {
                 src="https://res.cloudinary.com/dz12pywzs/image/upload/v1762336185/Gemini_Generated_Image_qxos2hqxos2hqxos_rlosmn.png"
                 alt="Aman"
               />
-              <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2"></span>
-              <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2"></span>
-              <span className="border-primary absolute -bottom-px -left-px block size-2 border-b-2 border-l-2"></span>
-              <span className="border-primary absolute -bottom-px -right-px block size-2 border-b-2 border-r-2"></span>
+              <BoxyBorder />
             </div>
           </span>
           &amp;
@@ -62,10 +59,7 @@ export function Footer() {
                 src="https://res.cloudinary.com/dz12pywzs/image/upload/v1762336185/Gemini_Generated_Image_qxos2hqxos2hqxos_rlosmn.png"
                 alt="Vansh"
               />
-              <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2"></span>
-              <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2"></span>
-              <span className="border-primary absolute -bottom-px -left-px block size-2 border-b-2 border-l-2"></span>
-              <span className="border-primary absolute -bottom-px -right-px block size-2 border-b-2 border-r-2"></span>
+              <BoxyBorder />
             </div>
             <span className="cursor-pointer hover:text-accent-foreground transition-colors">
               Vansh Nagar
@@ -74,10 +68,7 @@ export function Footer() {
         </span>
       </div>
 
-      <span className="border-primary absolute -left-px -top-px block size-2 border-l-2 border-t-2"></span>
-      <span className="border-primary absolute -right-px -top-px block size-2 border-r-2 border-t-2"></span>
-      <span className="border-primary absolute -bottom-px -left-px block size-2 border-b-2 border-l-2"></span>
-      <span className="border-primary absolute -bottom-px -right-px block size-2 border-b-2 border-r-2"></span>
+      <BoxyBorder />
     </footer>
   );
 }
