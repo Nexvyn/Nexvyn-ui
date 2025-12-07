@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { motion } from "motion/react"
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion } from "motion/react";
 
-import { SidebarNavItem } from "@/types/nav"
-import { cn } from "@/lib/utils"
+import { SidebarNavItem } from "@/types/nav";
+import { cn } from "@/lib/utils";
 
 export interface DocsSidebarNavProps {
-  items: SidebarNavItem[]
+  items: SidebarNavItem[];
 }
 
 export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return items.length ? (
     <div className="w-full h-full py-6">
@@ -32,17 +32,17 @@ export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
         </div>
       ))}
     </div>
-  ) : null
+  ) : null;
 }
 
 interface NavItemProps {
-  item: SidebarNavItem
-  index: number
-  pathname: string | null
+  item: SidebarNavItem;
+  index: number;
+  pathname: string | null;
 }
 
 function NavItem({ item, index, pathname }: NavItemProps) {
-  const isActive = pathname === item.href
+  const isActive = pathname === item.href;
 
   return (
     <motion.p key={index}>
@@ -53,19 +53,23 @@ function NavItem({ item, index, pathname }: NavItemProps) {
         rel={item.external ? "noreferrer" : ""}
       >
         <motion.span
-          initial={{ 
-            fontVariationSettings: isActive ? "'wght' 500" : "'wght' 400", 
-            color: isActive ? "var(--foreground)" : "hsl(var(--muted-foreground))" 
+          initial={{
+            fontVariationSettings: isActive ? "'wght' 500" : "'wght' 400",
+            color: isActive
+              ? "var(--foreground)"
+              : "hsl(var(--muted-foreground))",
           }}
-          whileHover={{ 
-            fontVariationSettings: "'wght' 500", 
-            color: "var(--foreground)", 
-            transition: { duration: 0.3, ease: "easeOut" }
+          whileHover={{
+            fontVariationSettings: "'wght' 500",
+            color: "var(--foreground)",
+            transition: { duration: 0.3, ease: "easeOut" },
           }}
           animate={{
             fontVariationSettings: isActive ? "'wght' 500" : "'wght' 400",
-            color: isActive ? "var(--foreground)" : "hsl(var(--muted-foreground))",
-            transition: { duration: 0.3, ease: "easeOut" }
+            color: isActive
+              ? "var(--foreground)"
+              : "hsl(var(--muted-foreground))",
+            transition: { duration: 0.3, ease: "easeOut" },
           }}
           className={cn(
             "inline-block no-underline duration-300 transition-colors ease-out",
@@ -83,12 +87,12 @@ function NavItem({ item, index, pathname }: NavItemProps) {
         )}
       </Link>
     </motion.p>
-  )
+  );
 }
 
 interface DocsSidebarNavItemsProps {
-  items: SidebarNavItem[]
-  pathname: string | null
+  items: SidebarNavItem[];
+  pathname: string | null;
 }
 
 export function DocsSidebarNavItems({
@@ -101,5 +105,5 @@ export function DocsSidebarNavItems({
         <NavItem key={index} item={item} index={index} pathname={pathname} />
       ))}
     </div>
-  ) : null
+  ) : null;
 }
