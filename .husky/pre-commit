@@ -7,3 +7,5 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "ESLint passed. Proceeding with commit."
+
+npx lint-staged
