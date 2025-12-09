@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Search, File, Sparkles } from "lucide-react";
+import { File, Sparkles } from "lucide-react";
 import {
   Command,
   CommandEmpty,
@@ -12,6 +12,9 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import { SearchIcon } from "./search";
+import { Button } from "./button";
+import { Kbd, KbdGroup } from "./kbd";
 
 interface SearchItem {
   title: string;
@@ -103,21 +106,19 @@ export function CommandPalette() {
 
   return (
     <>
-      <button
+      <Button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground bg-muted/50 hover:bg-muted rounded-lg border border-border transition-colors"
+        className="flex items-center gap-2 pr-1.5  pl-2 py-1.5 text-sm text-muted-foreground bg-muted/20 hover:bg-muted  border  "
       >
-        <Search className="h-4 w-4" />
-        <span className="hidden sm:inline">Search...</span>
-        <div className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-xs bg-background rounded border border-border">
-          <span className="text-xs">ctrl +</span>K
-        </div>
-      </button>
+        <SearchIcon size={14} />
+        <span className="hidden sm:inline text-xs mr-5">Search...</span>
+        <Kbd>Ctrl + K</Kbd>
+      </Button>
 
       {open && (
         <>
           <div className=" w-full max-w-lg  fixed  top-1/2 right-1/2 translate-y-1/2 translate-x-1/2">
-            <Command className="rounded-xl  border border-border bg-background shadow-2xl overflow-hidden z-50">
+            <Command className="  border border-border bg-background/95  shadow-2xl overflow-hidden z-50">
               <CommandInput
                 value={search}
                 onValueChange={setSearch}
