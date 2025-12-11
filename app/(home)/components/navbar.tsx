@@ -11,29 +11,29 @@ import { FlaskIcon } from "@/components/ui/flask";
 export function Navbar() {
   return (
     <header
-      className=" font-pixelify      w-full  p-2 flex items-center justify-between z-50   h-12     "
+      className=" font-pixelify      w-full  sm:p-2 flex items-center justify-between z-50   h-12     "
       style={{
         transformStyle: "preserve-3d",
       }}
     >
       <Link href={"/"} className=" flex items-center gap-2">
-        <div className=" text-3xl font-pixelify flex items-center   ">
+        <div className="text-3xl font-pixelify flex items-center">
           <Image
-            src="/logo/logo.svg"
+            src="/logo/static/logo.svg"
             alt="Pixel Perfect Logo"
             width={50}
             height={50}
-            className="w-8 aspect-square  dark:invert -mr-1"
+            className="w-12 sm:w-8 aspect-square dark:invert -mr-1"
           />
-          ixel Perfect{" "}
+          <span className="hidden sm:inline">ixel Perfect</span>
         </div>
       </Link>
 
-      <div className=" flex">
+      <div className="hidden md:flex gap-1">
         <Button variant={"ghost"}>Docs</Button>
         <Button variant={"ghost"}>Components</Button>
         <Button variant={"ghost"}>Blocks</Button>
-        <div className="hidden sm:block  ml-2">
+        <div className="hidden lg:block  ml-2">
           <CommandPalette />
         </div>
       </div>
@@ -42,7 +42,8 @@ export function Navbar() {
         <Link href={"https://github.com/Nexvyn/pro-pixel-perfect"}>
           <Button variant="ghost" aria-label="GitHub">
             <GithubIcon />
-            11
+            {/* <StarsCount /> */}
+            ??
           </Button>
         </Link>
         <Link href={"/playground"}>

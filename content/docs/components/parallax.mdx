@@ -1,0 +1,288 @@
+---
+title: Parallax Scroll
+description: A smooth parallax scrolling component with layered image animations
+---
+
+# Parallax Scroll
+
+An advanced parallax scrolling component that uses GSAP and ScrollTrigger to create smooth, multi-layered image animations with different scroll velocities for a depth effect.
+
+## Features
+
+- **Layered parallax effects** - Multiple images move at different speeds
+- **Smooth scroll synchronization** - Uses ScrollTrigger for precise timing
+- **Responsive animations** - Works seamlessly across different screen sizes
+- **Easy to customize** - Replace images and adjust animation values
+- **Performance optimized** - Uses GSAP's efficient rendering pipeline
+
+## Installation
+
+This component requires GSAP and the ScrollTrigger plugin:
+
+```bash
+npm install gsap @gsap/react
+```
+
+## Basic Usage
+
+<Preview>
+  <Parallax />
+</Preview>
+
+```tsx
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const Parallax = () => {
+  const containerRef = useRef(null);
+  const container2 = useRef(null);
+  const i1 = useRef(null);
+  const i2 = useRef(null);
+  const img = useRef(null);
+
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
+
+    tl.to(i1.current, { y: -220, ease: "power2" }, 0);
+    tl.to(i2.current, { y: -150, ease: "power2" }, 0);
+
+    gsap.from(img.current, {
+      y: -120,
+      ease: "linear",
+      scrollTrigger: {
+        trigger: container2.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
+  });
+
+  return (
+    <div className="bg-[#a5a5a5] text-9xl text-[#ffffff57]">
+      <div
+        ref={containerRef}
+        className="flex justify-center items-start h-screen w-full"
+      >
+        <div className="relative mt-10 border-2">
+          <img
+            src="https://cdn.cosmos.so/493d0389-aea0-4144-8cdf-3fdaff93b364.?format=jpeg"
+            alt="Main parallax image"
+          />
+          <img
+            ref={i1}
+            className="absolute bottom-[-20%] right-[50%] w-80"
+            src="https://cdn.cosmos.so/e7624081-8784-4096-a44c-b6421e1a2b6f?format=jpeg"
+            alt="Parallax layer 1"
+          />
+          <img
+            ref={i2}
+            src="https://cdn.cosmos.so/ba5f8f19-38cd-4da5-a947-46a53c3a7e56?format=jpeg"
+            className="absolute h-56 top-10 right-[-50%]"
+            alt="Parallax layer 2"
+          />
+        </div>
+      </div>
+      <div
+        ref={container2}
+        className="h-screen w-full flex justify-center items-center"
+      >
+        <div className="h-96 w-96 overflow-hidden">
+          <img
+            ref={img}
+            src="https://i.pinimg.com/736x/2a/72/9e/2a729ec22988b2a284a7fdf37f1847fd.jpg"
+            alt="Secondary parallax image"
+            className="object-cover"
+          />
+        </div>
+      </div>
+      <div className="h-screen w-full"></div>
+    </div>
+  );
+};
+
+export default Parallax;
+```
+
+## How It Works
+
+### Parallax Layers
+
+The component creates multiple layers with different animation speeds:
+
+1. **Main Container** - Base layer with primary image and positioned overlays
+2. **Layer 1 (i1)** - Fast parallax layer that moves -220px
+3. **Layer 2 (i2)** - Medium parallax layer that moves -150px
+4. **Secondary Image** - Separate parallax section with -120px movement
+
+### Animation Timeline
+
+The component uses two separate GSAP timelines:
+
+1. **First Timeline** - Controls layers 1 and 2 together:
+
+   - Triggered when primary container enters viewport
+   - Runs from top bottom to bottom top
+   - Uses `scrub: true` for smooth scroll synchronization
+
+2. **Second Timeline** - Controls the secondary image:
+   - Independent trigger on secondary container
+   - Different animation values for depth effect
+   - Linear easing for consistent motion
+
+## Customization
+
+### Adjusting Parallax Speed
+
+Modify the Y-axis values to change how fast each layer moves:
+
+```tsx
+tl.to(i1.current, { y: -300, ease: "power2" }, 0); // Faster parallax
+tl.to(i2.current, { y: -100, ease: "power2" }, 0); // Slower parallax
+```
+
+### Changing Easing Functions
+
+Different easing creates different motion feels:
+
+```tsx
+// Smooth easing
+tl.to(i1.current, { y: -220, ease: "power3.inOut" }, 0);
+
+// Accelerated easing
+tl.to(i1.current, { y: -220, ease: "power2.out" }, 0);
+
+// Constant speed
+gsap.from(img.current, {
+  y: -120,
+  ease: "linear", // No acceleration/deceleration
+});
+```
+
+### Adjusting Scroll Trigger Range
+
+Control when and how the animation responds to scrolling:
+
+```tsx
+scrollTrigger: {
+  trigger: containerRef.current,
+  start: "center center",  // Change when animation starts
+  end: "center -200",      // Change when animation ends
+  scrub: 2,                // Increase for smoother (delayed) animation
+  markers: true,           // Enable for debugging
+}
+```
+
+### Image Positioning
+
+Customize the overlay image positions:
+
+```tsx
+<img
+  ref={i1}
+  className="absolute bottom-[-30%] right-[40%] w-96" // Adjust position and size
+  src={imageUrl}
+  alt="Parallax layer"
+/>
+```
+
+## Animation Properties
+
+### ScrollTrigger Configuration
+
+| Property | Type           | Default      | Description                                             |
+| -------- | -------------- | ------------ | ------------------------------------------------------- |
+| trigger  | Element        | -            | Element that triggers the animation                     |
+| start    | string         | "top bottom" | When to start the animation                             |
+| end      | string         | "bottom top" | When to end the animation                               |
+| scrub    | boolean/number | true         | Synchronizes animation with scroll (number = smoothing) |
+| pin      | boolean        | false        | Pins the trigger element during animation               |
+| markers  | boolean        | false        | Shows debug markers                                     |
+
+### GSAP Animation Values
+
+| Property | Type   | Default            | Description                          |
+| -------- | ------ | ------------------ | ------------------------------------ |
+| y        | number | -220, -150, -120   | Vertical movement distance in pixels |
+| ease     | string | "power2", "linear" | Easing function for animation        |
+
+## Performance Tips
+
+- Use `useGSAP` hook to manage GSAP animations properly
+- Register ScrollTrigger plugin to avoid conflicts
+- Optimize image sizes to reduce load time
+- Use lazy loading for images below the fold
+- Consider reducing parallax effect on mobile devices
+- Use `will-change: transform` CSS for GPU acceleration
+
+```tsx
+// Performance optimization example
+<img
+  ref={i1}
+  className="absolute bottom-[-20%] right-[50%] w-80"
+  style={{ willChange: "transform" }}
+  src={imageUrl}
+  alt="Parallax layer"
+/>
+```
+
+## Advanced Usage
+
+### Mobile-Specific Adjustments
+
+```tsx
+const isMobile = window.innerWidth < 768;
+
+useGSAP(() => {
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: containerRef.current,
+      start: "top bottom",
+      end: "bottom top",
+      scrub: true,
+    },
+  });
+
+  // Reduce parallax effect on mobile
+  const parallaxAmount = isMobile ? 100 : 220;
+  tl.to(i1.current, { y: -parallaxAmount, ease: "power2" }, 0);
+});
+```
+
+### Multiple Parallax Sections
+
+Combine multiple instances for complex layouts:
+
+```tsx
+<div>
+  <SmoothScrollerr />
+  <SmoothScrollerr />
+  <SmoothScrollerr />
+</div>
+```
+
+## Browser Support
+
+Works in all modern browsers that support:
+
+- CSS Transforms
+- GSAP animations
+- ScrollTrigger
+- Intersection Observer API
+- requestAnimationFrame
+
+## Related Components
+
+- [Card Stack Animation](/docs/components/cards) - Staggered card entrance
+- [Scene 3D](/docs/components/3d-model) - 3D animations
