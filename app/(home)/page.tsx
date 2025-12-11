@@ -1,8 +1,6 @@
 import { Navbar } from "./components/navbar";
-import ComponentsPreview from "./components/components-preview";
 import { HeroSection } from "@/app/(home)/components/hero-section";
 import { Footer } from "@/app/(home)/components/footer";
-import SocialProofs from "./components/social-proof";
 
 export default async function Home() {
   return (

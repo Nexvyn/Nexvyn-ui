@@ -2,13 +2,8 @@
 
 import { Canvas } from "@react-three/fiber";
 
-import {
-  useGLTF,
-  PerspectiveCamera,
-  OrbitControls,
-  Float,
-} from "@react-three/drei";
-import { useRef, useState } from "react";
+import { useGLTF, PerspectiveCamera, Float } from "@react-three/drei";
+import { useRef } from "react";
 import * as THREE from "three";
 
 interface Model3DProps {
