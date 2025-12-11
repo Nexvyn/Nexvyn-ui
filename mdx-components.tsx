@@ -1,30 +1,20 @@
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { MDXComponents } from "mdx/types";
-import { Button } from "@/components/pixel components/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/pixel components/card";
+import CardStackAnimate from "@/components/pixel components/cards";
 import { Preview } from "@/components/pixel components/Preview";
-import { Input } from "@/components/pixel components/input";
+import Parallax from "@/components/pixel components/parallax";
+
+import InertiaCards from "@/components/pixel components/inertia";
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     ...defaultMdxComponents,
     // Register UI components for use in MDX
-    Button,
-    Card,
-    CardHeader,
-    CardTitle,
-    CardDescription,
-    CardContent,
-    CardFooter,
     Preview,
-    Input,
+    CardStackAnimate,
+    Parallax,
+    InertiaCards,
+
     ...components,
   };
 }

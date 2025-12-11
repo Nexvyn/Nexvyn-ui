@@ -9,8 +9,8 @@ export default async function Home() {
     <div className=" w-full flex flex-col  p-2  gap-2  dark:bg-[#181818]">
       <Navbar />
       <HeroSection />
-      <ComponentsPreview />
-      <SocialProofs />
+      {/* <ComponentsPreview />
+      <SocialProofs /> */}
       <Footer />
     </div>
   );
