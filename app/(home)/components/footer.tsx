@@ -10,7 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Heart, LucideGithub } from "lucide-react";
+import { LucideGithub } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaDiscord, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
@@ -145,16 +145,18 @@ export function Footer() {
         <div className="flex flex-col sm:flex-row w-full justify-between gap-10 z-10">
           <div className="  flex flex-col justify-between">
             <div>
-              <div className=" text-3xl font-pixelify flex items-center   ">
-                <Image
-                  src="/logo/logo.svg"
-                  alt="Pixel Perfect Logo"
-                  width={50}
-                  height={50}
-                  className="w-8 aspect-square  dark:invert -mr-1"
-                />
-                ixel Perfect{" "}
-              </div>
+              <Link href={"/"} className=" flex items-center gap-2">
+                <div className="text-3xl font-pixelify flex items-center">
+                  <Image
+                    src="/logo/static/logo.svg"
+                    alt="Pixel Perfect Logo"
+                    width={50}
+                    height={50}
+                    className="w-12 sm:w-8 aspect-square dark:invert -mr-1"
+                  />
+                  <span className="hidden sm:inline">ixel Perfect</span>
+                </div>
+              </Link>
               <div className="text-xs text-muted-foreground">
                 <div className="text-xs text-muted-foreground">
                   Build beautiful, responsive interfaces in minutes. <br /> A
@@ -164,7 +166,7 @@ export function Footer() {
             </div>
 
             <div className=" flex flex-col  gap-2 mt-2">
-              <div className="flex gap-1.5">
+              <div className="flex gap-1.5 mt-5">
                 <TooltipProvider>
                   {socialLinks.map((social, index) => {
                     const IconComponent = social.icon;
@@ -250,13 +252,10 @@ export function Footer() {
           pixel perfect
         </div>
       </footer>{" "}
-      <div className=" flex flex-col gap-2">
-        <div className=" border border-dashed w-full rounded-2xl h-2 " />
-
-        <div className=" border  border-dashed w-[70vw] rounded-2xl h-2 " />
-
-        <div className=" border  border-dashed w-[40vw] rounded-2xl h-2 " />
-        <div className=" border  border-dashed w-[10vw] rounded-2xl h-2 " />
+      <div className=" flex flex-col items-center gap-2">
+        <div className="w-full rounded-2xl h-2 animate-rainbow bg-[linear-gradient(90deg,var(--color-1),var(--color-5),var(--color-3),var(--color-4),var(--color-2))] bg-[length:200%] blur-sm" />
+        <div className="w-[70vw]   rounded-2xl h-2 animate-rainbow bg-[linear-gradient(90deg,var(--color-1),var(--color-5),var(--color-3),var(--color-4),var(--color-2))] bg-[length:200%] blur-md" />
+        <div className="w-[40vw] rounded-2xl h-2 animate-rainbow bg-[linear-gradient(90deg,var(--color-1),var(--color-5),var(--color-3),var(--color-4),var(--color-2))] bg-[length:200%] blur-lg" />
       </div>
     </>
   );
