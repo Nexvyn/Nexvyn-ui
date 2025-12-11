@@ -4,8 +4,6 @@ import CardStackAnimate from "@/components/pixel-components/cards";
 import { Preview } from "@/components/pixel-components/Preview";
 import Parallax from "@/components/pixel-components/parallax";
 
-import InertiaCards from "@/components/pixel-components/inertia";
-
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     ...defaultMdxComponents,
@@ -13,7 +11,6 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     Preview,
     CardStackAnimate,
     Parallax,
-    InertiaCards,
 
     ...components,
   };
