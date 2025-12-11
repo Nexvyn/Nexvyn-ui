@@ -1,5 +1,5 @@
-import React from 'react';
-import { ExternalLink } from 'lucide-react';
+import React from "react";
+import { ExternalLink } from "lucide-react";
 
 export interface PreviewProps {
   children: React.ReactNode;
@@ -11,15 +11,38 @@ export interface PreviewProps {
 }
 
 const OPEN_IN_LINKS = [
-  { name: 'V0', url: (code: string) => `https://v0.dev?code=${encodeURIComponent(code)}`, icon: '' },
-  { name: 'GitHub Gist', url: (code: string) => `https://gist.github.com/`, icon: '' },
-  { name: 'Scira AI', url: (code: string) => `https://scira.ai?code=${encodeURIComponent(code)}`, icon: '' },
-  { name: 'ChatGPT', url: (code: string) => `https://chat.openai.com/`, icon: '' },
-  { name: 'Claude', url: (code: string) => `https://claude.ai/`, icon: '' },
-  { name: 'T3 Chat', url: (code: string) => `https://t3.gg/chat`, icon: '' },
+  {
+    name: "V0",
+    url: (code: string) => `https://v0.dev?code=${encodeURIComponent(code)}`,
+    icon: "",
+  },
+  {
+    name: "GitHub Gist",
+    url: (code: string) => `https://gist.github.com/`,
+    icon: "",
+  },
+  {
+    name: "Scira AI",
+    url: (code: string) => `https://scira.ai?code=${encodeURIComponent(code)}`,
+    icon: "",
+  },
+  {
+    name: "ChatGPT",
+    url: (code: string) => `https://chat.openai.com/`,
+    icon: "",
+  },
+  { name: "Claude", url: (code: string) => `https://claude.ai/`, icon: "" },
+  { name: "T3 Chat", url: (code: string) => `https://t3.gg/chat`, icon: "" },
 ];
 
-export function Preview({ children, title, description, className = '', code, githubUrl }: PreviewProps) {
+export function Preview({
+  children,
+  title,
+  description,
+  className = "",
+  code,
+  githubUrl,
+}: PreviewProps) {
   return (
     <div className={`my-6 ${className}`}>
       <div className="flex items-center justify-between mb-2">
@@ -51,9 +74,7 @@ export function Preview({ children, title, description, className = '', code, gi
       {description && (
         <p className="text-sm text-muted-foreground mb-4">{description}</p>
       )}
-      <div className="border rounded-lg p-6 bg-muted/50">
-        {children}
-      </div>
+      <div className="border rounded-lg p-6 bg-muted/50">{children}</div>
     </div>
   );
 }

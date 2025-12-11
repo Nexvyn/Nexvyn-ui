@@ -10,7 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Heart, LucideGithub } from "lucide-react";
+import { LucideGithub } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaDiscord, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";

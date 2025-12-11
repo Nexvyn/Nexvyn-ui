@@ -1,4 +1,3 @@
-import { InfiniteSlider } from "./ui/infinite-slider";
 
 export default function LogoCloud() {
   const logos = [

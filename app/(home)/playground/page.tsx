@@ -1,4 +1,4 @@
-import TextInertia from "@/components/pixel components/text-inertia";
+import TextInertia from "@/components/pixel-components/text-inertia";
 
 const Page = () => {
   return (
