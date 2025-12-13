@@ -1,0 +1,11 @@
+{
+  "aliases": {
+    "uiDir": "./components/ui",
+    "componentsDir": "./components",
+    "blockDir": "./components",
+    "cssDir": "./app",
+    "libDir": "./lib"
+  },
+  "baseDir": "",
+  "commands": {}
+}
