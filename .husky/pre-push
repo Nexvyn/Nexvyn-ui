@@ -1,0 +1,12 @@
+echo "Running ESLint before push..."
+npm run lint
+
+if [ $? -ne 0 ]; then
+  echo "ESLint found errors. Push aborted."
+  exit 1
+fi
+
+echo "ESLint passed. Proceeding with push."
+
+npm run build
+

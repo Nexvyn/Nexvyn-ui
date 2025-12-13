@@ -1,0 +1,17 @@
+echo "Running TypeScript type checking before commit..."
+npm run types:check
+
+if [ $? -ne 0 ]; then
+  echo "TypeScript type checking failed. Commit aborted."
+  exit 1
+fi
+
+echo "TypeScript passed. Running ESLint..."
+npm run lint
+
+if [ $? -ne 0 ]; then
+  echo "ESLint found errors. Commit aborted."
+  exit 1
+fi
+
+echo "All checks passed. Proceeding with commit."
