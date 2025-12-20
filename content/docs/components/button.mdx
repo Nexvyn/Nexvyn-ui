@@ -1,0 +1,120 @@
+---
+title: Button
+description: A button component with multiple variants and sizes.
+---
+
+<ComponentPreview name="button-demo" description="Button component with all variants" />
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+
+<CodeBlockCommand
+  __npx__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+  __npm__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+  __pnpm__="pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+  __yarn__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+  __bun__="bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+/>
+
+  </Tab>
+  <Tab value="Manual">
+
+<Steps>
+<Step>Install dependencies:</Step>
+
+```bash
+npm install @radix-ui/react-slot class-variance-authority
+```
+
+<Step>Copy the component:</Step>
+
+<ComponentSource name="button" title="button.tsx" />
+
+<Step>Update imports to match your project structure.</Step>
+</Steps>
+
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button"
+```
+
+```tsx
+<Button variant="outline">Button</Button>
+```
+
+## Variants
+
+### Default
+
+```tsx
+<Button>Default Button</Button>
+```
+
+### Secondary
+
+```tsx
+<Button variant="secondary">Secondary</Button>
+```
+
+### Destructive
+
+```tsx
+<Button variant="destructive">Destructive</Button>
+```
+
+### Outline
+
+```tsx
+<Button variant="outline">Outline</Button>
+```
+
+### Ghost
+
+```tsx
+<Button variant="ghost">Ghost</Button>
+```
+
+### Link
+
+```tsx
+<Button variant="link">Link</Button>
+```
+
+## Sizes
+
+```tsx
+<Button size="sm">Small</Button>
+<Button size="default">Default</Button>
+<Button size="lg">Large</Button>
+<Button size="icon">
+  <IconPlus />
+</Button>
+```
+
+## Props
+
+<TypeTable
+  type={{
+    variant: {
+      type: '"default" | "destructive" | "outline" | "secondary" | "ghost" | "link"',
+      default: '"default"',
+      description: "The visual style variant of the button.",
+    },
+    size: {
+      type: '"default" | "sm" | "lg" | "icon" | "icon-sm" | "icon-lg"',
+      default: '"default"',
+      description: "The size of the button.",
+    },
+    asChild: {
+      type: "boolean",
+      default: "false",
+      description: "Render as a child component using Radix Slot.",
+    },
+  }}
+/>

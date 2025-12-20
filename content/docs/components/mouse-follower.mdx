@@ -1,0 +1,129 @@
+---
+title: Mouse Follower
+description: Interactive mouse follower effect with image trails that respond to cursor movement.
+---
+
+<ComponentPreview
+  name="mouse-follower-demo"
+  description="Interactive image trail that follows cursor movement"
+/>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+
+<CodeBlock
+  tabs={[
+    {
+      label: "npm",
+      code: "npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/mouse-follower.json",
+    },
+    {
+      label: "pnpm",
+      code: "pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/mouse-follower.json",
+    },
+    {
+      label: "yarn",
+      code: "npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/mouse-follower.json",
+    },
+    {
+      label: "bun",
+      code: "bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/mouse-follower.json",
+    },
+  ]}
+/>
+
+  </Tab>
+  <Tab value="Manual">
+
+<Steps>
+<Step>Copy the component:</Step>
+
+<ComponentSource name="mouse-follower" title="mouse-follower.tsx" />
+
+<Step>Update imports to match your project structure.</Step>
+</Steps>
+
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import MouseFollower from "@/components/ui/mouse-follower"
+```
+
+```tsx
+<MouseFollower />
+```
+
+## Features
+
+- **Image trail effect** - Creates beautiful image trails following cursor
+- **Vortex removal** - Unique implosion animation when images disappear
+- **Randomized positioning** - Each image spawns with random rotation
+- **Performance optimized** - Uses refs and efficient DOM manipulation
+
+## Customization
+
+### Changing Images
+
+Replace the images array with your own:
+
+```tsx
+const images = ["/your-image-1.jpg", "/your-image-2.jpg", "/your-image-3.jpg"]
+```
+
+### Adjusting Trail Behavior
+
+Modify the config object:
+
+```tsx
+const config = {
+  imageLifespan: 600, // How long images stay visible (ms)
+  mouseThreshold: 40, // Minimum mouse movement to spawn image
+  inDuration: 600, // Fade-in animation duration
+  outDuration: 800, // Fade-out animation duration
+  baseImageSize: 120, // Default image size
+  minImageSize: 60, // Minimum random size
+  maxImageSize: 120, // Maximum random size
+}
+```
+
+### Container Size
+
+Adjust the container dimensions:
+
+```tsx
+<div className="h-96 w-96" ref={containerRef}></div>
+// Change to:
+<div className="h-screen w-full" ref={containerRef}></div>
+```
+
+## Props
+
+<TypeTable
+  type={{
+    images: {
+      type: "string[]",
+      default: "11 cosmos images",
+      description: "Array of image URLs for the trail effect.",
+    },
+    imageLifespan: {
+      type: "number",
+      default: "600",
+      description: "Duration in ms before image starts fading.",
+    },
+    mouseThreshold: {
+      type: "number",
+      default: "40",
+      description: "Minimum cursor distance to spawn new image.",
+    },
+    baseImageSize: {
+      type: "number",
+      default: "120",
+      description: "Base size for trail images in pixels.",
+    },
+  }}
+/>

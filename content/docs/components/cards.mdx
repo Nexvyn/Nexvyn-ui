@@ -1,0 +1,145 @@
+---
+title: Card Stack Animation
+description: A scroll-triggered card stack animation component with staggered entrance effects.
+---
+
+<ComponentPreview
+  name="cards-demo"
+  description="Card stack animation with scroll-triggered entrance"
+/>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+
+<CodeBlock
+  tabs={[
+    {
+      label: "npm",
+      code: "npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/cards.json",
+    },
+    {
+      label: "pnpm",
+      code: "pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/cards.json",
+    },
+    {
+      label: "yarn",
+      code: "npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/cards.json",
+    },
+    {
+      label: "bun",
+      code: "bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/cards.json",
+    },
+  ]}
+/>
+
+  </Tab>
+  <Tab value="Manual">
+
+<Steps>
+<Step>Install dependencies:</Step>
+
+```bash
+npm install gsap @gsap/react
+```
+
+<Step>Copy the component:</Step>
+
+<ComponentSource name="cards" title="card-stack-animate.tsx" />
+
+<Step>Update imports to match your project structure.</Step>
+</Steps>
+
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import CardStackAnimate from "@/components/ui/card-stack-animate"
+```
+
+```tsx
+<CardStackAnimate />
+```
+
+## Features
+
+- **Scroll-triggered animations** - Cards animate based on scroll position
+- **Staggered entrance** - Each card enters sequentially for a polished effect
+- **Pin effect** - Scroll triggers pinning for controlled animation timing
+- **Customizable colors** - Easy color variants for each card
+
+## Customization
+
+### Adding More Colors
+
+Extend the `colors` array to add more card variants:
+
+```tsx
+const colors = [
+  { name: "Red", class: "bg-red-300", link: "/card_animation/red.png" },
+  { name: "Teal", class: "bg-teal-300", link: "/card_animation/teal.png" },
+  // ... add more colors
+]
+```
+
+### Adjusting Animation Speed
+
+Modify the `duration` and `stagger` values:
+
+```tsx
+tl.from(cards, {
+  y: "100vh",
+  stagger: 0.5, // Reduce for faster stagger
+  duration: 2, // Increase for slower animation
+  ease: "power3.out",
+})
+```
+
+### Changing Scroll Trigger Duration
+
+Adjust the `end` value to control how long the animation scrubs:
+
+```tsx
+scrollTrigger: {
+  trigger: first.current,
+  start: "top top",
+  end: "3000",        // Increase for longer scroll distance
+  scrub: 1,
+  pin: true,
+}
+```
+
+## Props
+
+<TypeTable
+  type={{
+    stagger: {
+      type: "number",
+      default: "1",
+      description: "Delay between each card animation in seconds.",
+    },
+    duration: {
+      type: "number",
+      default: "1",
+      description: "Duration of each card animation.",
+    },
+    ease: {
+      type: "string",
+      default: '"power3.out"',
+      description: "GSAP easing function.",
+    },
+    scrub: {
+      type: "number",
+      default: "1",
+      description: "Smoothness of scroll-linked animation.",
+    },
+    pin: {
+      type: "boolean",
+      default: "true",
+      description: "Whether to pin the trigger element.",
+    },
+  }}
+/>

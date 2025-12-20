@@ -1,0 +1,148 @@
+---
+title: Parallax Scroll
+description: A smooth parallax scrolling component with layered image animations.
+---
+
+<ComponentPreview
+  name="parallax-demo"
+  description="Parallax scroll with layered image animations"
+/>
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+
+<CodeBlock
+  tabs={[
+    {
+      label: "npm",
+      code: "npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/parallax.json",
+    },
+    {
+      label: "pnpm",
+      code: "pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/parallax.json",
+    },
+    {
+      label: "yarn",
+      code: "npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/parallax.json",
+    },
+    {
+      label: "bun",
+      code: "bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/parallax.json",
+    },
+  ]}
+/>
+
+  </Tab>
+  <Tab value="Manual">
+
+<Steps>
+<Step>Install dependencies:</Step>
+
+```bash
+npm install gsap @gsap/react
+```
+
+<Step>Copy the component:</Step>
+
+<ComponentSource name="parallax" title="parallax.tsx" />
+
+<Step>Update imports to match your project structure.</Step>
+</Steps>
+
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import Parallax from "@/components/ui/parallax"
+```
+
+```tsx
+<Parallax />
+```
+
+## Features
+
+- **Multi-layered parallax** - Different scroll speeds for depth effect
+- **Smooth scroll synchronization** - Uses ScrollTrigger for precise timing
+- **Responsive animations** - Works seamlessly across different screen sizes
+- **Performance optimized** - Uses GSAP's efficient rendering pipeline
+
+## Customization
+
+### Adjusting Parallax Speed
+
+Modify the `y` values to change how far each layer moves:
+
+```tsx
+// Faster parallax (more movement)
+tl.to(i1.current, { y: -300, ease: "power2" }, 0)
+tl.to(i2.current, { y: -200, ease: "power2" }, 0)
+
+// Slower parallax (subtle movement)
+tl.to(i1.current, { y: -100, ease: "power2" }, 0)
+tl.to(i2.current, { y: -75, ease: "power2" }, 0)
+```
+
+### Changing Easing
+
+Use different GSAP easing functions:
+
+```tsx
+// Smooth easing
+tl.to(i1.current, { y: -220, ease: "power3.inOut" }, 0)
+
+// Constant speed
+gsap.from(img.current, { y: -120, ease: "linear" })
+```
+
+### Adjusting Scroll Trigger Range
+
+```tsx
+scrollTrigger: {
+  trigger: containerRef.current,
+  start: "center center",
+  end: "center -200",
+  scrub: 2,
+}
+```
+
+## Props
+
+<TypeTable
+  type={{
+    trigger: {
+      type: "Element",
+      default: "-",
+      description: "Element that triggers the animation.",
+    },
+    start: {
+      type: "string",
+      default: '"top bottom"',
+      description: "When to start the animation.",
+    },
+    end: {
+      type: "string",
+      default: '"bottom top"',
+      description: "When to end the animation.",
+    },
+    scrub: {
+      type: "boolean | number",
+      default: "true",
+      description: "Synchronizes animation with scroll.",
+    },
+    y: {
+      type: "number",
+      default: "-220, -150, -120",
+      description: "Vertical movement distance in pixels.",
+    },
+    ease: {
+      type: "string",
+      default: '"power2"',
+      description: "Easing function for animation.",
+    },
+  }}
+/>
