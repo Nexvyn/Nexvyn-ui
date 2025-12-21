@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "popover",
+  "type": "registry:ui",
+  "description": "Floating content that positions itself relative to a trigger element",
+  "dependencies": ["@radix-ui/react-popover"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/popover.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

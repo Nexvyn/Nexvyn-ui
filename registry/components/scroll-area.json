@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "scroll-area",
+  "type": "registry:ui",
+  "description": "Custom scrollbar styling with overflow handling",
+  "dependencies": ["@radix-ui/react-scroll-area"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/scroll-area.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

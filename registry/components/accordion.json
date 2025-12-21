@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "accordion",
+  "type": "registry:ui",
+  "description": "Vertically stacked set of interactive headings that each reveal a section of content",
+  "dependencies": ["@radix-ui/react-accordion"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/accordion.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

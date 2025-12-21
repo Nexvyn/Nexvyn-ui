@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "infinite-slider",
+  "type": "registry:ui",
+  "description": "infinite-slider component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/infinite-slider.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "bars-scale",
+  "type": "registry:svg-loader",
+  "description": "bars scale animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/bars-scale.svg",
+      "type": "registry:file"
+    }
+  ]
+}

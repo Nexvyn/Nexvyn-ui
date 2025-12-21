@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "voronoi-background",
+  "type": "registry:ui",
+  "description": "voronoi-background component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/voronoi-background.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "chart",
+  "type": "registry:ui",
+  "description": "chart component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/chart.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

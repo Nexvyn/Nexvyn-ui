@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "hover-video",
+  "type": "registry:ui",
+  "description": "hover-video component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/hover-video.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

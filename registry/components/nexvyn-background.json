@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "nexvyn-background",
+  "type": "registry:ui",
+  "description": "nexvyn-background component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/nexvyn-background.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "command",
+  "type": "registry:ui",
+  "description": "Command menu/palette for keyboard-driven navigation",
+  "dependencies": ["cmdk"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": ["dialog"],
+  "files": [
+    {
+      "path": "components/ui/command.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

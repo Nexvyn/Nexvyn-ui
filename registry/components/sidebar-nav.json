@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "sidebar-nav",
+  "type": "registry:ui",
+  "description": "sidebar-nav component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/sidebar-nav.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

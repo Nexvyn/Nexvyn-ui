@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "doc-search-hit",
+  "type": "registry:ui",
+  "description": "doc-search-hit component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/doc-search-hit.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

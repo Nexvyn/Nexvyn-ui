@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "270-ring",
+  "type": "registry:svg-loader",
+  "description": "270 ring animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/270-ring.svg",
+      "type": "registry:file"
+    }
+  ]
+}

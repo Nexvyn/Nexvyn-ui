@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "blocks-shuffle-3",
+  "type": "registry:svg-loader",
+  "description": "blocks shuffle 3 animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/blocks-shuffle-3.svg",
+      "type": "registry:file"
+    }
+  ]
+}

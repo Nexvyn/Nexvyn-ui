@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "6-dots-scale",
+  "type": "registry:svg-loader",
+  "description": "6 dots scale animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/6-dots-scale.svg",
+      "type": "registry:file"
+    }
+  ]
+}

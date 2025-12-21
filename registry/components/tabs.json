@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "tabs",
+  "type": "registry:ui",
+  "description": "Organize content into multiple sections accessible through tab navigation",
+  "dependencies": ["@radix-ui/react-tabs"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/tabs.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

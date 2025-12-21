@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "audio",
+  "type": "registry:svg-loader",
+  "description": "audio animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/audio.svg",
+      "type": "registry:file"
+    }
+  ]
+}

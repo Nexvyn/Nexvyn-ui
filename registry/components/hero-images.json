@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "hero-images",
+  "type": "registry:ui",
+  "description": "hero-images component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/hero-images.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "clock",
+  "type": "registry:svg-loader",
+  "description": "clock animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/clock.svg",
+      "type": "registry:file"
+    }
+  ]
+}

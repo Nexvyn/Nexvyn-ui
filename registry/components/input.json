@@ -1,0 +1,37 @@
+{
+  "name": "input",
+  "type": "registry:ui",
+  "description": "A styled input component with proper focus and disabled states",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/input.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ],
+  "tailwind": {
+    "config": {
+      "plugins": []
+    }
+  },
+  "cssVars": {
+    "light": {
+      "input": "0 0% 89.8%",
+      "ring": "0 0% 3.9%",
+      "background": "0 0% 100%",
+      "foreground": "0 0% 3.9%"
+    },
+    "dark": {
+      "input": "0 0% 14.9%",
+      "ring": "0 0% 83.1%",
+      "background": "0 0% 3.9%",
+      "foreground": "0 0% 98%"
+    }
+  }
+}

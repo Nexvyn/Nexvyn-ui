@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "moon",
+  "type": "registry:ui",
+  "description": "moon component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/moon.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

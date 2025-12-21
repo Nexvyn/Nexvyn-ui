@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "wind-toy",
+  "type": "registry:svg-loader",
+  "description": "wind toy animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/wind-toy.svg",
+      "type": "registry:file"
+    }
+  ]
+}
