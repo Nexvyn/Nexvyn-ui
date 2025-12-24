@@ -1,0 +1,14 @@
+﻿{
+  "name": "code-collapsible-wrapper",
+  "type": "registry:ui",
+  "description": "Code Collapsible Wrapper component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/code-collapsible-wrapper.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/code-collapsible-wrapper.tsx"
+    }
+  ]
+}

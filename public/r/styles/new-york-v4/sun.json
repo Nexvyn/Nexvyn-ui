@@ -1,0 +1,14 @@
+﻿{
+  "name": "sun",
+  "type": "registry:ui",
+  "description": "Sun component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/sun.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/sun.tsx"
+    }
+  ]
+}

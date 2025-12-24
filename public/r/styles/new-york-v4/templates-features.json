@@ -1,0 +1,14 @@
+﻿{
+  "name": "templates-features",
+  "type": "registry:ui",
+  "description": "Templates Features component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/templates-features.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/templates-features.tsx"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "name": "pulse-multiple",
+  "type": "registry:ui",
+  "description": "Pulse Multiple animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/pulse-multiple.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/pulse-multiple.tsx"
+    }
+  ]
+}

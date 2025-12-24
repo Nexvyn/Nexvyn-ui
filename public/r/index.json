@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york-v4",
+  "name": "nexvyn-ui",
+  "homepage": "https://ui.nexvyn.dev",
+  "rsc": true,
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "app/global.css",
+    "baseColor": "neutral",
+    "cssVariables": true
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils"
+  },
+  "items": [
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "description": "A button component with multiple variants and sizes."
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "description": "A card component with header, content, and footer sections."
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "description": "An input component for forms."
+    }
+  ]
+}

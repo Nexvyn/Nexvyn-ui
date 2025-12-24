@@ -1,0 +1,14 @@
+﻿{
+  "name": "custom-toc",
+  "type": "registry:ui",
+  "description": "Custom Toc component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/custom-toc.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/custom-toc.tsx"
+    }
+  ]
+}

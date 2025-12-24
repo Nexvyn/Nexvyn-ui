@@ -1,0 +1,14 @@
+﻿{
+  "name": "bars-scale",
+  "type": "registry:ui",
+  "description": "Bars Scale animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/bars-scale.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/bars-scale.tsx"
+    }
+  ]
+}

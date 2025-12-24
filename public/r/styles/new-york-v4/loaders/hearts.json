@@ -1,0 +1,14 @@
+﻿{
+  "name": "hearts",
+  "type": "registry:ui",
+  "description": "Hearts animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/hearts.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/hearts.tsx"
+    }
+  ]
+}

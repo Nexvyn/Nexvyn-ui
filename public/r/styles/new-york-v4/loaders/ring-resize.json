@@ -1,0 +1,14 @@
+﻿{
+  "name": "ring-resize",
+  "type": "registry:ui",
+  "description": "Ring Resize animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/ring-resize.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/ring-resize.tsx"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "name": "docs-breadcrumb",
+  "type": "registry:ui",
+  "description": "Docs Breadcrumb component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/docs-breadcrumb.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/docs-breadcrumb.tsx"
+    }
+  ]
+}

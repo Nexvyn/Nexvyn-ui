@@ -1,0 +1,14 @@
+﻿{
+  "name": "bookmark-button",
+  "type": "registry:ui",
+  "description": "Bookmark Button component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/bookmark-button.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/bookmark-button.tsx"
+    }
+  ]
+}

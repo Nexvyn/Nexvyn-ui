@@ -1,0 +1,14 @@
+﻿{
+  "name": "ball-triangle",
+  "type": "registry:ui",
+  "description": "Ball Triangle animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/ball-triangle.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/ball-triangle.tsx"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "name": "blocks-shuffle-3",
+  "type": "registry:ui",
+  "description": "Blocks Shuffle 3 animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/blocks-shuffle-3.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/blocks-shuffle-3.tsx"
+    }
+  ]
+}

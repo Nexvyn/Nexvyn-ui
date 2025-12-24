@@ -1,0 +1,14 @@
+﻿{
+  "name": "spinning-circles",
+  "type": "registry:ui",
+  "description": "Spinning Circles animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/spinning-circles.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/spinning-circles.tsx"
+    }
+  ]
+}

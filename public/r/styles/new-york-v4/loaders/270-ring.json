@@ -1,0 +1,14 @@
+﻿{
+  "name": "270-ring",
+  "type": "registry:ui",
+  "description": "270 Ring animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/270-ring.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/270-ring.tsx"
+    }
+  ]
+}

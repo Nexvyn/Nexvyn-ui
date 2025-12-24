@@ -1,0 +1,14 @@
+﻿{
+  "name": "github",
+  "type": "registry:ui",
+  "description": "Github component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/github.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/github.tsx"
+    }
+  ]
+}
