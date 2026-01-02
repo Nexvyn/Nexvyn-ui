@@ -60,6 +60,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/logo/static/logo.svg",
+    icon: "/logo/static/logo.svg",
   },
 }
 

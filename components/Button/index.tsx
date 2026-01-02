@@ -53,28 +53,15 @@ const buttonVariants = cva(
   }
 );
 
-interface IconProps {
-  icon: React.ElementType;
-  iconPlacement: "left" | "right";
-}
-
-interface IconRefProps {
-  icon?: never;
-  iconPlacement?: undefined;
-}
-
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-  VariantProps<typeof buttonVariants> {
+    VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  icon?: React.ComponentType<{ className?: string }>;
+  iconPlacement?: "left" | "right";
 }
 
-export type ButtonIconProps = IconProps | IconRefProps;
-
-const Button = React.forwardRef<
-  HTMLButtonElement,
-  ButtonProps & ButtonIconProps
->(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       className,
