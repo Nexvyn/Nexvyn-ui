@@ -1,6 +1,6 @@
 "use client"
 
-import { ComponentPreview } from "@/components/docs"
+import { ComponentPreview } from "@/components/ui/our/docs/ComponentPreview"
 import { Button } from "@/components/ui/core/button"
 
 export default function ExampleUsage() {

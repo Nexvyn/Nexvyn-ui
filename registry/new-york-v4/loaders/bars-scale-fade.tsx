@@ -35,7 +35,12 @@ export function BarsScaleFadeLoader({
       aria-label="Bars Scale Fade loading indicator"
       {...props}
     >
-      <style>.spinner_hzlK{animation:spinner_vc4H .8s linear infinite;animation-delay:-.8s}.spinner_koGT{animation-delay:-.65s}.spinner_YF1u{animation-delay:-.5s}@keyframes spinner_vc4H{0%{y:1px;height:22px}93.75%{y:5px;height:14px;opacity:.2}}</style><rect className="spinner_hzlK" x="1" y="1" width="6" height="22"/><rect className="spinner_hzlK spinner_koGT" x="9" y="1" width="6" height="22"/><rect className="spinner_hzlK spinner_YF1u" x="17" y="1" width="6" height="22"/>
+      <style>
+        {`.spinner_hzlK{animation:spinner_vc4H .8s linear infinite;animation-delay:-.8s}.spinner_koGT{animation-delay:-.65s}.spinner_YF1u{animation-delay:-.5s}@keyframes spinner_vc4H{0%{y:1px;height:22px}93.75%{y:5px;height:14px;opacity:.2}}`}
+      </style>
+      <rect className="spinner_hzlK" x="1" y="1" width="6" height="22"/>
+        <rect className="spinner_hzlK spinner_koGT" x="9" y="1" width="6" height="22"/>
+        <rect className="spinner_hzlK spinner_YF1u" x="17" y="1" width="6" height="22"/>
     </svg>
   );
 }
