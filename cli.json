@@ -3,7 +3,7 @@
     "uiDir": "./components/ui",
     "componentsDir": "./components",
     "blockDir": "./components",
-    "cssDir": "./styles",
+    "cssDir": "./app",
     "libDir": "./lib"
   },
   "baseDir": "",

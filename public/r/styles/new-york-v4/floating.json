@@ -1,0 +1,14 @@
+﻿{
+  "name": "floating",
+  "type": "registry:ui",
+  "description": "Floating component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/floating.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/floating.tsx"
+    }
+  ]
+}

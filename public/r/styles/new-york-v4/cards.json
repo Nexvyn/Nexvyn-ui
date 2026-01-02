@@ -1,0 +1,14 @@
+{
+  "name": "cards",
+  "type": "registry:ui",
+  "description": "A scroll-triggered card stack animation component with staggered entrance effects using GSAP.",
+  "dependencies": ["gsap", "@gsap/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/pixel-components/cards.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/card-stack-animate.tsx"
+    }
+  ]
+}

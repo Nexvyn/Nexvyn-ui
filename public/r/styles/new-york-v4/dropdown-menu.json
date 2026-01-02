@@ -1,0 +1,14 @@
+﻿{
+  "name": "dropdown-menu",
+  "type": "registry:ui",
+  "description": "Dropdown Menu component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/dropdown-menu.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/dropdown-menu.tsx"
+    }
+  ]
+}

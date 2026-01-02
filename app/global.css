@@ -2,6 +2,7 @@
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
 @import "tw-animate-css";
+@import "./docs/docs-typography.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -44,6 +45,28 @@
   --color-3: oklch(69.6% 0.165 251);
   --color-4: oklch(80.2% 0.134 225);
   --color-5: oklch(90.7% 0.231 133);
+
+  /* Sonner Design System - 12-step Grayscale (Light Mode) */
+  /* For documentation pages only */
+  --gray0: #fff; /* Pure white - page backgrounds */
+  --gray1: hsl(0, 0%, 99%); /* Subtle backgrounds */
+  --gray2: hsl(0, 0%, 97.3%); /* Hover states, code backgrounds */
+  --gray3: hsl(0, 0%, 95.1%); /* Borders, active states */
+  --gray4: hsl(0, 0%, 93%); /* Inline code backgrounds */
+  --gray5: hsl(0, 0%, 90.9%); /* Disabled states */
+  --gray6: hsl(0, 0%, 88.7%); /* Subtle borders */
+  --gray7: hsl(0, 0%, 85.8%); /* Active borders */
+  --gray8: hsl(0, 0%, 78%); /* Placeholder text */
+  --gray9: hsl(0, 0%, 56.1%); /* Secondary text, punctuation */
+  --gray10: hsl(0, 0%, 52.3%); /* Link underlines */
+  --gray11: hsl(0, 0%, 43.5%); /* Muted text, comments */
+  --gray12: hsl(0, 0%, 9%); /* Primary text */
+
+  /* Code block colors */
+  --code: oklch(0.99 0 0);
+  --code-foreground: oklch(0.145 0 0);
+  --code-highlight: oklch(0.96 0 0);
+  --code-number: oklch(0.56 0 0);
 }
 
 .dark {
@@ -84,12 +107,34 @@
   --color-3: oklch(69.6% 0.165 251);
   --color-4: oklch(80.2% 0.134 225);
   --color-5: oklch(90.7% 0.231 133);
+
+  /* Sonner Design System - 12-step Grayscale (Dark Mode) */
+  /* For documentation pages only */
+  --gray0: #000; /* Pure black - page backgrounds */
+  --gray1: hsl(0, 0%, 9.5%); /* Subtle backgrounds */
+  --gray2: hsl(0, 0%, 10.5%); /* Hover states */
+  --gray3: hsl(0, 0%, 15.8%); /* Borders */
+  --gray4: hsl(0, 0%, 18.9%); /* Code backgrounds */
+  --gray5: hsl(0, 0%, 21.7%); /* Disabled states */
+  --gray6: hsl(0, 0%, 24.7%); /* Subtle borders */
+  --gray7: hsl(0, 0%, 29.1%); /* Active borders */
+  --gray8: hsl(0, 0%, 37.5%); /* Placeholder text */
+  --gray9: hsl(0, 0%, 43%); /* Secondary text */
+  --gray10: hsl(0, 0%, 50.7%); /* Link underlines */
+  --gray11: hsl(0, 0%, 69.5%); /* Muted text */
+  --gray12: hsl(0, 0%, 93.5%); /* Primary text */
+
+  /* Code block colors - Dark Mode */
+  --code: oklch(0.1826 0.002 286.2);
+  --code-foreground: oklch(0.985 0 0);
+  --code-highlight: oklch(0.27 0 0);
+  --code-number: oklch(0.72 0 0);
 }
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
-  /* Adding custom font families to match Fancy Components */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-inktopia: var(--font-inktopia-plus);
   --font-calendas: ui-serif, Georgia, "Times New Roman", serif;
   --font-overused-grotesk: "Geist", ui-sans-serif, system-ui, sans-serif;
   --color-blue: #0000ff;
@@ -122,6 +167,10 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-code: var(--code);
+  --color-code-foreground: var(--code-foreground);
+  --color-code-highlight: var(--code-highlight);
+  --color-code-number: var(--code-number);
   --breakpoint-2xl: 1536px;
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -147,141 +196,39 @@
   }
 }
 
-.font-pixelify {
-  font-family: var(--font-pixelify);
+.font-meow-script {
+  font-family: var(--font-meow-script);
 }
 
-*,
-*::before,
-*::after {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  scrollbar-color: transparent transparent;
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
 }
 
-*::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4 {
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  scroll-margin-top: 80px;
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 5px;
 }
 
-.prose h2 {
-  margin-top: 2rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border);
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
 }
 
-.prose h3 {
-  margin-top: 1.5rem;
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
 
-/* Paragraphs */
-.prose p {
-  line-height: 1.75;
-  margin-bottom: 1rem;
-}
-
-/* Links */
-.prose a:not([class]) {
-  color: var(--primary);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: opacity 0.2s;
-}
-
-.prose a:not([class]):hover {
-  opacity: 0.8;
-}
-
-/* Code - inline */
-.prose code:not(pre code) {
-  background: var(--muted);
-  padding: 0.2em 0.4em;
-  border-radius: 4px;
-  font-size: 0.875em;
-  font-weight: 500;
-}
-
-/* Blockquotes */
-.prose blockquote {
-  border-left: 4px solid var(--primary);
-  padding-left: 1rem;
-  margin: 1.5rem 0;
-  font-style: italic;
-  color: var(--muted-foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Lists */
-.prose ul,
-.prose ol {
-  padding-left: 1.5rem;
-  margin: 1rem 0;
-}
-
-.prose li {
-  margin: 0.5rem 0;
-  line-height: 1.7;
-}
-
-.prose ul li::marker {
-  color: var(--primary);
-}
-
-.prose ol li::marker {
-  color: var(--primary);
-  font-weight: 600;
-}
-
-/* Tables */
-.prose table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1.5rem 0;
-}
-
-.prose th {
-  background: var(--muted);
-  font-weight: 600;
-  text-align: left;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border);
-}
-
-.prose td {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border);
-}
-
-.prose tr:hover td {
-  background: var(--muted);
-}
-
-/* Horizontal rules */
-.prose hr {
-  border: none;
-  border-top: 1px solid var(--border);
-  margin: 2rem 0;
-}
-
-/* Images */
-.prose img {
-  border-radius: 8px;
-  margin: 1.5rem 0;
-}
-
-/* Strong/Bold */
-.prose strong {
-  font-weight: 600;
-  color: var(--foreground);
+/* Selection styling */
+::selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
 }
 
 @layer base {
@@ -291,4 +238,107 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Ensure all code elements use Geist Mono with font-weight 400 */
+  code,
+  pre,
+  kbd,
+  samp {
+    font-family: var(--font-mono);
+    font-weight: 400;
+  }
+}
+
+/* Noise overlay effect */
+.noise-over {
+  position: relative;
+  overflow: hidden;
+  background: var(--background);
+}
+
+.noise-over::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.dark .noise-over::before {
+  opacity: 0.25;
+}
+
+/* 3D Button effect */
+.btn-3d {
+  transition:
+    transform 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955),
+    background-color 0.2s,
+    box-shadow 0.2s;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.btn-3d:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.08);
+}
+
+.btn-3d:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 0 2px 2px rgba(0, 0, 0, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+}
+
+/* Dark mode 3D button */
+.dark .btn-3d {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 2px 3px rgba(255, 255, 255, 0.06),
+    inset 0 -4px 1px rgba(0, 0, 0, 0.4);
+}
+
+.dark .btn-3d:hover {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 2px 4px rgba(255, 255, 255, 0.08),
+    inset 0 -4px 1px rgba(0, 0, 0, 0.5);
+}
+
+.dark .btn-3d:active {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 2px rgba(0, 0, 0, 0.3),
+    inset 0 -2px 1px rgba(0, 0, 0, 0.25);
+}
+
+/* Force hide Fumadocs TOC */
+[data-toc],
+.fd-toc,
+aside[data-toc],
+nav[aria-label="table of contents"] {
+  display: none !important;
+}
+
+/* 3D Perspective Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
 }

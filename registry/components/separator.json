@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "separator",
+  "type": "registry:ui",
+  "description": "Visual divider to separate content sections",
+  "dependencies": ["@radix-ui/react-separator"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/separator.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

@@ -1,2 +1,2 @@
-// Preview Component
-export { Preview, type PreviewProps } from "./pixel-components/Preview";
+export * from "./ui"
+// Internal docs components should probably NOT be exported here to keep the public API clean.

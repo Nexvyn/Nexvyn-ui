@@ -1,0 +1,14 @@
+﻿{
+  "name": "parallax-wrapper",
+  "type": "registry:ui",
+  "description": "Parallax Wrapper component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/parallax-wrapper.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/parallax-wrapper.tsx"
+    }
+  ]
+}

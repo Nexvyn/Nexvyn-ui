@@ -1,0 +1,139 @@
+---
+title: Icons
+description: Production-ready animated icons for your UI
+---
+
+# Animated Icons
+
+A collection of 36 beautifully animated icons built with Framer Motion and SVG. Perfect for enhancing your UI with smooth, performant animations.
+
+## Installation
+
+Install any icon via the shadcn CLI:
+
+```bash
+npx shadcn add accordion-icon
+npx shadcn add button-icon
+npx shadcn add dialog-icon
+```
+
+## Features
+
+- ⚡ **Smooth Animations** - Built with Framer Motion for fluid motion
+- 🎨 **Customizable** - Control size, color, and animation state
+- 📦 **Tree-shakeable** - Import only what you need
+- ♿ **Accessible** - ARIA-compliant with proper labels
+- 🎯 **TypeScript** - Full type safety included
+
+## Usage
+
+```tsx
+import { ButtonIcon } from "@/components/icons/animated"
+
+export function MyComponent() {
+  const [isActive, setIsActive] = useState(false)
+
+  return (
+    <button onClick={() => setIsActive(!isActive)}>
+      <ButtonIcon size={24} isActive={isActive} />
+    </button>
+  )
+}
+```
+
+## Props
+
+All animated icons accept these props:
+
+| Prop        | Type      | Default | Description            |
+| ----------- | --------- | ------- | ---------------------- |
+| `size`      | `number`  | `20`    | Icon size in pixels    |
+| `isActive`  | `boolean` | `false` | Animation state        |
+| `className` | `string`  | -       | Additional CSS classes |
+
+## Available Icons
+
+### UI Components
+
+<div className="my-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+  {[
+    "accordion",
+    "alert",
+    "avatar",
+    "badge",
+    "button",
+    "checkbox",
+    "collapsible",
+    "combobox",
+    "command",
+    "dialog",
+    "input",
+    "radio",
+    "search",
+    "select",
+    "settings",
+    "shield",
+    "slider",
+    "switch",
+    "tooltip",
+  ].map((icon) => (
+    <div key={icon} className="rounded-lg border p-4 text-center">
+      <code className="text-sm">{icon}</code>
+    </div>
+  ))}
+</div>
+
+### Navigation
+
+<div className="my-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+  {["book", "breadcrumb", "menu", "pagination", "tabs"].map((icon) => (
+    <div key={icon} className="rounded-lg border p-4 text-center">
+      <code className="text-sm">{icon}</code>
+    </div>
+  ))}
+</div>
+
+### Data & Feedback
+
+<div className="my-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+  {["calendar", "chart", "data-table", "notification", "progress"].map((icon) => (
+    <div key={icon} className="rounded-lg border p-4 text-center">
+      <code className="text-sm">{icon}</code>
+    </div>
+  ))}
+</div>
+
+### Layout
+
+<div className="my-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+  {["aspect-ratio", "card", "carousel", "layers"].map((icon) => (
+    <div key={icon} className="rounded-lg border p-4 text-center">
+      <code className="text-sm">{icon}</code>
+    </div>
+  ))}
+</div>
+
+## Examples
+
+### Basic Icon
+
+```tsx
+<ButtonIcon size={20} />
+```
+
+### Active State
+
+```tsx
+<ButtonIcon size={20} isActive={true} />
+```
+
+### Custom Styling
+
+```tsx
+<ButtonIcon size={24} isActive={isActive} className="text-blue-500" />
+```
+
+## Learn More
+
+- [Icon System Architecture](/docs/icons/animated)
+- [Creating Custom Animated Icons](/docs/guides/custom-icons)

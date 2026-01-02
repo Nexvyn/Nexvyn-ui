@@ -25,3 +25,8 @@ yarn-error.log*
 .vercel
 next-env.d.ts
 sponsors-page-content
+.ts-errors.txt
+.env.example
+
+/home
+.vscode

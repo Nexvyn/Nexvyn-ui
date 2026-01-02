@@ -1,0 +1,14 @@
+﻿{
+  "name": "page-actions",
+  "type": "registry:ui",
+  "description": "Page Actions component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/page-actions.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/page-actions.tsx"
+    }
+  ]
+}

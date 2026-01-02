@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "code-block",
+  "type": "registry:ui",
+  "description": "code-block component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/code-block.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

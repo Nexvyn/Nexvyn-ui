@@ -1,11 +1,7 @@
-import React from "react";
+import React from "react"
 
 const SocialProofs = () => {
-  return (
-    <div className=" border border-dashed p-3  rounded-xl h-[100vh]">
-      SocialProofs
-    </div>
-  );
-};
+  return <div className="h-[100vh] rounded-xl border border-dashed p-3">SocialProofs</div>
+}
 
-export default SocialProofs;
+export default SocialProofs

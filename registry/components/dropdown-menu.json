@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "dropdown-menu",
+  "type": "registry:ui",
+  "description": "Displays a menu triggered by a button press with keyboard support",
+  "dependencies": ["@radix-ui/react-dropdown-menu", "lucide-react"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/dropdown-menu.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

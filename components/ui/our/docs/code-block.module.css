@@ -1,0 +1,64 @@
+/* CodeBlock Container */
+.wrapper {
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid var(--gray3);
+  margin-top: 16px;
+  position: relative;
+}
+
+.outerWrapper {
+  position: relative;
+}
+
+/* Code Content */
+.root {
+  padding: 16px;
+  background: linear-gradient(to top, var(--gray2), var(--gray1) 16px);
+  line-height: 17px;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+.root code {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  color: var(--gray12);
+}
+
+/* Copy Button */
+.copyButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--gray4);
+  border-radius: 6px;
+  background: var(--gray0);
+  opacity: 0;
+  transition:
+    background 200ms,
+    box-shadow 200ms,
+    opacity 200ms;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray12);
+}
+
+.outerWrapper:hover .copyButton {
+  opacity: 1;
+}
+
+.copyButton:hover {
+  background: var(--gray1);
+  border-color: var(--gray5);
+}
+
+.copyButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--gray4);
+}

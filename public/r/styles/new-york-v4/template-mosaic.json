@@ -1,0 +1,14 @@
+﻿{
+  "name": "template-mosaic",
+  "type": "registry:ui",
+  "description": "Template Mosaic component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/template-mosaic.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/template-mosaic.tsx"
+    }
+  ]
+}

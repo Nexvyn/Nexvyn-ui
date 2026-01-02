@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "heart",
+  "type": "registry:ui",
+  "description": "heart component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/heart.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

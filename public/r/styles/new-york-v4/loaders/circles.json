@@ -1,0 +1,14 @@
+﻿{
+  "name": "circles",
+  "type": "registry:ui",
+  "description": "Circles animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/circles.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/circles.tsx"
+    }
+  ]
+}

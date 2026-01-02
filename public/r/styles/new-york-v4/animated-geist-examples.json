@@ -1,0 +1,14 @@
+﻿{
+  "name": "animated-geist-examples",
+  "type": "registry:ui",
+  "description": "Animated Geist Examples component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/animated-geist-examples.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/animated-geist-examples.tsx"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "name": "dot-revolve",
+  "type": "registry:ui",
+  "description": "Dot Revolve animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/dot-revolve.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/dot-revolve.tsx"
+    }
+  ]
+}

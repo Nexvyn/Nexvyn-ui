@@ -1,0 +1,14 @@
+﻿{
+  "name": "pulse-rings-multiple",
+  "type": "registry:ui",
+  "description": "Pulse Rings Multiple animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/pulse-rings-multiple.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/pulse-rings-multiple.tsx"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "name": "rainbow-button",
+  "type": "registry:ui",
+  "description": "Rainbow Button component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/rainbow-button.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/rainbow-button.tsx"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "stars-count",
+  "type": "registry:ui",
+  "description": "stars-count component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/stars-count.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

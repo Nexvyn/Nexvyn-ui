@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "input-group",
+  "type": "registry:ui",
+  "description": "input-group component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/input-group.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

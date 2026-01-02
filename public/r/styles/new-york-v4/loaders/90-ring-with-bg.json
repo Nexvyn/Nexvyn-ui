@@ -1,0 +1,14 @@
+﻿{
+  "name": "90-ring-with-bg",
+  "type": "registry:ui",
+  "description": "90 Ring With Bg animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/90-ring-with-bg.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/90-ring-with-bg.tsx"
+    }
+  ]
+}

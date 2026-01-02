@@ -1,0 +1,111 @@
+---
+title: Input
+description: An input component for forms with various types and states.
+---
+
+<ComponentPreview name="input-demo" description="Input component examples" />
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+
+<CodeBlockCommand
+  __npm__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/input.json"
+  __pnpm__="pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/input.json"
+  __yarn__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/input.json"
+  __bun__="bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/input.json"
+/>
+
+  </Tab>
+  <Tab value="Manual">
+
+<Steps>
+<Step>Copy the component:</Step>
+
+<ComponentSource name="input" title="input.tsx" />
+
+<Step>Update imports to match your project structure.</Step>
+</Steps>
+
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import { Input } from "@/components/ui/input"
+```
+
+```tsx
+<Input type="email" placeholder="Email" />
+```
+
+## Examples
+
+### Default
+
+```tsx
+<Input type="text" placeholder="Enter text..." />
+```
+
+### Email
+
+```tsx
+<Input type="email" placeholder="Email address" />
+```
+
+### Password
+
+```tsx
+<Input type="password" placeholder="Password" />
+```
+
+### With Label
+
+```tsx
+<div className="grid w-full max-w-sm items-center gap-1.5">
+  <Label htmlFor="email">Email</Label>
+  <Input type="email" id="email" placeholder="Email" />
+</div>
+```
+
+### Disabled
+
+```tsx
+<Input disabled type="text" placeholder="Disabled input" />
+```
+
+### With Button
+
+```tsx
+<div className="flex w-full max-w-sm items-center space-x-2">
+  <Input type="email" placeholder="Email" />
+  <Button type="submit">Subscribe</Button>
+</div>
+```
+
+## Props
+
+<TypeTable
+  type={{
+    type: {
+      type: "string",
+      default: '"text"',
+      description: "The type of input (text, email, password, etc.).",
+    },
+    placeholder: {
+      type: "string",
+      description: "Placeholder text for the input.",
+    },
+    disabled: {
+      type: "boolean",
+      default: "false",
+      description: "Whether the input is disabled.",
+    },
+    className: {
+      type: "string",
+      description: "Additional CSS classes to apply.",
+    },
+  }}
+/>

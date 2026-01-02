@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "bookmark-button",
+  "type": "registry:ui",
+  "description": "bookmark-button component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/bookmark-button.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

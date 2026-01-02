@@ -1,11 +1,7 @@
-import React from "react";
+import React from "react"
 
 const ComponentsPreview = () => {
-  return (
-    <div className=" rounded-xl border border-dashed p-3 h-[100vh] ">
-      ComponentsPreview
-    </div>
-  );
-};
+  return <div className="h-[100vh] rounded-xl border border-dashed p-3">ComponentsPreview</div>
+}
 
-export default ComponentsPreview;
+export default ComponentsPreview

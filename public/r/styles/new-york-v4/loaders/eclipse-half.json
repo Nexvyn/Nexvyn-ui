@@ -1,0 +1,14 @@
+﻿{
+  "name": "eclipse-half",
+  "type": "registry:ui",
+  "description": "Eclipse Half animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/eclipse-half.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/eclipse-half.tsx"
+    }
+  ]
+}

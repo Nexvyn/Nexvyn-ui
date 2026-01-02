@@ -1,0 +1,14 @@
+﻿{
+  "name": "code-block",
+  "type": "registry:ui",
+  "description": "Code Block component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/code-block.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/code-block.tsx"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "command-palette",
+  "type": "registry:ui",
+  "description": "command-palette component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/command-palette.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

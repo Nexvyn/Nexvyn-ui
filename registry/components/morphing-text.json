@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "morphing-text",
+  "type": "registry:ui",
+  "description": "morphing-text component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/morphing-text.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

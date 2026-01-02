@@ -1,0 +1,14 @@
+﻿{
+  "name": "flask",
+  "type": "registry:ui",
+  "description": "Flask component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/flask.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/flask.tsx"
+    }
+  ]
+}

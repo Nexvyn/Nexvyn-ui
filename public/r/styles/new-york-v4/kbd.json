@@ -1,0 +1,14 @@
+﻿{
+  "name": "kbd",
+  "type": "registry:ui",
+  "description": "Kbd component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/kbd.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/kbd.tsx"
+    }
+  ]
+}

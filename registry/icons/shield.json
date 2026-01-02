@@ -1,0 +1,27 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "shield",
+  "type": "registry:icon",
+  "description": "shield animated icon",
+  "dependencies": ["framer-motion"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/icons/animated/icons/shield.tsx",
+      "type": "registry:icon"
+    },
+    {
+      "path": "components/icons/animated/motion-icon.tsx",
+      "type": "registry:lib"
+    },
+    {
+      "path": "components/icons/animated/icon-variants.ts",
+      "type": "registry:lib"
+    },
+    {
+      "path": "components/icons/animated/types.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

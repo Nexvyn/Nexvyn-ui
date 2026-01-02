@@ -8,12 +8,12 @@
  * @returns Formatted date string
  */
 export function formatDate(date: Date | string): string {
-  const d = typeof date === 'string' ? new Date(date) : date;
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(d);
+  const d = typeof date === "string" ? new Date(date) : date
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(d)
 }
 
 /**
@@ -26,19 +26,19 @@ export function debounce<T extends (...args: any[]) => any>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout | null = null;
-  
+  let timeout: NodeJS.Timeout | null = null
+
   return function executedFunction(...args: Parameters<T>) {
     const later = () => {
-      timeout = null;
-      func(...args);
-    };
-    
-    if (timeout) {
-      clearTimeout(timeout);
+      timeout = null
+      func(...args)
     }
-    timeout = setTimeout(later, wait);
-  };
+
+    if (timeout) {
+      clearTimeout(timeout)
+    }
+    timeout = setTimeout(later, wait)
+  }
 }
 
 /**
@@ -51,15 +51,15 @@ export function throttle<T extends (...args: any[]) => any>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
-  let inThrottle: boolean;
-  
+  let inThrottle: boolean
+
   return function executedFunction(...args: Parameters<T>) {
     if (!inThrottle) {
-      func(...args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
+      func(...args)
+      inThrottle = true
+      setTimeout(() => (inThrottle = false), limit)
     }
-  };
+  }
 }
 
 /**
@@ -67,6 +67,10 @@ export function throttle<T extends (...args: any[]) => any>(
  * @returns Unique string ID
  */
 export function generateId(): string {
-  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 }
 
+export function absoluteUrl(path: string) {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+  return `${baseUrl}${path}`
+}

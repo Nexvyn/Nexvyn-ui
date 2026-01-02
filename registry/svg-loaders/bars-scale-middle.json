@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "bars-scale-middle",
+  "type": "registry:svg-loader",
+  "description": "bars scale middle animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/bars-scale-middle.svg",
+      "type": "registry:file"
+    }
+  ]
+}

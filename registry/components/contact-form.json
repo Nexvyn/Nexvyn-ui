@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "contact-form",
+  "type": "registry:ui",
+  "description": "contact-form component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/contact-form.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

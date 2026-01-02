@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "hearts",
+  "type": "registry:svg-loader",
+  "description": "hearts animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/hearts.svg",
+      "type": "registry:file"
+    }
+  ]
+}

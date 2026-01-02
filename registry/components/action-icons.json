@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "action-icons",
+  "type": "registry:ui",
+  "description": "action-icons component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/action-icons.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

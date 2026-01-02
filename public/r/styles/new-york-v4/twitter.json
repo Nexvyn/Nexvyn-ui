@@ -1,0 +1,14 @@
+﻿{
+  "name": "twitter",
+  "type": "registry:ui",
+  "description": "Twitter component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/twitter.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/twitter.tsx"
+    }
+  ]
+}

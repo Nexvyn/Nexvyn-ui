@@ -1,4 +1,12 @@
-echo "Running ESLint before commit..."
+echo "Running TypeScript type checking before commit..."
+npm run types:check
+
+if [ $? -ne 0 ]; then
+  echo "TypeScript type checking failed. Commit aborted."
+  exit 1
+fi
+
+echo "TypeScript passed. Running ESLint..."
 npm run lint
 
 if [ $? -ne 0 ]; then
@@ -6,6 +14,4 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-echo "ESLint passed. Proceeding with commit."
-
-npx lint-staged
+echo "All checks passed. Proceeding with commit."

@@ -1,0 +1,14 @@
+﻿{
+  "name": "8-dots-rotate",
+  "type": "registry:ui",
+  "description": "8 Dots Rotate animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/8-dots-rotate.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/8-dots-rotate.tsx"
+    }
+  ]
+}

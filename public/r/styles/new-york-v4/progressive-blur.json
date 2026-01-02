@@ -1,0 +1,14 @@
+﻿{
+  "name": "progressive-blur",
+  "type": "registry:ui",
+  "description": "Progressive Blur component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/progressive-blur.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/progressive-blur.tsx"
+    }
+  ]
+}

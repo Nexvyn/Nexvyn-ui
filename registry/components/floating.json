@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "floating",
+  "type": "registry:ui",
+  "description": "floating component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/floating.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}
