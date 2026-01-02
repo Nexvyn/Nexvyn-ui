@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "three-dots",
+  "type": "registry:svg-loader",
+  "description": "three dots animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/three-dots.svg",
+      "type": "registry:file"
+    }
+  ]
+}

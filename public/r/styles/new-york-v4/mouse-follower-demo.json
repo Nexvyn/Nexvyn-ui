@@ -1,0 +1,14 @@
+{
+  "name": "mouse-follower-demo",
+  "type": "registry:example",
+  "description": "Mouse follower component demo",
+  "dependencies": [],
+  "registryDependencies": ["mouse-follower"],
+  "files": [
+    {
+      "path": "registry/new-york-v4/examples/mouse-follower-demo.tsx",
+      "type": "registry:example",
+      "target": "components/examples/mouse-follower-demo.tsx"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "tadpole",
+  "type": "registry:svg-loader",
+  "description": "tadpole animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/tadpole.svg",
+      "type": "registry:file"
+    }
+  ]
+}

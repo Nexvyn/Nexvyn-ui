@@ -1,0 +1,178 @@
+"use client"
+
+import { motion, useAnimation } from "motion/react"
+import { cn } from "@/lib/utils"
+
+interface NexvynLogoProps {
+  className?: string
+  size?: number
+  variant?: "sequential" | "pulse" | "glow" | "morph"
+}
+
+// The SVG paths
+const PATHS = [
+  "M4550 7101 c-25 -9 -85 -41 -133 -69 -48 -29 -90 -52 -93 -52 -3 0 -18 -9 -32 -19 -15 -10 -52 -32 -82 -49 -30 -17 -56 -35 -58 -41 -2 -6 18 -21 45 -34 26 -13 98 -52 158 -88 61 -36 117 -68 125 -72 8 -4 31 -17 50 -28 19 -12 98 -58 175 -104 198 -117 274 -203 304 -344 14 -66 0 -152 -36 -225 -63 -126 -218 -237 -413 -295 -143 -43 -406 -56 -560 -28 -105 19 -260 71 -311 103 -21 13 -41 24 -43 24 -3 0 -25 14 -49 30 -25 17 -47 30 -51 30 -3 0 -22 12 -43 26 -21 14 -47 30 -58 35 -11 6 -29 15 -40 22 -11 7 -63 37 -115 67 -52 30 -104 60 -115 67 -63 39 -143 72 -185 78 -60 8 -144 -14 -213 -56 -26 -16 -49 -29 -51 -29 -3 0 -49 -26 -103 -58 -54 -32 -105 -61 -113 -65 -8 -4 -24 -13 -35 -20 -11 -7 -57 -34 -103 -60 -45 -27 -82 -52 -82 -57 0 -4 21 -15 48 -25 26 -10 91 -44 145 -76 54 -33 100 -59 102 -59 2 0 61 -34 130 -75 70 -41 129 -75 131 -75 2 0 48 -27 103 -60 100 -60 245 -135 291 -150 14 -5 50 -18 80 -30 30 -12 69 -25 85 -30 17 -4 64 -17 105 -28 351 -96 788 -113 1190 -46 52 9 115 22 140 29 25 7 74 20 110 30 36 9 99 30 141 46 41 16 78 29 82 29 14 0 213 99 250 124 21 14 40 26 43 26 3 0 40 27 82 59 312 240 415 530 289 813 -81 181 -231 327 -492 478 -38 23 -77 45 -85 50 -8 4 -49 29 -91 54 -42 25 -79 46 -82 46 -3 0 -63 34 -134 77 -177 105 -220 123 -296 123 -34 -1 -82 -9 -107 -19z",
+  "M5636 6762 c-3 -5 16 -26 42 -48 128 -108 239 -246 288 -361 46 -110 57 -167 58 -293 0 -135 -14 -197 -70 -317 -263 -561 -1228 -895 -2184 -757 -63 9 -151 26 -195 36 -44 11 -105 26 -135 33 -86 21 -185 56 -300 106 -90 38 -263 131 -291 155 -8 8 -18 14 -21 14 -3 0 -63 34 -133 75 -69 41 -128 75 -131 75 -2 0 -61 34 -132 76 -112 67 -133 77 -178 77 -63 2 -120 -32 -161 -96 l-28 -42 -3 -617 c-2 -409 1 -618 8 -618 5 0 12 12 16 28 47 206 156 383 307 496 156 117 325 157 555 130 105 -11 265 -53 319 -83 10 -6 51 -26 91 -45 205 -100 457 -307 653 -536 63 -74 74 -88 142 -180 44 -59 127 -180 127 -185 0 -3 17 -33 38 -67 146 -241 278 -578 332 -851 34 -173 39 -256 40 -673 0 -232 3 -442 6 -468 12 -88 115 -157 213 -143 35 4 115 38 161 67 8 5 51 30 95 55 44 25 87 50 95 55 8 5 38 21 65 36 28 14 62 35 76 45 15 10 37 23 50 29 13 5 31 14 39 20 27 18 221 130 225 130 3 0 38 20 78 45 41 25 78 45 82 45 4 0 26 13 50 29 24 16 53 32 64 36 12 3 21 11 21 16 0 13 -34 11 -88 -6 -117 -36 -346 -35 -472 2 -259 78 -444 305 -524 643 -32 134 -30 511 3 650 45 187 84 333 102 380 11 30 23 64 26 75 10 36 64 158 141 313 220 445 594 866 965 1086 43 25 80 46 82 46 2 0 49 27 104 60 56 33 103 60 106 60 2 0 45 25 95 55 50 30 112 66 138 80 86 46 117 66 147 96 28 28 30 34 29 102 0 53 -6 82 -22 112 -43 81 -93 115 -422 292 -41 22 -100 55 -130 73 -30 18 -91 52 -135 75 -44 24 -100 54 -125 68 -25 14 -63 35 -85 47 -45 25 -131 73 -190 107 -94 53 -114 62 -119 55z",
+  "M3920 6724 c-73 -19 -158 -78 -197 -138 -57 -84 -63 -122 -63 -398 l0 -248 53 -33 c153 -95 284 -127 509 -127 150 0 247 15 343 51 144 55 253 140 291 226 31 69 30 100 -2 168 -37 77 -105 134 -280 235 -80 47 -172 100 -203 118 -31 18 -65 37 -76 43 -11 5 -29 15 -40 22 -94 56 -120 69 -171 82 -70 18 -93 18 -164 -1z",
+  "M6919 5716 c-25 -22 -70 -54 -100 -69 -30 -15 -61 -32 -69 -37 -44 -28 -221 -130 -224 -130 -4 0 -199 -112 -226 -130 -8 -6 -24 -14 -35 -19 -11 -5 -37 -21 -58 -35 -21 -14 -40 -26 -43 -26 -8 0 -155 -113 -211 -162 -196 -172 -422 -446 -539 -653 -38 -68 -111 -206 -125 -235 -47 -100 -77 -169 -88 -200 -7 -19 -26 -71 -41 -115 -153 -419 -158 -902 -15 -1187 18 -35 87 -130 114 -157 137 -135 324 -190 538 -156 171 27 291 74 491 193 57 34 106 62 108 62 3 0 115 65 224 130 8 5 57 33 109 62 148 84 205 151 231 273 6 29 9 136 8 254 -3 207 -8 230 -39 198 -18 -17 -106 -77 -114 -77 -3 0 -49 -26 -103 -58 -53 -33 -117 -70 -142 -84 -25 -14 -90 -51 -145 -83 -209 -121 -324 -150 -450 -115 -126 35 -227 146 -261 287 -40 168 3 419 107 625 62 122 168 267 256 348 50 47 205 160 218 160 2 0 39 20 81 45 41 25 77 45 80 45 2 0 49 27 105 60 55 33 103 60 105 60 11 0 193 115 215 136 15 14 39 51 55 82 28 54 29 65 35 232 10 251 10 508 2 513 -5 3 -29 -14 -54 -37z",
+  "M2665 4766 c-164 -44 -284 -147 -372 -316 -97 -188 -113 -305 -113 -822 0 -428 4 -466 56 -535 28 -36 96 -103 106 -103 5 0 176 -97 228 -130 21 -12 128 -70 132 -70 2 0 1 168 -1 372 -4 458 1 502 75 640 8 15 37 47 65 71 63 55 145 82 244 81 151 -3 291 -72 442 -220 180 -178 295 -388 343 -627 18 -88 20 -141 20 -490 0 -447 1 -453 80 -537 36 -38 186 -140 206 -140 2 0 37 -20 77 -44 39 -24 95 -56 122 -71 28 -15 81 -45 118 -67 37 -23 71 -38 74 -34 4 4 2 27 -5 51 -9 32 -12 179 -12 503 0 472 -3 515 -46 707 -50 221 -118 403 -232 626 -61 119 -81 153 -161 274 -198 303 -462 565 -736 732 -48 29 -204 103 -250 119 -166 56 -329 67 -460 30z",
+  "M6345 4447 c-137 -75 -285 -229 -373 -387 -84 -150 -131 -315 -132 -456 0 -148 37 -237 121 -290 38 -24 49 -26 123 -22 91 4 129 20 296 118 52 31 102 59 110 63 8 4 29 16 45 27 17 11 37 23 45 27 8 3 47 26 87 50 39 24 74 43 77 43 12 0 103 66 129 93 36 38 71 109 87 175 21 92 -13 211 -83 292 -26 30 -119 100 -133 100 -3 0 -60 33 -127 73 -67 40 -129 76 -137 80 -8 4 -26 14 -40 22 -33 19 -48 18 -95 -8z",
+  "M2967 3791 c-25 -17 -57 -47 -71 -68 -55 -83 -56 -95 -56 -503 0 -364 1 -380 22 -435 30 -78 95 -148 173 -185 54 -26 74 -30 144 -30 95 0 130 12 256 88 49 30 98 58 110 63 11 5 34 18 50 29 17 10 48 28 70 40 89 47 89 47 82 168 -7 129 -34 235 -91 358 -109 231 -303 426 -483 485 -85 29 -149 25 -206 -10z",
+]
+
+// Sequential reveal animation
+function SequentialLogo({ className, size = 80 }: { className?: string; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 900 900" className={className}>
+      <g transform="translate(0.000000,900.000000) scale(0.100000,-0.100000)">
+        {PATHS.map((d, i) => (
+          <motion.path
+            key={i}
+            d={d}
+            fill="currentColor"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.4,
+              delay: i * 0.1,
+              ease: "easeOut",
+            }}
+          />
+        ))}
+      </g>
+    </svg>
+  )
+}
+
+// Pulse animation on hover
+function PulseLogo({ className, size = 80 }: { className?: string; size?: number }) {
+  const controls = useAnimation()
+
+  return (
+    <motion.svg
+      width={size}
+      height={size}
+      viewBox="0 0 900 900"
+      className={cn("cursor-pointer", className)}
+      onMouseEnter={() => controls.start({ scale: [1, 1.05, 1] })}
+      animate={controls}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      whileHover={{ scale: 1.02 }}
+    >
+      <g transform="translate(0.000000,900.000000) scale(0.100000,-0.100000)">
+        {PATHS.map((d, i) => (
+          <path key={i} d={d} fill="currentColor" />
+        ))}
+      </g>
+    </motion.svg>
+  )
+}
+
+// Glow animation on hover
+function GlowLogo({ className, size = 80 }: { className?: string; size?: number }) {
+  return (
+    <motion.svg
+      width={size}
+      height={size}
+      viewBox="0 0 900 900"
+      className={cn("cursor-pointer transition-all duration-300", className)}
+      whileHover={{
+        filter: "drop-shadow(0 0 8px currentColor)",
+        scale: 1.02,
+      }}
+    >
+      <g transform="translate(0.000000,900.000000) scale(0.100000,-0.100000)">
+        {PATHS.map((d, i) => (
+          <path key={i} d={d} fill="currentColor" />
+        ))}
+      </g>
+    </motion.svg>
+  )
+}
+
+// Morph/stagger animation
+function MorphLogo({ className, size = 80 }: { className?: string; size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 900 900"
+      className={cn("group cursor-pointer", className)}
+    >
+      <g transform="translate(0.000000,900.000000) scale(0.100000,-0.100000)">
+        {PATHS.map((d, i) => (
+          <motion.path
+            key={i}
+            d={d}
+            fill="currentColor"
+            whileHover={{
+              scale: 1.02,
+              y: -2,
+            }}
+            transition={{
+              duration: 0.2,
+              delay: i * 0.02,
+            }}
+          />
+        ))}
+      </g>
+    </svg>
+  )
+}
+
+// Preview showcase component
+export function NexvynLogoPreview() {
+  return (
+    <div className="space-y-12 p-8">
+      <h2 className="mb-8 text-2xl font-bold">Animated Logo Preview</h2>
+
+      <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+        {/* Sequential */}
+        <div className="border-border bg-card flex flex-col items-center gap-4 rounded-xl border p-6">
+          <SequentialLogo size={80} className="text-foreground" />
+          <span className="text-sm font-medium">Sequential Reveal</span>
+          <span className="text-muted-foreground text-center text-xs">
+            Paths fade in one by one
+          </span>
+        </div>
+
+        {/* Pulse */}
+        <div className="border-border bg-card flex flex-col items-center gap-4 rounded-xl border p-6">
+          <PulseLogo size={80} className="text-foreground" />
+          <span className="text-sm font-medium">Pulse</span>
+          <span className="text-muted-foreground text-center text-xs">
+            Hover to see pulse effect
+          </span>
+        </div>
+
+        {/* Glow */}
+        <div className="border-border bg-card flex flex-col items-center gap-4 rounded-xl border p-6">
+          <GlowLogo size={80} className="text-primary" />
+          <span className="text-sm font-medium">Glow</span>
+          <span className="text-muted-foreground text-center text-xs">
+            Hover to see glow effect
+          </span>
+        </div>
+
+        {/* Morph */}
+        <div className="border-border bg-card flex flex-col items-center gap-4 rounded-xl border p-6">
+          <MorphLogo size={80} className="text-foreground" />
+          <span className="text-sm font-medium">Morph</span>
+          <span className="text-muted-foreground text-center text-xs">Hover individual paths</span>
+        </div>
+      </div>
+
+      {/* Large preview */}
+      <div className="mt-12">
+        <h3 className="mb-4 text-lg font-semibold">Large Preview</h3>
+        <div className="border-border bg-card flex items-center justify-center gap-12 rounded-xl border p-8">
+          <SequentialLogo size={120} className="text-foreground" />
+          <GlowLogo size={120} className="text-primary" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Export individual components
+export { SequentialLogo, PulseLogo, GlowLogo, MorphLogo }

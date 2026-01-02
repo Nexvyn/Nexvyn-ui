@@ -1,215 +1,120 @@
 ---
 title: Button
-description: A highly versatile button component with multiple variants, sizes, effects, and icon support
+description: A button component with multiple variants and sizes.
 ---
 
-# Button
+<ComponentPreview name="button-demo" description="Button component with all variants" />
 
-A feature-rich button component that supports multiple variants, sizes, visual effects, and icons.
+## Installation
 
-## Basic Usage
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
 
-<Preview>
-  <Button>Click me</Button>
-</Preview>
+<CodeBlockCommand
+  __npx__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+  __npm__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+  __pnpm__="pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+  __yarn__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+  __bun__="bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+/>
+
+  </Tab>
+  <Tab value="Manual">
+
+<Steps>
+<Step>Install dependencies:</Step>
+
+```bash
+npm install @radix-ui/react-slot class-variance-authority
+```
+
+<Step>Copy the component:</Step>
+
+<ComponentSource name="button" title="button.tsx" />
+
+<Step>Update imports to match your project structure.</Step>
+</Steps>
+
+  </Tab>
+</Tabs>
+
+## Usage
 
 ```tsx
-import { Button } from '@/components/Button';
+import { Button } from "@/components/ui/button"
+```
 
-export default function Example() {
-  return <Button>Click me</Button>;
-}
+```tsx
+<Button variant="outline">Button</Button>
 ```
 
 ## Variants
 
-The Button component supports six different style variants:
-
-<Preview>
-  <div className="flex flex-wrap gap-2">
-    <Button variant="default">Default</Button>
-    <Button variant="destructive">Destructive</Button>
-    <Button variant="outline">Outline</Button>
-    <Button variant="secondary">Secondary</Button>
-    <Button variant="ghost">Ghost</Button>
-    <Button variant="link">Link</Button>
-  </div>
-</Preview>
+### Default
 
 ```tsx
-<Button variant="default">Default</Button>
-<Button variant="destructive">Destructive</Button>
-<Button variant="outline">Outline</Button>
+<Button>Default Button</Button>
+```
+
+### Secondary
+
+```tsx
 <Button variant="secondary">Secondary</Button>
+```
+
+### Destructive
+
+```tsx
+<Button variant="destructive">Destructive</Button>
+```
+
+### Outline
+
+```tsx
+<Button variant="outline">Outline</Button>
+```
+
+### Ghost
+
+```tsx
 <Button variant="ghost">Ghost</Button>
+```
+
+### Link
+
+```tsx
 <Button variant="link">Link</Button>
 ```
 
 ## Sizes
 
-Four size options are available:
-
-<Preview>
-  <div className="flex flex-wrap gap-2 items-center">
-    <Button size="sm">Small</Button>
-    <Button size="default">Default</Button>
-    <Button size="lg">Large</Button>
-    <Button size="icon">🔍</Button>
-  </div>
-</Preview>
-
 ```tsx
 <Button size="sm">Small</Button>
 <Button size="default">Default</Button>
 <Button size="lg">Large</Button>
-<Button size="icon">🔍</Button>
-```
-
-## Visual Effects
-
-The Button supports various animation and hover effects for enhanced interactivity:
-
-### Ring Hover Effect
-
-<Preview>
-  <Button effect="ringHover">Hover for Ring</Button>
-</Preview>
-
-```tsx
-<Button effect="ringHover">Hover for Ring</Button>
-```
-
-### Shine Effects
-
-<Preview>
-  <div className="flex flex-wrap gap-2">
-    <Button effect="shine">Continuous Shine</Button>
-    <Button effect="shineHover">Shine on Hover</Button>
-  </div>
-</Preview>
-
-```tsx
-<Button effect="shine">Continuous Shine</Button>
-<Button effect="shineHover">Shine on Hover</Button>
-```
-
-### Gooey Effects
-
-<Preview>
-  <div className="flex flex-wrap gap-2">
-    <Button effect="gooeyRight">Gooey Right</Button>
-    <Button effect="gooeyLeft">Gooey Left</Button>
-  </div>
-</Preview>
-
-```tsx
-<Button effect="gooeyRight">Gooey Right</Button>
-<Button effect="gooeyLeft">Gooey Left</Button>
-```
-
-### Underline Effects
-
-<Preview>
-  <div className="flex flex-wrap gap-2">
-    <Button effect="underline" variant="link">Disappearing Underline</Button>
-    <Button effect="hoverUnderline" variant="link">Appearing Underline</Button>
-  </div>
-</Preview>
-
-```tsx
-<Button effect="underline" variant="link">Disappearing Underline</Button>
-<Button effect="hoverUnderline" variant="link">Appearing Underline</Button>
-```
-
-### Gradient Animation
-
-<Preview>
-  <Button effect="gradientSlideShow">Animated Gradient</Button>
-</Preview>
-
-```tsx
-<Button effect="gradientSlideShow">Animated Gradient</Button>
-```
-
-## Icon Support
-
-Add icons to your buttons with `icon` and `iconPlacement` props:
-
-<Preview>
-  <div className="flex flex-wrap gap-2">
-    <Button>
-      <span className="mr-2">←</span>
-      Icon Left
-    </Button>
-    <Button>
-      Icon Right
-      <span className="ml-2">→</span>
-    </Button>
-  </div>
-</Preview>
-
-```tsx
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-
-<Button icon={ArrowLeft} iconPlacement="left">
-  Previous
-</Button>
-
-<Button icon={ArrowRight} iconPlacement="right">
-  Next
+<Button size="icon">
+  <IconPlus />
 </Button>
 ```
 
-### Expand Icon Effect
+## Props
 
-The `expandIcon` effect makes icons expand into view on hover:
-
-```tsx
-<Button effect="expandIcon" icon={ArrowRight} iconPlacement="right">
-  Hover to See Icon
-</Button>
-```
-
-## Disabled State
-
-<Preview>
-  <div className="flex flex-wrap gap-2">
-    <Button disabled>Disabled</Button>
-    <Button variant="outline" disabled>Disabled Outline</Button>
-  </div>
-</Preview>
-
-```tsx
-<Button disabled>Disabled Button</Button>
-```
-
-## Advanced Usage
-
-### As Child (Polymorphic)
-
-Use `asChild` to render the button as a different element:
-
-```tsx
-import Link from 'next/link';
-
-<Button asChild>
-  <Link href="/docs">View Docs</Link>
-</Button>
-```
-
-### Combining Multiple Props
-
-```tsx
-<Button 
-  variant="outline" 
-  size="lg" 
-  effect="ringHover"
->
-  Enhanced Button
-</Button>
-```
-
-## API Reference
-
-
-
+<TypeTable
+  type={{
+    variant: {
+      type: '"default" | "destructive" | "outline" | "secondary" | "ghost" | "link"',
+      default: '"default"',
+      description: "The visual style variant of the button.",
+    },
+    size: {
+      type: '"default" | "sm" | "lg" | "icon" | "icon-sm" | "icon-lg"',
+      default: '"default"',
+      description: "The size of the button.",
+    },
+    asChild: {
+      type: "boolean",
+      default: "false",
+      description: "Render as a child component using Radix Slot.",
+    },
+  }}
+/>

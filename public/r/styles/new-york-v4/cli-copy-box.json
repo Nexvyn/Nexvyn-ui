@@ -1,0 +1,14 @@
+﻿{
+  "name": "cli-copy-box",
+  "type": "registry:ui",
+  "description": "Cli Copy Box component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/cli-copy-box.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/cli-copy-box.tsx"
+    }
+  ]
+}

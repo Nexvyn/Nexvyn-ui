@@ -1,0 +1,14 @@
+﻿{
+  "name": "command-palette",
+  "type": "registry:ui",
+  "description": "Command Palette component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/command-palette.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/command-palette.tsx"
+    }
+  ]
+}

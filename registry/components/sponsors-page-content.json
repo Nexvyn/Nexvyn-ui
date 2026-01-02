@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "sponsors-page-content",
+  "type": "registry:ui",
+  "description": "sponsors-page-content component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/sponsors-page-content.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

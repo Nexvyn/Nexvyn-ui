@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "collapsible",
+  "type": "registry:ui",
+  "description": "Expandable content section with show/hide functionality",
+  "dependencies": ["@radix-ui/react-collapsible"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/collapsible.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

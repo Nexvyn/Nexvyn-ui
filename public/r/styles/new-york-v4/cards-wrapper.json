@@ -1,0 +1,14 @@
+﻿{
+  "name": "cards-wrapper",
+  "type": "registry:ui",
+  "description": "Cards Wrapper component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/cards-wrapper.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/cards-wrapper.tsx"
+    }
+  ]
+}

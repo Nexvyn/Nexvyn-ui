@@ -1,0 +1,12 @@
+{
+  "name": "card-demo",
+  "type": "registry:example",
+  "description": "Card component demo.",
+  "files": [
+    {
+      "path": "registry/new-york-v4/examples/card-demo.tsx",
+      "type": "registry:example"
+    }
+  ],
+  "registryDependencies": ["card"]
+}

@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "3-dots-rotate",
+  "type": "registry:svg-loader",
+  "description": "3 dots rotate animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/3-dots-rotate.svg",
+      "type": "registry:file"
+    }
+  ]
+}

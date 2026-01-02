@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "circles",
+  "type": "registry:svg-loader",
+  "description": "circles animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/circles.svg",
+      "type": "registry:file"
+    }
+  ]
+}

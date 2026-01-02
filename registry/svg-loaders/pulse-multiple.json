@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "pulse-multiple",
+  "type": "registry:svg-loader",
+  "description": "pulse multiple animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/pulse-multiple.svg",
+      "type": "registry:file"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "name": "gooey-balls-1",
+  "type": "registry:ui",
+  "description": "Gooey Balls 1 animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/gooey-balls-1.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/gooey-balls-1.tsx"
+    }
+  ]
+}

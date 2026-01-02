@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "light-dark-mode",
+  "type": "registry:ui",
+  "description": "light-dark-mode component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/light-dark-mode.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "eclipse",
+  "type": "registry:svg-loader",
+  "description": "eclipse animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/eclipse.svg",
+      "type": "registry:file"
+    }
+  ]
+}

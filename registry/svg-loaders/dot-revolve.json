@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "dot-revolve",
+  "type": "registry:svg-loader",
+  "description": "dot revolve animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/dot-revolve.svg",
+      "type": "registry:file"
+    }
+  ]
+}

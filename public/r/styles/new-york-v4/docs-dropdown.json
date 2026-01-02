@@ -1,0 +1,14 @@
+﻿{
+  "name": "docs-dropdown",
+  "type": "registry:ui",
+  "description": "Docs Dropdown component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/docs-dropdown.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/docs-dropdown.tsx"
+    }
+  ]
+}

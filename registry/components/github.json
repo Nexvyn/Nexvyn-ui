@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "github",
+  "type": "registry:ui",
+  "description": "github component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/github.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "name": "pulse-2",
+  "type": "registry:ui",
+  "description": "Pulse 2 animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/pulse-2.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/pulse-2.tsx"
+    }
+  ]
+}

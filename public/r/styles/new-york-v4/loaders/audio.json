@@ -1,0 +1,14 @@
+﻿{
+  "name": "audio",
+  "type": "registry:ui",
+  "description": "Audio animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/audio.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/audio.tsx"
+    }
+  ]
+}

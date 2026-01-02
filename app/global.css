@@ -2,6 +2,7 @@
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
 @import "tw-animate-css";
+@import "./docs/docs-typography.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -39,6 +40,33 @@
   --sidebar-ring: oklch(0.708 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
+  --color-1: oklch(66.2% 0.225 25.9);
+  --color-2: oklch(60.4% 0.26 302);
+  --color-3: oklch(69.6% 0.165 251);
+  --color-4: oklch(80.2% 0.134 225);
+  --color-5: oklch(90.7% 0.231 133);
+
+  /* Sonner Design System - 12-step Grayscale (Light Mode) */
+  /* For documentation pages only */
+  --gray0: #fff; /* Pure white - page backgrounds */
+  --gray1: hsl(0, 0%, 99%); /* Subtle backgrounds */
+  --gray2: hsl(0, 0%, 97.3%); /* Hover states, code backgrounds */
+  --gray3: hsl(0, 0%, 95.1%); /* Borders, active states */
+  --gray4: hsl(0, 0%, 93%); /* Inline code backgrounds */
+  --gray5: hsl(0, 0%, 90.9%); /* Disabled states */
+  --gray6: hsl(0, 0%, 88.7%); /* Subtle borders */
+  --gray7: hsl(0, 0%, 85.8%); /* Active borders */
+  --gray8: hsl(0, 0%, 78%); /* Placeholder text */
+  --gray9: hsl(0, 0%, 56.1%); /* Secondary text, punctuation */
+  --gray10: hsl(0, 0%, 52.3%); /* Link underlines */
+  --gray11: hsl(0, 0%, 43.5%); /* Muted text, comments */
+  --gray12: hsl(0, 0%, 9%); /* Primary text */
+
+  /* Code block colors */
+  --code: oklch(0.99 0 0);
+  --code-foreground: oklch(0.145 0 0);
+  --code-highlight: oklch(0.96 0 0);
+  --code-number: oklch(0.56 0 0);
 }
 
 .dark {
@@ -74,12 +102,39 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --color-1: oklch(66.2% 0.225 25.9);
+  --color-2: oklch(60.4% 0.26 302);
+  --color-3: oklch(69.6% 0.165 251);
+  --color-4: oklch(80.2% 0.134 225);
+  --color-5: oklch(90.7% 0.231 133);
+
+  /* Sonner Design System - 12-step Grayscale (Dark Mode) */
+  /* For documentation pages only */
+  --gray0: #000; /* Pure black - page backgrounds */
+  --gray1: hsl(0, 0%, 9.5%); /* Subtle backgrounds */
+  --gray2: hsl(0, 0%, 10.5%); /* Hover states */
+  --gray3: hsl(0, 0%, 15.8%); /* Borders */
+  --gray4: hsl(0, 0%, 18.9%); /* Code backgrounds */
+  --gray5: hsl(0, 0%, 21.7%); /* Disabled states */
+  --gray6: hsl(0, 0%, 24.7%); /* Subtle borders */
+  --gray7: hsl(0, 0%, 29.1%); /* Active borders */
+  --gray8: hsl(0, 0%, 37.5%); /* Placeholder text */
+  --gray9: hsl(0, 0%, 43%); /* Secondary text */
+  --gray10: hsl(0, 0%, 50.7%); /* Link underlines */
+  --gray11: hsl(0, 0%, 69.5%); /* Muted text */
+  --gray12: hsl(0, 0%, 93.5%); /* Primary text */
+
+  /* Code block colors - Dark Mode */
+  --code: oklch(0.1826 0.002 286.2);
+  --code-foreground: oklch(0.985 0 0);
+  --code-highlight: oklch(0.27 0 0);
+  --code-number: oklch(0.72 0 0);
 }
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
-  --font-mono: "Geist Mono", "Geist Mono Fallback";
-  /* Adding custom font families to match Fancy Components */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-inktopia: var(--font-inktopia-plus);
   --font-calendas: ui-serif, Georgia, "Times New Roman", serif;
   --font-overused-grotesk: "Geist", ui-sans-serif, system-ui, sans-serif;
   --color-blue: #0000ff;
@@ -112,6 +167,10 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-code: var(--code);
+  --color-code-foreground: var(--code-foreground);
+  --color-code-highlight: var(--code-highlight);
+  --color-code-number: var(--code-number);
   --breakpoint-2xl: 1536px;
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -121,66 +180,165 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --animate-rainbow: rainbow var(--speed, 2s) infinite linear;
+  --color-color-5: var(--color-5);
+  --color-color-4: var(--color-4);
+  --color-color-3: var(--color-3);
+  --color-color-2: var(--color-2);
+  --color-color-1: var(--color-1);
+  @keyframes rainbow {
+    0% {
+      background-position: 0%;
+    }
+    100% {
+      background-position: 200%;
+    }
+  }
+}
+
+.font-meow-script {
+  font-family: var(--font-meow-script);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* Selection styling */
+::selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-
   body {
     @apply bg-background text-foreground;
   }
 
-  .shadow-card-inset {
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-      inset 0 2px 3px rgba(255, 255, 255, 0.1),
-      inset 0 -4px 1px rgba(0, 0, 0, 0.16);
-  }
-
-  .gradient-blue-cinematic {
-    background: linear-gradient(135deg,
-        #e8f4ff 0%,
-        #c5e3ff 15%,
-        #8dc5f5 35%,
-        #5a9fd4 55%,
-        #2563b5 75%,
-        #1e3a5f 90%,
-        #0f1419 100%);
-  }
-
-  .grain {
-    position: relative;
-  }
-
-  .grain::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='8' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.55;
-    pointer-events: none;
-    z-index: 1;
-    mix-blend-mode: overlay;
-  }
-
-  .grain::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='coarseNoise'%3E%3CfeTurbulence type='turbulence' baseFrequency='3.2' numOctaves='5' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23coarseNoise)'/%3E%3C/svg%3E");
-    opacity: 0.45;
-    pointer-events: none;
-    z-index: 1;
-    mix-blend-mode: soft-light;
-  }
-
-  .grain>* {
-    position: relative;
-    z-index: 2;
+  /* Ensure all code elements use Geist Mono with font-weight 400 */
+  code,
+  pre,
+  kbd,
+  samp {
+    font-family: var(--font-mono);
+    font-weight: 400;
   }
 }
 
-.font-pixelify {
-  font-family: var(--font-pixelify);
+/* Noise overlay effect */
+.noise-over {
+  position: relative;
+  overflow: hidden;
+  background: var(--background);
+}
+
+.noise-over::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.dark .noise-over::before {
+  opacity: 0.25;
+}
+
+/* 3D Button effect */
+.btn-3d {
+  transition:
+    transform 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955),
+    background-color 0.2s,
+    box-shadow 0.2s;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.btn-3d:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.08);
+}
+
+.btn-3d:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 0 2px 2px rgba(0, 0, 0, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+}
+
+/* Dark mode 3D button */
+.dark .btn-3d {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 2px 3px rgba(255, 255, 255, 0.06),
+    inset 0 -4px 1px rgba(0, 0, 0, 0.4);
+}
+
+.dark .btn-3d:hover {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 2px 4px rgba(255, 255, 255, 0.08),
+    inset 0 -4px 1px rgba(0, 0, 0, 0.5);
+}
+
+.dark .btn-3d:active {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 2px rgba(0, 0, 0, 0.3),
+    inset 0 -2px 1px rgba(0, 0, 0, 0.25);
+}
+
+/* Force hide Fumadocs TOC */
+[data-toc],
+.fd-toc,
+aside[data-toc],
+nav[aria-label="table of contents"] {
+  display: none !important;
+}
+
+/* 3D Perspective Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
 }

@@ -1,0 +1,14 @@
+﻿{
+  "name": "three-dots",
+  "type": "registry:ui",
+  "description": "Three Dots animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/three-dots.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/three-dots.tsx"
+    }
+  ]
+}

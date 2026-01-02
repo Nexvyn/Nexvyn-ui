@@ -1,0 +1,14 @@
+﻿{
+  "name": "nexvyn-background",
+  "type": "registry:ui",
+  "description": "Nexvyn Background component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/nexvyn-background.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/nexvyn-background.tsx"
+    }
+  ]
+}

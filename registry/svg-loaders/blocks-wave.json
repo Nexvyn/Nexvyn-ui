@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "blocks-wave",
+  "type": "registry:svg-loader",
+  "description": "blocks wave animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/blocks-wave.svg",
+      "type": "registry:file"
+    }
+  ]
+}

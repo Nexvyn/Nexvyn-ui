@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "3-dots-scale-middle",
+  "type": "registry:svg-loader",
+  "description": "3 dots scale middle animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/3-dots-scale-middle.svg",
+      "type": "registry:file"
+    }
+  ]
+}

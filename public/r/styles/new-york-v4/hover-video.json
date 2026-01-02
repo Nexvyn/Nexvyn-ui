@@ -1,0 +1,14 @@
+﻿{
+  "name": "hover-video",
+  "type": "registry:ui",
+  "description": "Hover Video component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/hover-video.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/hover-video.tsx"
+    }
+  ]
+}

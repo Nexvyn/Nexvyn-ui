@@ -1,0 +1,14 @@
+﻿{
+  "name": "inertia",
+  "type": "registry:ui",
+  "description": "Inertia component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/inertia.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/inertia.tsx"
+    }
+  ]
+}

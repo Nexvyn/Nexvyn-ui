@@ -1,0 +1,14 @@
+{
+  "name": "parallax",
+  "type": "registry:ui",
+  "description": "A smooth parallax scrolling component with layered image animations using GSAP.",
+  "dependencies": ["gsap", "@gsap/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/pixel-components/parallax.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/parallax.tsx"
+    }
+  ]
+}

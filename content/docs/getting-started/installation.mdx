@@ -1,74 +1,101 @@
 ---
 title: Installation
-description: Learn how to install and set up the UI library in your project
+description: Learn how to install and set up Nexvyn UI in your project
 ---
-
-[![Open in v0](https://v0.app/chat-static/button.svg)](https://v0.app/chat/api/open?)
 
 # Installation
 
-Get started with the UI library by installing it in your project.
+Get started with Nexvyn UI by installing components in your project.
 
 ## Prerequisites
 
 Before installing, make sure you have:
 
 - Node.js 18+ installed
-- A React 18+ project
-- Tailwind CSS configured (if using styled components)
+- A React 18+ / Next.js 13+ project
+- Tailwind CSS configured
 
-## Install via npm
+## Using the CLI
 
-```bash
-npm install @pixelperfect/ui
-```
+The easiest way to add components is using the shadcn CLI:
 
-## Install via yarn
+<CodeBlockCommand
+  __npm__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+  __pnpm__="pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+  __yarn__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+  __bun__="bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/button.json"
+/>
 
-```bash
-yarn add @pixelperfect/ui
-```
+## Manual Installation
 
-## Install via pnpm
+If you prefer to install components manually, follow these steps:
 
-```bash
-pnpm add @pixelperfect/ui
-```
+### 1. Install Dependencies
 
-## Configuration
+<CodeBlockCommand
+  __npm__="npm install @radix-ui/react-slot class-variance-authority clsx tailwind-merge"
+  __pnpm__="pnpm add @radix-ui/react-slot class-variance-authority clsx tailwind-merge"
+  __yarn__="yarn add @radix-ui/react-slot class-variance-authority clsx tailwind-merge"
+  __bun__="bun add @radix-ui/react-slot class-variance-authority clsx tailwind-merge"
+/>
 
-After installation, you'll need to configure your project to use the components.
+### 2. Add Utils
 
-### Tailwind CSS Setup
+Create a `lib/utils.ts` file:
 
-If you're using Tailwind CSS, make sure your `tailwind.config.js` includes the library's content paths:
+```ts
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
 
-```js
-module.exports = {
-  content: [
-    './node_modules/@your-library/ui/**/*.{js,ts,jsx,tsx}',
-    // ... your other content paths
-  ],
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }
 ```
 
-### Import Components
+### 3. Copy Components
 
-You can import components individually:
+Browse the [component documentation](/docs/components) and copy the components you need.
 
-```tsx
-import { Button } from '@your-library/ui/components/Button';
-import { Card } from '@your-library/ui/components/Card';
+## Tailwind CSS Setup
+
+Make sure your `tailwind.config.js` includes:
+
+```js
+module.exports = {
+  content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
 ```
 
-Or import from the main entry point:
+## Import Components
+
+Import components from your components folder:
 
 ```tsx
-import { Button, Card, Input } from '@your-library/ui';
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+```
+
+## Example Usage
+
+```tsx
+import { Button } from "@/components/ui/button"
+
+export default function Example() {
+  return (
+    <div className="flex gap-4">
+      <Button>Default</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="outline">Outline</Button>
+    </div>
+  )
+}
 ```
 
 ## Next Steps
 
-- [Quick Start Guide](/docs/getting-started/quick-start) - Build your first component
-- [Component Documentation](/docs/components) - Browse all available components
-
+- [Components](/docs/components) - Browse all available components
+- [Button](/docs/components/button) - Start with the Button component

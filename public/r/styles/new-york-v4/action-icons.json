@@ -1,0 +1,14 @@
+﻿{
+  "name": "action-icons",
+  "type": "registry:ui",
+  "description": "Action Icons component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/action-icons.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/action-icons.tsx"
+    }
+  ]
+}

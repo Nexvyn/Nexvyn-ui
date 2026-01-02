@@ -1,0 +1,14 @@
+﻿{
+  "name": "grid",
+  "type": "registry:ui",
+  "description": "Grid animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/grid.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/grid.tsx"
+    }
+  ]
+}

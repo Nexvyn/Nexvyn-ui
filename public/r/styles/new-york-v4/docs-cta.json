@@ -1,0 +1,14 @@
+﻿{
+  "name": "docs-cta",
+  "type": "registry:ui",
+  "description": "Docs Cta component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/docs-cta.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/docs-cta.tsx"
+    }
+  ]
+}

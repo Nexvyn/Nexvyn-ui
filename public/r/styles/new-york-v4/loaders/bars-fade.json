@@ -1,0 +1,14 @@
+﻿{
+  "name": "bars-fade",
+  "type": "registry:ui",
+  "description": "Bars Fade animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/bars-fade.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/bars-fade.tsx"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "field",
+  "type": "registry:ui",
+  "description": "field component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/field.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

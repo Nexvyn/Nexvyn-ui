@@ -1,0 +1,14 @@
+﻿{
+  "name": "heart",
+  "type": "registry:ui",
+  "description": "Heart component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/heart.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/heart.tsx"
+    }
+  ]
+}

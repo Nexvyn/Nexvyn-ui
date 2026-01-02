@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "3-dots-fade",
+  "type": "registry:svg-loader",
+  "description": "3 dots fade animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/3-dots-fade.svg",
+      "type": "registry:file"
+    }
+  ]
+}

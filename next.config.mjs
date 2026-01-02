@@ -6,6 +6,9 @@ const withMDX = createMDX();
 const config = {
   reactStrictMode: true,
   devIndicators: false,
+  typescript: {
+    ignoreBuildErrors: false, 
+  },
   experimental: {
     optimizePackageImports: [
       "motion",
