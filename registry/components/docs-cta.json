@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "docs-cta",
+  "type": "registry:ui",
+  "description": "docs-cta component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/docs-cta.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

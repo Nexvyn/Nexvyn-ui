@@ -1,12 +1,4 @@
 {
-    "title": "Documentation",
-    "pages": [
-        "index",
-        "test",
-        "getting-started",
-        "components",
-        "examples",
-        "utilities",
-        "sponsors"
-    ]
+  "title": "Documentation",
+  "pages": ["index", "getting-started", "components", "icons", "utilities"]
 }

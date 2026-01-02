@@ -1,37 +1,35 @@
 {
-    "name": "card",
-    "type": "registry:ui",
-    "description": "A card component with header, title, description, content, and footer sections",
-    "dependencies": [],
-    "devDependencies": [
-        "@types/react"
-    ],
-    "registryDependencies": [],
-    "files": [
-        {
-            "path": "components/Card/index.tsx",
-            "type": "registry:ui"
-        },
-        {
-            "path": "lib/utils/cn.ts",
-            "type": "registry:lib"
-        }
-    ],
-    "tailwind": {
-        "config": {
-            "plugins": []
-        }
+  "name": "card",
+  "type": "registry:ui",
+  "description": "A card component with header, title, description, content, and footer sections",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/card.tsx",
+      "type": "registry:ui"
     },
-    "cssVars": {
-        "light": {
-            "card": "0 0% 100%",
-            "card-foreground": "0 0% 3.9%",
-            "border": "0 0% 89.8%"
-        },
-        "dark": {
-            "card": "0 0% 3.9%",
-            "card-foreground": "0 0% 98%",
-            "border": "0 0% 14.9%"
-        }
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
     }
+  ],
+  "tailwind": {
+    "config": {
+      "plugins": []
+    }
+  },
+  "cssVars": {
+    "light": {
+      "card": "0 0% 100%",
+      "card-foreground": "0 0% 3.9%",
+      "border": "0 0% 89.8%"
+    },
+    "dark": {
+      "card": "0 0% 3.9%",
+      "card-foreground": "0 0% 98%",
+      "border": "0 0% 14.9%"
+    }
+  }
 }

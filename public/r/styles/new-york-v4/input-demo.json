@@ -1,0 +1,12 @@
+{
+  "name": "input-demo",
+  "type": "registry:example",
+  "description": "Input component demo.",
+  "files": [
+    {
+      "path": "registry/new-york-v4/examples/input-demo.tsx",
+      "type": "registry:example"
+    }
+  ],
+  "registryDependencies": ["input"]
+}

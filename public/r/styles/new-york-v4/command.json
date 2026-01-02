@@ -1,0 +1,14 @@
+﻿{
+  "name": "command",
+  "type": "registry:ui",
+  "description": "Command component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/command.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/command.tsx"
+    }
+  ]
+}

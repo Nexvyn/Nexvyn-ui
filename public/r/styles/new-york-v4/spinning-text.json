@@ -1,0 +1,14 @@
+﻿{
+  "name": "spinning-text",
+  "type": "registry:ui",
+  "description": "Spinning Text component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/spinning-text.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/spinning-text.tsx"
+    }
+  ]
+}

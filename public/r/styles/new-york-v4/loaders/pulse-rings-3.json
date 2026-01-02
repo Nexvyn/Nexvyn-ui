@@ -1,0 +1,14 @@
+﻿{
+  "name": "pulse-rings-3",
+  "type": "registry:ui",
+  "description": "Pulse Rings 3 animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/pulse-rings-3.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/pulse-rings-3.tsx"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "oval",
+  "type": "registry:svg-loader",
+  "description": "oval animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/oval.svg",
+      "type": "registry:file"
+    }
+  ]
+}

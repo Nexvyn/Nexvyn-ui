@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "nexvyn-logo",
+  "type": "registry:ui",
+  "description": "nexvyn-logo component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/nexvyn-logo.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

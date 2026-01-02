@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "progressive-blur",
+  "type": "registry:ui",
+  "description": "progressive-blur component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/progressive-blur.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "name": "template-cta",
+  "type": "registry:ui",
+  "description": "Template Cta component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/template-cta.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/template-cta.tsx"
+    }
+  ]
+}

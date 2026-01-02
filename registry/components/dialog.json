@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "dialog",
+  "type": "registry:ui",
+  "description": "Modal dialog component with overlay, header, content, and footer sections",
+  "dependencies": ["@radix-ui/react-dialog", "lucide-react"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/dialog.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

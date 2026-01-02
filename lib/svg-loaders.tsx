@@ -1,0 +1,124 @@
+import { Loader12DotsScaleRotate } from "@/registry/new-york-v4/loaders/12-dots-scale-rotate"
+import { Loader180RingWithBg } from "@/registry/new-york-v4/loaders/180-ring-with-bg"
+import { Loader180Ring } from "@/registry/new-york-v4/loaders/180-ring"
+import { Loader270RingWithBg } from "@/registry/new-york-v4/loaders/270-ring-with-bg"
+import { Loader270Ring } from "@/registry/new-york-v4/loaders/270-ring"
+import { Loader3DotsBounce } from "@/registry/new-york-v4/loaders/3-dots-bounce"
+import { Loader3DotsFade } from "@/registry/new-york-v4/loaders/3-dots-fade"
+import { Loader3DotsMove } from "@/registry/new-york-v4/loaders/3-dots-move"
+import { Loader3DotsRotate } from "@/registry/new-york-v4/loaders/3-dots-rotate"
+import { Loader3DotsScaleMiddle } from "@/registry/new-york-v4/loaders/3-dots-scale-middle"
+import { Loader3DotsScale } from "@/registry/new-york-v4/loaders/3-dots-scale"
+import { Loader6DotsRotate } from "@/registry/new-york-v4/loaders/6-dots-rotate"
+import { Loader6DotsScaleMiddle } from "@/registry/new-york-v4/loaders/6-dots-scale-middle"
+import { Loader6DotsScale } from "@/registry/new-york-v4/loaders/6-dots-scale"
+import { Loader8DotsRotate } from "@/registry/new-york-v4/loaders/8-dots-rotate"
+import { Loader90RingWithBg } from "@/registry/new-york-v4/loaders/90-ring-with-bg"
+import { Loader90Ring } from "@/registry/new-york-v4/loaders/90-ring"
+import { AudioLoader } from "@/registry/new-york-v4/loaders/audio"
+import { BallTriangleLoader } from "@/registry/new-york-v4/loaders/ball-triangle"
+import { BarsFadeLoader } from "@/registry/new-york-v4/loaders/bars-fade"
+import { BarsRotateFadeLoader } from "@/registry/new-york-v4/loaders/bars-rotate-fade"
+import { BarsScaleFadeLoader } from "@/registry/new-york-v4/loaders/bars-scale-fade"
+import { BarsScaleMiddleLoader } from "@/registry/new-york-v4/loaders/bars-scale-middle"
+import { BarsScaleLoader } from "@/registry/new-york-v4/loaders/bars-scale"
+import { BarsLoader } from "@/registry/new-york-v4/loaders/bars"
+import { BlocksScaleLoader } from "@/registry/new-york-v4/loaders/blocks-scale"
+import { BlocksShuffle2Loader } from "@/registry/new-york-v4/loaders/blocks-shuffle-2"
+import { BlocksShuffle3Loader } from "@/registry/new-york-v4/loaders/blocks-shuffle-3"
+import { BlocksWaveLoader } from "@/registry/new-york-v4/loaders/blocks-wave"
+import { BouncingBallLoader } from "@/registry/new-york-v4/loaders/bouncing-ball"
+import { CirclesLoader } from "@/registry/new-york-v4/loaders/circles"
+import { ClockLoader } from "@/registry/new-york-v4/loaders/clock"
+import { DotRevolveLoader } from "@/registry/new-york-v4/loaders/dot-revolve"
+import { EclipseHalfLoader } from "@/registry/new-york-v4/loaders/eclipse-half"
+import { EclipseLoader } from "@/registry/new-york-v4/loaders/eclipse"
+import { GooeyBalls1Loader } from "@/registry/new-york-v4/loaders/gooey-balls-1"
+import { GooeyBalls2Loader } from "@/registry/new-york-v4/loaders/gooey-balls-2"
+import { GridLoader } from "@/registry/new-york-v4/loaders/grid"
+import { HeartsLoader } from "@/registry/new-york-v4/loaders/hearts"
+import { OvalLoader } from "@/registry/new-york-v4/loaders/oval"
+import { PuffLoader } from "@/registry/new-york-v4/loaders/puff"
+import { Pulse2Loader } from "@/registry/new-york-v4/loaders/pulse-2"
+import { Pulse3Loader } from "@/registry/new-york-v4/loaders/pulse-3"
+import { PulseMultipleLoader } from "@/registry/new-york-v4/loaders/pulse-multiple"
+import { PulseRingLoader } from "@/registry/new-york-v4/loaders/pulse-ring"
+import { PulseRings2Loader } from "@/registry/new-york-v4/loaders/pulse-rings-2"
+import { PulseRings3Loader } from "@/registry/new-york-v4/loaders/pulse-rings-3"
+import { PulseRingsMultipleLoader } from "@/registry/new-york-v4/loaders/pulse-rings-multiple"
+import { PulseLoader } from "@/registry/new-york-v4/loaders/pulse"
+import { RingResizeLoader } from "@/registry/new-york-v4/loaders/ring-resize"
+import { RingsLoader } from "@/registry/new-york-v4/loaders/rings"
+import { SpinningCirclesLoader } from "@/registry/new-york-v4/loaders/spinning-circles"
+import { TadpoleLoader } from "@/registry/new-york-v4/loaders/tadpole"
+import { TailSpinLoader } from "@/registry/new-york-v4/loaders/tail-spin"
+import { ThreeDotsLoader } from "@/registry/new-york-v4/loaders/three-dots"
+import { WifiFadeLoader } from "@/registry/new-york-v4/loaders/wifi-fade"
+import { WifiLoader } from "@/registry/new-york-v4/loaders/wifi"
+import { WindToyLoader } from "@/registry/new-york-v4/loaders/wind-toy"
+
+export interface LoaderInfo {
+  name: string
+  component: React.ComponentType<{ size?: number; className?: string }>
+}
+
+export const SVG_LOADERS: LoaderInfo[] = [
+  { name: "12-dots-scale-rotate", component: Loader12DotsScaleRotate },
+  { name: "180-ring-with-bg", component: Loader180RingWithBg },
+  { name: "180-ring", component: Loader180Ring },
+  { name: "270-ring-with-bg", component: Loader270RingWithBg },
+  { name: "270-ring", component: Loader270Ring },
+  { name: "3-dots-bounce", component: Loader3DotsBounce },
+  { name: "3-dots-fade", component: Loader3DotsFade },
+  { name: "3-dots-move", component: Loader3DotsMove },
+  { name: "3-dots-rotate", component: Loader3DotsRotate },
+  { name: "3-dots-scale-middle", component: Loader3DotsScaleMiddle },
+  { name: "3-dots-scale", component: Loader3DotsScale },
+  { name: "6-dots-rotate", component: Loader6DotsRotate },
+  { name: "6-dots-scale-middle", component: Loader6DotsScaleMiddle },
+  { name: "6-dots-scale", component: Loader6DotsScale },
+  { name: "8-dots-rotate", component: Loader8DotsRotate },
+  { name: "90-ring-with-bg", component: Loader90RingWithBg },
+  { name: "90-ring", component: Loader90Ring },
+  { name: "audio", component: AudioLoader },
+  { name: "ball-triangle", component: BallTriangleLoader },
+  { name: "bars-fade", component: BarsFadeLoader },
+  { name: "bars-rotate-fade", component: BarsRotateFadeLoader },
+  { name: "bars-scale-fade", component: BarsScaleFadeLoader },
+  { name: "bars-scale-middle", component: BarsScaleMiddleLoader },
+  { name: "bars-scale", component: BarsScaleLoader },
+  { name: "bars", component: BarsLoader },
+  { name: "blocks-scale", component: BlocksScaleLoader },
+  { name: "blocks-shuffle-2", component: BlocksShuffle2Loader },
+  { name: "blocks-shuffle-3", component: BlocksShuffle3Loader },
+  { name: "blocks-wave", component: BlocksWaveLoader },
+  { name: "bouncing-ball", component: BouncingBallLoader },
+  { name: "circles", component: CirclesLoader },
+  { name: "clock", component: ClockLoader },
+  { name: "dot-revolve", component: DotRevolveLoader },
+  { name: "eclipse-half", component: EclipseHalfLoader },
+  { name: "eclipse", component: EclipseLoader },
+  { name: "gooey-balls-1", component: GooeyBalls1Loader },
+  { name: "gooey-balls-2", component: GooeyBalls2Loader },
+  { name: "grid", component: GridLoader },
+  { name: "hearts", component: HeartsLoader },
+  { name: "oval", component: OvalLoader },
+  { name: "puff", component: PuffLoader },
+  { name: "pulse-2", component: Pulse2Loader },
+  { name: "pulse-3", component: Pulse3Loader },
+  { name: "pulse-multiple", component: PulseMultipleLoader },
+  { name: "pulse-ring", component: PulseRingLoader },
+  { name: "pulse-rings-2", component: PulseRings2Loader },
+  { name: "pulse-rings-3", component: PulseRings3Loader },
+  { name: "pulse-rings-multiple", component: PulseRingsMultipleLoader },
+  { name: "pulse", component: PulseLoader },
+  { name: "ring-resize", component: RingResizeLoader },
+  { name: "rings", component: RingsLoader },
+  { name: "spinning-circles", component: SpinningCirclesLoader },
+  { name: "tadpole", component: TadpoleLoader },
+  { name: "tail-spin", component: TailSpinLoader },
+  { name: "three-dots", component: ThreeDotsLoader },
+  { name: "wifi-fade", component: WifiFadeLoader },
+  { name: "wifi", component: WifiLoader },
+  { name: "wind-toy", component: WindToyLoader },
+]

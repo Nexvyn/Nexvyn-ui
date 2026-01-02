@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "3dmodel",
+  "type": "registry:ui",
+  "description": "3dmodel component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/3dmodel.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

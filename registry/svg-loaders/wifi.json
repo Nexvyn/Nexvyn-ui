@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "wifi",
+  "type": "registry:svg-loader",
+  "description": "wifi animated SVG loader",
+  "dependencies": [],
+  "devDependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "public/svg-loaders/wifi.svg",
+      "type": "registry:file"
+    }
+  ]
+}

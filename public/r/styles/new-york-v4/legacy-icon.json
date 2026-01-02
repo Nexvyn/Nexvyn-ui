@@ -1,0 +1,14 @@
+﻿{
+  "name": "legacy-icon",
+  "type": "registry:ui",
+  "description": "Legacy Icon component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/legacy-icon.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/legacy-icon.tsx"
+    }
+  ]
+}

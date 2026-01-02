@@ -1,0 +1,14 @@
+﻿{
+  "name": "bouncing-ball",
+  "type": "registry:ui",
+  "description": "Bouncing Ball animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/bouncing-ball.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/bouncing-ball.tsx"
+    }
+  ]
+}

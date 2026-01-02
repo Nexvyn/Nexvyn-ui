@@ -1,0 +1,14 @@
+﻿{
+  "name": "templates-action-buttons",
+  "type": "registry:ui",
+  "description": "Templates Action Buttons component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/templates-action-buttons.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/templates-action-buttons.tsx"
+    }
+  ]
+}

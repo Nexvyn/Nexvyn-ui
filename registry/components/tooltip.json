@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "tooltip",
+  "type": "registry:ui",
+  "description": "Displays informative text when users hover over an element",
+  "dependencies": ["@radix-ui/react-tooltip"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/tooltip.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "alert",
+  "type": "registry:ui",
+  "description": "Displays a callout for user attention with variants for default and destructive states",
+  "dependencies": ["class-variance-authority"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/alert.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

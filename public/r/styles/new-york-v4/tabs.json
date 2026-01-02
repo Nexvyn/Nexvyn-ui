@@ -1,0 +1,14 @@
+﻿{
+  "name": "tabs",
+  "type": "registry:ui",
+  "description": "Tabs component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/tabs.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/tabs.tsx"
+    }
+  ]
+}

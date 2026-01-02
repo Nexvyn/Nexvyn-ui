@@ -1,0 +1,14 @@
+﻿{
+  "name": "tadpole",
+  "type": "registry:ui",
+  "description": "Tadpole animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/tadpole.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/tadpole.tsx"
+    }
+  ]
+}

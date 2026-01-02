@@ -1,0 +1,14 @@
+﻿{
+  "name": "logo-cloud",
+  "type": "registry:ui",
+  "description": "Logo Cloud component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/logo-cloud.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/logo-cloud.tsx"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "name": "text-inertia",
+  "type": "registry:ui",
+  "description": "Text Inertia component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/text-inertia.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/text-inertia.tsx"
+    }
+  ]
+}

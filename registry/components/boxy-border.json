@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "boxy-border",
+  "type": "registry:ui",
+  "description": "boxy-border component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/boxy-border.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

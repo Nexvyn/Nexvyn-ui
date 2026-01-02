@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "rainbow-button",
+  "type": "registry:ui",
+  "description": "rainbow-button component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/rainbow-button.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

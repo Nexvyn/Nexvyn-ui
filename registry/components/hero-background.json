@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "hero-background",
+  "type": "registry:ui",
+  "description": "hero-background component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/hero-background.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

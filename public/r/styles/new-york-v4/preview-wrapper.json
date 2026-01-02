@@ -1,0 +1,14 @@
+﻿{
+  "name": "preview-wrapper",
+  "type": "registry:ui",
+  "description": "Preview Wrapper component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/preview-wrapper.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/preview-wrapper.tsx"
+    }
+  ]
+}

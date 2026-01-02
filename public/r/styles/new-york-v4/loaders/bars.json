@@ -1,0 +1,14 @@
+﻿{
+  "name": "bars",
+  "type": "registry:ui",
+  "description": "Bars animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/bars.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/bars.tsx"
+    }
+  ]
+}

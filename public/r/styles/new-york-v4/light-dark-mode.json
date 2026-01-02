@@ -1,0 +1,14 @@
+﻿{
+  "name": "light-dark-mode",
+  "type": "registry:ui",
+  "description": "Light Dark Mode component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/light-dark-mode.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/light-dark-mode.tsx"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "name": "textarea",
+  "type": "registry:ui",
+  "description": "Textarea component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/textarea.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/textarea.tsx"
+    }
+  ]
+}

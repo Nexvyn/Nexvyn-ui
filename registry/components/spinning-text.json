@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "spinning-text",
+  "type": "registry:ui",
+  "description": "spinning-text component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/spinning-text.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

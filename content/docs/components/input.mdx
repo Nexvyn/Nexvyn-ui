@@ -1,149 +1,111 @@
 ---
 title: Input
-description: A styled input component with label, error, and helper text support
+description: An input component for forms with various types and states.
 ---
 
-# Input
+<ComponentPreview name="input-demo" description="Input component examples" />
 
-An accessible input component with built-in support for labels, error messages, and helper text.
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+
+<CodeBlockCommand
+  __npm__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/input.json"
+  __pnpm__="pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/input.json"
+  __yarn__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/input.json"
+  __bun__="bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/input.json"
+/>
+
+  </Tab>
+  <Tab value="Manual">
+
+<Steps>
+<Step>Copy the component:</Step>
+
+<ComponentSource name="input" title="input.tsx" />
+
+<Step>Update imports to match your project structure.</Step>
+</Steps>
+
+  </Tab>
+</Tabs>
 
 ## Usage
 
-<Preview>
-  <Input
-    label="Email"
-    type="email"
-    placeholder="you@example.com"
-  />
-</Preview>
-
 ```tsx
-import { Input } from '@/components/Input';
-
-export default function Example() {
-  return (
-    <Input
-      label="Email"
-      type="email"
-      placeholder="you@example.com"
-    />
-  );
-}
+import { Input } from "@/components/ui/input"
 ```
 
-## With Label
+```tsx
+<Input type="email" placeholder="Email" />
+```
 
-<Preview>
-  <Input
-    label="Username"
-    placeholder="Enter your username"
-  />
-</Preview>
+## Examples
+
+### Default
 
 ```tsx
-<Input
-  label="Username"
-  placeholder="Enter your username"
+<Input type="text" placeholder="Enter text..." />
+```
+
+### Email
+
+```tsx
+<Input type="email" placeholder="Email address" />
+```
+
+### Password
+
+```tsx
+<Input type="password" placeholder="Password" />
+```
+
+### With Label
+
+```tsx
+<div className="grid w-full max-w-sm items-center gap-1.5">
+  <Label htmlFor="email">Email</Label>
+  <Input type="email" id="email" placeholder="Email" />
+</div>
+```
+
+### Disabled
+
+```tsx
+<Input disabled type="text" placeholder="Disabled input" />
+```
+
+### With Button
+
+```tsx
+<div className="flex w-full max-w-sm items-center space-x-2">
+  <Input type="email" placeholder="Email" />
+  <Button type="submit">Subscribe</Button>
+</div>
+```
+
+## Props
+
+<TypeTable
+  type={{
+    type: {
+      type: "string",
+      default: '"text"',
+      description: "The type of input (text, email, password, etc.).",
+    },
+    placeholder: {
+      type: "string",
+      description: "Placeholder text for the input.",
+    },
+    disabled: {
+      type: "boolean",
+      default: "false",
+      description: "Whether the input is disabled.",
+    },
+    className: {
+      type: "string",
+      description: "Additional CSS classes to apply.",
+    },
+  }}
 />
-```
-
-## With Helper Text
-
-<Preview>
-  <Input
-    label="Email"
-    type="email"
-    placeholder="you@example.com"
-    helperText="We'll never share your email"
-  />
-</Preview>
-
-```tsx
-<Input
-  label="Email"
-  type="email"
-  placeholder="you@example.com"
-  helperText="We'll never share your email"
-/>
-```
-
-## With Error
-
-<Preview>
-  <Input
-    label="Password"
-    type="password"
-    error="Password must be at least 8 characters"
-  />
-</Preview>
-
-```tsx
-<Input
-  label="Password"
-  type="password"
-  error="Password must be at least 8 characters"
-/>
-```
-
-## Input Types
-
-All standard HTML input types are supported:
-
-<Preview>
-  <div className="space-y-4">
-    <Input type="text" label="Text" placeholder="Enter text" />
-    <Input type="email" label="Email" placeholder="you@example.com" />
-    <Input type="password" label="Password" placeholder="••••••••" />
-    <Input type="number" label="Number" placeholder="123" />
-  </div>
-</Preview>
-
-```tsx
-<Input type="text" label="Text" />
-<Input type="email" label="Email" />
-<Input type="password" label="Password" />
-<Input type="number" label="Number" />
-<Input type="tel" label="Phone" />
-<Input type="url" label="URL" />
-<Input type="date" label="Date" />
-```
-
-## Disabled State
-
-<Preview>
-  <Input
-    label="Disabled Input"
-    value="Cannot edit"
-    disabled
-  />
-</Preview>
-
-```tsx
-<Input
-  label="Disabled Input"
-  value="Cannot edit"
-  disabled
-/>
-```
-
-## API Reference
-
-### Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| label | string | - | Input label text |
-| error | string | - | Error message to display |
-| helperText | string | - | Helper text below input |
-| disabled | boolean | false | Whether the input is disabled |
-| ...props | InputHTMLAttributes | - | All standard input HTML attributes |
-
-## Accessibility
-
-The Input component includes:
-
-- Proper label association via `htmlFor` and `id`
-- ARIA attributes for error states
-- Keyboard navigation support
-- Screen reader friendly error messages
-

@@ -1,0 +1,14 @@
+﻿{
+  "name": "bookmark-collapsible",
+  "type": "registry:ui",
+  "description": "Bookmark Collapsible component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/bookmark-collapsible.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/bookmark-collapsible.tsx"
+    }
+  ]
+}

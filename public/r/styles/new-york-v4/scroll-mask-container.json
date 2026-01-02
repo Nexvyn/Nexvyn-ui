@@ -1,0 +1,14 @@
+﻿{
+  "name": "scroll-mask-container",
+  "type": "registry:ui",
+  "description": "Scroll Mask Container component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/scroll-mask-container.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/scroll-mask-container.tsx"
+    }
+  ]
+}

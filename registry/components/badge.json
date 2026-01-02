@@ -1,0 +1,19 @@
+{
+  "$schema": "../schema.json",
+  "name": "badge",
+  "type": "registry:ui",
+  "description": "Display status or labels with multiple variant styles",
+  "dependencies": ["@radix-ui/react-slot", "class-variance-authority"],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/badge.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

@@ -1,0 +1,288 @@
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  scroll-margin-top: 80px;
+}
+
+.prose h1 {
+  font-size: 48px;
+  line-height: 56px; /* 48px + 8px */
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  margin-top: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose h3 {
+  margin-top: 1.5rem;
+}
+
+/* Paragraphs */
+.prose p {
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+/* Links */
+.prose a:not([class]) {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s;
+}
+
+.prose a:not([class]):hover {
+  opacity: 0.8;
+}
+
+/* Code - inline */
+.prose code:not(pre code) {
+  background: var(--muted);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.875em;
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
+/* Blockquotes */
+.prose blockquote {
+  border-left: 4px solid var(--primary);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--muted-foreground);
+}
+
+/* Lists */
+.prose ul,
+.prose ol {
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.prose li {
+  margin: 0.5rem 0;
+  line-height: 1.7;
+}
+
+.prose ul li::marker {
+  color: var(--primary);
+}
+
+.prose ol li::marker {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Tables */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.prose th {
+  background: var(--muted);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+}
+
+.prose td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+}
+
+.prose tr:hover td {
+  background: var(--muted);
+}
+
+/* Horizontal rules */
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* Images */
+.prose img {
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+/* Strong/Bold */
+.prose strong {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+/* Docs content text color */
+.prose,
+.prose p,
+.prose li,
+.prose span {
+  color: var(--foreground);
+}
+
+/* ============================================
+   Code Block Responsive Behavior
+   ============================================ */
+
+/* Responsive code blocks */
+.prose pre,
+[data-rehype-pretty-code-figure] pre {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* ============================================
+   Steps Component Styles
+   ============================================ */
+
+.steps {
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:first-child > h3:first-child {
+    margin-top: 0;
+  }
+
+  > h3 {
+    margin-top: 4rem;
+  }
+
+  > h3 + p {
+    margin-top: 0.5rem;
+  }
+}
+
+/* ============================================
+   Rehype Pretty Code Styles
+   ============================================ */
+
+[data-rehype-pretty-code-figure] {
+  background-color: hsl(220 13% 8%);
+  color: hsl(220 14% 90%);
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  margin-top: 1.5rem;
+  overflow: hidden;
+  font-size: 0.875rem;
+  position: relative;
+}
+
+/* Light mode code blocks - explicit selector to override default */
+html:not(.dark) [data-rehype-pretty-code-figure] {
+  background-color: hsl(220 13% 96%);
+  /* color: hsl(220 14% 20%); */
+}
+
+/* Dark mode code blocks */
+.dark [data-rehype-pretty-code-figure] {
+  background-color: hsl(220 13% 8%);
+  /* color: hsl(220 14% 90%); */
+}
+
+[data-rehype-pretty-code-title] {
+  border-bottom: 1px solid var(--border);
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--muted-foreground);
+  background-color: var(--muted);
+}
+
+/* ============================================
+   Line Numbers & Highlighting
+   ============================================ */
+
+[data-line-numbers] {
+  display: grid;
+  min-width: 100%;
+  white-space: pre;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  counter-reset: line;
+}
+
+[data-line-numbers] [data-line]::before {
+  font-size: 0.875rem;
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 4rem;
+  padding-right: 1.5rem;
+  text-align: right;
+  color: #6e7681;
+  background-color: transparent;
+}
+
+[data-line-numbers] [data-highlighted-line][data-line]::before {
+  background-color: rgba(56, 139, 253, 0.15);
+}
+
+[data-line] {
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  min-height: 0.25rem;
+  width: 100%;
+  display: inline-block;
+}
+
+[data-line] span {
+  color: var(--shiki-light);
+}
+
+.dark [data-line] span {
+  color: var(--shiki-dark);
+}
+
+[data-highlighted-line],
+[data-highlighted-chars] {
+  position: relative;
+  background-color: rgba(56, 139, 253, 0.15);
+}
+
+[data-highlighted-line]::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  content: "";
+  background-color: #388bfd;
+}
+
+[data-highlighted-chars] {
+  border-radius: 0.25rem;
+  padding-inline: 0.3rem;
+  padding-block: 0.1rem;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+
+/* ============================================
+   Font Inheritance
+   ============================================ */
+
+/* Code elements use mono font */
+.prose code,
+.prose pre,
+.prose kbd {
+  font-family: var(--font-mono);
+  font-weight: 400;
+}

@@ -1,0 +1,19 @@
+﻿{
+  "$schema": "../schema.json",
+  "name": "search-directory",
+  "type": "registry:ui",
+  "description": "search-directory component",
+  "dependencies": [],
+  "devDependencies": ["@types/react"],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/search-directory.tsx",
+      "type": "registry:ui"
+    },
+    {
+      "path": "lib/utils.ts",
+      "type": "registry:lib"
+    }
+  ]
+}

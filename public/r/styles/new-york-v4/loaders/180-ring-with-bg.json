@@ -1,0 +1,14 @@
+﻿{
+  "name": "180-ring-with-bg",
+  "type": "registry:ui",
+  "description": "180 Ring With Bg animated SVG loader",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/loaders/180-ring-with-bg.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/loaders/180-ring-with-bg.tsx"
+    }
+  ]
+}

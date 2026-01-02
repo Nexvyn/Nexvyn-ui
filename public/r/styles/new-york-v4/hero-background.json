@@ -1,0 +1,14 @@
+﻿{
+  "name": "hero-background",
+  "type": "registry:ui",
+  "description": "Hero Background component",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/new-york-v4/ui/hero-background.tsx",
+      "type": "registry:ui",
+      "target": "components/ui/hero-background.tsx"
+    }
+  ]
+}
