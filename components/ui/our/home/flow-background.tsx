@@ -113,7 +113,7 @@ const FlowBackground: React.FC<FlowBackgroundProps> = ({
                 rgba(${barColor}, 0.2) 100%
               )`,
               boxShadow: bar.bloom,
-              // @ts-ignore
+              // @ts-expect-error - Custom CSS properties are not typed in React.CSSProperties
               "--duration": `${2 + seededRandom(i) * 2}s`,
               "--delay": `${seededRandom(i + 15) * -5}s`,
             }}
