@@ -147,7 +147,7 @@ export function ${componentName}({
     <div className="group bg-background border-border hover:bg-muted/50 relative flex flex-col items-center justify-between border-r border-b p-6 transition-colors duration-200">
       {/* Loader */}
       <div className="mb-4 flex flex-1 items-center justify-center">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
+        {/* eslint-disable-next-line */}
         <img
           src={`/svg-loaders/${name}.svg`}
           alt={formatLoaderName(name)}
@@ -317,7 +317,7 @@ export function ${componentName}({
 
         {/* Preview */}
         <div className="bg-muted mb-6 flex items-center justify-center rounded-xl p-8">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {/* eslint-disable-next-line */}
           <img
             src={`/svg-loaders/${loaderName}.svg`}
             alt={formatLoaderName(loaderName)}
