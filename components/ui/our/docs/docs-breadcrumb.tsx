@@ -4,7 +4,7 @@ import { Fragment } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useBreadcrumb } from "fumadocs-core/breadcrumb"
-import type { PageTree } from "fumadocs-core/server"
+import { source } from "@/lib/source"
 
 import {
   Breadcrumb,
@@ -15,7 +15,13 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
-export function DocsBreadcrumb({ tree, className }: { tree: PageTree.Root; className?: string }) {
+export function DocsBreadcrumb({
+  tree,
+  className,
+}: {
+  tree: typeof source.pageTree
+  className?: string
+}) {
   const pathname = usePathname()
   const items = useBreadcrumb(pathname, tree)
 

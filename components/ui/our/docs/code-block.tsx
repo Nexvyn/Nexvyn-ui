@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { CopyButton } from "@/components/docs/copy-button"
+import { CopyButton } from "@/components/ui/our/docs/copy-button"
 
 interface CodeBlockProps {
   children: React.ReactNode

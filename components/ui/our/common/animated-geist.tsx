@@ -1,7 +1,7 @@
 "use client"
 
 import { motion, useReducedMotion } from "motion/react"
-import { iconVariants } from "./animated/icon-variants"
+import { iconVariants } from "@/components/ui/icons/animated/icon-variants"
 import { cn } from "@/lib/utils"
 import type { ComponentType } from "react"
 

@@ -35,7 +35,19 @@ export function Loader8DotsRotate({
       aria-label="8 Dots Rotate loading indicator"
       {...props}
     >
-      <style>.spinner_GuJz{transform-origin:center;animation:spinner_STY6 1.5s linear infinite}@keyframes spinner_STY6{100%{transform:rotate(360deg)}}</style><g className="spinner_GuJz"><circle cx="3" cy="12" r="2"/><circle cx="21" cy="12" r="2"/><circle cx="12" cy="21" r="2"/><circle cx="12" cy="3" r="2"/><circle cx="5.64" cy="5.64" r="2"/><circle cx="18.36" cy="18.36" r="2"/><circle cx="5.64" cy="18.36" r="2"/><circle cx="18.36" cy="5.64" r="2"/></g>
+      <style>
+        {`.spinner_GuJz{transform-origin:center;animation:spinner_STY6 1.5s linear infinite}@keyframes spinner_STY6{100%{transform:rotate(360deg)}}`}
+      </style>
+      <g className="spinner_GuJz">
+        <circle cx="3" cy="12" r="2"/>
+        <circle cx="21" cy="12" r="2"/>
+        <circle cx="12" cy="21" r="2"/>
+        <circle cx="12" cy="3" r="2"/>
+        <circle cx="5.64" cy="5.64" r="2"/>
+        <circle cx="18.36" cy="18.36" r="2"/>
+        <circle cx="5.64" cy="18.36" r="2"/>
+        <circle cx="18.36" cy="5.64" r="2"/>
+        </g>
     </svg>
   );
 }

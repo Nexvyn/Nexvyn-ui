@@ -35,7 +35,14 @@ export function Loader3DotsRotate({
       aria-label="3 Dots Rotate loading indicator"
       {...props}
     >
-      <style>.spinner_HIK5{transform-origin:center;animation:spinner_XVY9 1s cubic-bezier(0.36,.6,.31,1) infinite}@keyframes spinner_XVY9{50%{transform:rotate(180deg)}100%{transform:rotate(360deg)}}</style><circle cx="12" cy="12" r="3"/><g className="spinner_HIK5"><circle cx="4" cy="12" r="3"/><circle cx="20" cy="12" r="3"/></g>
+      <style>
+        {`.spinner_HIK5{transform-origin:center;animation:spinner_XVY9 1s cubic-bezier(0.36,.6,.31,1) infinite}@keyframes spinner_XVY9{50%{transform:rotate(180deg)}100%{transform:rotate(360deg)}}`}
+      </style>
+      <circle cx="12" cy="12" r="3"/>
+        <g className="spinner_HIK5">
+        <circle cx="4" cy="12" r="3"/>
+        <circle cx="20" cy="12" r="3"/>
+        </g>
     </svg>
   );
 }
