@@ -1,13 +1,13 @@
-import React from "react";
-import { ExternalLink } from "lucide-react";
+import React from "react"
+import { ExternalLink } from "lucide-react"
 
 export interface PreviewProps {
-  children: React.ReactNode;
-  title?: string;
-  description?: string;
-  className?: string;
-  code?: string; // The code to share/open in various platforms
-  githubUrl?: string; // Optional direct GitHub link
+  children: React.ReactNode
+  title?: string
+  description?: string
+  className?: string
+  code?: string // The code to share/open in various platforms
+  githubUrl?: string // Optional direct GitHub link
 }
 
 const OPEN_IN_LINKS = [
@@ -32,8 +32,12 @@ const OPEN_IN_LINKS = [
     icon: "",
   },
   { name: "Claude", url: (code: string) => `https://claude.ai/`, icon: "" },
-  { name: "T3 Chat", url: (code: string) => `https://t3.gg/chat`, icon: "" },
-];
+  {
+    name: "T3 Chat",
+    url: (code: string) => `https://t3.chat/new?q=${encodeURIComponent(code)}`,
+    icon: "",
+  },
+]
 
 export function Preview({
   children,
@@ -45,13 +49,11 @@ export function Preview({
 }: PreviewProps) {
   return (
     <div className={`my-6 ${className}`}>
-      <div className="flex items-center justify-between mb-2">
-        {title && (
-          <h3 className="text-sm font-semibold text-foreground">{title}</h3>
-        )}
+      <div className="mb-2 flex items-center justify-between">
+        {title && <h3 className="text-foreground text-sm font-semibold">{title}</h3>}
         {code && (
           <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground mr-2">Open in:</span>
+            <span className="text-muted-foreground mr-2 text-xs">Open in:</span>
             <div className="flex gap-1">
               {OPEN_IN_LINKS.map((link) => (
                 <a
@@ -59,24 +61,22 @@ export function Preview({
                   href={link.url(code)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 rounded-md transition-colors"
+                  className="text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors"
                   title={`Open in ${link.name}`}
                 >
                   <span>{link.icon}</span>
                   <span className="hidden sm:inline">{link.name}</span>
-                  <ExternalLink className="w-3 h-3" />
+                  <ExternalLink className="h-3 w-3" />
                 </a>
               ))}
             </div>
           </div>
         )}
       </div>
-      {description && (
-        <p className="text-sm text-muted-foreground mb-4">{description}</p>
-      )}
-      <div className="border rounded-lg p-6 bg-muted/50">{children}</div>
+      {description && <p className="text-muted-foreground mb-4 text-sm">{description}</p>}
+      <div className="bg-muted/50 rounded-lg border p-6">{children}</div>
     </div>
-  );
+  )
 }
 
-export default Preview;
+export default Preview
