@@ -6,12 +6,11 @@ import { GithubIcon } from "@/components/ui/icons/animated/github"
 import { FaDiscord } from "react-icons/fa6"
 import { motion } from "motion/react"
 import FlowBackground from "@/components/ui/our/home/flow-background"
-import Link from "next/link"
 import { useCommandPalette } from "@/components/ui/our/common/command-palette-context"
 import { ContactFormExample } from "@/components/ui/our/home/contact-form"
 
 export function Footer() {
-  const { setOpen, setPage } = useCommandPalette()
+  const { setOpen: _setOpen, setPage: _setPage } = useCommandPalette()
   return (
     <footer className="grain dark:bg-background/80 relative overflow-hidden p-4 sm:p-6 md:p-8 dark:backdrop-blur-sm">
       {/* FlowBackground - Waveform Aesthetic */}
