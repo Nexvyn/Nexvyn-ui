@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "vertical-scale",
   "type": "registry:ui",
+  "title": "Vertical Scale",
   "description": "Vertical Scale component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/vertical-scale.tsx",
       "type": "registry:ui",
-      "target": "components/ui/vertical-scale.tsx"
+      "target": "components/ui/vertical-scale.tsx",
+      "content": "export function VerticalScale() {\r\n  // Generate tick marks - small ticks every unit, larger ticks every 5 units\r\n  const totalTicks = 50\r\n  const ticks = Array.from({ length: totalTicks }, (_, i) => ({\r\n    index: i,\r\n    isLarge: i % 5 === 0,\r\n  }))\r\n\r\n  return (\r\n    <div className=\"fixed top-0 right-0 h-full w-12 border-l border-gray-200 bg-white\">\r\n      {/* Tick marks container */}\r\n      <div className=\"relative h-full w-full\">\r\n        {ticks.map((tick) => (\r\n          <div\r\n            key={tick.index}\r\n            className=\"absolute right-0 border-t border-gray-400\"\r\n            style={{\r\n              top: `${(tick.index / totalTicks) * 100}%`,\r\n              width: tick.isLarge ? \"16px\" : \"8px\",\r\n              borderWidth: tick.isLarge ? \"1.5px\" : \"1px\",\r\n            }}\r\n          />\r\n        ))}\r\n\r\n        {/* Yellow marker - positioned roughly in the middle */}\r\n        <div\r\n          className=\"absolute right-0 bg-yellow-400\"\r\n          style={{\r\n            top: \"48%\",\r\n            width: \"20px\",\r\n            height: \"8px\",\r\n          }}\r\n        />\r\n      </div>\r\n    </div>\r\n  )\r\n}\r\n"
     }
   ]
 }

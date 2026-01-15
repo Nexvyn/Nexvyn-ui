@@ -1,14 +1,19 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "accordion",
   "type": "registry:ui",
+  "title": "Accordion",
   "description": "Accordion component",
-  "dependencies": [],
+  "dependencies": [
+    "@radix-ui/react-accordion"
+  ],
   "registryDependencies": [],
   "files": [
     {
       "path": "registry/new-york-v4/ui/accordion.tsx",
       "type": "registry:ui",
-      "target": "components/ui/accordion.tsx"
+      "target": "components/ui/accordion.tsx",
+      "content": "// Accordion UI wrapper using Radix primitives\r\nimport {\r\n  Accordion as RadixAccordion,\r\n  AccordionItem as RadixAccordionItem,\r\n  AccordionTrigger as RadixAccordionTrigger,\r\n  AccordionContent as RadixAccordionContent,\r\n} from \"@radix-ui/react-accordion\"\r\nimport { cn } from \"@/lib/utils\"\r\n\r\n// Simple styling – adjust Tailwind classes as needed for your design system\r\nexport const Accordion = ({\r\n  collapsible = false,\r\n  className,\r\n  children,\r\n  ...props\r\n}: React.ComponentProps<typeof RadixAccordion>) => (\r\n  <RadixAccordion\r\n    type={collapsible ? \"single\" : \"multiple\"}\r\n    collapsible={collapsible}\r\n    className={cn(\"space-y-2\", className)}\r\n    {...props}\r\n  >\r\n    {children}\r\n  </RadixAccordion>\r\n)\r\n\r\nexport const AccordionItem = ({\r\n  value,\r\n  className,\r\n  children,\r\n  ...props\r\n}: React.ComponentProps<typeof RadixAccordionItem>) => (\r\n  <RadixAccordionItem value={value} className={cn(\"rounded-lg border\", className)} {...props}>\r\n    {children}\r\n  </RadixAccordionItem>\r\n)\r\n\r\nexport const AccordionTrigger = ({\r\n  className,\r\n  children,\r\n  ...props\r\n}: React.ComponentProps<typeof RadixAccordionTrigger>) => (\r\n  <RadixAccordionTrigger\r\n    className={cn(\r\n      \"flex w-full items-center justify-between px-4 py-4 text-left font-medium\",\r\n      \"bg-muted hover:bg-muted/80 rounded-t-lg\",\r\n      className\r\n    )}\r\n    {...props}\r\n  >\r\n    {children}\r\n    {/* Chevron icon – you can replace with your own */}\r\n    <svg className=\"h-4 w-4 shrink-0 transition-transform duration-200\" viewBox=\"0 0 24 24\">\r\n      <path d=\"M7 10l5 5 5-5\" stroke=\"currentColor\" strokeWidth=\"2\" fill=\"none\" />\r\n    </svg>\r\n  </RadixAccordionTrigger>\r\n)\r\n\r\nexport const AccordionContent = ({\r\n  className,\r\n  children,\r\n  ...props\r\n}: React.ComponentProps<typeof RadixAccordionContent>) => (\r\n  <RadixAccordionContent\r\n    className={cn(\r\n      \"px-4 pt-0 pb-4\",\r\n      \"data-[state=closed]:animate-accordion-up\",\r\n      \"data-[state=open]:animate-accordion-down\",\r\n      className\r\n    )}\r\n    {...props}\r\n  >\r\n    {children}\r\n  </RadixAccordionContent>\r\n)\r\n"
     }
   ]
 }

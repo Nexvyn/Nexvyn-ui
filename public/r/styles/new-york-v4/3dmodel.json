@@ -1,14 +1,17 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "3dmodel",
   "type": "registry:ui",
-  "description": "3Dmodel component",
+  "title": "3dmodel",
+  "description": "3dmodel component",
   "dependencies": [],
   "registryDependencies": [],
   "files": [
     {
       "path": "registry/new-york-v4/ui/3dmodel.tsx",
       "type": "registry:ui",
-      "target": "components/ui/3dmodel.tsx"
+      "target": "components/ui/3dmodel.tsx",
+      "content": ""
     }
   ]
 }

@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "light-dark-mode",
   "type": "registry:ui",
+  "title": "Light Dark Mode",
   "description": "Light Dark Mode component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/light-dark-mode.tsx",
       "type": "registry:ui",
-      "target": "components/ui/light-dark-mode.tsx"
+      "target": "components/ui/light-dark-mode.tsx",
+      "content": "\"use client\"\r\n\r\nimport { useTheme } from \"next-themes\"\r\nimport { Button } from \"@/components/ui/core/button\"\r\nimport { SunIcon } from \"@/components/ui/our/common/sun\"\r\nimport { MoonIcon } from \"@/components/ui/our/common/moon\"\r\n\r\nexport function LightDarkMode() {\r\n  const { theme, setTheme } = useTheme()\r\n\r\n  const toggleTheme = () => {\r\n    setTheme(theme === \"dark\" ? \"light\" : \"dark\")\r\n  }\r\n\r\n  return (\r\n    <Button\r\n      variant=\"ghost\"\r\n      size=\"icon\"\r\n      className=\"btn-3d\"\r\n      onClick={toggleTheme}\r\n      aria-label=\"Toggle theme\"\r\n    >\r\n      <SunIcon\r\n        size={20}\r\n        className=\"scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90\"\r\n      />\r\n      <MoonIcon\r\n        size={20}\r\n        className=\"absolute scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0\"\r\n      />\r\n    </Button>\r\n  )\r\n}\r\n"
     }
   ]
 }

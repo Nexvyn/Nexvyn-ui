@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "bookmark-collapsible",
   "type": "registry:ui",
+  "title": "Bookmark Collapsible",
   "description": "Bookmark Collapsible component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/bookmark-collapsible.tsx",
       "type": "registry:ui",
-      "target": "components/ui/bookmark-collapsible.tsx"
+      "target": "components/ui/bookmark-collapsible.tsx",
+      "content": "\"use client\"\r\n\r\nimport Link from \"next/link\"\r\nimport { usePathname } from \"next/navigation\"\r\nimport { TriangleDownIcon } from \"@radix-ui/react-icons\"\r\nimport { Bookmark } from \"lucide-react\"\r\n\r\nimport { useBookmarks } from \"@/hooks/use-bookmarks\"\r\nimport {\r\n  Collapsible,\r\n  CollapsibleContent,\r\n  CollapsibleTrigger,\r\n} from \"@/components/ui/core/collapsible\"\r\nimport {\r\n  SidebarMenuButton,\r\n  SidebarMenuItem,\r\n  SidebarMenuSub,\r\n  SidebarMenuSubButton,\r\n  SidebarMenuSubItem,\r\n} from \"@/components/ui/sidebar\"\r\n\r\nexport function BookmarkCollapsible() {\r\n  const pathname = usePathname()\r\n  const { bookmarks, isLoaded } = useBookmarks()\r\n\r\n  if (!isLoaded || !bookmarks || bookmarks.length === 0) {\r\n    return null\r\n  }\r\n\r\n  return (\r\n    <Collapsible asChild defaultOpen={true} className=\"group/collapsible\">\r\n      <SidebarMenuItem>\r\n        <CollapsibleTrigger asChild>\r\n          <SidebarMenuButton\r\n            tooltip=\"Bookmarks\"\r\n            className=\"text-foreground !rounded-md !text-[13.5px] transition-colors duration-200\"\r\n          >\r\n            <Bookmark className=\"!text-muted-foreground mb-[3px] h-3.5 w-3.5\" />\r\n            <span className=\"whitespace-nowrap transition-opacity duration-200\">Bookmarks</span>\r\n            <TriangleDownIcon className=\"transition-transform group-data-[state=closed]/collapsible:-rotate-[90deg] group-data-[state=open]/collapsible:rotate-[0deg]\" />\r\n          </SidebarMenuButton>\r\n        </CollapsibleTrigger>\r\n        <CollapsibleContent>\r\n          <SidebarMenuSub className=\"border-l-0 px-0 pb-5\">\r\n            {bookmarks.map((bookmark) => {\r\n              if (!bookmark.href || !bookmark.title) return null\r\n\r\n              return (\r\n                <SidebarMenuSubItem key={`bookmark-${bookmark.href}`}>\r\n                  <SidebarMenuSubButton\r\n                    asChild\r\n                    isActive={bookmark.href === pathname}\r\n                    className=\"text-muted-foreground hover:text-foreground !rounded-md text-[13.5px] transition-colors duration-200\"\r\n                  >\r\n                    <Link href={bookmark.href}>\r\n                      <span className=\"whitespace-nowrap transition-opacity duration-200\">\r\n                        {bookmark.title}\r\n                      </span>\r\n                    </Link>\r\n                  </SidebarMenuSubButton>\r\n                </SidebarMenuSubItem>\r\n              )\r\n            })}\r\n          </SidebarMenuSub>\r\n        </CollapsibleContent>\r\n      </SidebarMenuItem>\r\n    </Collapsible>\r\n  )\r\n}\r\n"
     }
   ]
 }

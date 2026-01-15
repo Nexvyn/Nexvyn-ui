@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "text-inertia",
   "type": "registry:ui",
+  "title": "Text Inertia",
   "description": "Text Inertia component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/text-inertia.tsx",
       "type": "registry:ui",
-      "target": "components/ui/text-inertia.tsx"
+      "target": "components/ui/text-inertia.tsx",
+      "content": "\"use client\"\r\nimport { useEffect, useRef } from \"react\"\r\nimport { gsap } from \"gsap\"\r\nimport { InertiaPlugin } from \"gsap/InertiaPlugin\"\r\nimport { SplitText } from \"gsap/SplitText\"\r\nimport { useGSAP } from \"@gsap/react\"\r\n\r\ngsap.registerPlugin(InertiaPlugin, SplitText)\r\n\r\nconst singleText = \"Welcome to Pixel Perfect\"\r\n\r\nconst TextInertia = () => {\r\n  const deltaX = useRef(0)\r\n  const deltaY = useRef(0)\r\n\r\n  useEffect(() => {\r\n    let oldX = 0\r\n    let oldY = 0\r\n\r\n    const handleUpdateDelta = (e: any) => {\r\n      deltaX.current = e.clientX - oldX\r\n      deltaY.current = e.clientY - oldY\r\n\r\n      oldX = e.clientX\r\n      oldY = e.clientY\r\n    }\r\n\r\n    window.addEventListener(\"mousemove\", handleUpdateDelta)\r\n\r\n    return () => {\r\n      window.removeEventListener(\"mousemove\", handleUpdateDelta)\r\n    }\r\n  }, [])\r\n\r\n  useGSAP(() => {\r\n    const textElements = gsap.utils.toArray(\".text-inertia\")\r\n\r\n    textElements.forEach((element: any) => {\r\n      const splitText = new SplitText(element, { type: \"words\" })\r\n      const words = splitText.words\r\n\r\n      const handleMouseEnter = () => {\r\n        const tl = gsap.timeline()\r\n\r\n        words.forEach((word: any) => {\r\n          tl.to(\r\n            word,\r\n            {\r\n              rotation: 0,\r\n              y: 0,\r\n              opacity: 1,\r\n              inertia: {\r\n                x: {\r\n                  velocity: deltaX.current * 20,\r\n                  end: 0,\r\n                },\r\n                y: {\r\n                  velocity: deltaY.current * 20,\r\n                  end: 0,\r\n                },\r\n                rotation: { velocity: (Math.random() - 0.5) * 300, end: 0 },\r\n              },\r\n            },\r\n            0\r\n          )\r\n        })\r\n      }\r\n\r\n      element.addEventListener(\"mouseenter\", handleMouseEnter)\r\n    })\r\n\r\n    return () => {\r\n      textElements.forEach((element: any) => {\r\n        element.removeEventListener(\"mouseenter\", () => {})\r\n      })\r\n    }\r\n  })\r\n\r\n  return (\r\n    <div className=\"flex h-screen w-full items-center justify-center overflow-hidden bg-black\">\r\n      <div className=\"text-center text-white\">{singleText}</div>\r\n    </div>\r\n  )\r\n}\r\n\r\nexport default TextInertia\r\n"
     }
   ]
 }

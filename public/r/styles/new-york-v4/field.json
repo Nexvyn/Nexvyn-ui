@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "field",
   "type": "registry:ui",
+  "title": "Field",
   "description": "Field component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/field.tsx",
       "type": "registry:ui",
-      "target": "components/ui/field.tsx"
+      "target": "components/ui/field.tsx",
+      "content": "import * as React from \"react\"\r\nimport { cn } from \"@/lib/utils\"\r\n\r\nexport interface FieldProps extends React.HTMLAttributes<HTMLDivElement> {}\r\n\r\nexport const Field = React.forwardRef<HTMLDivElement, FieldProps>(\r\n  ({ className, ...props }, ref) => {\r\n    return <div ref={ref} className={cn(\"w-full\", className)} {...props} />\r\n  }\r\n)\r\n\r\nField.displayName = \"Field\"\r\n"
     }
   ]
 }

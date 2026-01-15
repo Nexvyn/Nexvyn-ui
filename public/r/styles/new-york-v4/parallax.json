@@ -1,14 +1,20 @@
 {
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "parallax",
   "type": "registry:ui",
-  "description": "A smooth parallax scrolling component with layered image animations using GSAP.",
-  "dependencies": ["gsap", "@gsap/react"],
+  "title": "Parallax",
+  "description": "Parallax component",
+  "dependencies": [
+    "gsap",
+    "@gsap/react"
+  ],
   "registryDependencies": [],
   "files": [
     {
-      "path": "components/pixel-components/parallax.tsx",
+      "path": "registry/new-york-v4/ui/parallax.tsx",
       "type": "registry:ui",
-      "target": "components/ui/parallax.tsx"
+      "target": "components/ui/parallax.tsx",
+      "content": "\"use client\"\r\n\r\nimport { useRef } from \"react\"\r\nimport { useGSAP } from \"@gsap/react\"\r\nimport gsap from \"gsap\"\r\nimport { ScrollTrigger } from \"gsap/ScrollTrigger\"\r\n\r\ngsap.registerPlugin(ScrollTrigger)\r\n\r\nconst Parallax = () => {\r\n  const containerRef = useRef(null)\r\n  const container2 = useRef(null)\r\n  const i1 = useRef(null)\r\n  const i2 = useRef(null)\r\n  const img = useRef(null)\r\n\r\n  useGSAP(() => {\r\n    const tl = gsap.timeline({\r\n      scrollTrigger: {\r\n        trigger: containerRef.current,\r\n        start: \"top bottom\",\r\n        end: \"bottom top\",\r\n        scrub: true,\r\n      },\r\n    })\r\n\r\n    tl.to(i1.current, { y: -220, ease: \"power2\" }, 0)\r\n    tl.to(i2.current, { y: -150, ease: \"power2\" }, 0)\r\n\r\n    gsap.from(img.current, {\r\n      y: -120,\r\n      ease: \"linear\",\r\n      scrollTrigger: {\r\n        trigger: container2.current,\r\n        start: \"top bottom\",\r\n        end: \"bottom top\",\r\n        scrub: true,\r\n      },\r\n    })\r\n  })\r\n\r\n  return (\r\n    <div className=\"bg-[#a5a5a5] text-9xl text-[#ffffff57]\">\r\n      <div ref={containerRef} className=\"flex h-screen w-full items-start justify-center\">\r\n        <div className=\"relative mt-10 border-2\">\r\n          <img\r\n            src=\"https://cdn.cosmos.so/493d0389-aea0-4144-8cdf-3fdaff93b364.?format=jpeg\"\r\n            alt=\"Main parallax image\"\r\n          />\r\n          <img\r\n            ref={i1}\r\n            className=\"absolute right-[50%] bottom-[-20%] w-80\"\r\n            src=\"https://cdn.cosmos.so/e7624081-8784-4096-a44c-b6421e1a2b6f?format=jpeg\"\r\n            alt=\"Parallax layer 1\"\r\n          />\r\n          <img\r\n            ref={i2}\r\n            src=\"https://cdn.cosmos.so/e7624081-8784-4096-a44c-b6421e1a2b6f?format=jpeg\"\r\n            className=\"absolute top-10 right-[-50%] h-56\"\r\n            alt=\"Parallax layer 2\"\r\n          />\r\n        </div>\r\n      </div>\r\n      <div ref={container2} className=\"flex h-screen w-full items-center justify-center\">\r\n        <div className=\"h-96 w-96 overflow-hidden\">\r\n          <img\r\n            ref={img}\r\n            src=\"https://i.pinimg.com/736x/2a/72/9e/2a729ec22988b2a284a7fdf37f1847fd.jpg\"\r\n            alt=\"Secondary parallax image\"\r\n            className=\"object-cover\"\r\n          />\r\n        </div>\r\n      </div>\r\n      <div className=\"h-screen w-full\"></div>\r\n    </div>\r\n  )\r\n}\r\n\r\nexport default Parallax\r\n"
     }
   ]
 }
