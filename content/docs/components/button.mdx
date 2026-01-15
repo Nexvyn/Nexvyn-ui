@@ -1,4 +1,4 @@
----
+﻿---
 title: Button
 description: A button component with multiple variants and sizes.
 ---
@@ -41,7 +41,7 @@ npm install @radix-ui/react-slot class-variance-authority
 ## Usage
 
 ```tsx
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/core/button"
 ```
 
 ```tsx
@@ -97,24 +97,3 @@ import { Button } from "@/components/ui/button"
 </Button>
 ```
 
-## Props
-
-<TypeTable
-  type={{
-    variant: {
-      type: '"default" | "destructive" | "outline" | "secondary" | "ghost" | "link"',
-      default: '"default"',
-      description: "The visual style variant of the button.",
-    },
-    size: {
-      type: '"default" | "sm" | "lg" | "icon" | "icon-sm" | "icon-lg"',
-      default: '"default"',
-      description: "The size of the button.",
-    },
-    asChild: {
-      type: "boolean",
-      default: "false",
-      description: "Render as a child component using Radix Slot.",
-    },
-  }}
-/>

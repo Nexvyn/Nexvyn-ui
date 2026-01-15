@@ -1,11 +1,51 @@
 ---
 title: Card Stack Animation
-description: A scroll-triggered card stack animation component that displays cards fanning out and animating in from below
+description: A scroll-triggered card stack animation component that displays cards fanning out and animating in from below.
 ---
 
-# Card Stack Animation
+<ComponentPreview name="cards-demo" description="Scroll-triggered card stack animation" />
 
-An interactive card animation component that uses GSAP and ScrollTrigger to create smooth, staggered card entrance animations with scroll-based pinning and fan rotation effects.
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+
+<CodeBlockCommand
+  __npm__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/cards.json"
+  __pnpm__="pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/cards.json"
+  __yarn__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/cards.json"
+  __bun__="bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/cards.json"
+/>
+
+  </Tab>
+  <Tab value="Manual">
+
+<Steps>
+<Step>Install dependencies:</Step>
+
+```bash
+npm install gsap @gsap/react
+```
+
+<Step>Copy the component:</Step>
+
+<ComponentSource name="cards" title="cards.tsx" />
+
+<Step>Update imports to match your project structure.</Step>
+</Steps>
+
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import CardStackAnimate from "@/components/ui/cards"
+```
+
+```tsx
+<CardStackAnimate />
+```
 
 ## Features
 
@@ -14,130 +54,6 @@ An interactive card animation component that uses GSAP and ScrollTrigger to crea
 - **Pin effect** - Scroll triggers pinning for controlled animation timing
 - **Customizable colors** - Easy color variants for each card
 - **Responsive layout** - Cards fan out dynamically based on container
-
-## Installation
-
-This component requires GSAP and the ScrollTrigger plugin:
-
-```bash
-npm install gsap @gsap/react
-```
-
-## Basic Usage
-
-<Preview>
-  <CardStackAnimate />
-</Preview>
-
-```tsx
-import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const CardStackAnimate = () => {
-  const first = useRef(null);
-
-  useGSAP(() => {
-    const tl = gsap.timeline({});
-    const cards = gsap.utils.toArray(".card");
-
-    tl.from(cards, {
-      y: "100vh",
-      stagger: 1,
-      ease: "power3.out",
-      duration: 1,
-      scrollTrigger: {
-        trigger: first.current,
-        start: "top top",
-        end: "2000",
-        scrub: 1,
-        pin: true,
-      },
-    });
-  });
-
-  const colors = [
-    { name: "Pink", class: "bg-pink-300", link: "/card_animation/pink.png" },
-    { name: "Blue", class: "bg-blue-300", link: "/card_animation/blue.png" },
-    {
-      name: "Yellow",
-      class: "bg-yellow-200",
-      link: "/card_animation/yellow.png",
-    },
-    { name: "Green", class: "bg-green-200", link: "/card_animation/green.png" },
-    {
-      name: "Purple",
-      class: "bg-purple-200",
-      link: "/card_animation/purple.png",
-    },
-    {
-      name: "Orange",
-      class: "bg-orange-200",
-      link: "/card_animation/orange.png",
-    },
-  ];
-
-  return (
-    <div className="w-full h-full bg-black">
-      <div
-        ref={first}
-        className="h-screen w-full flex items-center justify-center bg-black relative"
-      >
-        <div className="text-white text-9xl font-light">HEY GSAPPPPP</div>
-        {colors.map((color, i) => (
-          <div
-            key={i}
-            className={`card absolute h-[400px] w-[300px] rounded-3xl shadow-lg ${color.class} p-4 overflow-hidden`}
-            style={{
-              left: `calc(50% + (${i * 70}px - ${(colors.length / 2) * 70}px))`,
-              transform: `translateX(-50%) rotate(${
-                (i - colors.length / 2) * 10
-              }deg)`,
-            }}
-          >
-            <div className="flex justify-between">
-              <div className="text-neutral-700 text-xs">Card {i + 1}</div>
-              <div className="text-neutral-700 text-xs">
-                Color {color.class}
-              </div>
-            </div>
-            <img
-              src={color.link}
-              alt={color.name}
-              className="absolute left-0"
-            />
-          </div>
-        ))}
-      </div>
-      <div className="h-screen w-full flex justify-center items-center">hi</div>
-    </div>
-  );
-};
-
-export default CardStackAnimate;
-```
-
-## How It Works
-
-### Animation Timeline
-
-The component uses a GSAP timeline with the following stages:
-
-1. **Initial State** - Cards start at `y: "100vh"` (below the viewport)
-2. **Stagger Animation** - Each card enters with a 1-second delay between each
-3. **Scroll Trigger** - Animation is controlled by scroll position
-4. **Pin Effect** - The section is pinned during the animation sequence
-
-### Card Layout
-
-Cards are positioned absolutely with:
-
-- **Horizontal spread** - Each card offset by 70px from center
-- **Fan rotation** - Each card rotated by 10 degrees for a fanned appearance
-- **Center alignment** - All cards centered and translated to align properly
 
 ## Customization
 
@@ -150,7 +66,7 @@ const colors = [
   { name: "Red", class: "bg-red-300", link: "/card_animation/red.png" },
   { name: "Teal", class: "bg-teal-300", link: "/card_animation/teal.png" },
   // ... add more colors
-];
+]
 ```
 
 ### Adjusting Animation Speed
@@ -164,7 +80,7 @@ tl.from(cards, {
   duration: 2, // Increase for slower animation
   ease: "power3.out",
   // ...
-});
+})
 ```
 
 ### Changing Scroll Trigger Duration
@@ -188,42 +104,3 @@ Update the size classes on the card div:
 ```tsx
 className={`card absolute h-[500px] w-[400px] rounded-3xl shadow-lg ...`}
 ```
-
-## API Reference
-
-### CardStackAnimate Component
-
-Main card animation component.
-
-| Prop   | Type | Default | Description                        |
-| ------ | ---- | ------- | ---------------------------------- |
-| (none) | -    | -       | This is a self-contained component |
-
-### Configuration Options
-
-| Option   | Type    | Default      | Description                                  |
-| -------- | ------- | ------------ | -------------------------------------------- |
-| stagger  | number  | 1            | Delay between each card animation in seconds |
-| duration | number  | 1            | Duration of each card animation              |
-| ease     | string  | "power3.out" | GSAP easing function                         |
-| y        | string  | "100vh"      | Starting Y position                          |
-| scrub    | number  | 1            | Smoothness of scroll-linked animation        |
-| pin      | boolean | true         | Whether to pin the trigger element           |
-| end      | string  | "2000"       | Scroll distance to complete animation        |
-
-## Performance Tips
-
-- Use `useGSAP` hook to properly manage GSAP timelines
-- Register ScrollTrigger plugin to avoid multiple registrations
-- Consider reducing the number of cards on mobile devices
-- Use optimized images to minimize file size
-- Test scroll performance with React DevTools Profiler
-
-## Browser Support
-
-Works in all modern browsers that support:
-
-- CSS Transforms
-- GSAP animations
-- Scroll triggers
-- Intersection Observer API
