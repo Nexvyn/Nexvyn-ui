@@ -1,4 +1,13 @@
 {
   "title": "Components",
-  "pages": ["button", "card", "input", "cards", "parallax", "mouse-follower"]
+  "pages": [
+    "button",
+    "card",
+    "input",
+    "cards",
+    "parallax",
+    "mouse-follower",
+    "morphing-text",
+    "spinning-text"
+  ]
 }

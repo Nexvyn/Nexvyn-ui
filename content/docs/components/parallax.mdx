@@ -13,25 +13,11 @@ description: A smooth parallax scrolling component with layered image animations
 <Tabs items={["CLI", "Manual"]}>
   <Tab value="CLI">
 
-<CodeBlock
-  tabs={[
-    {
-      label: "npm",
-      code: "npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/parallax.json",
-    },
-    {
-      label: "pnpm",
-      code: "pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/parallax.json",
-    },
-    {
-      label: "yarn",
-      code: "npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/parallax.json",
-    },
-    {
-      label: "bun",
-      code: "bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/parallax.json",
-    },
-  ]}
+<CodeBlockCommand
+  __npm__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/parallax.json"
+  __pnpm__="pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/parallax.json"
+  __yarn__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/parallax.json"
+  __bun__="bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/parallax.json"
 />
 
   </Tab>
@@ -110,39 +96,3 @@ scrollTrigger: {
 }
 ```
 
-## Props
-
-<TypeTable
-  type={{
-    trigger: {
-      type: "Element",
-      default: "-",
-      description: "Element that triggers the animation.",
-    },
-    start: {
-      type: "string",
-      default: '"top bottom"',
-      description: "When to start the animation.",
-    },
-    end: {
-      type: "string",
-      default: '"bottom top"',
-      description: "When to end the animation.",
-    },
-    scrub: {
-      type: "boolean | number",
-      default: "true",
-      description: "Synchronizes animation with scroll.",
-    },
-    y: {
-      type: "number",
-      default: "-220, -150, -120",
-      description: "Vertical movement distance in pixels.",
-    },
-    ease: {
-      type: "string",
-      default: '"power2"',
-      description: "Easing function for animation.",
-    },
-  }}
-/>

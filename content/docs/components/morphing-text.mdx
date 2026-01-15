@@ -1,0 +1,75 @@
+---
+title: Morphing Text
+description: A text animation component that smoothly morphs between different words with a blur transition effect.
+---
+
+<ComponentPreview name="morphing-text-demo" description="Text morphing between words" />
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+
+<CodeBlockCommand
+  __npm__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/morphing-text.json"
+  __pnpm__="pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/morphing-text.json"
+  __yarn__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/morphing-text.json"
+  __bun__="bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/morphing-text.json"
+/>
+
+  </Tab>
+  <Tab value="Manual">
+
+<Steps>
+<Step>Copy the component:</Step>
+
+<ComponentSource name="morphing-text" title="morphing-text.tsx" />
+
+<Step>Update imports to match your project structure.</Step>
+</Steps>
+
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import { MorphingText } from "@/components/ui/morphing-text"
+```
+
+```tsx
+<MorphingText texts={["Hello", "World", "Nexvyn"]} />
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `texts` | `string[]` | Required | Array of words to cycle through |
+| `className` | `string` | - | Additional CSS classes |
+
+## Features
+
+- **Smooth transitions** - Uses blur and opacity for seamless morphing
+- **SVG filters** - Leverages SVG color matrix for crisp text edges
+- **Performance optimized** - Uses requestAnimationFrame for smooth animations
+- **Customizable timing** - Configurable morph and cooldown durations
+
+## Examples
+
+### With Custom Styling
+
+```tsx
+<MorphingText
+  texts={["Design", "Build", "Ship"]}
+  className="text-6xl text-primary"
+/>
+```
+
+### Multiple Words
+
+```tsx
+<MorphingText
+  texts={["React", "Next.js", "TypeScript", "Tailwind"]}
+/>
+```
