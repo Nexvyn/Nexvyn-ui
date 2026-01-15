@@ -1,10 +1,12 @@
 "use client"
 
-import { Navbar } from "../components/navbar"
-import { Footer } from "../components/footer"
 import { motion } from "framer-motion"
-import { ArrowRight, Box } from "lucide-react"
+import { ArrowRight } from "lucide-react"
+import { SequentialLogo } from "@/components/ui/our/home/nexvyn-logo"
 import Link from "next/link"
+import { Navbar } from "../Home/navbar"
+import { Footer } from "../Home/footer"
+
 
 export function IconsComingSoonClient() {
   return (
@@ -18,7 +20,7 @@ export function IconsComingSoonClient() {
             transition={{ duration: 0.4 }}
             className="border-border bg-muted/30 mb-8 flex h-16 w-16 items-center justify-center rounded-lg border"
           >
-            <Box className="text-foreground h-8 w-8" strokeWidth={1.5} />
+            <SequentialLogo className="text-foreground" size={56} />
           </motion.div>
 
           <motion.h1
@@ -48,8 +50,8 @@ export function IconsComingSoonClient() {
           >
             <div className="text-muted-foreground border-border bg-muted/10 flex items-center gap-2 rounded-full border border-dashed px-4 py-2 font-mono text-xs">
               <span className="relative flex h-2 w-2">
-                <span className="bg-primary absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
-                <span className="bg-primary relative inline-flex h-2 w-2 rounded-full"></span>
+                <span className="bg-green-500 absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
+                <span className="bg-green-500 relative inline-flex h-2 w-2 rounded-full"></span>
               </span>
               In Development
             </div>

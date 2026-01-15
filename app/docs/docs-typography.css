@@ -133,9 +133,7 @@
   color: var(--foreground);
 }
 
-/* ============================================
-   Code Block Responsive Behavior
-   ============================================ */
+
 
 /* Responsive code blocks */
 .prose pre,
@@ -145,9 +143,7 @@
   overflow-x: auto;
 }
 
-/* ============================================
-   Steps Component Styles
-   ============================================ */
+
 
 .steps {
   &:first-child {
@@ -167,9 +163,7 @@
   }
 }
 
-/* ============================================
-   Rehype Pretty Code Styles
-   ============================================ */
+
 
 [data-rehype-pretty-code-figure] {
   background-color: hsl(220 13% 8%);
@@ -204,9 +198,7 @@ html:not(.dark) [data-rehype-pretty-code-figure] {
   background-color: var(--muted);
 }
 
-/* ============================================
-   Line Numbers & Highlighting
-   ============================================ */
+
 
 [data-line-numbers] {
   display: grid;
@@ -275,9 +267,6 @@ html:not(.dark) [data-rehype-pretty-code-figure] {
   font-size: 0.8rem;
 }
 
-/* ============================================
-   Font Inheritance
-   ============================================ */
 
 /* Code elements use mono font */
 .prose code,

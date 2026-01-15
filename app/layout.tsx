@@ -8,6 +8,8 @@ import { SearchRegistryProvider } from "@/hooks/use-search-registry"
 import { ConfigProvider } from "@/hooks/use-config"
 import { Analytics } from "@vercel/analytics/react"
 import type { Metadata } from "next"
+import { GlobalSponsorButton } from "@/components/ui/our/common/global-sponsor-button"
+import { CommandPaletteProvider } from "@/components/ui/our/common/command-palette-context"
 
 const interTight = Inter_Tight({
   subsets: ["latin"],
@@ -79,10 +81,13 @@ export default function Layout({ children }: LayoutProps<"/">) {
         >
           <SearchRegistryProvider>
             <ConfigProvider>
-              <RootProvider search={{ enabled: false }}>{children}</RootProvider>
+              <CommandPaletteProvider>
+                <RootProvider search={{ enabled: false }}>{children}</RootProvider>
+              </CommandPaletteProvider>
             </ConfigProvider>
           </SearchRegistryProvider>
           <Analytics />
+          <GlobalSponsorButton />
         </ThemeProvider>
       </body>
     </html>

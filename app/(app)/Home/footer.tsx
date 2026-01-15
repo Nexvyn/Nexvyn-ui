@@ -1,20 +1,25 @@
 "use client"
 
 import { Button } from "@/components/ui/core/button"
-import { Github, Heart } from "lucide-react"
-import { GithubIcon } from "@/components/ui/our/common/github"
-import { FaDiscord, FaXTwitter } from "react-icons/fa6"
+import { Github, Heart, MessageSquarePlus } from "lucide-react"
+import { GithubIcon } from "@/components/ui/icons/animated/github"
+import { FaDiscord } from "react-icons/fa6"
+import { motion } from "motion/react"
 import FlowBackground from "@/components/ui/our/home/flow-background"
-import { ContactFormExample } from "@/components/ui/our/home/contact-form"
 import Link from "next/link"
+import { useCommandPalette } from "@/components/ui/our/common/command-palette-context"
+import { ContactFormExample } from "@/components/ui/our/home/contact-form"
 
 export function Footer() {
+  const { setOpen, setPage } = useCommandPalette()
   return (
     <footer className="grain dark:bg-background/80 relative overflow-hidden p-4 sm:p-6 md:p-8 dark:backdrop-blur-sm">
-      {/* FlowBackground - Audio Waveform Aesthetic */}
-      <FlowBackground />
-      <div className="text-muted absolute right-0 bottom-0 left-0 mx-auto translate-y-[16%] text-center text-[clamp(2rem,8vw,9rem)] leading-none font-bold tracking-tighter select-none">
-        nexvyn/ui
+      {/* FlowBackground - Waveform Aesthetic */}
+      <FlowBackground barCount={64} />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-0 select-none ">
+        <div className="text-muted absolute right-0 bottom-0 left-0 mx-auto translate-y-[16%] text-center text-[clamp(2rem,8vw,9rem)] leading-none font-bold tracking-tighter select-none">
+          nexvyn/ui
+        </div>
       </div>
 
       {/* Main content container with better spacing */}
@@ -54,7 +59,7 @@ export function Footer() {
               >
                 <path
                   d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"
-                  className="stroke-primary fill-none stroke-[3px] transition-[stroke-dashoffset] duration-500 ease-in-out [stroke-dashoffset:1200] group-hover:[stroke-dashoffset:0]"
+                  className="stroke-primary fill-none stroke-[3px] transition-[stroke-dashoffset] duration-200 ease-in-out [stroke-dashoffset:1200] group-hover:[stroke-dashoffset:0]"
                   strokeDasharray="1200"
                 ></path>
               </svg>
@@ -62,8 +67,14 @@ export function Footer() {
           </span>
 
           {/* Social media icons - right side on all screens */}
-          <div className="flex gap-2 sm:gap-2.5">
-            <a href="https://github.com/Nexvyn/nexvyn-ui" target="_blank" rel="noopener noreferrer">
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-2.5">
+            <motion.a
+              href="https://github.com/Nexvyn/nexvyn-ui"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <Button
                 variant="ghost"
                 size="icon"
@@ -72,33 +83,44 @@ export function Footer() {
               >
                 <GithubIcon className="size-4 sm:size-[18px]" />
               </Button>
-            </a>
-            <a href="https://twitter.com/Nexvyn" target="_blank" rel="noopener noreferrer">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="btn-3d bg-muted/50 hover:bg-muted size-9 sm:size-10"
-                aria-label="Twitter/X"
-              >
-                <FaXTwitter className="size-4 sm:size-[18px]" />
-              </Button>
-            </a>
-            <a href="https://discord.gg/gEdZg3637C" target="_blank" rel="noopener noreferrer">
+            </motion.a>
+            <motion.a
+              href="https://discord.gg/gEdZg3637C"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <Button
                 variant="ghost"
                 size="icon"
                 className="btn-3d bg-muted/50 hover:bg-muted size-9 sm:size-10"
                 aria-label="Discord"
               >
-                <FaDiscord className="size-4 sm:size-[18px]" />
+                <motion.div
+                  whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <FaDiscord className="size-4 sm:size-[18px]" />
+                </motion.div>
               </Button>
-            </a>
+            </motion.a>
 
             {/* Feedback Modal */}
-            <ContactFormExample />
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <ContactFormExample />
+            </motion.div>
 
             {/* Sponsor Button */}
-            <a href="/sponsors" aria-label="Sponsor">
+            <motion.a
+              href="/sponsors"
+              aria-label="Sponsor"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <Button
                 variant="ghost"
                 size="icon"
@@ -107,16 +129,10 @@ export function Footer() {
               >
                 <Heart className="size-4 sm:size-[18px]" />
               </Button>
-            </a>
+            </motion.a>
           </div>
         </div>
       </div>
-
-      {/* Corner decorations */}
-      {/* <span className="border-primary absolute -left-px -top-px block size-2 rounded-tl-full border-l-2 border-t-2"></span>
-      <span className="border-primary absolute -right-px -top-px block size-2 rounded-tr-full border-r-2 border-t-2"></span>
-      <span className="border-primary absolute -bottom-px -left-px block size-2 rounded-bl-full border-b-2 border-l-2"></span>
-      <span className="border-primary absolute -bottom-px -right-px block size-2 rounded-br-full border-b-2 border-r-2"></span> */}
     </footer>
   )
 }

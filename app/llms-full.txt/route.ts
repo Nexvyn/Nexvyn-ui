@@ -9,7 +9,7 @@ Description: ${metadata.description || "A lightweight documentation UI library"}
 
 File Structure Overview:
 - app/: Next.js App Router directory
-  - (app)/: Main application routes (landing pages, playground)
+  - (app)/: Main application routes (landing pages)
   - docs/: Documentation routes
   - config/: Configuration files
 - components/: React components

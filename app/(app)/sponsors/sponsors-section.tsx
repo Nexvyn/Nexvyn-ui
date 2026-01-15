@@ -1,11 +1,16 @@
 "use client"
 
-import Link from "next/link"
-import { Github, Twitter } from "lucide-react"
+import { SupportProject } from "@/components/ui/our/home/support-project"
+import { GithubIcon } from "@/components/ui/icons/animated/github"
+import { TwitterIcon } from "@/components/ui/icons/animated/twitter"
+import { LiveVisitors } from "@/components/ui/our/common/live-visitors"
 
 export function SponsorsSection() {
   return (
-    <section className="bg-background min-h-[calc(100vh-80px)] w-full rounded-3xl border border-dashed">
+    <section className="bg-background min-h-[calc(100vh-80px)] w-full rounded-3xl border border-dashed relative overflow-hidden">
+      <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-10">
+        <LiveVisitors />
+      </div>
       <div className="mx-auto max-w-2xl rounded-xl px-6 py-16 sm:py-24">
         <header className="mb-12">
           <h1 className="text-foreground mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
@@ -26,24 +31,7 @@ export function SponsorsSection() {
         </section>
 
         <section className="mb-16">
-          <h2 className="text-foreground border-border mb-6 border-b pb-3 text-xl font-semibold">
-            Become a Sponsor
-          </h2>
-          <p className="text-muted-foreground mb-6 leading-relaxed">
-            Your sponsorship helps us dedicate more time to maintaining and improving Nexvyn UI. All
-            sponsors get name or logo displayed on this page.
-          </p>
-          <div className="space-y-4">
-            <a
-              href="https://github.com/sponsors/Nexvyn"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:text-foreground/80 decoration-border hover:decoration-foreground inline-flex items-center gap-2 underline underline-offset-4 transition-colors"
-            >
-              <Github className="h-4 w-4" />
-              Sponsor on GitHub
-            </a>
-          </div>
+          <SupportProject />
         </section>
 
         <section className="mb-16">
@@ -124,7 +112,7 @@ export function SponsorsSection() {
               className="text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Twitter"
             >
-              <Twitter className="h-5 w-5" />
+              <TwitterIcon size={20} />
             </a>
             <a
               href="https://github.com/Nexvyn"
@@ -133,7 +121,7 @@ export function SponsorsSection() {
               className="text-muted-foreground hover:text-foreground transition-colors"
               aria-label="GitHub"
             >
-              <Github className="h-5 w-5" />
+              <GithubIcon size={20} />
             </a>
           </div>
         </section>

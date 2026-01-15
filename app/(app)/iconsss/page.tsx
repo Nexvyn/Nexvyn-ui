@@ -1,5 +1,5 @@
 import { Navbar } from "../components/navbar"
-import { Footer } from "../components/footer"
+import { Footer } from "../Home/footer"
 import { IconsSection } from "./icons-section"
 import { SvgLoadersSection } from "./svg-loaders-section"
 
