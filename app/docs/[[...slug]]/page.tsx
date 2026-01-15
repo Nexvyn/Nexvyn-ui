@@ -3,15 +3,14 @@ import { notFound } from "next/navigation"
 import { mdxComponents } from "@/mdx-components"
 import { ChevronLeft, ChevronRight, Copy, Check } from "lucide-react"
 import { findNeighbour } from "fumadocs-core/page-tree"
-
 import { createStaticOGMetadata } from "@/lib/metadata"
 import { source } from "@/lib/source"
 import { absoluteUrl } from "@/lib/utils"
 import { Button } from "@/components/ui/core/button"
 // import { BookmarkButton } from "@/components/ui/bookmark-button";
-import { ViewOptions } from "@/components/ui/our/docs/page-actions"
-import { ClientTOC } from "@/components/ui/our/docs/client-toc"
-import { CopyPageButton } from "@/components/ui/our/docs/copy-page-button"
+import { ViewOptions } from "@/components/docs/page-actions"
+import { ClientTOC } from "@/components/docs/client-toc"
+import { CopyPageButton } from "@/components/docs/copy-page-button"
 
 export const revalidate = false
 export const dynamic = "force-static"
@@ -44,7 +43,7 @@ export async function generateMetadata(props: { params: Promise<{ slug?: string[
     },
     twitter: {
       ...createStaticOGMetadata(doc.title, doc.description).twitter,
-      creator: "@badtz-ui",
+      creator: "@nexvyn-ui",
     },
   }
 }
@@ -70,9 +69,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-col gap-2">
             <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">{doc.title}</h1>
-            {doc.description && (
-              <p className="text-muted-foreground text-lg text-balance">{doc.description}</p>
-            )}
+
           </div>
           {/* Navigation arrows */}
           <div className="flex shrink-0 items-center gap-1 pt-1">
@@ -96,7 +93,12 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
         </div>
 
         {/* Actions bar */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-2">
+          {doc.description ? (
+            <p className="text-muted-foreground text-lg text-balance">{doc.description}</p>
+          ) : (
+            <div />
+          )}
           <ViewOptions
             markdownUrl={`/llms.mdx${page.url.replace("/docs", "")}`}
             githubUrl={`https://github.com/${owner}/${repo}/blob/main/content/docs/${page.path}`}

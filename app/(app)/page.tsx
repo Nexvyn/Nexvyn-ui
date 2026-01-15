@@ -1,6 +1,6 @@
-import { Navbar } from "./components/navbar"
-import { HeroSection } from "./components/hero-section"
-import { Footer } from "./components/footer"
+import { Navbar } from "./Home/navbar"
+import { HeroSection } from "./Home/hero-section"
+import { Footer } from "./Home/footer"
 
 export default async function Home() {
   return (
