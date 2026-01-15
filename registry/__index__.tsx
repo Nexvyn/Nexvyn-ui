@@ -20,6 +20,12 @@ const ParallaxDemo = React.lazy(() => import("@/registry/new-york-v4/examples/pa
 const MouseFollowerDemo = React.lazy(
   () => import("@/registry/new-york-v4/examples/mouse-follower-demo")
 )
+const MorphingTextDemo = React.lazy(
+  () => import("@/registry/new-york-v4/examples/morphing-text-demo")
+)
+const SpinningTextDemo = React.lazy(
+  () => import("@/registry/new-york-v4/examples/spinning-text-demo")
+)
 
 // Registry index - maps component names to their implementations
 export const Index: Record<string, RegistryEntry> = {
@@ -64,6 +70,21 @@ export const Index: Record<string, RegistryEntry> = {
     component: MouseFollowerDemo,
     description: "Interactive mouse follower with image trail effect",
   },
+
+  // Morphing Text component
+  "morphing-text-demo": {
+    name: "morphing-text-demo",
+    component: MorphingTextDemo,
+    description: "Text that smoothly morphs between words",
+  },
+
+  // Spinning Text component
+  "spinning-text-demo": {
+    name: "spinning-text-demo",
+    component: SpinningTextDemo,
+    description: "Circular text that spins around a center point",
+  },
 }
 
 export type ComponentName = keyof typeof Index
+

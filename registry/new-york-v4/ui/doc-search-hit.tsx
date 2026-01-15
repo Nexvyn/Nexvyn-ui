@@ -3,45 +3,47 @@ import Link from "next/link"
 import { CornerDownLeft, File, Hash, Text } from "lucide-react"
 
 interface DocSearchHitProps {
-  hit: any
+    hit: any
 }
 
 export function DocSearchHit({ hit }: DocSearchHitProps) {
-  const hierarchy = [hit.hierarchy.lvl0, hit.hierarchy.lvl1, hit.hierarchy.lvl2]
-    .filter(Boolean)
-    .join(" / ")
-  const mainHierarchy = hit.hierarchy.lvl1 || ""
-  let LeadingIcon = Text
-  if (!hit.content || hit.content.trim() === "") {
-    if (hit.hierarchy.lvl2) {
-      LeadingIcon = Hash
-    } else if (hit.hierarchy.lvl1) {
-      LeadingIcon = File
+    const hierarchy = [hit.hierarchy.lvl0, hit.hierarchy.lvl1, hit.hierarchy.lvl2]
+        .filter(Boolean)
+        .join(" / ")
+    const mainHierarchy = hit.hierarchy.lvl1 || ""
+    let LeadingIcon = Text
+    if (!hit.content || hit.content.trim() === "") {
+        if (hit.hierarchy.lvl2) {
+            LeadingIcon = Hash
+        } else if (hit.hierarchy.lvl1) {
+            LeadingIcon = File
+        }
     }
-  }
 
-  let mainContent = null
-  let mainContentHighlight = null
-  if (!hit.content || hit.content.trim() === "") {
-    if (hit.hierarchy.lvl2) {
-      mainContent = hit.hierarchy.lvl2
-      mainContentHighlight = hit._highlightResult?.hierarchy?.lvl2?.value || hit.hierarchy.lvl2
-    } else if (hit.hierarchy.lvl1) {
-      mainContent = hit.hierarchy.lvl1
-      mainContentHighlight = hit._highlightResult?.hierarchy?.lvl1?.value || hit.hierarchy.lvl1
+    let mainContent = null
+    let mainContentHighlight = null
+    if (!hit.content || hit.content.trim() === "") {
+        if (hit.hierarchy.lvl2) {
+            mainContent = hit.hierarchy.lvl2
+            mainContentHighlight =
+                hit._highlightResult?.hierarchy?.lvl2?.value || hit.hierarchy.lvl2
+        } else if (hit.hierarchy.lvl1) {
+            mainContent = hit.hierarchy.lvl1
+            mainContentHighlight =
+                hit._highlightResult?.hierarchy?.lvl1?.value || hit.hierarchy.lvl1
+        }
     }
-  }
 
-  return (
-    <Link
-      href={hit.url}
-      className="flex w-full cursor-pointer items-center gap-4 rounded-xl px-2 py-3"
-    >
-      <LeadingIcon className="text-foreground h-4 w-4 shrink-0 stroke-[1.5px]" />
-      <div className="min-w-0 flex-1">
-        <div className="text-foreground flex items-center gap-2">
-          <span className="truncate text-sm font-medium">
-            <style jsx>{`
+    return (
+        <Link
+            href={hit.url}
+            className="w-full px-2 py-3 flex gap-4 items-center cursor-pointer rounded-xl"
+        >
+            <LeadingIcon className="w-4 h-4 text-foreground shrink-0 stroke-[1.5px]" />
+            <div className="min-w-0 flex-1">
+                <div className="items-center gap-2 text-foreground flex">
+                    <span className="text-sm font-medium truncate">
+                        <style jsx>{`
               mark {
                 color: #2563eb;
                 background: none;
@@ -50,30 +52,30 @@ export function DocSearchHit({ hit }: DocSearchHitProps) {
                 overflow: hidden;
               }
             `}</style>
-            {mainContent ? (
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: mainContentHighlight,
-                }}
-              />
-            ) : (
-              <span
-                dangerouslySetInnerHTML={{
-                  __html:
-                    hit._snippetResult?.content?.value ||
-                    hit._highlightResult?.content?.value ||
-                    hit.content,
-                }}
-              />
-            )}
-          </span>
-        </div>
-        {hierarchy &&
-          hit.type !== "lvl1" &&
-          (hit._highlightResult?.hierarchy?.lvl1?.value !== mainContent ||
-            hit._highlightResult?.hierarchy?.lvl1?.value !== mainHierarchy) && (
-            <div className="text-muted-foreground truncate text-xs leading-tight">
-              <style jsx>{`
+                        {mainContent ? (
+                            <span
+                                dangerouslySetInnerHTML={{
+                                    __html: mainContentHighlight,
+                                }}
+                            />
+                        ) : (
+                            <span
+                                dangerouslySetInnerHTML={{
+                                    __html:
+                                        hit._snippetResult?.content?.value ||
+                                        hit._highlightResult?.content?.value ||
+                                        hit.content,
+                                }}
+                            />
+                        )}
+                    </span>
+                </div>
+                {hierarchy &&
+                    hit.type !== "lvl1" &&
+                    (hit._highlightResult?.hierarchy?.lvl1?.value !== mainContent ||
+                        hit._highlightResult?.hierarchy?.lvl1?.value !== mainHierarchy) && (
+                        <div className="text-xs text-muted-foreground leading-tight truncate">
+                            <style jsx>{`
                 mark {
                   color: #2563eb;
                   background: none;
@@ -81,17 +83,19 @@ export function DocSearchHit({ hit }: DocSearchHitProps) {
                   padding: 0;
                 }
               `}</style>
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: hit._highlightResult?.hierarchy?.lvl1?.value || mainHierarchy,
-                }}
-              />
+                            <span
+                                dangerouslySetInnerHTML={{
+                                    __html:
+                                        hit._highlightResult?.hierarchy?.lvl1?.value ||
+                                        mainHierarchy,
+                                }}
+                            />
+                        </div>
+                    )}
             </div>
-          )}
-      </div>
-      <div className="ml-auto" data-enter-icon>
-        <CornerDownLeft className="text-foreground h-4 w-4 stroke-[1.5px]" />
-      </div>
-    </Link>
-  )
+            <div className="ml-auto" data-enter-icon>
+                <CornerDownLeft className="w-4 h-4 text-foreground stroke-[1.5px]" />
+            </div>
+        </Link>
+    )
 }
