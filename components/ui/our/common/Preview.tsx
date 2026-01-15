@@ -32,7 +32,11 @@ const OPEN_IN_LINKS = [
     icon: "",
   },
   { name: "Claude", url: (code: string) => `https://claude.ai/`, icon: "" },
-  { name: "T3 Chat", url: (code: string) => `https://t3.gg/chat`, icon: "" },
+  {
+    name: "T3 Chat",
+    url: (code: string) => `https://t3.chat/new?q=${encodeURIComponent(code)}`,
+    icon: "",
+  },
 ]
 
 export function Preview({

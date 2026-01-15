@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "boxy-border",
   "type": "registry:ui",
+  "title": "Boxy Border",
   "description": "Boxy Border component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/boxy-border.tsx",
       "type": "registry:ui",
-      "target": "components/ui/boxy-border.tsx"
+      "target": "components/ui/boxy-border.tsx",
+      "content": "import React from \"react\"\r\n\r\nexport const BoxyBorder = () => {\r\n  return (\r\n    <>\r\n      <span className=\"border-primary absolute -top-px -left-px z-50 block size-2 border-t-2 border-l-2\"></span>\r\n      <span className=\"border-primary absolute -top-px -right-px z-50 block size-2 border-t-2 border-r-2\"></span>\r\n      <span className=\"border-primary absolute -bottom-px -left-px z-50 block size-2 border-b-2 border-l-2\"></span>\r\n      <span className=\"border-primary absolute -right-px -bottom-px z-50 block size-2 border-r-2 border-b-2\"></span>\r\n    </>\r\n  )\r\n}\r\n"
     }
   ]
 }

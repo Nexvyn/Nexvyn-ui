@@ -48,19 +48,32 @@
 
   /* Sonner Design System - 12-step Grayscale (Light Mode) */
   /* For documentation pages only */
-  --gray0: #fff; /* Pure white - page backgrounds */
-  --gray1: hsl(0, 0%, 99%); /* Subtle backgrounds */
-  --gray2: hsl(0, 0%, 97.3%); /* Hover states, code backgrounds */
-  --gray3: hsl(0, 0%, 95.1%); /* Borders, active states */
-  --gray4: hsl(0, 0%, 93%); /* Inline code backgrounds */
-  --gray5: hsl(0, 0%, 90.9%); /* Disabled states */
-  --gray6: hsl(0, 0%, 88.7%); /* Subtle borders */
-  --gray7: hsl(0, 0%, 85.8%); /* Active borders */
-  --gray8: hsl(0, 0%, 78%); /* Placeholder text */
-  --gray9: hsl(0, 0%, 56.1%); /* Secondary text, punctuation */
-  --gray10: hsl(0, 0%, 52.3%); /* Link underlines */
-  --gray11: hsl(0, 0%, 43.5%); /* Muted text, comments */
-  --gray12: hsl(0, 0%, 9%); /* Primary text */
+  --gray0: #fff;
+  /* Pure white - page backgrounds */
+  --gray1: hsl(0, 0%, 99%);
+  /* Subtle backgrounds */
+  --gray2: hsl(0, 0%, 97.3%);
+  /* Hover states, code backgrounds */
+  --gray3: hsl(0, 0%, 95.1%);
+  /* Borders, active states */
+  --gray4: hsl(0, 0%, 93%);
+  /* Inline code backgrounds */
+  --gray5: hsl(0, 0%, 90.9%);
+  /* Disabled states */
+  --gray6: hsl(0, 0%, 88.7%);
+  /* Subtle borders */
+  --gray7: hsl(0, 0%, 85.8%);
+  /* Active borders */
+  --gray8: hsl(0, 0%, 78%);
+  /* Placeholder text */
+  --gray9: hsl(0, 0%, 56.1%);
+  /* Secondary text, punctuation */
+  --gray10: hsl(0, 0%, 52.3%);
+  /* Link underlines */
+  --gray11: hsl(0, 0%, 43.5%);
+  /* Muted text, comments */
+  --gray12: hsl(0, 0%, 9%);
+  /* Primary text */
 
   /* Code block colors */
   --code: oklch(0.99 0 0);
@@ -110,19 +123,32 @@
 
   /* Sonner Design System - 12-step Grayscale (Dark Mode) */
   /* For documentation pages only */
-  --gray0: #000; /* Pure black - page backgrounds */
-  --gray1: hsl(0, 0%, 9.5%); /* Subtle backgrounds */
-  --gray2: hsl(0, 0%, 10.5%); /* Hover states */
-  --gray3: hsl(0, 0%, 15.8%); /* Borders */
-  --gray4: hsl(0, 0%, 18.9%); /* Code backgrounds */
-  --gray5: hsl(0, 0%, 21.7%); /* Disabled states */
-  --gray6: hsl(0, 0%, 24.7%); /* Subtle borders */
-  --gray7: hsl(0, 0%, 29.1%); /* Active borders */
-  --gray8: hsl(0, 0%, 37.5%); /* Placeholder text */
-  --gray9: hsl(0, 0%, 43%); /* Secondary text */
-  --gray10: hsl(0, 0%, 50.7%); /* Link underlines */
-  --gray11: hsl(0, 0%, 69.5%); /* Muted text */
-  --gray12: hsl(0, 0%, 93.5%); /* Primary text */
+  --gray0: #000;
+  /* Pure black - page backgrounds */
+  --gray1: hsl(0, 0%, 9.5%);
+  /* Subtle backgrounds */
+  --gray2: hsl(0, 0%, 10.5%);
+  /* Hover states */
+  --gray3: hsl(0, 0%, 15.8%);
+  /* Borders */
+  --gray4: hsl(0, 0%, 18.9%);
+  /* Code backgrounds */
+  --gray5: hsl(0, 0%, 21.7%);
+  /* Disabled states */
+  --gray6: hsl(0, 0%, 24.7%);
+  /* Subtle borders */
+  --gray7: hsl(0, 0%, 29.1%);
+  /* Active borders */
+  --gray8: hsl(0, 0%, 37.5%);
+  /* Placeholder text */
+  --gray9: hsl(0, 0%, 43%);
+  /* Secondary text */
+  --gray10: hsl(0, 0%, 50.7%);
+  /* Link underlines */
+  --gray11: hsl(0, 0%, 69.5%);
+  /* Muted text */
+  --gray12: hsl(0, 0%, 93.5%);
+  /* Primary text */
 
   /* Code block colors - Dark Mode */
   --code: oklch(0.1826 0.002 286.2);
@@ -186,10 +212,12 @@
   --color-color-3: var(--color-3);
   --color-color-2: var(--color-2);
   --color-color-1: var(--color-1);
+
   @keyframes rainbow {
     0% {
       background-position: 0%;
     }
+
     100% {
       background-position: 200%;
     }
@@ -235,6 +263,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -275,7 +304,7 @@
 /* 3D Button effect */
 .btn-3d {
   transition:
-    transform 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955),
+    transform 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955),
     background-color 0.2s,
     box-shadow 0.2s;
   box-shadow:
@@ -341,4 +370,55 @@ nav[aria-label="table of contents"] {
 
 .backface-hidden {
   backface-visibility: hidden;
+}
+
+/* Primary 3D Button (Dark in Light Mode, Light in Dark Mode) */
+.btn-3d-primary {
+  transition:
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Light Mode (Black Button) */
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.05),
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.btn-3d-primary:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.1),
+    0 6px 8px -1px rgba(0, 0, 0, 0.35),
+    0 3px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-3d-primary:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+    0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* Dark Mode (White Button) - Reuse generic btn-3d logic or similar */
+.dark .btn-3d-primary {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 2px 3px rgba(255, 255, 255, 0.06),
+    inset 0 -4px 1px rgba(0, 0, 0, 0.4);
+}
+
+.dark .btn-3d-primary:hover {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 2px 4px rgba(255, 255, 255, 0.08),
+    inset 0 -4px 1px rgba(0, 0, 0, 0.5);
+}
+
+.dark .btn-3d-primary:active {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 2px rgba(0, 0, 0, 0.3),
+    inset 0 -2px 1px rgba(0, 0, 0, 0.25);
 }

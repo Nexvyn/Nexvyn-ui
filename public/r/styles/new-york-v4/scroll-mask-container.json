@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "scroll-mask-container",
   "type": "registry:ui",
+  "title": "Scroll Mask Container",
   "description": "Scroll Mask Container component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/scroll-mask-container.tsx",
       "type": "registry:ui",
-      "target": "components/ui/scroll-mask-container.tsx"
+      "target": "components/ui/scroll-mask-container.tsx",
+      "content": "\"use client\"\r\n\r\nimport { useRef, useState, useCallback, useEffect } from \"react\"\r\nimport { cn } from \"@/lib/utils\"\r\n\r\ninterface ScrollMaskContainerProps {\r\n  children: React.ReactNode\r\n  className?: string\r\n  maskHeight?: number\r\n}\r\n\r\n/**\r\n * A container with independent scrolling and conditional gradient masks\r\n * that show/hide based on scroll position to indicate more content.\r\n */\r\nexport function ScrollMaskContainer({\r\n  children,\r\n  className,\r\n  maskHeight = 32,\r\n}: ScrollMaskContainerProps) {\r\n  const scrollRef = useRef<HTMLDivElement>(null)\r\n  const [scrollState, setScrollState] = useState({\r\n    atTop: true,\r\n    atBottom: false,\r\n  })\r\n\r\n  const handleScroll = useCallback(() => {\r\n    const el = scrollRef.current\r\n    if (!el) return\r\n\r\n    const { scrollTop, scrollHeight, clientHeight } = el\r\n    setScrollState({\r\n      atTop: scrollTop <= 1,\r\n      atBottom: scrollTop + clientHeight >= scrollHeight - 1,\r\n    })\r\n  }, [])\r\n\r\n  // Check initial scroll state\r\n  useEffect(() => {\r\n    handleScroll()\r\n  }, [handleScroll])\r\n\r\n  return (\r\n    <div className=\"relative h-full\">\r\n      {/* Top gradient mask - visible when scrolled down */}\r\n      <div\r\n        className={cn(\r\n          \"pointer-events-none absolute top-0 right-0 left-0 z-10\",\r\n          \"from-background bg-gradient-to-b to-transparent\",\r\n          \"transition-opacity duration-200\",\r\n          scrollState.atTop ? \"opacity-0\" : \"opacity-100\"\r\n        )}\r\n        style={{ height: `${maskHeight}px` }}\r\n      />\r\n\r\n      {/* Scrollable content */}\r\n      <div\r\n        ref={scrollRef}\r\n        onScroll={handleScroll}\r\n        className={cn(\"scrollbar-thin h-full overflow-y-auto\", className)}\r\n      >\r\n        {children}\r\n      </div>\r\n\r\n      {/* Bottom gradient mask - visible when not at bottom */}\r\n      <div\r\n        className={cn(\r\n          \"pointer-events-none absolute right-0 bottom-0 left-0 z-10\",\r\n          \"from-background bg-gradient-to-t to-transparent\",\r\n          \"transition-opacity duration-200\",\r\n          scrollState.atBottom ? \"opacity-0\" : \"opacity-100\"\r\n        )}\r\n        style={{ height: `${maskHeight}px` }}\r\n      />\r\n    </div>\r\n  )\r\n}\r\n"
     }
   ]
 }

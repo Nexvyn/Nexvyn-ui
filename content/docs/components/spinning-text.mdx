@@ -1,0 +1,93 @@
+---
+title: Spinning Text
+description: A circular text animation component that rotates text around a central point.
+---
+
+<ComponentPreview name="spinning-text-demo" description="Circular spinning text animation" />
+
+## Installation
+
+<Tabs items={["CLI", "Manual"]}>
+  <Tab value="CLI">
+
+<CodeBlockCommand
+  __npm__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/spinning-text.json"
+  __pnpm__="pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/spinning-text.json"
+  __yarn__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/spinning-text.json"
+  __bun__="bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/spinning-text.json"
+/>
+
+  </Tab>
+  <Tab value="Manual">
+
+<Steps>
+<Step>Install dependencies:</Step>
+
+```bash
+npm install motion
+```
+
+<Step>Copy the component:</Step>
+
+<ComponentSource name="spinning-text" title="spinning-text.tsx" />
+
+<Step>Update imports to match your project structure.</Step>
+</Steps>
+
+  </Tab>
+</Tabs>
+
+## Usage
+
+```tsx
+import { SpinningText } from "@/components/ui/spinning-text"
+```
+
+```tsx
+<SpinningText>nexvyn • ui • components •</SpinningText>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `string \| string[]` | Required | Text to display in circular layout |
+| `duration` | `number` | `10` | Duration of one full rotation in seconds |
+| `reverse` | `boolean` | `false` | Rotate counter-clockwise |
+| `radius` | `number` | `5` | Radius of the text circle (in ch units) |
+| `transition` | `Transition` | - | Framer Motion transition config |
+| `variants` | `object` | - | Custom animation variants |
+| `className` | `string` | - | Additional CSS classes |
+
+## Features
+
+- **Smooth rotation** - Powered by Framer Motion for silky animations
+- **Customizable radius** - Control the size of the text circle
+- **Reversible direction** - Spin clockwise or counter-clockwise
+- **Accessible** - Includes screen reader text
+
+## Examples
+
+### Slower Rotation
+
+```tsx
+<SpinningText duration={15}>
+  view • more • info •
+</SpinningText>
+```
+
+### Reverse Direction
+
+```tsx
+<SpinningText reverse>
+  loading • please • wait •
+</SpinningText>
+```
+
+### Larger Radius
+
+```tsx
+<SpinningText radius={8} className="text-2xl">
+  nexvyn ui components •
+</SpinningText>
+```

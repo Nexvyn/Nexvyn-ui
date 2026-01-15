@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "hover-video",
   "type": "registry:ui",
+  "title": "Hover Video",
   "description": "Hover Video component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/hover-video.tsx",
       "type": "registry:ui",
-      "target": "components/ui/hover-video.tsx"
+      "target": "components/ui/hover-video.tsx",
+      "content": "\"use client\"\r\n\r\nimport type React from \"react\"\r\n\r\nimport { useState } from \"react\"\r\nimport { motion } from \"motion/react\"\r\n\r\ninterface HoverVideoProps {\r\n  thumbnail: string // URL for the image\r\n  videoSrc: string // URL for the video\r\n  className?: string // Optional additional styling\r\n  delay?: number // Optional delay for the animation\r\n}\r\n\r\nconst HoverVideo: React.FC<HoverVideoProps> = ({ thumbnail, videoSrc, className, delay = 0 }) => {\r\n  const [isHovered, setIsHovered] = useState(false)\r\n\r\n  return (\r\n    <motion.div\r\n      className={`relative overflow-hidden ${className}`}\r\n      onMouseEnter={() => setIsHovered(true)}\r\n      onMouseLeave={() => setIsHovered(false)}\r\n      animate={{ opacity: 1 }}\r\n      initial={{ opacity: 0 }}\r\n      transition={{ duration: 0.2, ease: \"easeOut\", delay: delay }}\r\n    >\r\n      {/* Thumbnail */}\r\n      <motion.img\r\n        src={thumbnail}\r\n        alt=\"Thumbnail\"\r\n        className=\"absolute inset-0 h-full w-full object-cover\"\r\n        animate={{ opacity: isHovered ? 0 : 1 }}\r\n        transition={{ duration: 0 }}\r\n      />\r\n      {/* Video */}\r\n      <motion.video\r\n        src={videoSrc}\r\n        className=\"absolute inset-0 h-full w-full object-cover\"\r\n        autoPlay\r\n        muted\r\n        loop\r\n        poster={thumbnail}\r\n        playsInline\r\n        animate={{ opacity: isHovered ? 1 : 0 }}\r\n        transition={{ duration: 0 }}\r\n      />\r\n    </motion.div>\r\n  )\r\n}\r\n\r\nexport default HoverVideo\r\n"
     }
   ]
 }

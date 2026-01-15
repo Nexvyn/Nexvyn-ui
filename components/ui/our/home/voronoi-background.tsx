@@ -29,8 +29,8 @@ function throttle<T extends (...args: any[]) => any>(
 interface VoronoiBackgroundProps {
   className?: string
   resizeDelay?: number
-  enableOnMobile?: boolean // Option to disable on mobile for better performance
-  lazyLoad?: boolean // Option to delay loading
+  enableOnMobile?: boolean 
+  lazyLoad?: boolean 
 }
 
 const VoronoiBackground = memo(

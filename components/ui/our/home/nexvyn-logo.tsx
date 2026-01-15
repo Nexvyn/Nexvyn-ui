@@ -33,9 +33,10 @@ function SequentialLogo({ className, size = 80 }: { className?: string; size?: n
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{
-              duration: 0.4,
-              delay: i * 0.1,
-              ease: "easeOut",
+              type: "spring",
+              stiffness: 300,
+              damping: 20,
+              delay: i * 0.05,
             }}
           />
         ))}

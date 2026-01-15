@@ -1,12 +1,16 @@
 {
-  "name": "@your-org/ui",
+  "name": "@nexvyn/ui",
   "version": "0.1.0",
-  "description": "A modern React component library with shadcn-style registry",
+  "description": "A modern React component library with beautiful animated components",
   "registry": {
-    "url": "https://ui.your-domain.com/registry",
-    "style": "default"
+    "url": "https://ui.nexvyn.dev/r",
+    "style": "new-york-v4"
   },
-  "components": ["button", "card", "input"],
+  "components": [
+    "button",
+    "card",
+    "input"
+  ],
   "themes": [
     {
       "name": "default",

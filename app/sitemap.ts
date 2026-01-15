@@ -1,10 +1,9 @@
 import { MetadataRoute } from "next"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://ui.nexvyn.com"
+  const baseUrl = "https://ui.nexvyn.dev"
 
-  // Static pages
-  const staticPages = ["", "/docs", "/icons", "/sponsors", "/logo-preview"]
+  const staticPages = ["", "/docs", "/icons", "/sponsors"]
 
   // Docs pages - add your doc slugs here
   const docPages = [

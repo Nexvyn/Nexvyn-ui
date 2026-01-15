@@ -1,126 +1,113 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useRouter } from "next/navigation"
-import { Book, FileCode, Home, Palette, LayoutGrid, Heart, Search, Command } from "lucide-react"
+import * as React from "react";
+import {
+    Calculator,
+    Calendar,
+    CreditCard,
+    Settings,
+    Smile,
+    User,
+} from "lucide-react";
 
 import {
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from "@/components/ui/core/command"
-import { Button } from "@/components/ui/core/button"
-
-// Page navigation items
-const PAGES = [
-  { name: "Home", href: "/", icon: Home },
-  { name: "Documentation", href: "/docs", icon: Book },
-  { name: "Icons", href: "/icons", icon: Palette },
-  { name: "Sponsors", href: "/sponsors", icon: Heart },
-]
-
-// Component items - add your components here
-const COMPONENTS = [
-  { name: "Button", href: "/docs/components/button" },
-  { name: "Card", href: "/docs/components/card" },
-  { name: "Input", href: "/docs/components/input" },
-  { name: "Dialog", href: "/docs/components/dialog" },
-  { name: "Dropdown Menu", href: "/docs/components/dropdown-menu" },
-  { name: "Toast", href: "/docs/components/toast" },
-  { name: "Tabs", href: "/docs/components/tabs" },
-  { name: "Avatar", href: "/docs/components/avatar" },
-]
+    CommandDialog,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    CommandSeparator,
+    CommandShortcut,
+} from "@/components/ui/core/command";
+import { Button } from "@/components/ui/core/button";
+import { SearchIcon } from "@/components/ui/core/search";
 
 export function CommandPalette() {
-  const [open, setOpen] = React.useState(false)
-  const [isMac, setIsMac] = React.useState(false)
-  const [search, setSearch] = React.useState("")
-  const router = useRouter()
+    const [open, setOpen] = React.useState(false);
+    const [isMac, setIsMac] = React.useState(false);
 
-  // Toggle on ⌘K or Ctrl+K
-  React.useEffect(() => {
-    setIsMac(typeof window !== "undefined" && /Mac|iPhone|iPad|iPod/.test(navigator.platform))
+    // Toggle on ⌘J or Ctrl+J
+    React.useEffect(() => {
+        setIsMac(
+            typeof window !== "undefined" &&
+            /Mac|iPhone|iPad|iPod/.test(navigator.platform)
+        );
 
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setOpen((prev) => !prev)
-      }
-    }
+        const down = (e: KeyboardEvent) => {
+            if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
+                e.preventDefault();
+                setOpen((prev) => !prev);
+            }
+        };
 
-    document.addEventListener("keydown", down)
-    return () => document.removeEventListener("keydown", down)
-  }, [])
+        document.addEventListener("keydown", down);
+        return () => document.removeEventListener("keydown", down);
+    }, []);
 
-  const handleSelect = (href: string) => {
-    setOpen(false)
-    setSearch("")
-    router.push(href)
-  }
+    return (
+        <>
+            <Button variant={"outline"} className="text-sm text-muted-foreground">
+                <SearchIcon /> <span className=" mr-10">Search...</span>
+                <kbd className="bg-muted font-pixelify text-muted-foreground pointer-events-none inline-flex h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium select-none">
+                    {isMac ? (
+                        <>
+                            <span className="text-xs">⌘</span>J
+                        </>
+                    ) : (
+                        <>Ctrl+J</>
+                    )}
+                </kbd>
+            </Button>
 
-  return (
-    <>
-      <Button variant="ghost" className="btn-3d gap-2" onClick={() => setOpen(true)}>
-        <Search className="size-4" />
-        <span className="text-muted-foreground hidden text-sm sm:inline">Search...</span>
-        <kbd className="bg-muted text-muted-foreground pointer-events-none hidden h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium select-none sm:inline-flex">
-          {isMac ? (
-            <>
-              <Command className="size-3" />K
-            </>
-          ) : (
-            <>Ctrl+K</>
-          )}
-        </kbd>
-      </Button>
+            <CommandDialog open={open} onOpenChange={setOpen}>
+                <CommandInput placeholder="Type a command or search..." />
 
-      <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput
-          placeholder="Search pages, components..."
-          value={search}
-          onValueChange={setSearch}
-        />
+                <CommandList>
+                    <CommandEmpty>No results found.</CommandEmpty>
 
-        <CommandList>
-          <CommandEmpty>No results found for "{search}"</CommandEmpty>
+                    {/* Suggestions */}
+                    <CommandGroup heading="Suggestions">
+                        <CommandItem>
+                            <Calendar />
+                            <span>Calendar</span>
+                        </CommandItem>
 
-          {/* Pages */}
-          <CommandGroup heading="Pages">
-            {PAGES.map((page) => (
-              <CommandItem
-                key={page.href}
-                value={page.name}
-                onSelect={() => handleSelect(page.href)}
-                className="cursor-pointer"
-              >
-                <page.icon className="mr-2 size-4" />
-                <span>{page.name}</span>
-              </CommandItem>
-            ))}
-          </CommandGroup>
+                        <CommandItem>
+                            <Smile />
+                            <span>Search Emoji</span>
+                        </CommandItem>
 
-          <CommandSeparator />
+                        <CommandItem>
+                            <Calculator />
+                            <span>Calculator</span>
+                        </CommandItem>
+                    </CommandGroup>
 
-          {/* Components */}
-          <CommandGroup heading="Components">
-            {COMPONENTS.map((comp) => (
-              <CommandItem
-                key={comp.href}
-                value={comp.name}
-                onSelect={() => handleSelect(comp.href)}
-                className="cursor-pointer"
-              >
-                <LayoutGrid className="mr-2 size-4" />
-                <span>{comp.name}</span>
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </CommandList>
-      </CommandDialog>
-    </>
-  )
+                    <CommandSeparator />
+
+                    {/* Settings */}
+                    <CommandGroup heading="Settings">
+                        <CommandItem>
+                            <User />
+                            <span>Profile</span>
+                            <CommandShortcut>{isMac ? "⌘P" : "Ctrl+P"}</CommandShortcut>
+                        </CommandItem>
+
+                        <CommandItem>
+                            <CreditCard />
+                            <span>Billing</span>
+                            <CommandShortcut>{isMac ? "⌘B" : "Ctrl+B"}</CommandShortcut>
+                        </CommandItem>
+
+                        <CommandItem>
+                            <Settings />
+                            <span>Settings</span>
+                            <CommandShortcut>{isMac ? "⌘S" : "Ctrl+S"}</CommandShortcut>
+                        </CommandItem>
+                    </CommandGroup>
+                </CommandList>
+            </CommandDialog>
+        </>
+    );
 }

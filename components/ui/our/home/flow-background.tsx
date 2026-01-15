@@ -95,6 +95,12 @@ const FlowBackground: React.FC<FlowBackgroundProps> = ({
           transform-origin: bottom;
           animation: flowPulseScale var(--duration, 2s) ease-in-out var(--delay, 0s) infinite;
         }
+        @media (prefers-reduced-motion: reduce) {
+          .flow-bar-pulse {
+            animation: none !important;
+            transform: scaleY(1) !important;
+          }
+        }
       `,
         }}
       />
@@ -103,7 +109,7 @@ const FlowBackground: React.FC<FlowBackgroundProps> = ({
         {bars.map((bar, i) => (
           <div
             key={i}
-            className="flow-bar-pulse min-w-[1px] flex-1 rounded-t-[1px]"
+            className="flow-bar-pulse min-w-[1px] flex-1 rounded-sm"
             style={{
               height: `${bar.height * 100}%`,
               opacity: bar.opacity,

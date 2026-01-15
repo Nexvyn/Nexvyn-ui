@@ -13,25 +13,11 @@ description: Interactive mouse follower effect with image trails that respond to
 <Tabs items={["CLI", "Manual"]}>
   <Tab value="CLI">
 
-<CodeBlock
-  tabs={[
-    {
-      label: "npm",
-      code: "npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/mouse-follower.json",
-    },
-    {
-      label: "pnpm",
-      code: "pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/mouse-follower.json",
-    },
-    {
-      label: "yarn",
-      code: "npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/mouse-follower.json",
-    },
-    {
-      label: "bun",
-      code: "bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/mouse-follower.json",
-    },
-  ]}
+<CodeBlockCommand
+  __npm__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/mouse-follower.json"
+  __pnpm__="pnpm dlx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/mouse-follower.json"
+  __yarn__="npx shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/mouse-follower.json"
+  __bun__="bunx --bun shadcn@latest add https://ui.nexvyn.dev/r/styles/new-york-v4/mouse-follower.json"
 />
 
   </Tab>
@@ -101,29 +87,3 @@ Adjust the container dimensions:
 <div className="h-screen w-full" ref={containerRef}></div>
 ```
 
-## Props
-
-<TypeTable
-  type={{
-    images: {
-      type: "string[]",
-      default: "11 cosmos images",
-      description: "Array of image URLs for the trail effect.",
-    },
-    imageLifespan: {
-      type: "number",
-      default: "600",
-      description: "Duration in ms before image starts fading.",
-    },
-    mouseThreshold: {
-      type: "number",
-      default: "40",
-      description: "Minimum cursor distance to spawn new image.",
-    },
-    baseImageSize: {
-      type: "number",
-      default: "120",
-      description: "Base size for trail images in pixels.",
-    },
-  }}
-/>

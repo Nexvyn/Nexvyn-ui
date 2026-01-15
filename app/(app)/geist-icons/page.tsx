@@ -1,5 +1,3 @@
-import { Navbar } from "../components/navbar"
-import { Footer } from "../components/footer"
 import { GeistIconsSection } from "./geist-icons-section"
 import { Metadata } from "next"
 
@@ -30,9 +28,7 @@ export const metadata: Metadata = {
 export default function GeistIconsPage() {
   return (
     <div className="flex w-full flex-col gap-2 p-2 dark:bg-[#181818]">
-      <Navbar />
       <GeistIconsSection />
-      <Footer />
     </div>
   )
 }

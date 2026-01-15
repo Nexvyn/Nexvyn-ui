@@ -154,7 +154,7 @@ const MouseFollower2 = () => {
         }
       `}</style>
 
-      <div className="h-full min-h-[300px] w-full" ref={containerRef}></div>
+      <div className="h-full min-h-[300px] w-full bg-background" ref={containerRef}></div>
     </>
   )
 }

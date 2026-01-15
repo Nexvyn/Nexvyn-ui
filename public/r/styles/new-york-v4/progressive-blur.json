@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "progressive-blur",
   "type": "registry:ui",
+  "title": "Progressive Blur",
   "description": "Progressive Blur component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/progressive-blur.tsx",
       "type": "registry:ui",
-      "target": "components/ui/progressive-blur.tsx"
+      "target": "components/ui/progressive-blur.tsx",
+      "content": "\"use client\"\r\nimport { cn } from \"@/lib/utils\"\r\nimport { HTMLMotionProps, motion } from \"motion/react\"\r\n\r\nexport const GRADIENT_ANGLES = {\r\n  top: 0,\r\n  right: 90,\r\n  bottom: 180,\r\n  left: 270,\r\n}\r\n\r\nexport type ProgressiveBlurProps = {\r\n  direction?: keyof typeof GRADIENT_ANGLES\r\n  blurLayers?: number\r\n  className?: string\r\n  blurIntensity?: number\r\n} & HTMLMotionProps<\"div\">\r\n\r\nexport function ProgressiveBlur({\r\n  direction = \"bottom\",\r\n  blurLayers = 8,\r\n  className,\r\n  blurIntensity = 0.25,\r\n  ...props\r\n}: ProgressiveBlurProps) {\r\n  const layers = Math.max(blurLayers, 2)\r\n  const segmentSize = 1 / (blurLayers + 1)\r\n\r\n  return (\r\n    <div className={cn(\"relative\", className)}>\r\n      {Array.from({ length: layers }).map((_, index) => {\r\n        const angle = GRADIENT_ANGLES[direction]\r\n        const gradientStops = [\r\n          index * segmentSize,\r\n          (index + 1) * segmentSize,\r\n          (index + 2) * segmentSize,\r\n          (index + 3) * segmentSize,\r\n        ].map(\r\n          (pos, posIndex) =>\r\n            `rgba(255, 255, 255, ${posIndex === 1 || posIndex === 2 ? 1 : 0}) ${pos * 100}%`\r\n        )\r\n\r\n        const gradient = `linear-gradient(${angle}deg, ${gradientStops.join(\", \")})`\r\n\r\n        return (\r\n          <motion.div\r\n            key={index}\r\n            className=\"pointer-events-none absolute inset-0 rounded-[inherit]\"\r\n            style={{\r\n              maskImage: gradient,\r\n              WebkitMaskImage: gradient,\r\n              backdropFilter: `blur(${index * blurIntensity}px)`,\r\n              WebkitBackdropFilter: `blur(${index * blurIntensity}px)`,\r\n            }}\r\n            {...props}\r\n          />\r\n        )\r\n      })}\r\n    </div>\r\n  )\r\n}\r\n"
     }
   ]
 }

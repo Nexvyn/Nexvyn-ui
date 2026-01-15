@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "action-icons",
   "type": "registry:ui",
+  "title": "Action Icons",
   "description": "Action Icons component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/action-icons.tsx",
       "type": "registry:ui",
-      "target": "components/ui/action-icons.tsx"
+      "target": "components/ui/action-icons.tsx",
+      "content": "\"use client\"\r\n\r\nimport { cn } from \"@/lib/utils\"\r\nimport { motion, useAnimation } from \"motion/react\"\r\nimport type { Variants } from \"motion/react\"\r\n\r\n// V0 Icon animation variants\r\nconst V0_VARIANTS: Variants = {\r\n  normal: { scale: 1 },\r\n  animate: {\r\n    scale: [1, 1.15, 1],\r\n    transition: {\r\n      duration: 0.6,\r\n      repeat: Infinity,\r\n      ease: \"easeInOut\",\r\n    },\r\n  },\r\n}\r\n\r\n// Animated V0 Icon component\r\nexport function V0Icon({ className }: { className?: string }) {\r\n  const controls = useAnimation()\r\n\r\n  return (\r\n    <div\r\n      className={cn(\"flex items-center justify-center\", className)}\r\n      onMouseEnter={() => controls.start(\"animate\")}\r\n      onMouseLeave={() => controls.start(\"normal\")}\r\n    >\r\n      <motion.svg\r\n        aria-label=\"v0 logomark\"\r\n        viewBox=\"0 0 147 70\"\r\n        fill=\"none\"\r\n        xmlns=\"http://www.w3.org/2000/svg\"\r\n        className=\"h-full w-full\"\r\n        variants={V0_VARIANTS}\r\n        animate={controls}\r\n        initial=\"normal\"\r\n      >\r\n        <path\r\n          d=\"M56 50.2031V14H70V60.1562C70 65.5928 65.5928 70 60.1562 70C57.5605 70 54.9982 68.9992 53.1562 67.1573L0 14H19.7969L56 50.2031Z\"\r\n          fill=\"currentColor\"\r\n        />\r\n        <path\r\n          d=\"M147 56H133V23.9531L100.953 56H133V70H96.6875C85.8144 70 77 61.1856 77 50.3125V14H91V46.1562L123.156 14H91V0H127.312C138.186 0 147 8.81439 147 19.6875V56Z\"\r\n          fill=\"currentColor\"\r\n        />\r\n      </motion.svg>\r\n    </div>\r\n  )\r\n}\r\n\r\n// Terminal line animation variants\r\nconst LINE_VARIANTS: Variants = {\r\n  normal: { opacity: 1 },\r\n  animate: {\r\n    opacity: [1, 0, 1],\r\n    transition: {\r\n      duration: 0.8,\r\n      repeat: Infinity,\r\n      ease: \"linear\",\r\n    },\r\n  },\r\n}\r\n\r\n// Animated Terminal Icon component\r\nexport function TerminalIcon({ className, size = 14 }: { className?: string; size?: number }) {\r\n  const controls = useAnimation()\r\n\r\n  return (\r\n    <div\r\n      className={cn(\"flex items-center justify-center\", className)}\r\n      onMouseEnter={() => controls.start(\"animate\")}\r\n      onMouseLeave={() => controls.start(\"normal\")}\r\n    >\r\n      <svg\r\n        xmlns=\"http://www.w3.org/2000/svg\"\r\n        width={size}\r\n        height={size}\r\n        viewBox=\"0 0 24 24\"\r\n        fill=\"none\"\r\n        stroke=\"currentColor\"\r\n        strokeWidth=\"2\"\r\n        strokeLinecap=\"round\"\r\n        strokeLinejoin=\"round\"\r\n      >\r\n        <polyline points=\"4 17 10 11 4 5\" />\r\n        <motion.line\r\n          x1=\"12\"\r\n          x2=\"20\"\r\n          y1=\"19\"\r\n          y2=\"19\"\r\n          variants={LINE_VARIANTS}\r\n          animate={controls}\r\n          initial=\"normal\"\r\n        />\r\n      </svg>\r\n    </div>\r\n  )\r\n}\r\n"
     }
   ]
 }
