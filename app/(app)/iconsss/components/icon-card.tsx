@@ -4,7 +4,7 @@ import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { Copy, Check } from "lucide-react"
 import { Button } from "@/components/ui/core/button"
-import { V0Icon, TerminalIcon } from "@/components/ui/our/common/action-icons"
+import { V0Icon, TerminalIcon } from "@/components/ui/icons/animated/action-icons"
 
 interface IconCardProps {
   name: string
