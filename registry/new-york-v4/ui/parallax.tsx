@@ -40,9 +40,9 @@ const Parallax = () => {
   })
 
   return (
-    <div className="bg-[#a5a5a5] text-9xl text-[#ffffff57]">
+    <div className="bg-muted text-9xl text-muted-foreground/30">
       <div ref={containerRef} className="flex h-screen w-full items-start justify-center">
-        <div className="relative mt-10 border-2">
+        <div className="relative mt-10 border-2 border-border">
           <img
             src="https://cdn.cosmos.so/493d0389-aea0-4144-8cdf-3fdaff93b364.?format=jpeg"
             alt="Main parallax image"
@@ -71,7 +71,7 @@ const Parallax = () => {
           />
         </div>
       </div>
-      <div className="h-screen w-full"></div>
+      <div className="h-screen w-full bg-background"></div>
     </div>
   )
 }

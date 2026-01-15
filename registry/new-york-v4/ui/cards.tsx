@@ -29,52 +29,45 @@ const CardStackAnimate = () => {
     })
   })
 
-  const colors = [
-    { name: "Pink", class: "bg-pink-300", link: "/card_animation/pink.png" },
-    { name: "Blue", class: "bg-blue-300", link: "/card_animation/blue.png" },
-    {
-      name: "Yellow",
-      class: "bg-yellow-200",
-      link: "/card_animation/yellow.png",
-    },
-    { name: "Green", class: "bg-green-200", link: "/card_animation/green.png" },
-    {
-      name: "Purple",
-      class: "bg-purple-200",
-      link: "/card_animation/purple.png",
-    },
-    {
-      name: "Orange",
-      class: "bg-orange-200",
-      link: "/card_animation/orange.png",
-    },
+  const images = [
+    "https://cdn.cosmos.so/9beb0a06-e008-4b95-a5b8-15c2d255a4c4?format=jpeg",
+    "https://cdn.cosmos.so/6a854a1b-5c06-45b1-b055-4a4652ba4e21?format=jpeg",
+    "https://cdn.cosmos.so/3c35a1b1-717b-4219-9282-881a762724f2?format=jpeg",
+    "https://cdn.cosmos.so/8a6998b4-fce7-48c4-b40c-9b90bcf0007c?format=jpeg",
+    "https://cdn.cosmos.so/f798acc8-6bc8-4f2c-ace2-2440f2be4795?format=jpeg",
+    "https://cdn.cosmos.so/39a80b7b-29fb-4079-a251-176df0fa15eb?format=jpeg",
+    "https://cdn.cosmos.so/dfa2ba1c-97b6-44ba-a68b-7c619c9d416b?format=jpeg",
+    "https://cdn.cosmos.so/97de8d7c-f9c0-4625-838f-3aaf8c286cdb?format=jpeg",
+    "https://cdn.cosmos.so/71e10d8f-c92d-4761-96ce-4b6cc9eedcbe?format=jpeg",
+    "https://cdn.cosmos.so/0cff1394-f353-4c9e-87f7-37c63d165bf9?format=jpeg",
+    "https://cdn.cosmos.so/15a7b84c-ba74-470f-8813-25eb0a0d8ba2?format=jpeg",
   ]
 
   return (
-    <div className="h-full w-full bg-black">
+    <div className="h-full w-full bg-background">
       <div
         ref={first}
-        className="relative flex h-screen w-full items-center justify-center bg-black"
+        className="relative flex h-screen w-full items-center justify-center bg-background"
       >
-        <div className="text-9xl font-light text-white">HEY GSAPPPPP</div>
-        {colors.map((color, i) => (
+        <div className="text-9xl font-light text-foreground">Hey Nexvyn</div>
+        {images.map((src, i) => (
           <div
             key={i}
-            className={`card absolute h-[400px] w-[300px] rounded-3xl shadow-lg ${color.class} overflow-hidden p-4`}
+            className="card absolute h-[400px] w-[300px] overflow-hidden rounded-3xl shadow-lg"
             style={{
-              left: `calc(50% + (${i * 70}px - ${(colors.length / 2) * 70}px))`,
-              transform: `translateX(-50%) rotate(${(i - colors.length / 2) * 10}deg)`,
+              left: `calc(50% + (${i * 70}px - ${(images.length / 2) * 70}px))`,
+              transform: `translateX(-50%) rotate(${(i - images.length / 2) * 10}deg)`,
             }}
           >
-            <div className="flex justify-between">
-              <div className="text-xs text-neutral-700">Card {i + 1}</div>
-              <div className="text-xs text-neutral-700">Color {color.class}</div>
-            </div>
-            <img src={color.link} alt={color.name} className="absolute left-0" />
+            <img
+              src={src}
+              alt={`Card ${i + 1}`}
+              className="h-full w-full object-cover"
+            />
           </div>
         ))}
       </div>
-      <div className="flex h-screen w-full items-center justify-center">hi</div>
+      <div className="flex h-screen w-full items-center justify-center bg-background text-9xl font-light text-foreground">END</div>
     </div>
   )
 }
