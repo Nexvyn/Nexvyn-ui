@@ -1,10 +1,11 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { mdxComponents } from "@/mdx-components"
-import { ChevronLeft, ChevronRight, Copy, Check } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { findNeighbour } from "fumadocs-core/page-tree"
 import { createStaticOGMetadata } from "@/lib/metadata"
 import { source } from "@/lib/source"
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { absoluteUrl } from "@/lib/utils"
 import { Button } from "@/components/ui/core/button"
 // import { BookmarkButton } from "@/components/ui/bookmark-button";
