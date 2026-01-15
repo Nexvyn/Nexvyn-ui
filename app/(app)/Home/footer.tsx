@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/core/button"
-import { Heart, MessageSquarePlus } from "lucide-react"
+import { Heart } from "lucide-react"
 import { GithubIcon } from "@/components/ui/icons/animated/github"
 import { FaDiscord } from "react-icons/fa6"
 import { motion } from "motion/react"
