@@ -30,3 +30,12 @@ sponsors-page-content
 
 /home
 .vscode
+
+# icons (not ready for release)
+/app/(app)/iconsss
+/app/(app)/geist-icons
+/scripts
+
+# project files
+.cursorrules
+project_struc.md
