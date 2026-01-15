@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "inertia",
   "type": "registry:ui",
+  "title": "Inertia",
   "description": "Inertia component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/inertia.tsx",
       "type": "registry:ui",
-      "target": "components/ui/inertia.tsx"
+      "target": "components/ui/inertia.tsx",
+      "content": "// \"use client\";\r\n// import { useEffect, useRef } from \"react\";\r\n// import { gsap } from \"gsap\";\r\n// import { InertiaPlugin } from \"gsap/InertiaPlugin\";\r\n// import { useGSAP } from \"@gsap/react\";\r\n\r\n// gsap.registerPlugin(InertiaPlugin);\r\n\r\n// const images = [\r\n//   \"https://i.pinimg.com/736x/63/5b/b8/635bb894b77cf88c78873aa43f02150e.jpg\",\r\n//   \"https://i.pinimg.com/736x/1b/15/f2/1b15f21748612520d08c90c1b883627e.jpg\",\r\n//   \"https://i.pinimg.com/736x/5e/31/d0/5e31d02ecfe0fed9c4e7767ebb86fe77.jpg\",\r\n//   \"https://i.pinimg.com/736x/1d/66/96/1d669647743a55264389471098adc3bf.jpg\",\r\n//   \"https://i.pinimg.com/736x/f4/3c/9f/f43c9f0f5bf4a70df07fa31d307ba48e.jpg\",\r\n//   \"https://i.pinimg.com/1200x/ed/14/71/ed14717f99c678ffd75ba46df2245aa9.jpg\",\r\n//   \"https://i.pinimg.com/736x/87/b2/d5/87b2d5a8653c7d06d7f3b5df5ad75bbf.jpg\",\r\n//   \"https://i.pinimg.com/736x/69/25/2a/69252a688a59bcd684e43eb06a5629da.jpg\",\r\n//   \"https://i.pinimg.com/736x/2a/eb/7c/2aeb7cbaeb168fe023d36a5b13485e9c.jpg\",\r\n// ];\r\n\r\n// const InertiaCards = () => {\r\n//   const deltaX = useRef(0);\r\n//   const deltaY = useRef(0);\r\n\r\n//   useEffect(() => {\r\n//     let oldX = 0;\r\n//     let oldY = 0;\r\n\r\n//     const handleUpdateDelta = (e: any) => {\r\n//       deltaX.current = e.clientX - oldX;\r\n//       deltaY.current = e.clientY - oldY;\r\n\r\n//       oldX = e.clientX;\r\n//       oldY = e.clientY;\r\n//     };\r\n\r\n//     window.addEventListener(\"mousemove\", handleUpdateDelta);\r\n\r\n//     return () => {\r\n//       window.removeEventListener(\"mousemove\", handleUpdateDelta);\r\n//     };\r\n//   }, []);\r\n\r\n//   useGSAP(() => {\r\n//     const cards = gsap.utils.toArray(\".cards\");\r\n\r\n//     const handleMouseEnter = (e) => {\r\n//       const tl = gsap.timeline();\r\n//       tl.to(e.currentTarget, {\r\n//         rotation: 0,\r\n//         inertia: {\r\n//           x: {\r\n//             velocity: deltaX.current * 20,\r\n//             end: 0,\r\n//           },\r\n//           y: {\r\n//             velocity: deltaY.current * 20,\r\n//             end: 0,\r\n//           },\r\n//           rotation: { velocity: (Math.random() - 0.5) * 300, end: 0 }, // rotation inertia\r\n//         },\r\n//       });\r\n//     };\r\n\r\n//     cards.forEach((card: any) => {\r\n//       card.addEventListener(\"mouseenter\", (e: any) => {\r\n//         handleMouseEnter(e);\r\n//       });\r\n//     });\r\n\r\n//     return () => {\r\n//       cards.forEach((card: any) => {\r\n//         card.removeEventListener(\"mouseenter\", handleMouseEnter);\r\n//       });\r\n//     };\r\n//   });\r\n\r\n//   return (\r\n//     <div className=\"flex justify-center items-center h-screen w-full overflow-hidden\">\r\n//       <div className=\"grid grid-cols-3 gap-4\">\r\n//         {images.map((src, index) => (\r\n//           <img\r\n//             key={index}\r\n//             className=\"cards w-52 h-52 rounded-3xl object-cover object-top will-change-transform\"\r\n//             src={src}\r\n//             alt={`Inertia Card ${index}`}\r\n//           />\r\n//         ))}\r\n//       </div>\r\n//     </div>\r\n//   );\r\n// };\r\n\r\n// export default InertiaCards;\r\n"
     }
   ]
 }

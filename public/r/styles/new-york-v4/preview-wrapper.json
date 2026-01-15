@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "preview-wrapper",
   "type": "registry:ui",
+  "title": "Preview Wrapper",
   "description": "Preview Wrapper component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/preview-wrapper.tsx",
       "type": "registry:ui",
-      "target": "components/ui/preview-wrapper.tsx"
+      "target": "components/ui/preview-wrapper.tsx",
+      "content": "\"use client\"\r\n\r\nimport dynamic from \"next/dynamic\"\r\nimport type { PreviewProps } from \"@/components/ui/our/common/Preview\"\r\n\r\nconst Preview = dynamic(\r\n  () => import(\"@/components/ui/our/common/Preview\").then((mod) => mod.Preview),\r\n  { ssr: false }\r\n)\r\n\r\nexport function PreviewWrapper(props: PreviewProps) {\r\n  return <Preview {...props} />\r\n}\r\n"
     }
   ]
 }

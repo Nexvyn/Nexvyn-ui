@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "parallax-wrapper",
   "type": "registry:ui",
+  "title": "Parallax Wrapper",
   "description": "Parallax Wrapper component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/parallax-wrapper.tsx",
       "type": "registry:ui",
-      "target": "components/ui/parallax-wrapper.tsx"
+      "target": "components/ui/parallax-wrapper.tsx",
+      "content": "\"use client\"\r\n\r\nimport dynamic from \"next/dynamic\"\r\n\r\nconst Parallax = dynamic(() => import(\"@/components/ui/our/common/parallax\"), {\r\n  ssr: false,\r\n  loading: () => <div className=\"flex h-screen w-full items-center justify-center\">Loading...</div>,\r\n})\r\n\r\nexport function ParallaxWrapper() {\r\n  return <Parallax />\r\n}\r\n"
     }
   ]
 }

@@ -1,14 +1,19 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "spinning-text",
   "type": "registry:ui",
+  "title": "Spinning Text",
   "description": "Spinning Text component",
-  "dependencies": [],
+  "dependencies": [
+    "motion"
+  ],
   "registryDependencies": [],
   "files": [
     {
       "path": "registry/new-york-v4/ui/spinning-text.tsx",
       "type": "registry:ui",
-      "target": "components/ui/spinning-text.tsx"
+      "target": "components/ui/spinning-text.tsx",
+      "content": "\"use client\"\r\n\r\nimport React, { ComponentPropsWithoutRef } from \"react\"\r\nimport { motion, Transition, Variants } from \"motion/react\"\r\n\r\nimport { cn } from \"@/lib/utils\"\r\n\r\ninterface SpinningTextProps extends ComponentPropsWithoutRef<\"div\"> {\r\n  children: string | string[]\r\n  duration?: number\r\n  reverse?: boolean\r\n  radius?: number\r\n  transition?: Transition\r\n  variants?: {\r\n    container?: Variants\r\n    item?: Variants\r\n  }\r\n}\r\n\r\nconst BASE_TRANSITION: Transition = {\r\n  repeat: Infinity,\r\n  ease: \"linear\",\r\n}\r\n\r\nconst BASE_ITEM_VARIANTS: Variants = {\r\n  hidden: {\r\n    opacity: 1,\r\n  },\r\n  visible: {\r\n    opacity: 1,\r\n  },\r\n}\r\n\r\nexport function SpinningText({\r\n  children,\r\n  duration = 10,\r\n  reverse = false,\r\n  radius = 5,\r\n  transition,\r\n  variants,\r\n  className,\r\n  style,\r\n}: SpinningTextProps) {\r\n  if (typeof children !== \"string\" && !Array.isArray(children)) {\r\n    throw new Error(\"children must be a string or an array of strings\")\r\n  }\r\n\r\n  if (Array.isArray(children)) {\r\n    // Validate all elements are strings\r\n    if (!children.every((child) => typeof child === \"string\")) {\r\n      throw new Error(\"all elements in children array must be strings\")\r\n    }\r\n    children = children.join(\"\")\r\n  }\r\n\r\n  const letters = children.split(\"\")\r\n  letters.push(\" \")\r\n\r\n  const finalTransition: Transition = {\r\n    ...BASE_TRANSITION,\r\n    ...transition,\r\n    duration: (transition as { duration?: number })?.duration ?? duration,\r\n  }\r\n\r\n  const containerVariants: Variants = {\r\n    visible: { rotate: reverse ? -360 : 360 },\r\n    ...variants?.container,\r\n  }\r\n\r\n  const itemVariants: Variants = {\r\n    ...BASE_ITEM_VARIANTS,\r\n    ...variants?.item,\r\n  }\r\n\r\n  return (\r\n    <motion.div\r\n      className={cn(\"relative\", className)}\r\n      style={{\r\n        ...style,\r\n      }}\r\n      initial=\"hidden\"\r\n      animate=\"visible\"\r\n      variants={containerVariants}\r\n      transition={finalTransition}\r\n    >\r\n      {letters.map((letter, index) => (\r\n        <motion.span\r\n          aria-hidden=\"true\"\r\n          key={`${index}-${letter}`}\r\n          variants={itemVariants}\r\n          className=\"absolute top-1/2 left-1/2 inline-block\"\r\n          style={\r\n            {\r\n              \"--index\": index,\r\n              \"--total\": letters.length,\r\n              \"--radius\": radius,\r\n              transform: `\r\n                  translate(-50%, -50%)\r\n                  rotate(calc(360deg / var(--total) * var(--index)))\r\n                  translateY(calc(var(--radius, 5) * -1ch))\r\n                `,\r\n              transformOrigin: \"center\",\r\n            } as React.CSSProperties\r\n          }\r\n        >\r\n          {letter}\r\n        </motion.span>\r\n      ))}\r\n      <span className=\"sr-only\">{children}</span>\r\n    </motion.div>\r\n  )\r\n}\r\n"
     }
   ]
 }

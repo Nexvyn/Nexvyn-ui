@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "doc-search-hit",
   "type": "registry:ui",
+  "title": "Doc Search Hit",
   "description": "Doc Search Hit component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/doc-search-hit.tsx",
       "type": "registry:ui",
-      "target": "components/ui/doc-search-hit.tsx"
+      "target": "components/ui/doc-search-hit.tsx",
+      "content": "import { useState } from \"react\"\r\nimport Link from \"next/link\"\r\nimport { CornerDownLeft, File, Hash, Text } from \"lucide-react\"\r\n\r\ninterface DocSearchHitProps {\r\n  hit: any\r\n}\r\n\r\nexport function DocSearchHit({ hit }: DocSearchHitProps) {\r\n  const hierarchy = [hit.hierarchy.lvl0, hit.hierarchy.lvl1, hit.hierarchy.lvl2]\r\n    .filter(Boolean)\r\n    .join(\" / \")\r\n  const mainHierarchy = hit.hierarchy.lvl1 || \"\"\r\n  let LeadingIcon = Text\r\n  if (!hit.content || hit.content.trim() === \"\") {\r\n    if (hit.hierarchy.lvl2) {\r\n      LeadingIcon = Hash\r\n    } else if (hit.hierarchy.lvl1) {\r\n      LeadingIcon = File\r\n    }\r\n  }\r\n\r\n  let mainContent = null\r\n  let mainContentHighlight = null\r\n  if (!hit.content || hit.content.trim() === \"\") {\r\n    if (hit.hierarchy.lvl2) {\r\n      mainContent = hit.hierarchy.lvl2\r\n      mainContentHighlight = hit._highlightResult?.hierarchy?.lvl2?.value || hit.hierarchy.lvl2\r\n    } else if (hit.hierarchy.lvl1) {\r\n      mainContent = hit.hierarchy.lvl1\r\n      mainContentHighlight = hit._highlightResult?.hierarchy?.lvl1?.value || hit.hierarchy.lvl1\r\n    }\r\n  }\r\n\r\n  return (\r\n    <Link\r\n      href={hit.url}\r\n      className=\"flex w-full cursor-pointer items-center gap-4 rounded-xl px-2 py-3\"\r\n    >\r\n      <LeadingIcon className=\"text-foreground h-4 w-4 shrink-0 stroke-[1.5px]\" />\r\n      <div className=\"min-w-0 flex-1\">\r\n        <div className=\"text-foreground flex items-center gap-2\">\r\n          <span className=\"truncate text-sm font-medium\">\r\n            <style jsx>{`\r\n              mark {\r\n                color: #2563eb;\r\n                background: none;\r\n                font-weight: 600;\r\n                padding: 0;\r\n                overflow: hidden;\r\n              }\r\n            `}</style>\r\n            {mainContent ? (\r\n              <span\r\n                dangerouslySetInnerHTML={{\r\n                  __html: mainContentHighlight,\r\n                }}\r\n              />\r\n            ) : (\r\n              <span\r\n                dangerouslySetInnerHTML={{\r\n                  __html:\r\n                    hit._snippetResult?.content?.value ||\r\n                    hit._highlightResult?.content?.value ||\r\n                    hit.content,\r\n                }}\r\n              />\r\n            )}\r\n          </span>\r\n        </div>\r\n        {hierarchy &&\r\n          hit.type !== \"lvl1\" &&\r\n          (hit._highlightResult?.hierarchy?.lvl1?.value !== mainContent ||\r\n            hit._highlightResult?.hierarchy?.lvl1?.value !== mainHierarchy) && (\r\n            <div className=\"text-muted-foreground truncate text-xs leading-tight\">\r\n              <style jsx>{`\r\n                mark {\r\n                  color: #2563eb;\r\n                  background: none;\r\n                  font-weight: 600;\r\n                  padding: 0;\r\n                }\r\n              `}</style>\r\n              <span\r\n                dangerouslySetInnerHTML={{\r\n                  __html: hit._highlightResult?.hierarchy?.lvl1?.value || mainHierarchy,\r\n                }}\r\n              />\r\n            </div>\r\n          )}\r\n      </div>\r\n      <div className=\"ml-auto\" data-enter-icon>\r\n        <CornerDownLeft className=\"text-foreground h-4 w-4 stroke-[1.5px]\" />\r\n      </div>\r\n    </Link>\r\n  )\r\n}\r\n"
     }
   ]
 }

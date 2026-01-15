@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "animated-geist-examples",
   "type": "registry:ui",
+  "title": "Animated Geist Examples",
   "description": "Animated Geist Examples component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/animated-geist-examples.tsx",
       "type": "registry:ui",
-      "target": "components/ui/animated-geist-examples.tsx"
+      "target": "components/ui/animated-geist-examples.tsx",
+      "content": "\"use client\"\r\n\r\n/**\r\n * Example animated Geist icons\r\n *\r\n * This file shows how to create reusable animated icon components\r\n * from the Geist UI icon library.\r\n */\r\n\r\nimport {\r\n  Download,\r\n  Upload,\r\n  Check,\r\n  X,\r\n  Github,\r\n  Search,\r\n  Settings,\r\n  Menu,\r\n  ChevronDown,\r\n  ChevronRight,\r\n  Heart,\r\n  Star,\r\n  Bell,\r\n  Mail,\r\n  Code,\r\n  Terminal,\r\n  File,\r\n  Folder,\r\n  Lock,\r\n  Unlock,\r\n  Eye,\r\n  EyeOff,\r\n} from \"@geist-ui/icons\"\r\nimport { createAnimatedIcon } from \"./animated-geist\"\r\n\r\n// Action icons with bounce\r\nexport const AnimatedDownload = createAnimatedIcon(Download, {\r\n  variant: \"bounce\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedUpload = createAnimatedIcon(Upload, {\r\n  variant: \"bounce\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedCheck = createAnimatedIcon(Check, {\r\n  variant: \"scaleUp\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedX = createAnimatedIcon(X, {\r\n  variant: \"popRotate\",\r\n  size: 20,\r\n})\r\n\r\n// Social & Dev icons with scaleUp\r\nexport const AnimatedGithub = createAnimatedIcon(Github, {\r\n  variant: \"scaleUp\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedHeart = createAnimatedIcon(Heart, {\r\n  variant: \"pulse\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedStar = createAnimatedIcon(Star, {\r\n  variant: \"pulse\",\r\n  size: 20,\r\n})\r\n\r\n// UI icons\r\nexport const AnimatedSearch = createAnimatedIcon(Search, {\r\n  variant: \"scaleUp\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedSettings = createAnimatedIcon(Settings, {\r\n  variant: \"rotate180\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedMenu = createAnimatedIcon(Menu, {\r\n  variant: \"press\",\r\n  size: 20,\r\n})\r\n\r\n// Navigation icons with slideRight\r\nexport const AnimatedChevronDown = createAnimatedIcon(ChevronDown, {\r\n  variant: \"bounce\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedChevronRight = createAnimatedIcon(ChevronRight, {\r\n  variant: \"slideRight\",\r\n  size: 20,\r\n})\r\n\r\n// Communication icons with bounce\r\nexport const AnimatedBell = createAnimatedIcon(Bell, {\r\n  variant: \"bounce\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedMail = createAnimatedIcon(Mail, {\r\n  variant: \"bounce\",\r\n  size: 20,\r\n})\r\n\r\n// Code icons\r\nexport const AnimatedCode = createAnimatedIcon(Code, {\r\n  variant: \"scaleUp\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedTerminal = createAnimatedIcon(Terminal, {\r\n  variant: \"scaleUp\",\r\n  size: 20,\r\n})\r\n\r\n// File management icons\r\nexport const AnimatedFile = createAnimatedIcon(File, {\r\n  variant: \"popRotate\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedFolder = createAnimatedIcon(Folder, {\r\n  variant: \"popRotate\",\r\n  size: 20,\r\n})\r\n\r\n// Security icons\r\nexport const AnimatedLock = createAnimatedIcon(Lock, {\r\n  variant: \"press\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedUnlock = createAnimatedIcon(Unlock, {\r\n  variant: \"press\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedEye = createAnimatedIcon(Eye, {\r\n  variant: \"scaleUp\",\r\n  size: 20,\r\n})\r\n\r\nexport const AnimatedEyeOff = createAnimatedIcon(EyeOff, {\r\n  variant: \"scaleUp\",\r\n  size: 20,\r\n})\r\n"
     }
   ]
 }

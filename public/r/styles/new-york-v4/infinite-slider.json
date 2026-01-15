@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "infinite-slider",
   "type": "registry:ui",
+  "title": "Infinite Slider",
   "description": "Infinite Slider component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/infinite-slider.tsx",
       "type": "registry:ui",
-      "target": "components/ui/infinite-slider.tsx"
+      "target": "components/ui/infinite-slider.tsx",
+      "content": "\"use client\"\r\nimport { cn } from \"@/lib/utils\"\r\nimport { useMotionValue, animate, motion } from \"motion/react\"\r\nimport { useState, useEffect } from \"react\"\r\nimport useMeasure from \"react-use-measure\"\r\n\r\nexport type InfiniteSliderProps = {\r\n  children: React.ReactNode\r\n  gap?: number\r\n  speed?: number\r\n  speedOnHover?: number\r\n  direction?: \"horizontal\" | \"vertical\"\r\n  reverse?: boolean\r\n  className?: string\r\n}\r\n\r\nexport function InfiniteSlider({\r\n  children,\r\n  gap = 16,\r\n  speed = 100,\r\n  speedOnHover,\r\n  direction = \"horizontal\",\r\n  reverse = false,\r\n  className,\r\n}: InfiniteSliderProps) {\r\n  const [currentSpeed, setCurrentSpeed] = useState(speed)\r\n  const [ref, { width, height }] = useMeasure()\r\n  const translation = useMotionValue(0)\r\n  const [isTransitioning, setIsTransitioning] = useState(false)\r\n  const [key, setKey] = useState(0)\r\n\r\n  useEffect(() => {\r\n    let controls\r\n    const size = direction === \"horizontal\" ? width : height\r\n    const contentSize = size + gap\r\n    const from = reverse ? -contentSize / 2 : 0\r\n    const to = reverse ? 0 : -contentSize / 2\r\n\r\n    const distanceToTravel = Math.abs(to - from)\r\n    const duration = distanceToTravel / currentSpeed\r\n\r\n    if (isTransitioning) {\r\n      const remainingDistance = Math.abs(translation.get() - to)\r\n      const transitionDuration = remainingDistance / currentSpeed\r\n\r\n      controls = animate(translation, [translation.get(), to], {\r\n        ease: \"linear\",\r\n        duration: transitionDuration,\r\n        onComplete: () => {\r\n          setIsTransitioning(false)\r\n          setKey((prevKey) => prevKey + 1)\r\n        },\r\n      })\r\n    } else {\r\n      controls = animate(translation, [from, to], {\r\n        ease: \"linear\",\r\n        duration: duration,\r\n        repeat: Infinity,\r\n        repeatType: \"loop\",\r\n        repeatDelay: 0,\r\n        onRepeat: () => {\r\n          translation.set(from)\r\n        },\r\n      })\r\n    }\r\n\r\n    return controls?.stop\r\n  }, [key, translation, currentSpeed, width, height, gap, isTransitioning, direction, reverse])\r\n\r\n  const hoverProps = speedOnHover\r\n    ? {\r\n        onHoverStart: () => {\r\n          setIsTransitioning(true)\r\n          setCurrentSpeed(speedOnHover)\r\n        },\r\n        onHoverEnd: () => {\r\n          setIsTransitioning(true)\r\n          setCurrentSpeed(speed)\r\n        },\r\n      }\r\n    : {}\r\n\r\n  return (\r\n    <div className={cn(\"overflow-hidden\", className)}>\r\n      <motion.div\r\n        className=\"flex w-max\"\r\n        style={{\r\n          ...(direction === \"horizontal\" ? { x: translation } : { y: translation }),\r\n          gap: `${gap}px`,\r\n          flexDirection: direction === \"horizontal\" ? \"row\" : \"column\",\r\n        }}\r\n        ref={ref}\r\n        {...hoverProps}\r\n      >\r\n        {children}\r\n        {children}\r\n      </motion.div>\r\n    </div>\r\n  )\r\n}\r\n"
     }
   ]
 }

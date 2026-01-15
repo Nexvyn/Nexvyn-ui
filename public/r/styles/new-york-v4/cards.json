@@ -1,14 +1,20 @@
 {
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "cards",
   "type": "registry:ui",
-  "description": "A scroll-triggered card stack animation component with staggered entrance effects using GSAP.",
-  "dependencies": ["gsap", "@gsap/react"],
+  "title": "Cards",
+  "description": "Cards component",
+  "dependencies": [
+    "gsap",
+    "@gsap/react"
+  ],
   "registryDependencies": [],
   "files": [
     {
-      "path": "components/pixel-components/cards.tsx",
+      "path": "registry/new-york-v4/ui/cards.tsx",
       "type": "registry:ui",
-      "target": "components/ui/card-stack-animate.tsx"
+      "target": "components/ui/cards.tsx",
+      "content": "\"use client\"\r\n\r\nimport { useRef } from \"react\"\r\nimport { useGSAP } from \"@gsap/react\"\r\nimport gsap from \"gsap\"\r\nimport { ScrollTrigger } from \"gsap/ScrollTrigger\"\r\n\r\ngsap.registerPlugin(ScrollTrigger)\r\n\r\nconst CardStackAnimate = () => {\r\n  const first = useRef(null)\r\n\r\n  useGSAP(() => {\r\n    const tl = gsap.timeline({})\r\n    const cards = gsap.utils.toArray(\".card\")\r\n\r\n    tl.from(cards, {\r\n      y: \"100vh\",\r\n      stagger: 1,\r\n      ease: \"power3.out\",\r\n      duration: 1,\r\n      scrollTrigger: {\r\n        trigger: first.current,\r\n        start: \"top top\",\r\n        end: \"2000\",\r\n        scrub: 1,\r\n        pin: true,\r\n      },\r\n    })\r\n  })\r\n\r\n  const colors = [\r\n    { name: \"Pink\", class: \"bg-pink-300\", link: \"/card_animation/pink.png\" },\r\n    { name: \"Blue\", class: \"bg-blue-300\", link: \"/card_animation/blue.png\" },\r\n    {\r\n      name: \"Yellow\",\r\n      class: \"bg-yellow-200\",\r\n      link: \"/card_animation/yellow.png\",\r\n    },\r\n    { name: \"Green\", class: \"bg-green-200\", link: \"/card_animation/green.png\" },\r\n    {\r\n      name: \"Purple\",\r\n      class: \"bg-purple-200\",\r\n      link: \"/card_animation/purple.png\",\r\n    },\r\n    {\r\n      name: \"Orange\",\r\n      class: \"bg-orange-200\",\r\n      link: \"/card_animation/orange.png\",\r\n    },\r\n  ]\r\n\r\n  return (\r\n    <div className=\"h-full w-full bg-black\">\r\n      <div\r\n        ref={first}\r\n        className=\"relative flex h-screen w-full items-center justify-center bg-black\"\r\n      >\r\n        <div className=\"text-9xl font-light text-white\">HEY GSAPPPPP</div>\r\n        {colors.map((color, i) => (\r\n          <div\r\n            key={i}\r\n            className={`card absolute h-[400px] w-[300px] rounded-3xl shadow-lg ${color.class} overflow-hidden p-4`}\r\n            style={{\r\n              left: `calc(50% + (${i * 70}px - ${(colors.length / 2) * 70}px))`,\r\n              transform: `translateX(-50%) rotate(${(i - colors.length / 2) * 10}deg)`,\r\n            }}\r\n          >\r\n            <div className=\"flex justify-between\">\r\n              <div className=\"text-xs text-neutral-700\">Card {i + 1}</div>\r\n              <div className=\"text-xs text-neutral-700\">Color {color.class}</div>\r\n            </div>\r\n            <img src={color.link} alt={color.name} className=\"absolute left-0\" />\r\n          </div>\r\n        ))}\r\n      </div>\r\n      <div className=\"flex h-screen w-full items-center justify-center\">hi</div>\r\n    </div>\r\n  )\r\n}\r\n\r\nexport default CardStackAnimate\r\n"
     }
   ]
 }

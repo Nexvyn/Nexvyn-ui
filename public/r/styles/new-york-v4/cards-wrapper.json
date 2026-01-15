@@ -1,6 +1,8 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "cards-wrapper",
   "type": "registry:ui",
+  "title": "Cards Wrapper",
   "description": "Cards Wrapper component",
   "dependencies": [],
   "registryDependencies": [],
@@ -8,7 +10,8 @@
     {
       "path": "registry/new-york-v4/ui/cards-wrapper.tsx",
       "type": "registry:ui",
-      "target": "components/ui/cards-wrapper.tsx"
+      "target": "components/ui/cards-wrapper.tsx",
+      "content": "\"use client\"\r\n\r\nimport dynamic from \"next/dynamic\"\r\n\r\nconst CardStackAnimate = dynamic(() => import(\"@/components/ui/our/common/cards\"), {\r\n  ssr: false,\r\n  loading: () => <div className=\"flex h-screen w-full items-center justify-center\">Loading...</div>,\r\n})\r\n\r\nexport function CardStackAnimateWrapper() {\r\n  return <CardStackAnimate />\r\n}\r\n"
     }
   ]
 }

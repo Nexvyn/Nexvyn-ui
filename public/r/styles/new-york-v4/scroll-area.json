@@ -1,14 +1,19 @@
-﻿{
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "scroll-area",
   "type": "registry:ui",
+  "title": "Scroll Area",
   "description": "Scroll Area component",
-  "dependencies": [],
+  "dependencies": [
+    "@radix-ui/react-scroll-area"
+  ],
   "registryDependencies": [],
   "files": [
     {
       "path": "registry/new-york-v4/ui/scroll-area.tsx",
       "type": "registry:ui",
-      "target": "components/ui/scroll-area.tsx"
+      "target": "components/ui/scroll-area.tsx",
+      "content": "\"use client\"\r\n\r\nimport * as React from \"react\"\r\nimport * as ScrollAreaPrimitive from \"@radix-ui/react-scroll-area\"\r\n\r\nimport { cn } from \"@/lib/utils\"\r\n\r\nconst ScrollArea = React.forwardRef<\r\n  React.ElementRef<typeof ScrollAreaPrimitive.Root>,\r\n  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>\r\n>(({ className, children, ...props }, ref) => (\r\n  <ScrollAreaPrimitive.Root\r\n    ref={ref}\r\n    className={cn(\"relative overflow-hidden\", className)}\r\n    {...props}\r\n  >\r\n    <ScrollAreaPrimitive.Viewport className=\"h-full w-full rounded-[inherit]\">\r\n      {children}\r\n    </ScrollAreaPrimitive.Viewport>\r\n    <ScrollBar />\r\n    <ScrollAreaPrimitive.Corner />\r\n  </ScrollAreaPrimitive.Root>\r\n))\r\nScrollArea.displayName = ScrollAreaPrimitive.Root.displayName\r\n\r\nconst ScrollBar = React.forwardRef<\r\n  React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,\r\n  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>\r\n>(({ className, orientation = \"vertical\", ...props }, ref) => (\r\n  <ScrollAreaPrimitive.ScrollAreaScrollbar\r\n    ref={ref}\r\n    orientation={orientation}\r\n    className={cn(\r\n      \"flex touch-none transition-colors select-none\",\r\n      orientation === \"vertical\" && \"h-full w-2.5 border-l border-l-transparent p-[1px]\",\r\n      orientation === \"horizontal\" && \"h-2.5 flex-col border-t border-t-transparent p-[1px]\",\r\n      className\r\n    )}\r\n    {...props}\r\n  >\r\n    <ScrollAreaPrimitive.ScrollAreaThumb className=\"bg-border relative flex-1 rounded-full\" />\r\n  </ScrollAreaPrimitive.ScrollAreaScrollbar>\r\n))\r\nScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName\r\n\r\nexport { ScrollArea, ScrollBar }\r\n"
     }
   ]
 }
