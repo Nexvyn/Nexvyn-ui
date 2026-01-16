@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     siteName: "Nexvyn/ui",
     images: [
       {
-        url: "/og-image.png",
+        url: "",
         width: 1200,
         height: 630,
         alt: "Nexvyn UI",
