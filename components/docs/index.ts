@@ -5,5 +5,6 @@ export { CodeBlock } from "./CodeBlock"
 export { Installation } from "./Installation"
 export { ButtonGroup } from "./ButtonGroup"
 export { InteractiveDemo } from "./InteractiveDemo"
-export { ComponentPreview } from "./ComponentPreview"
+export { ComponentPreview } from "./component-preview"
 export { ComponentPreviewEnhanced } from "./ComponentPreviewEnhanced"
+

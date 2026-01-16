@@ -47,21 +47,26 @@ function Button({
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
   }) {
-  const Comp = asChild ? Slot : motion.button
+  if (asChild) {
+    return (
+      <Slot
+        data-slot="button"
+        className={cn(buttonVariants({ variant, size, className }))}
+        {...props}
+      />
+    )
+  }
 
   return (
-    <Comp
+    <motion.button
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
-      {...(!asChild
-        ? {
-          whileTap: { scale: 0.95 },
-          transition: { type: "spring", stiffness: 400, damping: 17 },
-        }
-        : {})}
-      {...props}
+      whileTap={{ scale: 0.95 }}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+      {...(props as React.ComponentProps<typeof motion.button>)}
     />
   )
 }
 
 export { Button, buttonVariants }
+
