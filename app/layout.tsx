@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     siteName: "Nexvyn/ui",
     images: [
       {
-        url: "",
+        url: "/og-banner.jpg",
         width: 1200,
         height: 630,
         alt: "Nexvyn UI",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     title: "Nexvyn/ui",
     description:
       "A modern, lightweight, and copy-paste React UI library for building stunning documentation and landing pages.",
-    images: ["/og-image.png"],
+    images: ["/og-banner.jpg"],
     creator: "@nexvyn",
   },
   icons: {
