@@ -54,7 +54,7 @@ export default function HomePage() {
 
         <div className="w-full flex items-center justify-center gap-3 mt-8 sm:mt-10">
           <a
-            href="#components"
+            href="/v1"
             className="inline-flex items-center h-10 px-5 rounded-md bg-(--color-fg) text-(--color-bg) text-sm font-medium hover:opacity-90 active:scale-[0.97] transition-opacity duration-150"
             style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
           >
