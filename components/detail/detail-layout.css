@@ -1,0 +1,259 @@
+/* Scoped styles for /components/[component] detail layout */
+
+.detail-page {
+  --detail-code-bg: #111111;
+  --detail-code-fg: #f0f0f0;
+  --detail-code-muted: #8a8a8a;
+  --detail-code-border: rgb(0 0 0 / 0.14);
+  --detail-code-keyword: #7aa7c7;
+  --detail-install-bg: #f4f4f4;
+  --detail-install-fg: #171717;
+
+  background: var(--color-bg);
+  color: var(--color-fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+.dark .detail-page {
+  --detail-code-bg: #0d0d0d;
+  --detail-code-fg: #ededed;
+  --detail-code-muted: #9a9a9a;
+  --detail-code-border: rgb(255 255 255 / 0.1);
+  --detail-code-keyword: #9ec5e0;
+  --detail-install-bg: #1a1a1a;
+  --detail-install-fg: #f5f5f5;
+}
+
+/* Preview card */
+.detail-page .detail-preview-card {
+  corner-shape: squircle;
+  background-color: var(--color-surface-2);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.04),
+    0 8px 24px rgb(0 0 0 / 0.06);
+}
+
+.dark .detail-page .detail-preview-card {
+  background-color: var(--color-surface);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.2),
+    0 12px 32px rgb(0 0 0 / 0.35);
+}
+
+.detail-page .detail-demo-frame {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  border: 0.5px solid var(--color-border);
+  background-color: var(--color-bg);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
+}
+
+/* Toolbar pill */
+.detail-page .detail-elevated-pill {
+  corner-shape: squircle;
+  background-color: var(--color-bg);
+  border: 0.5px solid var(--color-border);
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.05),
+    0 4px 12px rgb(0 0 0 / 0.06),
+    inset 0 1px 0 rgb(255 255 255 / 0.65) !important;
+}
+
+.dark .detail-page .detail-elevated-pill {
+  border-color: var(--color-border-strong);
+  box-shadow:
+    0 2px 8px rgb(0 0 0 / 0.35),
+    inset 0 1px 0 rgb(255 255 255 / 0.06) !important;
+}
+
+.detail-page .detail-toolbar-btn {
+  transition:
+    transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.detail-page .detail-toolbar-btn:hover {
+  color: var(--color-fg) !important;
+}
+
+.detail-page .detail-toolbar-btn:active {
+  transform: scale(0.96);
+}
+
+/* Docs panel */
+.detail-page .detail-panel {
+  background-color: var(--color-bg);
+  border-left: 0.5px solid var(--color-border);
+}
+
+.detail-page .detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.detail-page .detail-badge {
+  width: fit-content;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 11px;
+  font-weight: 500;
+  background-color: var(--color-surface);
+  color: var(--color-muted);
+  border: 0.5px solid var(--color-border);
+}
+
+/* Code blocks */
+.detail-page .detail-code-block {
+  margin: 0;
+  border-radius: 0.75rem;
+  border: 0.5px solid var(--detail-code-border);
+}
+
+.detail-page .detail-code-usage {
+  padding: 1.125rem 1.25rem;
+  background-color: var(--detail-code-bg);
+  color: var(--detail-code-fg);
+  line-height: 1.7;
+  white-space: pre;
+}
+
+.detail-page .detail-code-install {
+  padding: 0.625rem 0.875rem;
+  background-color: var(--detail-install-bg);
+  color: var(--detail-install-fg);
+  border-color: var(--color-border);
+  white-space: nowrap;
+}
+
+.detail-page .detail-code-wrapper {
+  position: relative;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.detail-page .detail-code-wrapper .detail-copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1;
+}
+
+.detail-page .detail-code-drawer-pre {
+  margin: 0;
+  flex: 1;
+  overflow: auto;
+  border-radius: 0.75rem;
+  padding: 1rem 1.125rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  line-height: 1.65;
+  background-color: var(--detail-code-bg);
+  color: var(--detail-code-fg);
+  border: 0.5px solid var(--detail-code-border);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.detail-page .detail-code-drawer-pre::-webkit-scrollbar {
+  display: none;
+}
+
+.detail-page .detail-code-inline {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  background-color: var(--detail-install-bg);
+  color: var(--detail-install-fg);
+  border: 0.5px solid var(--color-border);
+}
+
+/* Props table */
+.detail-page .detail-props-header {
+  display: flex;
+  gap: 1rem;
+  border-bottom: 0.5px solid var(--color-border);
+  padding: 0 0.25rem 0.625rem;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.detail-page .detail-props-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  border-bottom: 0.5px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+  padding: 1rem 0.25rem;
+}
+
+.detail-page .detail-props-row:last-child {
+  border-bottom: none;
+}
+
+.detail-page .detail-props-type {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--detail-code-keyword);
+}
+
+.detail-page .detail-props-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-fg);
+}
+
+/* Swatches */
+.detail-page .detail-swatch {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.detail-page .detail-swatch:active {
+  transform: scale(0.96);
+}
+
+.detail-page .detail-swatch[aria-pressed='true'] {
+  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 3.5px var(--color-accent);
+}
+
+/* Entrance */
+.detail-page .detail-preview-enter {
+  animation: detail-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.detail-page ::selection {
+  background-color: color-mix(in srgb, var(--color-accent) 18%, transparent);
+  color: var(--color-fg);
+}
+
+@keyframes detail-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail-page .detail-preview-enter {
+    animation: none;
+  }
+
+  .detail-page .detail-toolbar-btn:active,
+  .detail-page .detail-swatch:active {
+    transform: none;
+  }
+}
