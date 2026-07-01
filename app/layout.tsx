@@ -1,29 +1,10 @@
-import { DM_Serif_Display, Geist, Geist_Mono, Caveat } from 'next/font/google'
+import { Caveat } from 'next/font/google'
 import { Providers } from '@/components/providers'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 import { Agentation } from "agentation";
 import Script from 'next/script'
 
-
-const dmSerif = DM_Serif_Display({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-serif',
-  display: 'swap',
-})
-
-const geistSans = Geist({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  display: 'swap',
-})
-
-const geistMono = Geist_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
-})
 
 const caveat = Caveat({
   subsets: ['latin'],
@@ -41,8 +22,9 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${dmSerif.variable} ${geistSans.variable} ${geistMono.variable} ${caveat.variable}`} suppressHydrationWarning>
+    <html lang="en" className={caveat.variable} suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <Script
           id="theme-setup"
           strategy="beforeInteractive"
@@ -66,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="min-h-dvh bg-[var(--color-bg)] text-[var(--color-fg)] font-mono antialiased" suppressHydrationWarning>
+      <body className="min-h-dvh bg-[var(--color-bg)] text-[var(--color-fg)] font-sans antialiased" suppressHydrationWarning>
         <Providers>{children}</Providers>
         <Analytics />
         {process.env.NODE_ENV === "development" && <Agentation />}
