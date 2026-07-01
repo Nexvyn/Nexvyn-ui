@@ -16,8 +16,6 @@ Then install any component:
 
 ```bash
 bunx shadcn@latest add @nexvyn/bounce-sidebar
-bunx shadcn@latest add @nexvyn/elastic-dot
-bunx shadcn@latest add @nexvyn/blossom-color-picker
 ```
 
 Or install directly without adding the registry:

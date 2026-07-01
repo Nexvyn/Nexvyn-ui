@@ -76,13 +76,11 @@ export default function ComponentColorBar() {
 
   const [activeMenu, setActiveMenu] = useState<'bg' | 'fg' | 'ac' | 'round' | null>(null)
 
-  // Keep customizer defaults in sync with the active theme
   useEffect(() => {
     const isDark = theme === 'dark'
     const defaultBg = isDark ? '#0a0a0a' : '#ffffff'
     const defaultFg = isDark ? '#fafafa' : '#0a0a0a'
 
-    // If the user's custom colors now match the new theme defaults, clear them to null!
     setBg((current) => {
       if (current === defaultBg) return null
       const prevDefaultBg = isDark ? '#ffffff' : '#0a0a0a'
@@ -98,7 +96,6 @@ export default function ComponentColorBar() {
     })
   }, [theme])
 
-  // Apply customized styles to preview cards with cleanup on unmount
   useEffect(() => {
     const isDark = theme === 'dark'
     const defaultBg = isDark ? '#0a0a0a' : '#ffffff'
@@ -231,7 +228,6 @@ export default function ComponentColorBar() {
   return (
     <div ref={containerRef} className="detail-elevated-pill flex flex-col items-center gap-0.5 rounded-2xl p-1 bg-(--color-surface) select-none shadow-none">
       
-      {/* 1. Background menu */}
       <div className="relative">
         <Tooltip content="Background Color (BG)" side="left">
           <button
@@ -284,7 +280,6 @@ export default function ComponentColorBar() {
         </AnimatePresence>
       </div>
 
-      {/* 2. Foreground/Text menu */}
       <div className="relative">
         <Tooltip content="Text Color (FG)" side="left">
           <button
@@ -337,7 +332,6 @@ export default function ComponentColorBar() {
         </AnimatePresence>
       </div>
 
-      {/* 3. Accent menu */}
       <div className="relative">
         <Tooltip content="Accent Color (AC)" side="left">
           <button
@@ -390,7 +384,6 @@ export default function ComponentColorBar() {
         </AnimatePresence>
       </div>
 
-      {/* 4. Roundness menu */}
       <div className="relative">
         <Tooltip content="Card Corner Radius (Round)" side="left">
           <button
@@ -400,7 +393,6 @@ export default function ComponentColorBar() {
               activeMenu === 'round' ? 'bg-(--color-surface-2)' : ''
             }`}
           >
-            {/* Custom rounded corner arc SVG */}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" className="h-4.5 w-4.5">
               <path
                 d="M84 428V224C84 132.3 158.3 58 250 58H430"
@@ -422,7 +414,6 @@ export default function ComponentColorBar() {
               transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="absolute right-11 top-0 flex flex-col gap-1 p-1.5 rounded-xl border border-(--color-border) bg-(--color-surface) w-32 z-50 origin-right"
             >
-              {/* Sharp Preset */}
               <button
                 type="button"
                 onClick={() => setRadius('0px')}
@@ -435,7 +426,6 @@ export default function ComponentColorBar() {
                 {activeRadius === '0px' && <Check className="h-3 w-3 text-(--color-accent)" />}
               </button>
 
-              {/* Rounded Preset */}
               <button
                 type="button"
                 onClick={() => setRadius('16px')}
@@ -448,7 +438,6 @@ export default function ComponentColorBar() {
                 {activeRadius === '16px' && <Check className="h-3 w-3 text-(--color-accent)" />}
               </button>
 
-              {/* Pill Preset */}
               <button
                 type="button"
                 onClick={() => setRadius(null)}
@@ -465,7 +454,6 @@ export default function ComponentColorBar() {
         </AnimatePresence>
       </div>
 
-      {/* 5. Reset button */}
       <Tooltip content="Reset All Customizations" side="left">
         <button
           type="button"

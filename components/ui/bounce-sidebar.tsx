@@ -52,8 +52,6 @@ export function BounceSidebar({
 
   const [dotSize, setDotSize] = useState(6);
 
-  // Compute a single source of truth for the target Y so the mount-snap and
-  // the click-animation read the same value and we never offsetTop twice.
   const getTargetY = (index: number, size: number): number | null => {
     const el = itemRefs.current[index];
     if (!el) return null;
@@ -63,10 +61,6 @@ export function BounceSidebar({
     );
   };
 
-  // Mount + fonts-ready snap. Re-snaps on resize so the dot stays anchored
-  // when items reflow. MUST NOT depend on activeIndex — Effect #2 owns all
-  // transitions between items; running this on activeIndex change would
-  // yank the dot to its target mid-animation.
   useEffect(() => {
     let cancelled = false;
     const dpr = window.devicePixelRatio || 1;
@@ -91,7 +85,6 @@ export function BounceSidebar({
       cancelAnimationFrame(raf);
       ro.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -110,8 +103,6 @@ export function BounceSidebar({
     prevY.current = toY;
     if (delta === 0) return;
 
-    // Reduced-motion path: snap to target, no movement. Color/text state
-    // still updates, so the user gets the same affordance without motion.
     if (reduceMotion) {
       dotX.set(0);
       dotY.set(toY);
