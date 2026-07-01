@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { activeComponent, cleanDefault, swatchProp } from '@/lib/components'
+import { activeComponent, cleanDefault, swatchProp } from '@/lib/components-registry'
 import { usePreviewControl } from './preview-controls'
 import { cn } from '@/lib/utils'
 

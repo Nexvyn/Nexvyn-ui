@@ -86,4 +86,4 @@ Run `npm run dev` and navigate to `/components/my-component` to verify it works.
 
 ## Questions?
 
-Open an issue or DM on X: [@nexvyn](https://x.com/nexvyn)
+Open an issue on [GitHub](https://github.com/Nexvyn/Nexvyn-ui) or reach out at nexvyndev@gmail.com.

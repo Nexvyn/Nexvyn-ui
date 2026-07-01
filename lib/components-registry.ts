@@ -1,4 +1,5 @@
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
+import { elasticDotMetadata } from '@/components/ui/Doc/elastic-dot-metadata'
 
 export type ComponentItem = {
   id: string
@@ -35,7 +36,8 @@ export type ComponentCollection = {
 }
 
 export const COMPONENTS: ComponentItem[] = [
-  bounceSidebarMetadata
+  bounceSidebarMetadata,
+  elasticDotMetadata,
 ]
 
 export const COLLECTIONS: ComponentCollection[] = [
@@ -79,4 +81,33 @@ export function formatComponentLabel(item: ComponentItem): string {
 
 export function getComponentHref(id: string): string {
   return `/components/${id}`
+}
+
+export function activeComponent(pathname: string): ComponentItem | undefined {
+  return COMPONENTS.find((c) => pathname.endsWith(c.id))
+}
+
+export function installCommand(item: ComponentItem): string | null {
+  if (!item.registry) return null
+  return `npx shadcn@latest add ${item.registry}`
+}
+
+export const PANEL_INFO = {
+  sourceHint: 'Click the code icon in the top-right corner to view the source code.',
+  keepInMind: 'These components are built with React, Tailwind CSS, and motion. They work with Next.js and any React framework.',
+  contactEmail: 'hello@nexvyn.dev',
+  contactNote: 'Questions or feedback? Reach out anytime.',
+  license: [
+    'Free for personal and commercial use',
+    'No attribution required',
+    'Cannot be resold as a standalone product',
+  ],
+}
+
+export function swatchProp(item: ComponentItem | undefined): ComponentProp | undefined {
+  return item?.props?.find((p) => p.control === 'swatch' && p.optionColors)
+}
+
+export function cleanDefault(prop: ComponentProp | undefined): string | undefined {
+  return prop?.options?.[0]?.replace(/^["']|["']$/g, '')
 }

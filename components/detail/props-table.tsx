@@ -1,6 +1,6 @@
 'use client'
 
-import type { ComponentProp } from '@/lib/components'
+import type { ComponentProp } from '@/lib/components-registry'
 
 type PropsTableProps = {
   props: ComponentProp[]

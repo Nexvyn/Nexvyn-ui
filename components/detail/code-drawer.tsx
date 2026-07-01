@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, useDragControls } from 'motion/react'
-import type { ComponentItem } from '@/lib/components'
+import type { ComponentItem } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 
 function CopyButton({ value }: { value: string }) {
