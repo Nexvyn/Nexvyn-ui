@@ -1,13 +1,13 @@
 /* Scoped styles for /components/[component] detail layout */
 
 .detail-page {
-  --detail-code-bg: #111111;
-  --detail-code-fg: #f0f0f0;
-  --detail-code-muted: #8a8a8a;
-  --detail-code-border: rgb(0 0 0 / 0.14);
-  --detail-code-keyword: #7aa7c7;
-  --detail-install-bg: #f4f4f4;
-  --detail-install-fg: #171717;
+  --detail-code-bg: var(--color-surface);
+  --detail-code-fg: var(--color-fg);
+  --detail-code-muted: var(--color-muted);
+  --detail-code-border: var(--color-border);
+  --detail-code-keyword: var(--color-accent);
+  --detail-install-bg: var(--color-surface-2);
+  --detail-install-fg: var(--color-fg);
 
   background: var(--color-bg);
   color: var(--color-fg);
@@ -16,12 +16,12 @@
 
 .dark .detail-page {
   --detail-code-bg: #0d0d0d;
-  --detail-code-fg: #ededed;
-  --detail-code-muted: #9a9a9a;
-  --detail-code-border: rgb(255 255 255 / 0.1);
-  --detail-code-keyword: #9ec5e0;
-  --detail-install-bg: #1a1a1a;
-  --detail-install-fg: #f5f5f5;
+  --detail-code-fg: var(--color-fg);
+  --detail-code-muted: var(--color-muted);
+  --detail-code-border: var(--color-border);
+  --detail-code-keyword: var(--color-accent);
+  --detail-install-bg: var(--color-surface-2);
+  --detail-install-fg: var(--color-fg);
 }
 
 /* Preview card */
@@ -45,8 +45,8 @@
   width: 100%;
   overflow: hidden;
   border-radius: 1.25rem;
-  border: 0.5px solid var(--color-border);
-  background-color: var(--color-bg);
+  border: 0.5px solid var(--preview-border, var(--color-border));
+  background-color: var(--preview-bg, var(--color-bg));
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
 }
 
@@ -54,25 +54,28 @@
 .detail-page .detail-elevated-pill {
   corner-shape: squircle;
   background-color: var(--color-bg);
-  border: 0.5px solid var(--color-border);
-  box-shadow:
-    0 1px 2px rgb(0 0 0 / 0.05),
-    0 4px 12px rgb(0 0 0 / 0.06),
-    inset 0 1px 0 rgb(255 255 255 / 0.65) !important;
+  border: none;
+  box-shadow: none;
 }
 
 .dark .detail-page .detail-elevated-pill {
-  border-color: var(--color-border-strong);
-  box-shadow:
-    0 2px 8px rgb(0 0 0 / 0.35),
-    inset 0 1px 0 rgb(255 255 255 / 0.06) !important;
+  border: none;
+  box-shadow: none;
+}
+
+/* Detail panel */
+.detail-page .detail-panel {
+  background-color: var(--color-bg) !important;
+}
+
+.dark .detail-page .detail-panel {
+  background-color: var(--color-bg) !important;
 }
 
 .detail-page .detail-toolbar-btn {
   transition:
     transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
-    color 0.15s ease,
-    background-color 0.15s ease;
+    color 0.15s ease;
 }
 
 .detail-page .detail-toolbar-btn:hover {
@@ -83,10 +86,8 @@
   transform: scale(0.96);
 }
 
-/* Docs panel */
 .detail-page .detail-panel {
   background-color: var(--color-bg);
-  border-left: 0.5px solid var(--color-border);
 }
 
 .detail-page .detail-section {
@@ -110,7 +111,7 @@
 .detail-page .detail-code-block {
   margin: 0;
   border-radius: 0.75rem;
-  border: 0.5px solid var(--detail-code-border);
+  border: none;
 }
 
 .detail-page .detail-code-usage {
@@ -127,6 +128,26 @@
   color: var(--detail-install-fg);
   border-color: var(--color-border);
   white-space: nowrap;
+}
+
+/* Syntax Highlighting */
+.code-keyword {
+  color: var(--preview-accent-text, var(--color-accent)) !important;
+  font-weight: 600;
+}
+.code-tag {
+  color: var(--preview-accent-text, var(--color-accent)) !important;
+  font-weight: 500;
+}
+.code-string {
+  color: var(--color-muted) !important;
+}
+.code-attr {
+  color: var(--color-fg) !important;
+}
+.code-comment {
+  color: var(--color-muted) !important;
+  font-style: italic;
 }
 
 .detail-page .detail-code-wrapper {
@@ -166,13 +187,9 @@
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
-  border-radius: 0.375rem;
-  padding: 0.25rem 0.5rem;
   font-family: var(--font-mono), monospace;
   font-size: 12px;
-  background-color: var(--detail-install-bg);
-  color: var(--detail-install-fg);
-  border: 0.5px solid var(--color-border);
+  color: var(--color-fg);
 }
 
 /* Props table */

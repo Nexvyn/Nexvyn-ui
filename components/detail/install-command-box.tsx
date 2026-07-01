@@ -79,9 +79,9 @@ export function InstallCommandBox({ registry }: { registry?: string }) {
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative flex items-center justify-between rounded-xl px-4 py-2 border border-(--color-border) bg-(--color-surface-2) font-mono select-all w-full transition-[border-color,box-shadow] duration-200"
+      className="relative flex items-center justify-between rounded-xl px-4 py-2 border-0 bg-(--color-surface-2) font-mono select-all w-full transition-[border-color,box-shadow] duration-200"
     >
-      <div className="flex items-center gap-4 flex-1 min-w-0">
+      <div className="flex items-center gap-2 flex-1 min-w-0">
         <div
           ref={wheelRef}
           onClick={cyclePm}
@@ -102,7 +102,7 @@ export function InstallCommandBox({ registry }: { registry?: string }) {
           tabIndex={0}
           role="button"
           aria-label="Package manager selector"
-          className="cursor-ns-resize select-none text-(--color-fg) relative h-8 w-14 flex items-center justify-center shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) rounded"
+          className="cursor-ns-resize select-none text-(--color-fg) relative h-8 w-11 flex items-center justify-center shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) rounded"
           style={{ perspective: '200px', transformStyle: 'preserve-3d' }}
           title="Scroll, click, or use arrow keys to switch package manager"
         >

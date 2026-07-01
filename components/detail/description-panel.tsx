@@ -1,28 +1,30 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { motion } from 'motion/react'
-import { CodeXml, Maximize, Minimize } from 'lucide-react'
+import { CodeXml, Maximize, Minimize, ExternalLink, Copy, Check, MessageSquare } from 'lucide-react'
 import { activeComponent, installCommand, PANEL_INFO } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
-import CompactThemeToggle from './compact-theme-toggle'
+import Link from 'next/link'
+import { ThemeToggle } from '@/components/layout/theme-toggle'
 import { MailIcon, XIcon } from './icons'
 import DependencyPill from './dependency-pill'
 import PropsTable from './props-table'
 import { CodeBlock } from './code-block'
 import CodeDrawer from './code-drawer'
+import { StarsCount } from '@/components/detail/stars-count'
+import { InstallCommandBox } from './install-command-box'
+import { FeedbackModal } from './feedback-modal'
 
 function CopyButton({
   value,
-  label,
-  idleIcon,
   className,
+  children,
 }: {
   value: string
-  label?: string
-  idleIcon?: React.ReactNode
   className?: string
+  children?: React.ReactNode
 }) {
   const [copied, setCopied] = useState(false)
 
@@ -36,22 +38,20 @@ function CopyButton({
     <button
       type="button"
       onClick={handleCopy}
-      title={label}
       className={cn(
-        'detail-toolbar-btn detail-copy-btn shrink-0 rounded-md px-2 py-1 text-xs font-medium transition-colors',
+        'rounded-lg hover:bg-(--color-surface-2) transition-colors cursor-pointer flex items-center justify-center shrink-0 border-0 bg-transparent',
         className,
       )}
-      style={{
-        backgroundColor: 'var(--color-surface)',
-        color: 'var(--color-muted)',
-      }}
+      style={{ color: 'var(--color-muted)' }}
+      title="Copy"
     >
-      {idleIcon ?? (copied ? 'Copied' : 'Copy')}
+      {copied ? <Check className="h-4.5 w-4.5 text-emerald-500" /> : children || <Copy className="h-4.5 w-4.5" />}
     </button>
   )
 }
 
 const PANEL_SHIFT = 600
+const INFO_SPACE = 576
 
 type DescriptionPanelProps = {
   open: boolean
@@ -61,20 +61,23 @@ type DescriptionPanelProps = {
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <p
-      className="text-[10px] font-medium uppercase tracking-wider"
-      style={{ color: 'var(--color-muted)' }}
+      className="text-xs font-semibold uppercase tracking-wider text-(--color-muted)"
     >
       {children}
     </p>
   )
 }
 
+import { Tooltip } from './tooltip'
+
 export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
   const pathname = usePathname()
+  const router = useRouter()
   const item = activeComponent(pathname)
   const command = item ? installCommand(item) : null
 
   const [codeOpen, setCodeOpen] = useState(false)
+  const [feedbackOpen, setFeedbackOpen] = useState(false)
   useEffect(() => {
     if (!open) setCodeOpen(false)
   }, [open])
@@ -88,43 +91,102 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
     }
   }
 
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
+
+      if (e.key === 'f' || e.key === 'F') {
+        setOpen((value) => !value)
+      } else if ((e.key === 'p' || e.key === 'P') && item?.id) {
+        router.push(`/preview/${item.id}`)
+      } else if (e.key === 'c' || e.key === 'C') {
+        toggleCode()
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [item?.id, router, setOpen, codeOpen])
+
   return (
     <div className="pointer-events-none absolute right-0 top-0 z-40 h-full">
-      <div className="detail-elevated-pill pointer-events-auto absolute top-4 right-4 z-50 flex items-center gap-1.5 rounded-2xl p-1.5">
-        <button
-          type="button"
-          onClick={() => setOpen((value) => !value)}
-          aria-label={open ? 'Close description' : 'Open description'}
-          className="detail-toolbar-btn cursor-pointer rounded-full p-1.5"
-          style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-fg)' }}
-        >
-          {open ? (
-            <Maximize className="h-4 w-4" />
-          ) : (
-            <Minimize className="h-4 w-4" />
-          )}
-        </button>
-
-        {item?.registry && (
+      <motion.div
+        initial={false}
+        animate={{
+          right: open ? INFO_SPACE + 12 : 12,
+        }}
+        transition={{ type: 'spring', stiffness: 280, damping: 32 }}
+        className="detail-elevated-pill pointer-events-auto absolute top-3 z-50 flex items-center gap-0.5 rounded-2xl p-1"
+      >
+        <Tooltip content={open ? 'Close description (F)' : 'Open description (F)'} side="bottom">
           <button
             type="button"
-            onClick={toggleCode}
-            aria-label={codeOpen ? 'Hide code' : 'Get code'}
-            className="detail-toolbar-btn cursor-pointer rounded-full p-1.5"
-            style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-fg)' }}
+            onClick={() => setOpen((value) => !value)}
+            aria-label={open ? 'Close description' : 'Open description'}
+            className="detail-toolbar-btn cursor-pointer rounded-xl p-1.5"
+            style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
           >
-            <CodeXml className="h-4 w-4" />
+            {open ? (
+              <Maximize className="h-5 w-5" />
+            ) : (
+              <Minimize className="h-5 w-5" />
+            )}
           </button>
+        </Tooltip>
+
+        {item?.registry && (
+          <Tooltip content={codeOpen ? 'Hide code (C)' : 'Get code (C)'} side="bottom">
+            <button
+              type="button"
+              onClick={toggleCode}
+              aria-label={codeOpen ? 'Hide code' : 'Get code'}
+              className="detail-toolbar-btn cursor-pointer rounded-xl p-1.5"
+              style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
+            >
+              <CodeXml className="h-5 w-5" />
+            </button>
+          </Tooltip>
         )}
 
-        <CompactThemeToggle />
-      </div>
+        {item?.id && (
+          <Tooltip content="Standalone preview (P)" side="bottom">
+            <Link
+              href={`/preview/${item.id}`}
+              aria-label="View standalone preview"
+              className="detail-toolbar-btn cursor-pointer rounded-xl p-1.5 flex items-center justify-center"
+              style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
+            >
+              <ExternalLink className="h-5 w-5" />
+            </Link>
+          </Tooltip>
+        )}
+
+        {item?.id && (
+          <Tooltip content="Star on GitHub" side="bottom">
+            <a
+              href="https://github.com/Nexvyn/Nexvyn-ui"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub Repository"
+              className="detail-toolbar-btn cursor-pointer rounded-xl px-2 h-8 flex items-center gap-1 text-xs font-medium"
+              style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
+            >
+              <StarsCount />
+            </a>
+          </Tooltip>
+        )}
+
+        <Tooltip content="Switch theme (T)" side="bottom">
+          <ThemeToggle showShortcut={false} variant="link" className="h-8 w-8 p-0 flex items-center justify-center rounded-xl bg-transparent hover:bg-transparent text-(--color-muted) hover:text-(--color-fg)" />
+        </Tooltip>
+      </motion.div>
 
       <motion.div
         initial={false}
         animate={{ x: open ? 0 : PANEL_SHIFT }}
         transition={{ type: 'spring', stiffness: 280, damping: 32 }}
         className="detail-panel pointer-events-auto relative flex h-full w-[35rem] flex-col overflow-hidden rounded-2xl"
+        style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)' }}
       >
         <div
           className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12"
@@ -132,19 +194,17 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
             background: 'linear-gradient(to bottom, var(--color-bg) 25%, transparent)',
           }}
         />
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12"
-          style={{
-            background: 'linear-gradient(to top, var(--color-bg) 25%, transparent)',
-          }}
-        />
+
 
         <div className="no-scrollbar flex flex-1 flex-col gap-12 overflow-y-auto p-8 pt-60 text-left">
-          <div className="flex flex-col gap-4">
-            <SectionLabel>{item?.name ?? 'Component'}</SectionLabel>
+          <div className="flex flex-col gap-1 text-left">
+            <h1
+              className="text-3xl font-semibold tracking-tight text-(--color-fg)"
+            >
+              {item?.name ?? 'Component'}
+            </h1>
             <p
-              className="text-2xl font-normal leading-relaxed tracking-tight text-pretty"
-              style={{ color: 'var(--color-fg)' }}
+              className="text-base leading-relaxed text-(--color-muted) text-pretty mt-2"
             >
               {item?.description ?? 'This component is not available yet.'}
             </p>
@@ -180,15 +240,11 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
             </div>
           )}
 
-          {command && (
+          {item?.registry && (
             <div className="detail-section">
               <SectionLabel>Installation</SectionLabel>
-              <span className="detail-badge">Nexvyn UI · component registry</span>
-              <div className="detail-code-wrapper flex items-center gap-2">
-                <CodeBlock variant="install" className="flex-1">
-                  {command}
-                </CodeBlock>
-                <CopyButton value={command} />
+              <div className="w-full pt-1">
+                <InstallCommandBox registry={item.registry} />
               </div>
             </div>
           )}
@@ -197,7 +253,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
             <div className="detail-section">
               <SectionLabel>How to use</SectionLabel>
               <div className="detail-code-wrapper">
-                <CopyButton value={item.usage} />
+                <CopyButton value={item.usage} className="detail-copy-btn" />
                 <CodeBlock variant="usage">{item.usage}</CodeBlock>
               </div>
             </div>
@@ -227,10 +283,10 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
             <div className="flex items-center gap-2">
               <CopyButton
                 value={PANEL_INFO.contactEmail}
-                label={`Copy email (${PANEL_INFO.contactEmail})`}
-                idleIcon={<MailIcon />}
-                className="size-8 hover:text-foreground"
-              />
+                className="size-8 hover:text-foreground flex items-center justify-center"
+              >
+                <MailIcon className="size-5" />
+              </CopyButton>
               <a
                 href="https://x.com/nexvyn"
                 target="_blank"
@@ -242,6 +298,15 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               >
                 <XIcon className="size-5" />
               </a>
+              <button
+                type="button"
+                onClick={() => setFeedbackOpen(true)}
+                className="inline-flex size-8 items-center justify-center transition-colors hover:text-(--color-fg) cursor-pointer"
+                style={{ color: 'var(--color-muted)' }}
+                title="Send Feedback"
+              >
+                <MessageSquare className="size-5" />
+              </button>
             </div>
           </div>
 
@@ -259,6 +324,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
         </div>
 
         <CodeDrawer open={codeOpen} onClose={() => setCodeOpen(false)} item={item} />
+        <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} componentName={item?.name} />
       </motion.div>
     </div>
   )

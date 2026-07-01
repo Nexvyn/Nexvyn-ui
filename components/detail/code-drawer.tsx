@@ -1,9 +1,45 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { motion, useDragControls } from 'motion/react'
 import type { ComponentItem } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
+import { ChevronLeft, Download, Copy, Check } from 'lucide-react'
+
+// Lightweight Regex Syntax Highlighter (Black, White, and Accent only)
+function highlightCode(code: string) {
+  let html = code
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+
+  // 1. Strings (Muted Color)
+  html = html.replace(/("(?:\\"|[^"])*")/g, '<span class="text-(--color-muted)">$1</span>')
+  html = html.replace(/('(?:\\'|[^'])*')/g, '<span class="text-(--color-muted)">$1</span>')
+
+  // 2. Keywords (Accent Color)
+  const keywords = ['const', 'let', 'var', 'return', 'import', 'from', 'export', 'default', 'function', 'true', 'false', 'type', 'interface', 'as', 'async', 'await']
+  keywords.forEach(kw => {
+    const reg = new RegExp(`\\b(${kw})\\b`, 'g')
+    html = html.replace(reg, '<span class="text-(--color-accent) font-semibold">$1</span>')
+  })
+
+  // 3. Components & Tags (Accent Color)
+  html = html.replace(/(&lt;\/?[A-Z][a-zA-Z0-9]*)/g, '<span class="text-(--color-accent) font-medium">$1</span>')
+  html = html.replace(/(&lt;\/?[a-z]+)/g, '<span class="text-(--color-accent) font-medium">$1</span>')
+
+  // 4. Attributes (Foreground Color)
+  const attrs = ['className', 'key', 'style', 'onClick', 'type', 'ref', 'value', 'onChange', 'href', 'target', 'rel']
+  attrs.forEach(attr => {
+    const reg = new RegExp(`\\b(${attr})\\b`, 'g')
+    html = html.replace(reg, '<span class="text-(--color-fg)">$1</span>')
+  })
+
+  // 5. Comments (Muted Color)
+  html = html.replace(/(\/\/.*)/g, '<span class="text-(--color-muted) italic">$1</span>')
+
+  return html
+}
 
 function CopyButton({ value }: { value: string }) {
   const [copied, setCopied] = useState(false)
@@ -18,13 +54,10 @@ function CopyButton({ value }: { value: string }) {
     <button
       type="button"
       onClick={handleCopy}
-      className="detail-toolbar-btn detail-copy-btn shrink-0 rounded-md px-2 py-1 text-xs font-medium"
-      style={{
-        backgroundColor: 'var(--color-surface)',
-        color: 'var(--color-muted)',
-      }}
+      className="p-1.5 rounded-md hover:bg-(--color-surface-2) text-(--color-muted) hover:text-(--color-fg) transition-colors cursor-pointer shrink-0 border-0 bg-transparent flex items-center justify-center"
+      title="Copy Code"
     >
-      {copied ? 'Copied' : 'Copy'}
+      {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
     </button>
   )
 }
@@ -55,6 +88,19 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
     }
   }, [open, item?.registry])
 
+  const handleDownload = () => {
+    if (!code) return
+    const blob = new Blob([code], { type: 'text/typescript' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = item?.id ? `${item.id}.tsx` : 'code.tsx'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const filename = item?.id ? `${item.id}.tsx` : 'code.tsx'
+
   return (
     <motion.div
       drag="y"
@@ -69,33 +115,77 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
       animate={{ y: open ? '0%' : '110%' }}
       transition={{ type: 'spring', stiffness: 280, damping: 32 }}
       className={cn(
-        'absolute inset-x-0 bottom-0 z-10 flex h-full flex-col rounded-2xl',
-        'border-[0.5px] shadow-2xl',
+        'absolute inset-x-0 bottom-0 z-10 flex h-full flex-col rounded-t-3xl',
+        'border border-(--color-border) shadow-2xl',
       )}
       style={{
         backgroundColor: 'var(--color-bg)',
-        borderColor: 'var(--color-border)',
       }}
     >
-      <div
-        onPointerDown={(event) => dragControls.start(event)}
-        className="shrink-0 cursor-grab touch-none px-4 pb-2 pt-3 active:cursor-grabbing"
+      {/* Top drag handle indicator */}
+      <div 
+        className="w-full flex justify-center pt-3 pb-1 shrink-0 select-none cursor-row-resize touch-none"
+        onPointerDown={(e) => dragControls.start(e)}
       >
-        <div
-          className="mx-auto mb-3 h-1.5 w-12 rounded-full"
-          style={{ backgroundColor: 'var(--color-border-strong)' }}
-        />
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium" style={{ color: 'var(--color-fg)' }}>
-            {item?.name ?? 'Code'}
-          </span>
+        <div className="h-1.5 w-12 rounded-full bg-(--color-muted) opacity-30" />
+      </div>
+
+      {/* Header bar matches mockup */}
+      <div className="shrink-0 flex items-center justify-between px-6 pb-4 select-none">
+        {/* Left: Back Arrow + Title */}
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex items-center gap-2 text-sm font-medium text-(--color-fg) hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-0 p-0"
+        >
+          <ChevronLeft className="h-4.5 w-4.5" />
+          <span>Source Code</span>
+        </button>
+
+        {/* Right: Download Actions & Copy */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleDownload}
+            disabled={!code || loading}
+            className="flex items-center gap-1.5 text-xs text-(--color-muted) hover:text-(--color-fg) transition-colors cursor-pointer bg-transparent border-0 p-0 disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Download TSX source file"
+          >
+            <Download className="h-4 w-4" />
+            <span className="font-mono">{filename}</span>
+          </button>
           {code && !loading && <CopyButton value={code} />}
         </div>
       </div>
 
-      <pre className="detail-code-drawer-pre mx-4 mb-4">
-        <code>{loading ? 'Loading...' : code}</code>
-      </pre>
+      {/* Top blur fade indicator for code scroll */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-[60px] z-20 h-10"
+        style={{
+          background: 'linear-gradient(to bottom, var(--color-bg) 30%, transparent)',
+        }}
+      />
+
+      {/* Code Container */}
+      <div className="flex-1 overflow-y-auto px-8 py-6 select-text no-scrollbar">
+        <pre className="no-scrollbar overflow-x-auto text-[13.5px] font-mono leading-relaxed bg-transparent border-0 p-0" style={{ color: 'var(--color-fg)' }}>
+          {loading ? (
+            <code className="text-(--color-muted)">Loading...</code>
+          ) : code ? (
+            <code dangerouslySetInnerHTML={{ __html: highlightCode(code) }} />
+          ) : (
+            <code className="text-(--color-muted)">// No code loaded.</code>
+          )}
+        </pre>
+      </div>
+
+      {/* Bottom blur fade indicator for code scroll */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-16 rounded-b-3xl"
+        style={{
+          background: 'linear-gradient(to top, var(--color-bg) 30%, transparent)',
+        }}
+      />
     </motion.div>
   )
 }

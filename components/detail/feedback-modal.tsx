@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { X, Check } from 'lucide-react'
-import { SPRING_PANEL, SPRING_PRESS } from '@/lib/motion-tokens'
+import { X, Check, AlertCircle } from 'lucide-react'
+import { SPRING_PANEL } from '@/lib/motion-tokens'
 
 type FeedbackModalProps = {
   isOpen: boolean
@@ -27,7 +27,11 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
       })
       if (res.ok) {
         setStatus('success')
-        setTimeout(() => { onClose(); setStatus('idle'); setText('') }, 1500)
+        setTimeout(() => {
+          onClose()
+          setStatus('idle')
+          setText('')
+        }, 2200)
       } else {
         setStatus('error')
       }
@@ -39,8 +43,21 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
   }
 
   useEffect(() => {
-    if (!isOpen) { setText(''); setStatus('idle') }
+    if (!isOpen) {
+      setText('')
+      setStatus('idle')
+    }
   }, [isOpen])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
 
   return (
     <AnimatePresence>
@@ -50,46 +67,93 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/40"
+            className="fixed inset-0 z-50 bg-black/50"
             onClick={onClose}
           />
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={SPRING_PANEL}
-            className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-(--color-border) bg-(--color-bg) p-6 shadow-2xl"
+            className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-(--color-border-strong) bg-(--color-bg) p-6 shadow-2xl select-none"
           >
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-(--color-fg)">Send Feedback</h3>
-              <button onClick={onClose} className="text-(--color-muted) hover:text-(--color-fg) transition-colors">
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            {status === 'success' ? (
-              <div className="flex items-center gap-2 text-emerald-500 py-8 justify-center">
-                <Check className="h-5 w-5" />
-                <span>Feedback sent!</span>
+            {status === 'success' && (
+              <div className="flex flex-col items-center text-center py-6 px-2">
+                <div className="h-16 w-16 bg-emerald-500 rounded-full flex items-center justify-center text-white mb-5 shadow-lg shadow-emerald-500/10">
+                  <Check className="h-8 w-8 stroke-[2.5]" />
+                </div>
+                <h3 className="text-xl font-semibold text-(--color-fg) mb-1.5">Thanks!</h3>
+                <p className="text-xs sm:text-sm text-(--color-muted) leading-relaxed">
+                  Your feedback helps us build something better.
+                </p>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            )}
+
+            {status === 'error' && (
+              <div className="flex flex-col items-center text-center py-4 px-2">
+                <div className="h-16 w-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mb-5">
+                  <AlertCircle className="h-8 w-8" />
+                </div>
+                <h3 className="text-xl font-semibold text-(--color-fg) mb-1.5">Something went wrong</h3>
+                <p className="text-xs sm:text-sm text-(--color-muted) leading-relaxed mb-6">
+                  We couldn't send your feedback. Please try again.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setStatus('idle')}
+                  className="w-full rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 text-center transition-colors cursor-pointer border-0 text-sm"
+                >
+                  Try again
+                </button>
+              </div>
+            )}
+
+            {status === 'idle' && (
+              <form onSubmit={handleSubmit} className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-[17px] font-semibold text-(--color-fg)">Help us improve</h3>
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="text-(--color-muted) hover:text-(--color-fg) transition-colors cursor-pointer rounded-full p-1 hover:bg-(--color-surface-2) border-0 bg-transparent flex items-center justify-center"
+                  >
+                    <X className="h-4.5 w-4.5" />
+                  </button>
+                </div>
+
                 <textarea
                   value={text}
                   onChange={(e) => setText(e.target.value)}
-                  placeholder="Describe the issue or suggestion..."
-                  className="min-h-[120px] rounded-xl border border-(--color-border) bg-(--color-surface) p-3 text-sm text-(--color-fg) placeholder:text-(--color-muted) resize-none focus:outline-none focus:ring-2 focus:ring-(--color-accent)"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                      e.preventDefault()
+                      if (text.trim() && !submitting) {
+                        const form = e.currentTarget.form
+                        if (form) form.requestSubmit()
+                      }
+                    }
+                  }}
+                  placeholder="Share an idea or report a bug"
+                  className="w-full min-h-[120px] bg-transparent text-(--color-fg) placeholder:text-(--color-muted) border-0 outline-none resize-none text-[14.5px] leading-relaxed py-1"
+                  autoFocus
                 />
-                {status === 'error' && (
-                  <p className="text-xs text-red-500">Something went wrong. Please try again.</p>
-                )}
-                <button
-                  type="submit"
-                  disabled={submitting || !text.trim()}
-                  className="rounded-xl bg-(--color-fg) text-(--color-bg) px-4 py-2 text-sm font-medium disabled:opacity-50 transition-opacity"
-                >
-                  {submitting ? 'Sending...' : 'Send'}
-                </button>
+
+                <div className="flex items-center gap-3 mt-4">
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="flex-1 rounded-xl bg-(--color-surface-2) hover:bg-(--color-surface-3) text-(--color-fg) font-semibold py-3 text-center transition-colors cursor-pointer border-0 text-xs tracking-wide"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting || !text.trim()}
+                    className="flex-1 rounded-xl bg-(--color-fg) text-(--color-bg) hover:opacity-90 font-semibold py-3 text-center transition-opacity cursor-pointer border-0 text-xs tracking-wide disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {submitting ? 'Sending...' : 'Submit'}
+                  </button>
+                </div>
               </form>
             )}
           </motion.div>

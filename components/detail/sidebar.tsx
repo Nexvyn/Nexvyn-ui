@@ -85,17 +85,20 @@ function SidebarToggleIcon({ showSidebar }: { showSidebar: boolean }) {
 
 function NavSectionHeader({ title, active }: { title: string; active?: boolean }) {
   return (
-    <div className="group relative flex h-px cursor-default items-center gap-3 after:absolute after:left-0 after:top-1/2 after:size-full after:-translate-y-1/2 after:p-3.5">
-      <span className="bg-foreground inline-block h-px w-8" />
+    <Link
+      href="/components"
+      className="group relative flex h-px cursor-pointer items-center gap-3 after:absolute after:left-0 after:top-1/2 after:size-full after:-translate-y-1/2 after:p-3.5"
+    >
+      <span className="bg-foreground group-hover:bg-(--color-accent) inline-block h-px w-8 transition-colors" />
       <span
         className={cn(
-          'text-foreground whitespace-nowrap transition-all ease-out',
+          'text-foreground whitespace-nowrap transition-all ease-out group-hover:text-(--color-accent) group-hover:opacity-100',
           active ? 'opacity-100' : 'opacity-60',
         )}
       >
         {title}
       </span>
-    </div>
+    </Link>
   )
 }
 
@@ -134,15 +137,15 @@ function NavItem({
     >
       <motion.span
         className={cn(
-          'inline-block h-px group-hover:bg-sky-500',
-          isActive ? 'bg-sky-500' : 'bg-foreground/20',
+          'inline-block h-px group-hover:bg-(--color-accent)',
+          isActive ? 'bg-(--color-accent)' : 'bg-foreground/20',
         )}
         style={{ width: lineWidth }}
       />
       <span
         className={cn(
-          'text-foreground whitespace-nowrap transition-all ease-out group-hover:text-sky-500 group-hover:opacity-100',
-          isActive ? 'text-sky-500 opacity-100' : 'opacity-40',
+          'text-foreground whitespace-nowrap transition-all ease-out group-hover:text-(--color-accent) group-hover:opacity-100',
+          isActive ? 'text-(--color-accent) opacity-100' : 'opacity-40',
         )}
       >
         {formatComponentLabel(item)}
@@ -281,6 +284,8 @@ function SidebarNav() {
   )
 }
 
+import { Tooltip } from './tooltip'
+
 export function Sidebar() {
   const pathname = usePathname()
   const shouldShowSidebar = pathname.startsWith('/components/') && pathname !== '/components'
@@ -295,24 +300,25 @@ export function Sidebar() {
   if (!shouldShowSidebar) return null
 
   return (
-    <div ref={containerRef}>
+    <div ref={containerRef} className="contents">
       <motion.button
         type="button"
         initial={false}
-          animate={{
-            x: isExpanded ? 10 : 0,
-            y: isExpanded ? -10 : 0,
-            width: isExpanded ? 42 : 32,
-            height: isExpanded ? 42 : 32,
-          }}
-          transition={{ duration: 0.35, ease: SIDEBAR_EASE }}
-          className="bg-background fixed left-4 top-0 z-[21] mt-[35.5px] cursor-pointer rounded-xl"
-          onClick={toggleSidebar}
-          aria-label="Toggle sidebar"
-          title="Toggle sidebar (Cmd+B)"
-        >
+        animate={{
+          x: isExpanded ? 10 : 0,
+          y: isExpanded ? -10 : 0,
+          width: isExpanded ? 42 : 32,
+          height: isExpanded ? 42 : 32,
+        }}
+        transition={{ duration: 0.35, ease: SIDEBAR_EASE }}
+        className="bg-background fixed left-5 top-5 z-[21] cursor-pointer rounded-xl flex items-center justify-center"
+        onClick={toggleSidebar}
+        aria-label="Toggle sidebar"
+      >
+        <Tooltip content="Toggle sidebar (Cmd+B)" side="bottom">
           <SidebarToggleIcon showSidebar={showSidebar} />
-        </motion.button>
+        </Tooltip>
+      </motion.button>
 
       <motion.aside
         initial={false}
@@ -321,7 +327,7 @@ export function Sidebar() {
           opacity: showSidebar ? 1 : 0,
         }}
         transition={{ duration: 0.35, ease: SIDEBAR_EASE }}
-        className="pointer-events-auto fixed left-0 z-20 h-dvh w-80 p-4 pl-2 pr-2"
+        className="pointer-events-auto fixed left-0 top-0 z-20 h-screen w-80 p-2"
         aria-hidden={!showSidebar}
         style={{ pointerEvents: showSidebar ? 'auto' : 'none' }}
       >

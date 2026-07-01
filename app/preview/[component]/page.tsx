@@ -54,8 +54,8 @@ export default function PreviewPage() {
           </Link>
           <Link
             href="/"
-            className="text-lg sm:text-xl font-medium no-underline hover:opacity-80 transition-opacity"
-            style={{ fontFamily: 'var(--font-handwriting), cursive', color: 'var(--color-accent)' }}
+            className="text-2xl sm:text-3xl font-semibold tracking-tight no-underline hover:opacity-80 transition-opacity"
+            style={{ color: 'var(--color-accent)' }}
           >
             Nexvyn/Ui (...)
           </Link>
