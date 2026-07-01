@@ -3,7 +3,7 @@
 import { useSyncExternalStore, useCallback, useEffect } from 'react'
 import { motion, useMotionValue, useTransform } from 'motion/react'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/layout/button'
+import { Button } from './button'
 
 function subscribe(callback: () => void) {
   if (typeof window === 'undefined') return () => {}
@@ -27,7 +27,15 @@ function getServerSnapshot() {
   return 'light' as const
 }
 
-export function ThemeToggle({ className, showShortcut = true }: { className?: string; showShortcut?: boolean }) {
+export function ThemeToggle({
+  className,
+  showShortcut = true,
+  variant = 'ghost',
+}: {
+  className?: string
+  showShortcut?: boolean
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
+}) {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
   const dark = theme === 'dark'
 
@@ -56,7 +64,7 @@ export function ThemeToggle({ className, showShortcut = true }: { className?: st
     <Button
       onClick={toggle}
       className={cn('h-9 px-3 gap-1.5 group', className)}
-      variant='ghost'
+      variant={variant}
       size='sm'
       aria-label={dark ? 'Switch to light mode (T)' : 'Switch to dark mode (T)'}
       suppressHydrationWarning
@@ -82,15 +90,22 @@ const SolarSwitch = ({ isDark }: { isDark: boolean }) => {
   const duration = 0.7
 
   const moonVariants = {
-    checked: { scale: 1 },
-    unchecked: { scale: 0 },
+    checked: {
+      scale: 1,
+    },
+    unchecked: {
+      scale: 0,
+    },
   }
 
   const sunVariants = {
-    checked: { scale: 0 },
-    unchecked: { scale: 1 },
+    checked: {
+      scale: 0,
+    },
+    unchecked: {
+      scale: 1,
+    },
   }
-
   const scaleMoon = useMotionValue(isDark ? 1 : 0)
   const scaleSun = useMotionValue(isDark ? 0 : 1)
   const pathLengthMoon = useTransform(scaleMoon, [0.6, 1], [0, 1])
@@ -114,7 +129,10 @@ const SolarSwitch = ({ isDark }: { isDark: boolean }) => {
           variants={sunVariants}
           custom={isDark}
           transition={{ duration }}
-          style={{ pathLength: pathLengthSun, scale: scaleSun }}
+          style={{
+            pathLength: pathLengthSun,
+            scale: scaleSun,
+          }}
         />
         <motion.path
           d='M12.4058 1.76251V3.76251'
@@ -125,7 +143,10 @@ const SolarSwitch = ({ isDark }: { isDark: boolean }) => {
           variants={sunVariants}
           custom={isDark}
           transition={{ duration }}
-          style={{ pathLength: pathLengthSun, scale: scaleSun }}
+          style={{
+            pathLength: pathLengthSun,
+            scale: scaleSun,
+          }}
         />
         <motion.path
           d='M12.4058 21.7625V23.7625'
@@ -136,7 +157,10 @@ const SolarSwitch = ({ isDark }: { isDark: boolean }) => {
           variants={sunVariants}
           custom={isDark}
           transition={{ duration }}
-          style={{ pathLength: pathLengthSun, scale: scaleSun }}
+          style={{
+            pathLength: pathLengthSun,
+            scale: scaleSun,
+          }}
         />
         <motion.path
           d='M4.62598 4.98248L6.04598 6.40248'
@@ -147,7 +171,10 @@ const SolarSwitch = ({ isDark }: { isDark: boolean }) => {
           variants={sunVariants}
           custom={isDark}
           transition={{ duration }}
-          style={{ pathLength: pathLengthSun, scale: scaleSun }}
+          style={{
+            pathLength: pathLengthSun,
+            scale: scaleSun,
+          }}
         />
         <motion.path
           d='M18.7656 19.1225L20.1856 20.5425'
@@ -158,7 +185,10 @@ const SolarSwitch = ({ isDark }: { isDark: boolean }) => {
           variants={sunVariants}
           custom={isDark}
           transition={{ duration }}
-          style={{ pathLength: pathLengthSun, scale: scaleSun }}
+          style={{
+            pathLength: pathLengthSun,
+            scale: scaleSun,
+          }}
         />
         <motion.path
           d='M1.40576 12.7625H3.40576'
@@ -169,7 +199,10 @@ const SolarSwitch = ({ isDark }: { isDark: boolean }) => {
           variants={sunVariants}
           custom={isDark}
           transition={{ duration }}
-          style={{ pathLength: pathLengthSun, scale: scaleSun }}
+          style={{
+            pathLength: pathLengthSun,
+            scale: scaleSun,
+          }}
         />
         <motion.path
           d='M21.4058 12.7625H23.4058'
@@ -180,7 +213,10 @@ const SolarSwitch = ({ isDark }: { isDark: boolean }) => {
           variants={sunVariants}
           custom={isDark}
           transition={{ duration }}
-          style={{ pathLength: pathLengthSun, scale: scaleSun }}
+          style={{
+            pathLength: pathLengthSun,
+            scale: scaleSun,
+          }}
         />
         <motion.path
           d='M4.62598 20.5425L6.04598 19.1225'
@@ -191,7 +227,10 @@ const SolarSwitch = ({ isDark }: { isDark: boolean }) => {
           variants={sunVariants}
           custom={isDark}
           transition={{ duration }}
-          style={{ pathLength: pathLengthSun, scale: scaleSun }}
+          style={{
+            pathLength: pathLengthSun,
+            scale: scaleSun,
+          }}
         />
         <motion.path
           d='M18.7656 6.40248L20.1856 4.98248'
@@ -202,7 +241,10 @@ const SolarSwitch = ({ isDark }: { isDark: boolean }) => {
           variants={sunVariants}
           custom={isDark}
           transition={{ duration }}
-          style={{ pathLength: pathLengthSun, scale: scaleSun }}
+          style={{
+            pathLength: pathLengthSun,
+            scale: scaleSun,
+          }}
         />
         <motion.path
           d='M21.1918 13.2013C21.0345 14.9035 20.3957 16.5257 19.35 17.8781C18.3044 19.2305 16.8953 20.2571 15.2875 20.8379C13.6797 21.4186 11.9398 21.5294 10.2713 21.1574C8.60281 20.7854 7.07479 19.9459 5.86602 18.7371C4.65725 17.5283 3.81774 16.0003 3.4457 14.3318C3.07367 12.6633 3.18451 10.9234 3.76526 9.31561C4.346 7.70783 5.37263 6.29868 6.72501 5.25307C8.07739 4.20746 9.69959 3.56862 11.4018 3.41132C10.4052 4.75958 9.92564 6.42077 10.0503 8.09273C10.175 9.76469 10.8957 11.3364 12.0812 12.5219C13.2667 13.7075 14.8384 14.4281 16.5104 14.5528C18.1823 14.6775 19.8435 14.1979 21.1918 13.2013Z'
@@ -213,7 +255,10 @@ const SolarSwitch = ({ isDark }: { isDark: boolean }) => {
           transition={{ duration }}
           variants={moonVariants}
           custom={isDark}
-          style={{ pathLength: pathLengthMoon, scale: scaleMoon }}
+          style={{
+            pathLength: pathLengthMoon,
+            scale: scaleMoon,
+          }}
         />
       </motion.svg>
     </motion.div>

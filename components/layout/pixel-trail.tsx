@@ -34,7 +34,7 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
       const y = Math.floor((e.clientY - rect.top) / pixelSize)
 
       const pixelElement = document.getElementById(
-        `${trailId.current}-pixel-${x}-${y}`
+        `${trailId.current}-pixel-${x}-${y}` 
       )
       if (pixelElement) {
         const animatePixel = (pixelElement as any).__animatePixel
