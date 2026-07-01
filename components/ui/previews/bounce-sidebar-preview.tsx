@@ -129,7 +129,7 @@ export function BounceSidebarPreview() {
                 }}
                 className="mb-8 last:mb-0 min-h-[120px] flex flex-col justify-start"
               >
-                <h2 className="border-b pb-1.5 tracking-tight text-lg font-semibold text-foreground border-neutral-200 dark:border-neutral-800">
+                <h2 className="border-b pb-1.5 tracking-tight text-lg font-semibold text-foreground border-(--color-border)">
                   {section.title}
                 </h2>
                 {section.blocks.map((block, blockIndex) => (

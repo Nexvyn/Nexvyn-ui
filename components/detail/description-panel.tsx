@@ -45,7 +45,7 @@ function CopyButton({
       style={{ color: 'var(--color-muted)' }}
       title="Copy"
     >
-      {copied ? <Check className="h-4.5 w-4.5 text-emerald-500" /> : children || <Copy className="h-4.5 w-4.5" />}
+      {copied ? <Check className="h-4.5 w-4.5 text-(--color-success)" /> : children || <Copy className="h-4.5 w-4.5" />}
     </button>
   )
 }
@@ -185,7 +185,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
         initial={false}
         animate={{ x: open ? 0 : PANEL_SHIFT }}
         transition={{ type: 'spring', stiffness: 280, damping: 32 }}
-        className="detail-panel pointer-events-auto relative flex h-full w-[35rem] flex-col overflow-hidden rounded-2xl"
+        className="detail-panel pointer-events-auto relative flex h-full w-140 flex-col overflow-hidden rounded-2xl"
         style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)' }}
       >
         <div

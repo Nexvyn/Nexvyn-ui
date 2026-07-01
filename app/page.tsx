@@ -48,7 +48,7 @@ export default function HomePage() {
 
       <section className="flex-1 w-full flex flex-col justify-end pb-8 px-4 sm:px-6 relative z-10">
         <p
-            className="mx-auto max-w-[280px] sm:max-w-md text-center text-base sm:text-lg md:text-xl leading-relaxed font-normal animate-in fade-in slide-in-from-bottom-4 duration-1000 px-2"
+            className="mx-auto max-w-70 sm:max-w-md text-center text-base sm:text-lg md:text-xl leading-relaxed font-normal animate-in fade-in slide-in-from-bottom-4 duration-1000 px-2"
             style={{ color: 'var(--color-fg)' }}
           >
            library for design engineers clean components, smooth motion, and interfaces that feel built, not assembled.

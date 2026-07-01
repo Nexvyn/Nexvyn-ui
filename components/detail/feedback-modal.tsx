@@ -67,7 +67,7 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/50"
+            className="fixed inset-0 z-50 bg-(--color-fg)/50"
             onClick={onClose}
           />
           <motion.div
@@ -75,11 +75,11 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={SPRING_PANEL}
-            className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-(--color-border-strong) bg-(--color-bg) p-6 shadow-2xl select-none"
+            className="fixed left-1/2 top-1/2 z-50 w-[90%] max-w-90 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-(--color-border-strong) bg-(--color-bg) p-6 shadow-2xl select-none"
           >
             {status === 'success' && (
               <div className="flex flex-col items-center text-center py-6 px-2">
-                <div className="h-16 w-16 bg-emerald-500 rounded-full flex items-center justify-center text-white mb-5 shadow-lg shadow-emerald-500/10">
+                <div className="h-16 w-16 bg-(--color-success) rounded-full flex items-center justify-center text-(--color-bg) mb-5 shadow-lg">
                   <Check className="h-8 w-8 stroke-[2.5]" />
                 </div>
                 <h3 className="text-xl font-semibold text-(--color-fg) mb-1.5">Thanks!</h3>
@@ -91,7 +91,7 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
 
             {status === 'error' && (
               <div className="flex flex-col items-center text-center py-4 px-2">
-                <div className="h-16 w-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mb-5">
+                <div className="h-16 w-16 bg-(--color-error)/10 text-(--color-error) rounded-full flex items-center justify-center mb-5">
                   <AlertCircle className="h-8 w-8" />
                 </div>
                 <h3 className="text-xl font-semibold text-(--color-fg) mb-1.5">Something went wrong</h3>
@@ -101,7 +101,7 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
                 <button
                   type="button"
                   onClick={() => setStatus('idle')}
-                  className="w-full rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 text-center transition-colors cursor-pointer border-0 text-sm"
+                  className="w-full rounded-xl bg-(--color-accent) hover:opacity-90 text-(--color-bg) font-medium py-3 text-center transition-opacity cursor-pointer border-0 text-sm"
                 >
                   Try again
                 </button>
@@ -134,7 +134,7 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
                     }
                   }}
                   placeholder="Share an idea or report a bug"
-                  className="w-full min-h-[120px] bg-transparent text-(--color-fg) placeholder:text-(--color-muted) border-0 outline-none resize-none text-[14.5px] leading-relaxed py-1"
+                  className="w-full min-h-30 bg-transparent text-(--color-fg) placeholder:text-(--color-muted) border-0 outline-none resize-none text-[14.5px] leading-relaxed py-1"
                   autoFocus
                 />
 

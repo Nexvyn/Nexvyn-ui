@@ -38,23 +38,23 @@ export function NotFoundCard({
   return (
     <div
       className={cn(
-        'relative w-full max-w-[min(340px,88vw)] rounded-[28px] bg-white p-3.5',
+        'relative w-full max-w-[min(340px,88vw)] rounded-[28px] bg-(--color-bg) p-3.5',
         'shadow-[0_12px_42px_rgba(0,0,0,0.09)]',
         className,
       )}
     >
-      <div className="relative aspect-square overflow-hidden rounded-[22px] bg-[#3a3a3a]">
-        <SparkleIcon className="pointer-events-none absolute bottom-[26%] right-[18%] text-white/85" />
+      <div className="relative aspect-square overflow-hidden rounded-[22px] bg-(--color-surface-2)">
+        <SparkleIcon className="pointer-events-none absolute bottom-[26%] right-[18%] text-(--color-fg)/85" />
       </div>
 
       <Link
         href={backHref}
-        className="absolute left-0 top-0 z-10 bg-white px-5 py-3 text-[15px] font-medium leading-none text-black transition-opacity hover:opacity-65 rounded-br-[28px] rounded-tl-[28px]"
+        className="absolute left-0 top-0 z-10 bg-(--color-bg) px-5 py-3 text-[15px] font-medium leading-none text-(--color-fg) transition-opacity hover:opacity-65 rounded-br-[28px] rounded-tl-[28px]"
       >
         {backLabel}
       </Link>
 
-      <div className="absolute bottom-0 right-0 z-10 bg-white px-5 py-3 text-[15px] font-medium leading-none text-black rounded-br-[28px] rounded-tl-[28px]">
+      <div className="absolute bottom-0 right-0 z-10 bg-(--color-bg) px-5 py-3 text-[15px] font-medium leading-none text-(--color-fg) rounded-br-[28px] rounded-tl-[28px]">
         {message}
       </div>
     </div>

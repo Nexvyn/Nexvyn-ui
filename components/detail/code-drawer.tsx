@@ -6,36 +6,30 @@ import type { ComponentItem } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import { ChevronLeft, Download, Copy, Check } from 'lucide-react'
 
-// Lightweight Regex Syntax Highlighter (Black, White, and Accent only)
 function highlightCode(code: string) {
   let html = code
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
 
-  // 1. Strings (Muted Color)
   html = html.replace(/("(?:\\"|[^"])*")/g, '<span class="text-(--color-muted)">$1</span>')
   html = html.replace(/('(?:\\'|[^'])*')/g, '<span class="text-(--color-muted)">$1</span>')
 
-  // 2. Keywords (Accent Color)
   const keywords = ['const', 'let', 'var', 'return', 'import', 'from', 'export', 'default', 'function', 'true', 'false', 'type', 'interface', 'as', 'async', 'await']
   keywords.forEach(kw => {
     const reg = new RegExp(`\\b(${kw})\\b`, 'g')
     html = html.replace(reg, '<span class="text-(--color-accent) font-semibold">$1</span>')
   })
 
-  // 3. Components & Tags (Accent Color)
   html = html.replace(/(&lt;\/?[A-Z][a-zA-Z0-9]*)/g, '<span class="text-(--color-accent) font-medium">$1</span>')
   html = html.replace(/(&lt;\/?[a-z]+)/g, '<span class="text-(--color-accent) font-medium">$1</span>')
 
-  // 4. Attributes (Foreground Color)
   const attrs = ['className', 'key', 'style', 'onClick', 'type', 'ref', 'value', 'onChange', 'href', 'target', 'rel']
   attrs.forEach(attr => {
     const reg = new RegExp(`\\b(${attr})\\b`, 'g')
     html = html.replace(reg, '<span class="text-(--color-fg)">$1</span>')
   })
 
-  // 5. Comments (Muted Color)
   html = html.replace(/(\/\/.*)/g, '<span class="text-(--color-muted) italic">$1</span>')
 
   return html
@@ -57,7 +51,7 @@ function CopyButton({ value }: { value: string }) {
       className="p-1.5 rounded-md hover:bg-(--color-surface-2) text-(--color-muted) hover:text-(--color-fg) transition-colors cursor-pointer shrink-0 border-0 bg-transparent flex items-center justify-center"
       title="Copy Code"
     >
-      {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
+      {copied ? <Check className="h-4 w-4 text-(--color-success)" /> : <Copy className="h-4 w-4" />}
     </button>
   )
 }
@@ -122,17 +116,14 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
         backgroundColor: 'var(--color-bg)',
       }}
     >
-      {/* Top drag handle indicator */}
-      <div 
+      <div
         className="w-full flex justify-center pt-3 pb-1 shrink-0 select-none cursor-row-resize touch-none"
         onPointerDown={(e) => dragControls.start(e)}
       >
         <div className="h-1.5 w-12 rounded-full bg-(--color-muted) opacity-30" />
       </div>
 
-      {/* Header bar matches mockup */}
       <div className="shrink-0 flex items-center justify-between px-6 pb-4 select-none">
-        {/* Left: Back Arrow + Title */}
         <button
           type="button"
           onClick={onClose}
@@ -142,7 +133,6 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
           <span>Source Code</span>
         </button>
 
-        {/* Right: Download Actions & Copy */}
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -158,15 +148,13 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
         </div>
       </div>
 
-      {/* Top blur fade indicator for code scroll */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-[60px] z-20 h-10"
+        className="pointer-events-none absolute inset-x-0 top-15 z-20 h-10"
         style={{
           background: 'linear-gradient(to bottom, var(--color-bg) 30%, transparent)',
         }}
       />
 
-      {/* Code Container */}
       <div className="flex-1 overflow-y-auto px-8 py-6 select-text no-scrollbar">
         <pre className="no-scrollbar overflow-x-auto text-[13.5px] font-mono leading-relaxed bg-transparent border-0 p-0" style={{ color: 'var(--color-fg)' }}>
           {loading ? (
@@ -179,7 +167,6 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
         </pre>
       </div>
 
-      {/* Bottom blur fade indicator for code scroll */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-16 rounded-b-3xl"
         style={{

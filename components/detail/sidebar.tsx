@@ -76,7 +76,7 @@ function SidebarToggleIcon({ showSidebar }: { showSidebar: boolean }) {
         <motion.div
           initial={false}
           animate={{ width: showSidebar ? 4.5 : 1.5 }}
-          className="bg-background absolute left-[3px] h-2.5 rounded-[1px]"
+          className="bg-background absolute left-0.75 h-2.5 rounded-[1px]"
         />
       </div>
     </div>
@@ -311,7 +311,7 @@ export function Sidebar() {
           height: isExpanded ? 42 : 32,
         }}
         transition={{ duration: 0.35, ease: SIDEBAR_EASE }}
-        className="bg-background fixed left-5 top-5 z-[21] cursor-pointer rounded-xl flex items-center justify-center"
+        className="bg-background fixed left-5 top-5 z-21 cursor-pointer rounded-xl flex items-center justify-center"
         onClick={toggleSidebar}
         aria-label="Toggle sidebar"
       >

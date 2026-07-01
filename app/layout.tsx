@@ -48,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="min-h-dvh bg-[var(--color-bg)] text-[var(--color-fg)] font-sans antialiased" suppressHydrationWarning>
+      <body className="min-h-dvh bg-(--color-bg) text-(--color-fg) font-sans antialiased" suppressHydrationWarning>
         <Providers>{children}</Providers>
         <Analytics />
         {process.env.NODE_ENV === "development" && <Agentation />}

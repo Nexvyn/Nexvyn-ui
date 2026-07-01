@@ -24,7 +24,7 @@ export function Footer() {
           href="https://x.com/nexvyn"
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 rounded-md hover:bg-[#f5f5f5] transition-colors"
+          className="p-2 rounded-md hover:bg-(--color-surface-2) transition-colors"
           aria-label="X (Twitter)"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -35,7 +35,7 @@ export function Footer() {
           href="https://github.com/nexvyn/ui"
           target="_blank"
           rel="noopener noreferrer"
-          className="p-2 rounded-md hover:bg-[#f5f5f5] transition-colors"
+          className="p-2 rounded-md hover:bg-(--color-surface-2) transition-colors"
           aria-label="GitHub"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">

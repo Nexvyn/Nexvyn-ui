@@ -40,7 +40,7 @@ export function CopyButton({
         color: 'var(--color-muted)',
       }}
     >
-      {copied ? <Check className="size-5" /> : (idleIcon ?? 'Copy')}
+      {copied ? <Check className="size-5 text-(--color-success)" /> : (idleIcon ?? 'Copy')}
     </button>
   )
 }

@@ -31,7 +31,7 @@ export function CopyInstallButton({ value }: { value: string }) {
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="text-emerald-500"
+          className="text-(--color-success)"
         >
           <path d="M20 6 9 17l-5-5" />
         </svg>

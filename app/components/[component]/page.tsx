@@ -56,7 +56,7 @@ function PixelTrailDemo() {
 
 function GooeyFilterDemo() {
   return (
-    <DemoFrame className="flex items-center justify-center bg-neutral-950">
+        <DemoFrame className="flex items-center justify-center bg-(--color-surface-2)">
       <GooeyFilter id="gooey-demo-filter" strength={10} />
       <div className="relative flex w-48 h-24 items-center justify-center" style={{ filter: 'url(#gooey-demo-filter)' }}>
         <motion.div
@@ -77,14 +77,14 @@ function GooeyFilterDemo() {
 function ScrollFadeDemo() {
   return (
     <DemoFrame className="flex items-center justify-center p-6">
-      <div className="relative h-48 w-64 overflow-hidden rounded-xl border border-neutral-200/60 dark:border-neutral-800/60 bg-(--color-bg)">
+      <div className="relative h-48 w-64 overflow-hidden rounded-xl border border-border/60 bg-(--color-bg)">
         <ScrollFade side="top" background="var(--color-bg)" className="z-10" />
         <ScrollFade side="bottom" background="var(--color-bg)" className="z-10" />
         <div className="h-full overflow-y-auto p-4 space-y-3 no-scrollbar">
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
-              className="h-8 w-full rounded-md border border-neutral-200/40 dark:border-neutral-800/60 flex items-center px-3 text-xs text-neutral-500"
+              className="h-8 w-full rounded-md border border-border/40 flex items-center px-3 text-xs text-(--color-muted)"
             >
               Scroll Item {i + 1}
             </div>

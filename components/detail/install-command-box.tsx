@@ -165,7 +165,7 @@ export function InstallCommandBox({ registry }: { registry?: string }) {
         </div>
 
         <div
-          className="flex-1 overflow-hidden whitespace-nowrap pr-4 text-neutral-400 dark:text-neutral-500 select-all text-[14px]"
+          className="flex-1 overflow-hidden whitespace-nowrap pr-4 text-(--color-muted) select-all text-[14px]"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           <span>
