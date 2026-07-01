@@ -1,8 +1,8 @@
 'use client'
 import { useEffect } from 'react'
 import { Header } from '@/components/layout/header'
-import { GooeyFilter } from '@/components/ui/gooey-filter'
-import { PixelTrail } from '@/components/ui/pixel-trail'
+import { GooeyFilter } from '@/components/layout/gooey-filter'
+import { PixelTrail } from '@/components/layout/pixel-trail'
 import { useScreenSize } from '@/hooks/use-screen-size'
 
 import Link from 'next/link'

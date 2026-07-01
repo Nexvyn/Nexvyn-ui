@@ -166,7 +166,7 @@
 .tray-btn:hover  { color: var(--foreground); border-color: var(--border); }
 .tray-btn:active { transform: scale(0.95); }
 
-.dark {
+.dark, html.dark, :root.dark {
   color-scheme: dark;
 
   --background: oklch(0 0 0);
@@ -213,12 +213,25 @@
   --color-accent:        #7AA7C7;
 }
 
+/* Ensure html and body pick up the correct dark mode colors */
+.dark html,
+.dark body,
+html.dark,
+html.dark body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply font-sans;
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
   }
 }
 
