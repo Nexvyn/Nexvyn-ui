@@ -1,5 +1,10 @@
 import { DM_Serif_Display, Geist, Geist_Mono, Caveat } from 'next/font/google'
+import { Providers } from '@/components/providers'
+import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
+import { Agentation } from "agentation";
+import Script from 'next/script'
+
 
 const dmSerif = DM_Serif_Display({
   weight: '400',
@@ -38,7 +43,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${dmSerif.variable} ${geistSans.variable} ${geistMono.variable} ${caveat.variable}`} suppressHydrationWarning>
       <head>
-        <script
+        <Script
+          id="theme-setup"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
@@ -59,8 +66,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="h-screen overflow-hidden bg-[var(--color-bg)] text-[var(--color-fg)] font-mono antialiased" suppressHydrationWarning>
-        {children}
+      <body className="min-h-dvh bg-[var(--color-bg)] text-[var(--color-fg)] font-mono antialiased" suppressHydrationWarning>
+        <Providers>{children}</Providers>
+        <Analytics />
+        {process.env.NODE_ENV === "development" && <Agentation />}
       </body>
     </html>
   )
