@@ -1,31 +1,34 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
+  stagger,
   useAnimate,
   useMotionValue,
   useReducedMotion,
   type Transition,
-} from "motion/react"
-import { cn } from "@/lib/utils"
+  type Variants,
+} from "motion/react";
+import { cn } from "@/lib/utils";
 
-const EASE_OUT = [0.23, 1, 0.32, 1] as const
+
+const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 
 export type BounceSidebarProps = {
-  items: string[]
-  value?: number
-  defaultValue?: number
-  onChange?: (index: number) => void
-  dotColor?: string
-  className?: string
-}
+  items: string[];
+  value?: number;
+  defaultValue?: number;
+  onChange?: (index: number) => void;
+  dotColor?: string;
+  className?: string;
+};
 
 const itemClass = (active: boolean) =>
   cn(
-    "flex w-full cursor-pointer items-center p-1 text-left text-sm transition-colors duration-200",
+    "flex w-full cursor-pointer items-center rounded-lg p-1 text-left text-sm transition-colors duration-200",
     active ? "text-foreground" : "text-foreground/55",
-  )
+  );
 
 export function BounceSidebar({
   items,
@@ -35,92 +38,144 @@ export function BounceSidebar({
   dotColor = "var(--color-accent)",
   className,
 }: BounceSidebarProps) {
-  const [internalIndex, setInternalIndex] = useState(defaultValue)
-  const activeIndex = value !== undefined ? value : internalIndex
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const activeIndex = value ?? internalValue;
 
-  const containerRef = useRef<HTMLDivElement>(null)
-  const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
-  const [dot, animate] = useAnimate<HTMLSpanElement>()
-  const prevY = useMotionValue(0)
-  const prefersReduced = useReducedMotion()
+  const [scope, animate] = useAnimate();
+  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const prevY = useRef<number | null>(null);
 
-  const handleChange = (index: number) => {
-    if (value === undefined) setInternalIndex(index)
-    onChange?.(index)
-  }
+  const reduceMotion = useReducedMotion();
+
+  const dotX = useMotionValue(0);
+  const dotY = useMotionValue(0);
+
+  const [dotSize, setDotSize] = useState(6);
+
+  // Compute a single source of truth for the target Y so the mount-snap and
+  // the click-animation read the same value and we never offsetTop twice.
+  const getTargetY = (index: number, size: number): number | null => {
+    const el = itemRefs.current[index];
+    if (!el) return null;
+    const dpr = window.devicePixelRatio || 1;
+    return (
+      Math.round((el.offsetTop + el.offsetHeight / 2 - size / 2) * dpr) / dpr
+    );
+  };
+
+  // Mount + fonts-ready snap. Re-snaps on resize so the dot stays anchored
+  // when items reflow. MUST NOT depend on activeIndex — Effect #2 owns all
+  // transitions between items; running this on activeIndex change would
+  // yank the dot to its target mid-animation.
+  useEffect(() => {
+    let cancelled = false;
+    const dpr = window.devicePixelRatio || 1;
+    const computedSize = Math.round(6 * dpr) / dpr;
+    setDotSize(computedSize);
+
+    const initialIndex = activeIndex;
+    const snap = () => {
+      if (cancelled) return;
+      const toY = getTargetY(initialIndex, computedSize);
+      if (toY === null) return;
+      dotX.set(0);
+      dotY.set(toY);
+      prevY.current = toY;
+    };
+    const raf = requestAnimationFrame(snap);
+    document.fonts?.ready.then(snap);
+    const ro = new ResizeObserver(snap);
+    itemRefs.current.forEach((el) => el && ro.observe(el));
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    const el = itemRefs.current[activeIndex]
-    if (!el || !dot.current) return
+    const toY = getTargetY(activeIndex, dotSize);
+    if (toY === null) return;
 
-    const containerRect = containerRef.current?.getBoundingClientRect()
-    const itemRect = el.getBoundingClientRect()
-    if (!containerRect) return
-
-    const toY = el.offsetTop + el.offsetHeight / 2 - 3
-
-    if (prevY.get() === 0) {
-      animate(dot.current, { x: 0, y: toY }, { duration: 0 })
-      prevY.set(toY)
-      return
+    if (prevY.current === null) {
+      dotX.set(0);
+      dotY.set(toY);
+      prevY.current = toY;
+      return;
     }
 
-    const fromY = prevY.get()
-    const delta = toY - fromY
-    prevY.set(toY)
+    const fromY = prevY.current;
+    const delta = toY - fromY;
+    prevY.current = toY;
+    if (delta === 0) return;
 
-    if (delta === 0) return
-
-    if (prefersReduced) {
-      animate(dot.current, { x: 0, y: toY }, { duration: 0 })
-      return
+    // Reduced-motion path: snap to target, no movement. Color/text state
+    // still updates, so the user gets the same affordance without motion.
+    if (reduceMotion) {
+      dotX.set(0);
+      dotY.set(toY);
+      return;
     }
 
-    const radius = Math.min(Math.abs(delta) / 2, 8)
-    const steps = 20
-    const x: number[] = []
-    const y: number[] = []
-    for (let i = 0; i <= steps; i++) {
-      const t = i / steps
-      y.push(fromY + (delta * (1 - Math.cos(Math.PI * t))) / 2)
-      x.push(-radius * Math.sin(Math.PI * t))
-    }
+    const distance = Math.abs(delta);
 
-    animate(dot.current, { x, y }, { duration: 0.3, ease: "easeOut" })
-  }, [activeIndex, animate, dot, prefersReduced, prevY])
+    const yDuration = 0.5;
+    const yTransition: Transition = { duration: yDuration, ease: EASE_OUT };
+
+    const strength = Math.min(0.6, 20 / distance);
+    const peakX = -strength * distance;
+
+    animate(dotY, toY, yTransition);
+    animate(dotX, [0, peakX, 0], {
+      duration: yDuration,
+      ease: EASE_OUT,
+      times: [0, 0.4, 1],
+    });
+  }, [activeIndex, animate, dotX, dotY, dotSize, reduceMotion]);
+
+  const select = (index: number) => {
+    if (value === undefined) setInternalValue(index);
+    onChange?.(index);
+  };
 
   return (
-    <div ref={containerRef} className={cn("relative flex flex-col gap-1", className)}>
-      <span
-        ref={dot}
+    <ul className={cn("relative flex flex-col gap-1 pl-6", className)}>
+      <motion.span
+        ref={scope}
         aria-hidden
-        className="absolute left-0 top-0 h-1.5 w-1.5 rounded-full"
-        style={{ backgroundColor: dotColor }}
+        className="absolute left-2 top-0 rounded-full"
+        style={{
+          x: dotX,
+          y: dotY,
+          width: dotSize,
+          height: dotSize,
+          backgroundColor: dotColor,
+        }}
       />
+
       {items.map((item, index) => {
-        const isActive = index === activeIndex
+        const isActive = index === activeIndex;
         return (
-          <button
+          <li
             key={item}
-            ref={(el) => { itemRefs.current[index] = el }}
-            type="button"
-            onClick={() => handleChange(index)}
-            className={itemClass(isActive)}
+            ref={(el) => {
+              itemRefs.current[index] = el;
+            }}
           >
-            {item}
-          </button>
-        )
+            <motion.button
+              type="button"
+              onClick={() => select(index)}
+              aria-current={isActive ? "true" : undefined}
+              whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+              className={itemClass(isActive)}
+            >
+              {item}
+            </motion.button>
+          </li>
+        );
       })}
-    </div>
-  )
+    </ul>
+  );
 }
 
-export function BounceSidebarPreview() {
-  return (
-    <BounceSidebar
-      items={["Dashboard", "Analytics", "Projects", "Team", "Messages"]}
-      defaultValue={0}
-      className="w-36"
-    />
-  )
-}

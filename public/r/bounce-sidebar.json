@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bounce-sidebar",
+  "title": "Bounce Sidebar",
+  "description": "A sidebar navigation with a bouncing dot indicator that smoothly animates between items using spring physics.",
+  "dependencies": ["motion"],
+  "files": [
+    {
+      "path": "components/ui/bounce-sidebar.tsx",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}
