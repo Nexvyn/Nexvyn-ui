@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "elastic-dot",
+  "title": "Elastic Dot",
+  "description": "An elastic dot indicator that stretches and snaps fluidly to highlight the active item in sidebar navigation.",
+  "dependencies": ["motion"],
+  "files": [
+    {
+      "path": "components/ui/elastic-dot.tsx",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

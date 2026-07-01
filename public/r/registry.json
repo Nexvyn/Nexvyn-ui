@@ -1,0 +1,46 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "nexvyn",
+  "homepage": "https://ui.nexvyn.dev",
+  "items": [
+    {
+      "name": "folder-component",
+      "type": "registry:ui",
+      "title": "Folder Component",
+      "description": "An animated folder whose cards fan out on hover and lift open on click, with a 3D-tilted flap.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/folder-component.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "elastic-dot",
+      "type": "registry:ui",
+      "title": "Elastic Dot",
+      "description": "An elastic dot indicator that stretches and snaps fluidly to highlight the active item in sidebar navigation.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/elastic-dot.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "blossom-color-picker",
+      "type": "registry:ui",
+      "title": "Blossom Color Picker",
+      "description": "An organic, blooming color picker component with smooth flower-like expansion transitions.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/blossom-color-picker.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    }
+  ]
+}
