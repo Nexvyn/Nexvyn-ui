@@ -12,7 +12,7 @@ import { NotFoundCard } from '@/components/layout/not-found-card'
 import { useScreenSize } from '@/hooks/use-screen-size'
 import { COMPONENTS } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
-import { BounceSidebarPreview } from '@/components/ui/bounce-sidebar'
+import { BounceSidebarPreview } from '@/components/ui/previews'
 
 function DemoFrame({
   children,
