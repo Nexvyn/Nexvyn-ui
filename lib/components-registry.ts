@@ -1,5 +1,4 @@
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
-import { elasticDotMetadata } from '@/components/ui/Doc/elastic-dot-metadata'
 
 export type ComponentItem = {
   id: string
@@ -37,7 +36,6 @@ export type ComponentCollection = {
 
 export const COMPONENTS: ComponentItem[] = [
   bounceSidebarMetadata,
-  elasticDotMetadata,
 ]
 
 export const COLLECTIONS: ComponentCollection[] = [

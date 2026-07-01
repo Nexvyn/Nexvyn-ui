@@ -8,8 +8,4 @@ export const COMPONENT_MEDIA: Record<string, ComponentMedia> = {
     thumbnail: '/thumbnails/bounce-sidebar.png',
     videoSrc: '/videos/bounce-sidebar.mp4',
   },
-  'elastic-dot': {
-    thumbnail: '/thumbnails/elastic-dot.png',
-    videoSrc: '/videos/elastic-dot.mp4',
-  },
 }
