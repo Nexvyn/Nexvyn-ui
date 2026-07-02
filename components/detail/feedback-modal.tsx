@@ -94,7 +94,9 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
                 <div className="h-16 w-16 bg-(--color-error)/10 text-(--color-error) rounded-full flex items-center justify-center mb-5">
                   <AlertCircle className="h-8 w-8" />
                 </div>
-                <h3 className="text-xl font-semibold text-(--color-fg) mb-1.5">Something went wrong</h3>
+                <h3 className="text-xl font-semibold text-(--color-fg) mb-1.5">
+                  Something went wrong
+                </h3>
                 <p className="text-xs sm:text-sm text-(--color-muted) leading-relaxed mb-6">
                   We couldn't send your feedback. Please try again.
                 </p>

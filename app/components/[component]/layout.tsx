@@ -5,11 +5,7 @@ import { SidebarProvider } from '@/components/detail/sidebar-provider'
 import DetailSidebarShell from '@/components/detail/detail-sidebar-shell'
 import '@/components/detail/detail-layout.css'
 
-export default function ComponentLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function ComponentLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <Sidebar />

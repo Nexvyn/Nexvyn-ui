@@ -56,9 +56,12 @@ function PixelTrailDemo() {
 
 function GooeyFilterDemo() {
   return (
-        <DemoFrame className="flex items-center justify-center bg-(--color-surface-2)">
+    <DemoFrame className="flex items-center justify-center bg-(--color-surface-2)">
       <GooeyFilter id="gooey-demo-filter" strength={10} />
-      <div className="relative flex w-48 h-24 items-center justify-center" style={{ filter: 'url(#gooey-demo-filter)' }}>
+      <div
+        className="relative flex w-48 h-24 items-center justify-center"
+        style={{ filter: 'url(#gooey-demo-filter)' }}
+      >
         <motion.div
           animate={{ x: [-30, 30, -30] }}
           transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
@@ -160,7 +163,10 @@ export default function ComponentPage() {
 
   if (!component) {
     return (
-      <div className="flex h-full items-center justify-center" style={{ color: 'var(--color-muted)' }}>
+      <div
+        className="flex h-full items-center justify-center"
+        style={{ color: 'var(--color-muted)' }}
+      >
         Component not found
       </div>
     )

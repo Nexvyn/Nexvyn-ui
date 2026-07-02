@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import React, { useCallback, useEffect, useMemo, useRef } from "react"
-import { motion, useAnimationControls } from "motion/react"
-import { v4 as uuidv4 } from "uuid"
-import { cn } from "@/lib/utils"
-import { useDimensions } from "@/hooks/use-debounced-dimensions"
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import { motion, useAnimationControls } from 'motion/react'
+import { v4 as uuidv4 } from 'uuid'
+import { cn } from '@/lib/utils'
+import { useDimensions } from '@/hooks/use-debounced-dimensions'
 
 interface PixelTrailProps {
   pixelSize: number
@@ -33,15 +33,13 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
       const x = Math.floor((e.clientX - rect.left) / pixelSize)
       const y = Math.floor((e.clientY - rect.top) / pixelSize)
 
-      const pixelElement = document.getElementById(
-        `${trailId.current}-pixel-${x}-${y}` 
-      )
+      const pixelElement = document.getElementById(`${trailId.current}-pixel-${x}-${y}`)
       if (pixelElement) {
         const animatePixel = (pixelElement as any).__animatePixel
         if (animatePixel) animatePixel()
       }
     },
-    [pixelSize]
+    [pixelSize],
   )
 
   useEffect(() => {
@@ -51,20 +49,17 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
 
   const columns = useMemo(
     () => Math.ceil(dimensions.width / pixelSize),
-    [dimensions.width, pixelSize]
+    [dimensions.width, pixelSize],
   )
   const rows = useMemo(
     () => Math.ceil(dimensions.height / pixelSize),
-    [dimensions.height, pixelSize]
+    [dimensions.height, pixelSize],
   )
 
   return (
     <div
       ref={containerRef}
-      className={cn(
-        "absolute inset-0 w-full h-full pointer-events-none",
-        className
-      )}
+      className={cn('absolute inset-0 w-full h-full pointer-events-none', className)}
     >
       {Array.from({ length: rows }).map((_, rowIndex) => (
         <div key={rowIndex} className="flex">
@@ -109,14 +104,14 @@ const PixelDot: React.FC<PixelDotProps> = React.memo(
           ;(node as any).__animatePixel = animatePixel
         }
       },
-      [animatePixel]
+      [animatePixel],
     )
 
     return (
       <motion.div
         id={id}
         ref={ref}
-        className={cn("cursor-pointer-none", className)}
+        className={cn('cursor-pointer-none', className)}
         style={{
           width: `${size}px`,
           height: `${size}px`,
@@ -126,8 +121,8 @@ const PixelDot: React.FC<PixelDotProps> = React.memo(
         exit={{ opacity: 0 }}
       />
     )
-  }
+  },
 )
 
-PixelDot.displayName = "PixelDot"
+PixelDot.displayName = 'PixelDot'
 export { PixelTrail }

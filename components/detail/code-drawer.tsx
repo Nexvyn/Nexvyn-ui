@@ -7,25 +7,57 @@ import { cn } from '@/lib/utils'
 import { ChevronLeft, Download, Copy, Check } from 'lucide-react'
 
 function highlightCode(code: string) {
-  let html = code
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
+  let html = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
   html = html.replace(/("(?:\\"|[^"])*")/g, '<span class="text-(--color-muted)">$1</span>')
   html = html.replace(/('(?:\\'|[^'])*')/g, '<span class="text-(--color-muted)">$1</span>')
 
-  const keywords = ['const', 'let', 'var', 'return', 'import', 'from', 'export', 'default', 'function', 'true', 'false', 'type', 'interface', 'as', 'async', 'await']
-  keywords.forEach(kw => {
+  const keywords = [
+    'const',
+    'let',
+    'var',
+    'return',
+    'import',
+    'from',
+    'export',
+    'default',
+    'function',
+    'true',
+    'false',
+    'type',
+    'interface',
+    'as',
+    'async',
+    'await',
+  ]
+  keywords.forEach((kw) => {
     const reg = new RegExp(`\\b(${kw})\\b`, 'g')
     html = html.replace(reg, '<span class="text-(--color-accent) font-semibold">$1</span>')
   })
 
-  html = html.replace(/(&lt;\/?[A-Z][a-zA-Z0-9]*)/g, '<span class="text-(--color-accent) font-medium">$1</span>')
-  html = html.replace(/(&lt;\/?[a-z]+)/g, '<span class="text-(--color-accent) font-medium">$1</span>')
+  html = html.replace(
+    /(&lt;\/?[A-Z][a-zA-Z0-9]*)/g,
+    '<span class="text-(--color-accent) font-medium">$1</span>',
+  )
+  html = html.replace(
+    /(&lt;\/?[a-z]+)/g,
+    '<span class="text-(--color-accent) font-medium">$1</span>',
+  )
 
-  const attrs = ['className', 'key', 'style', 'onClick', 'type', 'ref', 'value', 'onChange', 'href', 'target', 'rel']
-  attrs.forEach(attr => {
+  const attrs = [
+    'className',
+    'key',
+    'style',
+    'onClick',
+    'type',
+    'ref',
+    'value',
+    'onChange',
+    'href',
+    'target',
+    'rel',
+  ]
+  attrs.forEach((attr) => {
     const reg = new RegExp(`\\b(${attr})\\b`, 'g')
     html = html.replace(reg, '<span class="text-(--color-fg)">$1</span>')
   })
@@ -156,7 +188,10 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
       />
 
       <div className="flex-1 overflow-y-auto px-8 py-6 select-text no-scrollbar">
-        <pre className="no-scrollbar overflow-x-auto text-[13.5px] font-mono leading-relaxed bg-transparent border-0 p-0" style={{ color: 'var(--color-fg)' }}>
+        <pre
+          className="no-scrollbar overflow-x-auto text-[13.5px] font-mono leading-relaxed bg-transparent border-0 p-0"
+          style={{ color: 'var(--color-fg)' }}
+        >
           {loading ? (
             <code className="text-(--color-muted)">Loading...</code>
           ) : code ? (

@@ -127,13 +127,26 @@ export function InstallCommandBox({ registry }: { registry?: string }) {
             )}
           </AnimatePresence>
 
-          <div className="h-5 flex items-center justify-center relative w-full" style={{ transformStyle: 'preserve-3d' }}>
+          <div
+            className="h-5 flex items-center justify-center relative w-full"
+            style={{ transformStyle: 'preserve-3d' }}
+          >
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.span
                 key={pm}
-                initial={{ y: scrollDir > 0 ? 14 : -14, rotateX: scrollDir > 0 ? 40 : -40, opacity: 0, scale: 0.8 }}
+                initial={{
+                  y: scrollDir > 0 ? 14 : -14,
+                  rotateX: scrollDir > 0 ? 40 : -40,
+                  opacity: 0,
+                  scale: 0.8,
+                }}
                 animate={{ y: 0, rotateX: 0, opacity: 1, scale: 1 }}
-                exit={{ y: scrollDir > 0 ? -14 : 14, rotateX: scrollDir > 0 ? -40 : 40, opacity: 0, scale: 0.8 }}
+                exit={{
+                  y: scrollDir > 0 ? -14 : 14,
+                  rotateX: scrollDir > 0 ? -40 : 40,
+                  opacity: 0,
+                  scale: 0.8,
+                }}
                 transition={{ type: 'spring', stiffness: 400, damping: 28 }}
                 className="absolute inset-0 flex items-center justify-center text-base font-mono font-normal text-(--color-accent)"
               >
@@ -175,7 +188,9 @@ export function InstallCommandBox({ registry }: { registry?: string }) {
             {pm === 'bun' ? 'bunx ' : ''}
             shadcn@latest add{' '}
           </span>
-          <span className="text-(--color-accent) font-normal">{REGISTRY_URL}/r/{registry}.json</span>
+          <span className="text-(--color-accent) font-normal">
+            {REGISTRY_URL}/r/{registry}.json
+          </span>
         </div>
       </div>
 

@@ -2,8 +2,8 @@
 
 export function Footer() {
   return (
-    <footer 
-      className="max-w-6xl mx-auto w-full px-4 sm:px-6 md:px-12 py-2 md:py-3 flex items-center justify-between text-sm tracking-tight" 
+    <footer
+      className="max-w-6xl mx-auto w-full px-4 sm:px-6 md:px-12 py-2 md:py-3 flex items-center justify-between text-sm tracking-tight"
       style={{ color: 'var(--color-muted)' }}
     >
       <div className="flex-1 pointer-events-auto">

@@ -240,7 +240,9 @@
 }
 
 .detail-page .detail-swatch[aria-pressed='true'] {
-  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 3.5px var(--color-accent);
+  box-shadow:
+    0 0 0 2px var(--color-bg),
+    0 0 0 3.5px var(--color-accent);
 }
 
 /* Entrance */

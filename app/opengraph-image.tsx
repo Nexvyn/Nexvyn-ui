@@ -40,54 +40,52 @@ export default async function Image() {
   const caveat = await loadCaveatFont()
 
   return new ImageResponse(
-    (
-      <div
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#ffffff',
+      }}
+    >
+      <svg
+        width="1200"
+        height="630"
+        viewBox="0 0 1200 630"
         style={{
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#ffffff',
+          position: 'absolute',
+          top: 0,
+          left: 0,
         }}
       >
-        <svg
-          width="1200"
-          height="630"
-          viewBox="0 0 1200 630"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-          }}
-        >
-          {PIXELS.map((pixel, index) => (
-            <rect
-              key={index}
-              x={pixel.x}
-              y={pixel.y}
-              width="28"
-              height="28"
-              fill={pixel.color}
-              opacity={pixel.opacity}
-            />
-          ))}
-        </svg>
+        {PIXELS.map((pixel, index) => (
+          <rect
+            key={index}
+            x={pixel.x}
+            y={pixel.y}
+            width="28"
+            height="28"
+            fill={pixel.color}
+            opacity={pixel.opacity}
+          />
+        ))}
+      </svg>
 
-        <div
-          style={{
-            fontFamily: 'Caveat',
-            fontSize: 128,
-            color: ACCENT,
-            lineHeight: 1,
-            letterSpacing: '-0.02em',
-          }}
-        >
-          Nexvyn/UI
-        </div>
+      <div
+        style={{
+          fontFamily: 'Caveat',
+          fontSize: 128,
+          color: ACCENT,
+          lineHeight: 1,
+          letterSpacing: '-0.02em',
+        }}
+      >
+        Nexvyn/UI
       </div>
-    ),
+    </div>,
     {
       ...size,
       fonts: [
@@ -98,6 +96,6 @@ export default async function Image() {
           weight: 400,
         },
       ],
-    }
+    },
   )
 }

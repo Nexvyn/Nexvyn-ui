@@ -65,7 +65,13 @@ function SidebarToggleIcon({ showSidebar }: { showSidebar: boolean }) {
   return (
     <div className="text-foreground/50 flex size-full cursor-pointer items-center justify-center">
       <div className="relative grid cursor-pointer items-center justify-center">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <path
             fillRule="evenodd"
             clipRule="evenodd"

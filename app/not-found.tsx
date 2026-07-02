@@ -20,9 +20,7 @@ export default function NotFoundPage() {
         <h1 className="text-8xl sm:text-9xl font-sans font-normal text-[var(--color-fg)] mb-4 select-none tracking-tighter">
           404
         </h1>
-        <p className="text-base text-[var(--color-fg)] opacity-80 mb-8">
-          This page has vanished.
-        </p>
+        <p className="text-base text-[var(--color-fg)] opacity-80 mb-8">This page has vanished.</p>
         <div className="flex items-center gap-4">
           <Link
             href="/components"

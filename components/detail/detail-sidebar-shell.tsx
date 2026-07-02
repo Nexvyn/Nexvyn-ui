@@ -12,11 +12,7 @@ import { PreviewControlProvider } from './preview-controls'
 
 const INFO_SPACE = 576
 
-export default function DetailSidebarShell({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function DetailSidebarShell({ children }: { children: React.ReactNode }) {
   const [infoOpen, setInfoOpen] = useState(false)
   const pathname = usePathname()
   const item = activeComponent(pathname)
@@ -39,7 +35,10 @@ export default function DetailSidebarShell({
               <Link
                 href="/components"
                 className="text-3xl sm:text-4xl font-normal no-underline hover:opacity-80 transition-opacity"
-                style={{ fontFamily: 'var(--font-handwriting), cursive', color: 'var(--color-accent)' }}
+                style={{
+                  fontFamily: 'var(--font-handwriting), cursive',
+                  color: 'var(--color-accent)',
+                }}
               >
                 Nexvyn/Ui (...)
               </Link>

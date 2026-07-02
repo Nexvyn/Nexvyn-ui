@@ -11,12 +11,7 @@ import { cn } from '@/lib/utils'
 function SortIcon({ className, animate }: { className?: string; animate?: boolean }) {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className={className} aria-hidden>
-      <path
-        d="M2 4h12"
-        stroke="currentColor"
-        strokeWidth="1.25"
-        strokeLinecap="round"
-      />
+      <path d="M2 4h12" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" />
       <path
         d="M4 8h8"
         stroke="currentColor"

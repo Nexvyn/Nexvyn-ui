@@ -37,9 +37,21 @@ Dependencies resolve automatically. Motion animations require the `motion` packa
 - Next.js 16 + React 19
 - Bun
 - Tailwind CSS v4
-- Motion (Framer Motion)
+- Motion for animations
 - Radix UI primitives
 - shadcn/ui registry protocol
+- Prettier for formatting
+
+## Scripts
+
+```bash
+npm run dev           # Start dev server
+npm run build         # Production build
+npm run build:registry # Generate registry JSON files from source
+npm run format        # Format code with Prettier
+npm run format:check  # Check formatting without writing
+npm run lint          # Run ESLint
+```
 
 ## License
 

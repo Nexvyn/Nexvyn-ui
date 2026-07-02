@@ -8,7 +8,9 @@
       "type": "registry:ui",
       "title": "Bounce Sidebar",
       "description": "A sidebar navigation with a bouncing dot indicator that smoothly animates between items using spring physics.",
-      "dependencies": ["motion"],
+      "dependencies": [
+        "motion"
+      ],
       "files": [
         {
           "path": "components/ui/bounce-sidebar.tsx",

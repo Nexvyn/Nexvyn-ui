@@ -14,7 +14,17 @@ const EASE = [0.2, 0.7, 0.2, 1] as const
 const STAGGER = 0.035
 const DURATION = 0.55
 
-function AnimatedChars({ text, animate, delay = 0, className }: { text: string; animate: boolean; delay?: number; className?: string }) {
+function AnimatedChars({
+  text,
+  animate,
+  delay = 0,
+  className,
+}: {
+  text: string
+  animate: boolean
+  delay?: number
+  className?: string
+}) {
   return (
     <span className={cn('inline-flex', className)}>
       {text.split('').map((char, i) => (
@@ -45,9 +55,7 @@ export function AnimatedTitle({ title, right, className, animate = true }: Anima
   return (
     <div className={cn('flex items-baseline justify-between leading-none', className)}>
       <AnimatedChars text={title} animate={animate} />
-      {right && (
-        <AnimatedChars text={right} animate={animate} delay={title.length * STAGGER} />
-      )}
+      {right && <AnimatedChars text={right} animate={animate} delay={title.length * STAGGER} />}
     </div>
   )
 }

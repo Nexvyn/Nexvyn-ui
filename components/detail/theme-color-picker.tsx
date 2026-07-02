@@ -53,7 +53,9 @@ export default function ThemeColorPicker() {
           >
             {Object.entries(PRESETS).map(([role, colors]) => (
               <div key={role} className="mb-3 last:mb-0">
-                <p className="text-[10px] font-medium uppercase tracking-wider text-(--color-muted) mb-1.5">{role}</p>
+                <p className="text-[10px] font-medium uppercase tracking-wider text-(--color-muted) mb-1.5">
+                  {role}
+                </p>
                 <div className="flex gap-1.5">
                   {colors.map((color) => (
                     <button

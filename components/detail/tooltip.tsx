@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import { useState, useRef, useEffect, type ReactNode } from "react"
-import { motion, AnimatePresence } from "motion/react"
-import { cn } from "@/lib/utils"
+import { useState, useRef, useEffect, type ReactNode } from 'react'
+import { motion, AnimatePresence } from 'motion/react'
+import { cn } from '@/lib/utils'
 
-type TooltipSide = "top" | "right" | "bottom" | "left"
+type TooltipSide = 'top' | 'right' | 'bottom' | 'left'
 
 interface TooltipProps {
   content: ReactNode
@@ -18,7 +18,7 @@ interface TooltipProps {
 function Tooltip({
   content,
   children,
-  side = "top",
+  side = 'top',
   sideOffset = 8,
   delayDuration = 200,
   className,
@@ -72,12 +72,12 @@ function Tooltip({
             exit={{ opacity: 0, ...slide[side] }}
             transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-              "absolute z-50 pointer-events-none whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium",
-              "bg-(--color-fg) text-(--color-bg)",
-              side === "top" && "bottom-full left-1/2 -translate-x-1/2 mb-2",
-              side === "bottom" && "top-full left-1/2 -translate-x-1/2 mt-2",
-              side === "left" && "right-full top-1/2 -translate-y-1/2 mr-2",
-              side === "right" && "left-full top-1/2 -translate-y-1/2 ml-2",
+              'absolute z-50 pointer-events-none whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium',
+              'bg-(--color-fg) text-(--color-bg)',
+              side === 'top' && 'bottom-full left-1/2 -translate-x-1/2 mb-2',
+              side === 'bottom' && 'top-full left-1/2 -translate-x-1/2 mt-2',
+              side === 'left' && 'right-full top-1/2 -translate-y-1/2 mr-2',
+              side === 'right' && 'left-full top-1/2 -translate-y-1/2 ml-2',
               className,
             )}
           >

@@ -11,12 +11,7 @@ export type CopyButtonProps = {
   className?: string
 }
 
-export function CopyButton({
-  value,
-  label,
-  idleIcon,
-  className,
-}: CopyButtonProps) {
+export function CopyButton({ value, label, idleIcon, className }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {

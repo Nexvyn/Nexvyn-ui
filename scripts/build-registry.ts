@@ -23,8 +23,37 @@ for (const item of registry.items) {
   }
 
   const outPath = join(ROOT, 'public', 'r', `${item.name}.json`)
-  writeFileSync(outPath, JSON.stringify(output, null, 2))
+  writeFileSync(outPath, JSON.stringify(output, null, 2) + '\n')
   console.log(`Built: ${item.name}.json`)
 }
+
+const publicRegistry = {
+  $schema: 'https://ui.shadcn.com/schema/registry.json',
+  name: registry.name,
+  homepage: registry.homepage,
+  items: registry.items.map(
+    (item: {
+      name: string
+      title: string
+      description: string
+      dependencies?: string[]
+      files: { path: string; type: string }[]
+      type: string
+    }) => ({
+      name: item.name,
+      type: item.type,
+      title: item.title,
+      description: item.description,
+      dependencies: item.dependencies || [],
+      files: item.files,
+    }),
+  ),
+}
+
+writeFileSync(
+  join(ROOT, 'public', 'r', 'registry.json'),
+  JSON.stringify(publicRegistry, null, 2) + '\n',
+)
+console.log('Built: registry.json')
 
 console.log(`Done. Built ${registry.items.length} registry files.`)

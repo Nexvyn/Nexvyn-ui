@@ -34,9 +34,7 @@ export type ComponentCollection = {
   components: ComponentItem[]
 }
 
-export const COMPONENTS: ComponentItem[] = [
-  bounceSidebarMetadata,
-]
+export const COMPONENTS: ComponentItem[] = [bounceSidebarMetadata]
 
 export const COLLECTIONS: ComponentCollection[] = [
   {
@@ -92,7 +90,8 @@ export function installCommand(item: ComponentItem): string | null {
 
 export const PANEL_INFO = {
   sourceHint: 'Click the code icon in the top-right corner to view the source code.',
-  keepInMind: 'These components are built with React, Tailwind CSS, and motion. They work with Next.js and any React framework.',
+  keepInMind:
+    'These components are built with React, Tailwind CSS, and motion. They work with Next.js and any React framework.',
   contactEmail: 'hello@nexvyn.dev',
   contactNote: 'Questions or feedback? Reach out anytime.',
   license: [

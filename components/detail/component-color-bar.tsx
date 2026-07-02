@@ -11,7 +11,9 @@ function subscribe(callback: () => void) {
 }
 
 function getThemeSnapshot() {
-  return typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+  return typeof window !== 'undefined' && document.documentElement.classList.contains('dark')
+    ? 'dark'
+    : 'light'
 }
 
 const DEFAULT_COLORS = {
@@ -41,7 +43,7 @@ function getContrastAccentColor(hex: string, isDark: boolean) {
   const r = parseInt(c.substring(0, 2), 16)
   const g = parseInt(c.substring(2, 4), 16)
   const b = parseInt(c.substring(4, 6), 16)
-  
+
   if (isDark) {
     const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b
     if (luma < 120) {
@@ -226,15 +228,19 @@ export default function ComponentColorBar() {
   }
 
   return (
-    <div ref={containerRef} className="detail-elevated-pill flex flex-col items-center gap-0.5 rounded-2xl p-1 bg-(--color-surface) select-none shadow-none">
-      
+    <div
+      ref={containerRef}
+      className="detail-elevated-pill flex flex-col items-center gap-0.5 rounded-2xl p-1 bg-(--color-surface) select-none shadow-none"
+    >
       <div className="relative">
         <Tooltip content="Background Color (BG)" side="left">
           <button
             type="button"
             onClick={() => toggleMenu('bg')}
             className={`h-8 w-8 cursor-pointer rounded-xl border-0 transition-[transform] duration-150 active:scale-95 flex items-center justify-center ${
-              activeMenu === 'bg' ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)' : ''
+              activeMenu === 'bg'
+                ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)'
+                : ''
             }`}
             style={{ backgroundColor: activeBg }}
           />
@@ -255,7 +261,9 @@ export default function ComponentColorBar() {
                   type="button"
                   onClick={() => handleBgSelect(color)}
                   className={`h-6.5 w-6.5 rounded-md border border-(--color-border-strong) cursor-pointer transition-transform hover:scale-105 active:scale-95 ${
-                    activeBg === color ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)' : ''
+                    activeBg === color
+                      ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)'
+                      : ''
                   }`}
                   style={{ backgroundColor: color }}
                 />
@@ -286,7 +294,9 @@ export default function ComponentColorBar() {
             type="button"
             onClick={() => toggleMenu('fg')}
             className={`h-8 w-8 cursor-pointer rounded-xl border-0 transition-[transform] duration-150 active:scale-95 flex items-center justify-center ${
-              activeMenu === 'fg' ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)' : ''
+              activeMenu === 'fg'
+                ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)'
+                : ''
             }`}
             style={{ backgroundColor: activeFg }}
           />
@@ -307,7 +317,9 @@ export default function ComponentColorBar() {
                   type="button"
                   onClick={() => handleFgSelect(color)}
                   className={`h-6.5 w-6.5 rounded-md border border-(--color-border-strong) cursor-pointer transition-transform hover:scale-105 active:scale-95 ${
-                    activeFg === color ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)' : ''
+                    activeFg === color
+                      ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)'
+                      : ''
                   }`}
                   style={{ backgroundColor: color }}
                 />
@@ -338,7 +350,9 @@ export default function ComponentColorBar() {
             type="button"
             onClick={() => toggleMenu('ac')}
             className={`h-8 w-8 cursor-pointer rounded-xl border-0 transition-[transform] duration-150 active:scale-95 flex items-center justify-center ${
-              activeMenu === 'ac' ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)' : ''
+              activeMenu === 'ac'
+                ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)'
+                : ''
             }`}
             style={{ backgroundColor: activeAccent }}
           />
@@ -359,7 +373,9 @@ export default function ComponentColorBar() {
                   type="button"
                   onClick={() => handleAccentSelect(color)}
                   className={`h-6.5 w-6.5 rounded-md border border-(--color-border-strong) cursor-pointer transition-transform hover:scale-105 active:scale-95 ${
-                    activeAccent === color ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)' : ''
+                    activeAccent === color
+                      ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)'
+                      : ''
                   }`}
                   style={{ backgroundColor: color }}
                 />
@@ -393,7 +409,12 @@ export default function ComponentColorBar() {
               activeMenu === 'round' ? 'bg-(--color-surface-2)' : ''
             }`}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" className="h-4.5 w-4.5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              fill="none"
+              className="h-4.5 w-4.5"
+            >
               <path
                 d="M84 428V224C84 132.3 158.3 58 250 58H430"
                 stroke="currentColor"
@@ -463,7 +484,6 @@ export default function ComponentColorBar() {
           <RotateCcw className="h-4.5 w-4.5" />
         </button>
       </Tooltip>
-
     </div>
   )
 }

@@ -14,7 +14,11 @@ function LivePreview({ item }: { item: ComponentItem }) {
     case 'bounce-sidebar':
       return (
         <div className="flex size-full items-center justify-center p-4">
-          <BounceSidebar items={["Dashboard", "Analytics", "Projects", "Team", "Messages"]} defaultValue={0} className="w-36" />
+          <BounceSidebar
+            items={['Dashboard', 'Analytics', 'Projects', 'Team', 'Messages']}
+            defaultValue={0}
+            className="w-36"
+          />
         </div>
       )
     default:
@@ -42,9 +46,7 @@ function MediaPreview({ thumbnail, videoSrc }: { thumbnail: string; videoSrc: st
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {thumbnail && !loaded && (
-        <img src={thumbnail} alt="" className="size-full object-cover" />
-      )}
+      {thumbnail && !loaded && <img src={thumbnail} alt="" className="size-full object-cover" />}
       {videoSrc && (
         <video
           ref={videoRef}

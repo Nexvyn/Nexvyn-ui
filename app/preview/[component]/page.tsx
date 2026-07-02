@@ -27,7 +27,7 @@ export default function PreviewPage() {
                 ? `${Math.floor(json.stargazers_count / 1000)}k`
                 : `${(json.stargazers_count / 1000).toFixed(1)}k`
               : json.stargazers_count.toLocaleString()
-          setStars(formattedCount.replace(".0k", "k"))
+          setStars(formattedCount.replace('.0k', 'k'))
         }
       })
       .catch(() => {})
@@ -42,7 +42,10 @@ export default function PreviewPage() {
   }
 
   return (
-    <div className="detail-page h-screen overflow-hidden p-2 font-sans" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)' }}>
+    <div
+      className="detail-page h-screen overflow-hidden p-2 font-sans"
+      style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)' }}
+    >
       <div className="relative h-full">
         <header className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 py-4">
           <Link
@@ -70,7 +73,10 @@ export default function PreviewPage() {
               <Star className="h-3.5 w-3.5 fill-current text-(--color-accent)" />
               <span>{stars}</span>
             </a>
-            <ThemeToggle showShortcut={false} className="h-8 w-8 p-0 flex items-center justify-center rounded-md" />
+            <ThemeToggle
+              showShortcut={false}
+              className="h-8 w-8 p-0 flex items-center justify-center rounded-md"
+            />
           </div>
         </header>
 

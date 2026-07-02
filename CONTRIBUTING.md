@@ -48,9 +48,7 @@ Import and add your metadata to `lib/components-registry.ts`:
 ```ts
 import { myComponentMetadata } from '@/components/ui/Doc/my-component-metadata'
 
-export const COMPONENTS: ComponentItem[] = [
-  myComponentMetadata,
-]
+export const COMPONENTS: ComponentItem[] = [myComponentMetadata]
 ```
 
 ### 5. Add a demo
@@ -77,11 +75,15 @@ Add an entry to `registry.json` for shadcn CLI installation:
 }
 ```
 
-Also add a matching file in `public/r/my-component.json`.
+Then run `npm run build:registry` to generate the `public/r/my-component.json` file automatically.
 
 ### 7. Test locally
 
 Run `npm run dev` and navigate to `/components/my-component` to verify it works.
+
+### 8. Format code
+
+Run `npm run format` before committing to ensure consistent formatting.
 
 ---
 
@@ -91,7 +93,9 @@ Run `npm run dev` and navigate to `/components/my-component` to verify it works.
 - Use `motion/react` for animations (not `framer-motion`)
 - Use `cn()` from `@/lib/utils` for class merging
 - Use design tokens (`var(--color-*)`) instead of hardcoded colors
+- No comments in component files
 - Add `"use client"` directive for client components
+- Run `npm run format` before committing
 
 ---
 

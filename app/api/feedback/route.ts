@@ -11,10 +11,12 @@ export async function POST(request: Request) {
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL
 
     if (!webhookUrl) {
-      console.warn(`[Feedback API Warning] DISCORD_WEBHOOK_URL is missing. Cannot send message: ${message}`)
+      console.warn(
+        `[Feedback API Warning] DISCORD_WEBHOOK_URL is missing. Cannot send message: ${message}`,
+      )
       return NextResponse.json(
         { error: 'Discord webhook is not configured on the server.' },
-        { status: 503 }
+        { status: 503 },
       )
     }
 

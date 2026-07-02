@@ -45,7 +45,11 @@ function CopyButton({
       style={{ color: 'var(--color-muted)' }}
       title="Copy"
     >
-      {copied ? <Check className="h-4.5 w-4.5 text-(--color-success)" /> : children || <Copy className="h-4.5 w-4.5" />}
+      {copied ? (
+        <Check className="h-4.5 w-4.5 text-(--color-success)" />
+      ) : (
+        children || <Copy className="h-4.5 w-4.5" />
+      )}
     </button>
   )
 }
@@ -60,9 +64,7 @@ type DescriptionPanelProps = {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p
-      className="text-xs font-semibold uppercase tracking-wider text-(--color-muted)"
-    >
+    <p className="text-xs font-semibold uppercase tracking-wider text-(--color-muted)">
       {children}
     </p>
   )
@@ -126,11 +128,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
             className="detail-toolbar-btn cursor-pointer rounded-xl p-1.5"
             style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
           >
-            {open ? (
-              <Maximize className="h-5 w-5" />
-            ) : (
-              <Minimize className="h-5 w-5" />
-            )}
+            {open ? <Maximize className="h-5 w-5" /> : <Minimize className="h-5 w-5" />}
           </button>
         </Tooltip>
 
@@ -177,7 +175,11 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
         )}
 
         <Tooltip content="Switch theme (T)" side="bottom">
-          <ThemeToggle showShortcut={false} variant="link" className="h-8 w-8 p-0 flex items-center justify-center rounded-xl bg-transparent hover:bg-transparent text-(--color-muted) hover:text-(--color-fg)" />
+          <ThemeToggle
+            showShortcut={false}
+            variant="link"
+            className="h-8 w-8 p-0 flex items-center justify-center rounded-xl bg-transparent hover:bg-transparent text-(--color-muted) hover:text-(--color-fg)"
+          />
         </Tooltip>
       </motion.div>
 
@@ -195,17 +197,12 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
           }}
         />
 
-
         <div className="no-scrollbar flex flex-1 flex-col gap-12 overflow-y-auto p-8 pt-60 text-left">
           <div className="flex flex-col gap-1 text-left">
-            <h1
-              className="text-3xl font-semibold tracking-tight text-(--color-fg)"
-            >
+            <h1 className="text-3xl font-semibold tracking-tight text-(--color-fg)">
               {item?.name ?? 'Component'}
             </h1>
-            <p
-              className="text-base leading-relaxed text-(--color-muted) text-pretty mt-2"
-            >
+            <p className="text-base leading-relaxed text-(--color-muted) text-pretty mt-2">
               {item?.description ?? 'This component is not available yet.'}
             </p>
           </div>
@@ -312,7 +309,10 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
 
           <div className="detail-section">
             <SectionLabel>License & Usage</SectionLabel>
-            <ul className="flex flex-col gap-2 text-sm leading-relaxed" style={{ color: 'var(--color-muted)' }}>
+            <ul
+              className="flex flex-col gap-2 text-sm leading-relaxed"
+              style={{ color: 'var(--color-muted)' }}
+            >
               {PANEL_INFO.license.map((line) => (
                 <li key={line} className="flex gap-2">
                   <span style={{ color: 'var(--color-subtle)' }}>•</span>
@@ -324,7 +324,11 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
         </div>
 
         <CodeDrawer open={codeOpen} onClose={() => setCodeOpen(false)} item={item} />
-        <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} componentName={item?.name} />
+        <FeedbackModal
+          isOpen={feedbackOpen}
+          onClose={() => setFeedbackOpen(false)}
+          componentName={item?.name}
+        />
       </motion.div>
     </div>
   )

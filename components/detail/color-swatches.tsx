@@ -10,10 +10,7 @@ type ColorSwatchesProps = {
   showLabel?: boolean
 }
 
-export default function ColorSwatches({
-  className = '',
-  showLabel = false,
-}: ColorSwatchesProps) {
+export default function ColorSwatches({ className = '', showLabel = false }: ColorSwatchesProps) {
   const pathname = usePathname()
   const prop = swatchProp(activeComponent(pathname))
 
@@ -26,7 +23,12 @@ export default function ColorSwatches({
   if (!prop?.optionColors || options.length === 0) return null
 
   return (
-    <div className={cn('detail-elevated-pill flex items-center gap-2.5 rounded-2xl px-4 py-2.5', className)}>
+    <div
+      className={cn(
+        'detail-elevated-pill flex items-center gap-2.5 rounded-2xl px-4 py-2.5',
+        className,
+      )}
+    >
       {showLabel && (
         <span className="mr-0.5 text-xs font-medium" style={{ color: 'var(--color-muted)' }}>
           {prop.name}

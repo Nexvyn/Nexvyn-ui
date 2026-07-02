@@ -5,7 +5,8 @@ export const bounceSidebarMetadata: ComponentItem = {
   name: 'Bounce Sidebar',
   collection: 'effects',
   previewType: 'default',
-  description: 'A sidebar navigation with a bouncing dot indicator that smoothly animates between items using spring physics.',
+  description:
+    'A sidebar navigation with a bouncing dot indicator that smoothly animates between items using spring physics.',
   registry: 'bounce-sidebar',
   dependencies: [{ name: 'motion' }],
   interaction: 'Click on different items to see the dot bounce and stretch to each position.',
