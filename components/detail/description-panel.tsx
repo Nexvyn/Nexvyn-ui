@@ -203,7 +203,8 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
           }}
         />
 
-        <div className="no-scrollbar flex flex-1 flex-col gap-8 sm:gap-12 overflow-y-auto p-4 sm:p-6 md:p-8 pt-48 sm:pt-72 text-left">
+        <div className="no-scrollbar flex flex-1 flex-col gap-8 sm:gap-12 overflow-y-auto p-4 sm:p-6 md:p-8 pt-16 sm:pt-20 text-left">
+          <div className="h-[35vh] md:h-[22vh] shrink-0" />
           <div className="flex flex-col gap-1 text-left">
             <h1 className="text-3xl font-semibold tracking-tight text-(--color-fg)">
               {item?.name ?? 'Component'}

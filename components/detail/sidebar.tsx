@@ -9,6 +9,7 @@ import { useSidebar } from '@/components/detail/sidebar-provider'
 import { ScrollFade } from '@/components/detail/scroll-fade'
 import { useClickOutside } from '@/hooks/use-click-outside'
 import { useScreenSize } from '@/hooks/use-screen-size'
+import { Tooltip } from './tooltip'
 import {
   COLLECTIONS,
   COMPONENTS,
@@ -61,7 +62,7 @@ function SortArrowIcon() {
   )
 }
 
-function SidebarToggleIcon({ showSidebar }: { showSidebar: boolean }) {
+export function SidebarToggleIcon({ showSidebar }: { showSidebar: boolean }) {
   return (
     <div className="text-foreground/50 flex size-full cursor-pointer items-center justify-center">
       <div className="relative grid cursor-pointer items-center justify-center">
@@ -122,32 +123,58 @@ function NavItem({
   onLeave: () => void
 }) {
   const lineWidth = useSpring(isActive ? 55 : 32, LINE_SPRING)
+  const [isHovered, setIsHovered] = useState(false)
+  const [widthValue, setWidthValue] = useState(isActive ? 55 : 32)
 
   useEffect(() => {
     lineWidth.set(isActive ? 55 : 32)
   }, [isActive, lineWidth])
 
+  useEffect(() => {
+    const unsubscribe = lineWidth.on('change', (v) => setWidthValue(v))
+    return unsubscribe
+  }, [lineWidth])
+
+  const lineColor = isActive ? 'var(--color-accent)' : 'var(--color-border)'
+  const hoverColor = 'var(--color-accent)'
+
   return (
     <Link
       ref={itemRef}
       href={getComponentHref(item.id)}
-      className="group relative flex h-px cursor-pointer items-center gap-3 after:absolute after:left-0 after:top-1/2 after:size-full after:-translate-y-1/2 after:p-3.5"
+      className="group sidebar-nav-item relative flex h-px cursor-pointer items-center gap-3 after:absolute after:left-0 after:top-1/2 after:size-full after:-translate-y-1/2 after:p-3.5"
       onMouseEnter={() => {
         lineWidth.set(55)
+        setIsHovered(true)
         onHover()
       }}
       onMouseLeave={() => {
         if (!isActive) lineWidth.set(32)
+        setIsHovered(false)
         onLeave()
       }}
     >
-      <motion.span
-        className={cn(
-          'inline-block h-px group-hover:bg-(--color-accent)',
-          isActive ? 'bg-(--color-accent)' : 'bg-foreground/20',
-        )}
-        style={{ width: lineWidth }}
-      />
+      <svg
+        viewBox="0 0 55 8"
+        className="h-2 overflow-visible"
+        style={{ width: widthValue }}
+        preserveAspectRatio="none"
+      >
+        <motion.path
+          initial={false}
+          animate={{
+            d: isHovered
+              ? 'M0 4C4.5 1 9 1 13.5 4C18 7 22.5 7 27 4C31.5 1 36 1 40.5 4C45 7 49.5 7 54 4'
+              : 'M0 4L54 4',
+            stroke: isHovered ? hoverColor : lineColor,
+          }}
+          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+          strokeWidth={1.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
+      </svg>
       <span
         className={cn(
           'text-foreground whitespace-nowrap transition-all ease-out group-hover:text-(--color-accent) group-hover:opacity-100',
@@ -255,7 +282,7 @@ function SidebarNav() {
               })}
             </>
           ) : (
-            COLLECTIONS.map((collection, collectionIndex) => (
+            COLLECTIONS.filter((c) => c.components.length > 0).map((collection, collectionIndex, filteredArray) => (
               <Fragment key={collection.id}>
                 <NavSectionHeader title={collection.name} active />
                 <Separator />
@@ -280,7 +307,7 @@ function SidebarNav() {
                     </Fragment>
                   )
                 })}
-                {collectionIndex !== COLLECTIONS.length - 1 && <Separator count={6} />}
+                {collectionIndex !== filteredArray.length - 1 && <Separator count={6} />}
               </Fragment>
             ))
           )}
@@ -289,8 +316,6 @@ function SidebarNav() {
     </>
   )
 }
-
-import { Tooltip } from './tooltip'
 
 export function Sidebar() {
   const pathname = usePathname()
@@ -320,24 +345,26 @@ export function Sidebar() {
         )}
       </AnimatePresence>
 
-      <motion.button
-        type="button"
-        initial={false}
+      <motion.div
+        className="detail-elevated-pill pointer-events-auto fixed left-5 top-5 z-21 flex items-center gap-0.5 rounded-2xl p-1 shadow-none"
         animate={{
           x: isExpanded && !screenSize.lessThan('md') ? 10 : 0,
           y: isExpanded && !screenSize.lessThan('md') ? -10 : 0,
-          width: isExpanded ? 42 : 32,
-          height: isExpanded ? 42 : 32,
         }}
         transition={{ duration: 0.35, ease: SIDEBAR_EASE }}
-        className="bg-background fixed left-3 top-3 sm:left-5 sm:top-5 z-21 cursor-pointer rounded-xl flex items-center justify-center"
-        onClick={toggleSidebar}
-        aria-label="Toggle sidebar"
       >
         <Tooltip content="Toggle sidebar (Cmd+B)" side="bottom">
-          <SidebarToggleIcon showSidebar={showSidebar} />
+          <button
+            type="button"
+            className="detail-toolbar-btn cursor-pointer rounded-xl p-1.5"
+            style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
+            onClick={toggleSidebar}
+            aria-label="Toggle sidebar"
+          >
+            <SidebarToggleIcon showSidebar={showSidebar} />
+          </button>
         </Tooltip>
-      </motion.button>
+      </motion.div>
 
       <motion.aside
         initial={false}

@@ -19,7 +19,6 @@ export default function DetailSidebarShell({ children }: { children: React.React
   const item = activeComponent(pathname)
   const screenSize = useScreenSize()
   const isMobile = screenSize.lessThan('md')
-
   return (
     <PreviewControlProvider>
       <div className="detail-page relative h-full font-sans">
@@ -34,7 +33,7 @@ export default function DetailSidebarShell({ children }: { children: React.React
           className="h-full"
         >
           <div className="detail-preview-card relative z-0 h-full rounded-[45px] p-4 pt-16 sm:pt-20">
-            <div className="absolute top-5 left-1/2 -translate-x-1/2 z-10 pointer-events-auto pl-12 sm:pl-0">
+            <div className="absolute z-10 pointer-events-auto top-4.5 left-[60px] translate-x-0 md:top-5 md:left-1/2 md:-translate-x-1/2">
               <Link
                 href="/components"
                 className="text-xl sm:text-2xl md:text-4xl font-normal no-underline hover:opacity-80 transition-opacity"
@@ -48,9 +47,9 @@ export default function DetailSidebarShell({ children }: { children: React.React
             </div>
             {children}
 
-            <div className="absolute bottom-5 right-5 z-10 pointer-events-auto hidden sm:block">
+            {/* <div className="absolute bottom-5 right-5 z-10 pointer-events-auto hidden sm:block">
               <ComponentColorBar />
-            </div>
+            </div> */}
 
             {item?.registry && (
               <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 max-w-[calc(100%-2.5rem)] sm:max-w-sm md:max-w-md w-full pointer-events-auto">
