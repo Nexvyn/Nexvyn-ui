@@ -15,19 +15,6 @@
           "type": "registry:ui"
         }
       ]
-    },
-    {
-      "name": "blossom-color-picker",
-      "type": "registry:ui",
-      "title": "Blossom Color Picker",
-      "description": "An organic, blooming color picker component with smooth flower-like expansion transitions.",
-      "dependencies": ["motion"],
-      "files": [
-        {
-          "path": "components/ui/blossom-color-picker.tsx",
-          "type": "registry:ui"
-        }
-      ]
     }
   ]
 }

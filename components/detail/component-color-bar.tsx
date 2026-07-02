@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useSyncExternalStore } from 'react'
 import { RotateCcw, Plus, Check } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import { Tooltip } from './tooltip'
 
 function subscribe(callback: () => void) {

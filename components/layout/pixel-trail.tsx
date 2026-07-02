@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useCallback, useEffect, useMemo, useRef } from "react"
-import { motion, useAnimationControls } from "framer-motion"
+import { motion, useAnimationControls } from "motion/react"
 import { v4 as uuidv4 } from "uuid"
 import { cn } from "@/lib/utils"
 import { useDimensions } from "@/hooks/use-debounced-dimensions"
