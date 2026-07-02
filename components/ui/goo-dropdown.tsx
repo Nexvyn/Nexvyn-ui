@@ -52,13 +52,7 @@ const DEFAULT_SPRING: SpringConfig = {
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t
 
-function roundedRectShape(
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  radius: number,
-) {
+function roundedRectShape(x: number, y: number, w: number, h: number, radius: number) {
   const r = Math.max(0, Math.min(radius, w / 2, h / 2))
   const k = r * 0.5523
   const x1 = x
@@ -143,7 +137,9 @@ export function GooDropdown({
       ...spring,
       visualDuration: open
         ? (spring.visualDuration ?? 0.3)
-        : (spring.visualDuration ? spring.visualDuration * 0.7 : 0.2),
+        : spring.visualDuration
+          ? spring.visualDuration * 0.7
+          : 0.2,
     }
     const animation = animate(progress, open ? 1 : 0, config)
     return () => animation.stop()
@@ -181,11 +177,7 @@ export function GooDropdown({
       <svg className="absolute h-0 w-0" aria-hidden>
         <defs>
           <filter id={filterId}>
-            <feGaussianBlur
-              in="SourceGraphic"
-              stdDeviation={gooStrength}
-              result="blur"
-            />
+            <feGaussianBlur in="SourceGraphic" stdDeviation={gooStrength} result="blur" />
             <feColorMatrix
               in="blur"
               mode="matrix"

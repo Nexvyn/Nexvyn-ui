@@ -17,6 +17,21 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "goo-dropdown",
+      "type": "registry:ui",
+      "title": "Gooey Dropdown",
+      "description": "A dropdown menu with a gooey SVG filter effect that morphs a trigger pill into the panel using spring physics and CSS shape interpolation.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/goo-dropdown.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

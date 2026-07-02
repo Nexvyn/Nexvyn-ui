@@ -20,7 +20,8 @@ export const bounceSidebarMetadata: ComponentItem = {
     {
       name: 'value',
       type: 'number',
-      description: "Active item index for controlled usage. When set, the component won't manage its own state.",
+      description:
+        "Active item index for controlled usage. When set, the component won't manage its own state.",
     },
     {
       name: 'defaultValue',

@@ -14,7 +14,10 @@ export function ComponentCard({ item }: { item: ComponentItem }) {
         className="relative w-full rounded-2xl p-1 border border-(--color-border) hover:border-(--color-accent) transition-colors duration-200"
         style={{ backgroundColor: 'var(--color-bg)' }}
       >
-        <div className="relative h-56 sm:h-70 w-full overflow-hidden rounded-xl" style={{ backgroundColor: 'var(--color-surface)' }}>
+        <div
+          className="relative h-56 sm:h-70 w-full overflow-hidden rounded-xl"
+          style={{ backgroundColor: 'var(--color-surface)' }}
+        >
           <ComponentPreview item={item} />
         </div>
 

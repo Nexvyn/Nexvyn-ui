@@ -12,7 +12,7 @@ import { NotFoundCard } from '@/components/layout/not-found-card'
 import { useScreenSize } from '@/hooks/use-screen-size'
 import { COMPONENTS } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
-import { BounceSidebarPreview } from '@/components/ui/previews'
+import { BounceSidebarPreview, GooDropdownPreview } from '@/components/ui/previews'
 
 function DemoFrame({
   children,
@@ -104,6 +104,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <BounceSidebarPreview />
+        </DemoFrame>
+      )
+    case 'goo-dropdown':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <GooDropdownPreview />
         </DemoFrame>
       )
     case 'button':

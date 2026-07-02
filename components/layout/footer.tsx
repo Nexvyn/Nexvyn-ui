@@ -10,7 +10,7 @@ export function Footer() {
         <span className="text-xs sm:text-sm">© {new Date().getFullYear()}</span>
       </div>
 
-        <div className="hidden md:block md:flex-1 md:text-center">
+      <div className="hidden md:block md:flex-1 md:text-center">
         <span
           className="text-xl sm:text-2xl"
           style={{ fontFamily: 'var(--font-handwriting), cursive', color: 'var(--color-accent)' }}

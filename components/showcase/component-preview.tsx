@@ -9,6 +9,11 @@ const BounceSidebar = dynamic(
   { ssr: false },
 )
 
+const GooDropdown = dynamic(
+  () => import('@/components/ui/goo-dropdown').then((m) => m.GooDropdown),
+  { ssr: false },
+)
+
 function LivePreview({ item }: { item: ComponentItem }) {
   switch (item.id) {
     case 'bounce-sidebar':
@@ -19,6 +24,12 @@ function LivePreview({ item }: { item: ComponentItem }) {
             defaultValue={0}
             className="w-36"
           />
+        </div>
+      )
+    case 'goo-dropdown':
+      return (
+        <div className="flex size-full items-center justify-center p-4">
+          <GooDropdown width={180} />
         </div>
       )
     default:
@@ -64,7 +75,13 @@ function MediaPreview({ thumbnail, videoSrc }: { thumbnail: string; videoSrc: st
 
 import { COMPONENT_MEDIA } from '@/lib/component-media'
 
+const LIVE_PREVIEW_IDS = ['bounce-sidebar', 'goo-dropdown']
+
 export function ComponentPreview({ item }: { item: ComponentItem }) {
+  if (LIVE_PREVIEW_IDS.includes(item.id)) {
+    return <LivePreview item={item} />
+  }
+
   const media = COMPONENT_MEDIA[item.id]
   const thumbnail = media?.thumbnail || item.thumbnail || `/thumbnails/${item.id}.png`
   const videoSrc = media?.videoSrc || item.videoSrc || `/videos/${item.id}.mp4`

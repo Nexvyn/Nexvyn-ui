@@ -282,34 +282,36 @@ function SidebarNav() {
               })}
             </>
           ) : (
-            COLLECTIONS.filter((c) => c.components.length > 0).map((collection, collectionIndex, filteredArray) => (
-              <Fragment key={collection.id}>
-                <NavSectionHeader title={collection.name} active />
-                <Separator />
-                {collection.components.map((item, index) => {
-                  const isActive = activeId === item.id
-                  return (
-                    <Fragment key={item.id}>
-                      <NavItem
-                        item={item}
-                        isActive={isActive}
-                        itemRef={isActive ? activeRef : undefined}
-                        onHover={() => {
-                          setHoveredItem(item)
-                          previewOpacity.set(1)
-                        }}
-                        onLeave={() => {
-                          setHoveredItem(null)
-                          previewOpacity.set(0)
-                        }}
-                      />
-                      {index !== collection.components.length - 1 && <Separator />}
-                    </Fragment>
-                  )
-                })}
-                {collectionIndex !== filteredArray.length - 1 && <Separator count={6} />}
-              </Fragment>
-            ))
+            COLLECTIONS.filter((c) => c.components.length > 0).map(
+              (collection, collectionIndex, filteredArray) => (
+                <Fragment key={collection.id}>
+                  <NavSectionHeader title={collection.name} active />
+                  <Separator />
+                  {collection.components.map((item, index) => {
+                    const isActive = activeId === item.id
+                    return (
+                      <Fragment key={item.id}>
+                        <NavItem
+                          item={item}
+                          isActive={isActive}
+                          itemRef={isActive ? activeRef : undefined}
+                          onHover={() => {
+                            setHoveredItem(item)
+                            previewOpacity.set(1)
+                          }}
+                          onLeave={() => {
+                            setHoveredItem(null)
+                            previewOpacity.set(0)
+                          }}
+                        />
+                        {index !== collection.components.length - 1 && <Separator />}
+                      </Fragment>
+                    )
+                  })}
+                  {collectionIndex !== filteredArray.length - 1 && <Separator count={6} />}
+                </Fragment>
+              ),
+            )
           )}
         </div>
       </div>

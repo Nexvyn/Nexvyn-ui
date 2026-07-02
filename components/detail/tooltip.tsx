@@ -28,7 +28,7 @@ function Tooltip({
   const [mounted, setMounted] = useState(false)
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(null)
   const [computedSide, setComputedSide] = useState<TooltipSide>(side)
-  
+
   const triggerRef = useRef<HTMLDivElement>(null)
   const tooltipRef = useRef<HTMLDivElement | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -64,7 +64,7 @@ function Tooltip({
   const updateCoords = useCallback(() => {
     if (!triggerRef.current) return
     const rect = triggerRef.current.getBoundingClientRect()
-    
+
     let tooltipW = 100
     let tooltipH = 32
     if (tooltipRef.current) {
@@ -113,14 +113,17 @@ function Tooltip({
     setCoords({ top, left })
   }, [side, sideOffset])
 
-  const setTooltipRef = useCallback((node: HTMLDivElement | null) => {
-    tooltipRef.current = node
-    if (node) {
-      requestAnimationFrame(() => {
-        updateCoords()
-      })
-    }
-  }, [updateCoords])
+  const setTooltipRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      tooltipRef.current = node
+      if (node) {
+        requestAnimationFrame(() => {
+          updateCoords()
+        })
+      }
+    },
+    [updateCoords],
+  )
 
   useEffect(() => {
     if (!open) return
@@ -137,7 +140,7 @@ function Tooltip({
 
   const positionStyles = () => {
     if (!coords) return { opacity: 0, position: 'absolute' as const }
-    
+
     let transform = ''
     if (computedSide === 'top') {
       transform = 'translate(-50%, -100%)'
@@ -176,28 +179,29 @@ function Tooltip({
       onPointerDown={handlePointerDown}
     >
       {children}
-      {mounted && createPortal(
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              ref={setTooltipRef}
-              initial={{ opacity: 0, ...slide[computedSide] }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              exit={{ opacity: 0, ...slide[computedSide] }}
-              transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
-              style={positionStyles()}
-              className={cn(
-                'pointer-events-none whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium',
-                'bg-(--color-fg) text-(--color-bg) shadow-md',
-                className,
-              )}
-            >
-              {content}
-            </motion.div>
-          )}
-        </AnimatePresence>,
-        document.body
-      )}
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                ref={setTooltipRef}
+                initial={{ opacity: 0, ...slide[computedSide] }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                exit={{ opacity: 0, ...slide[computedSide] }}
+                transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                style={positionStyles()}
+                className={cn(
+                  'pointer-events-none whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium',
+                  'bg-(--color-fg) text-(--color-bg) shadow-md',
+                  className,
+                )}
+              >
+                {content}
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body,
+        )}
     </div>
   )
 }

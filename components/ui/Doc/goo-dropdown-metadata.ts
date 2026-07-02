@@ -9,7 +9,8 @@ export const gooDropdownMetadata: ComponentItem = {
     'A dropdown menu with a gooey SVG filter effect that morphs a trigger pill into the panel using spring physics and CSS shape interpolation.',
   registry: 'goo-dropdown',
   dependencies: [{ name: 'motion' }],
-  interaction: 'Click the trigger button to expand the dropdown. Click outside or press Escape to close.',
+  interaction:
+    'Click the trigger button to expand the dropdown. Click outside or press Escape to close.',
   props: [
     {
       name: 'trigger',
