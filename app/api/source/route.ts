@@ -2,8 +2,8 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 
 const SOURCE_MAP: Record<string, string[]> = {
-  'folder-component': ['components', 'ui', 'folder-component.tsx'],
   'bounce-sidebar': ['components', 'ui', 'bounce-sidebar.tsx'],
+  'goo-dropdown': ['components', 'ui', 'goo-dropdown.tsx'],
 }
 
 export async function GET(request: Request) {

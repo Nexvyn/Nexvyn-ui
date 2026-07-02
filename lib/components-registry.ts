@@ -1,4 +1,5 @@
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
+import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
 
 export type ComponentItem = {
   id: string
@@ -15,6 +16,7 @@ export type ComponentItem = {
   interaction?: string
   props?: ComponentProp[]
   usage?: string
+  credits?: string
 }
 
 export type ComponentProp = {
@@ -34,7 +36,7 @@ export type ComponentCollection = {
   components: ComponentItem[]
 }
 
-export const COMPONENTS: ComponentItem[] = [bounceSidebarMetadata]
+export const COMPONENTS: ComponentItem[] = [bounceSidebarMetadata, gooDropdownMetadata]
 
 export const COLLECTIONS: ComponentCollection[] = [
   {
@@ -65,8 +67,8 @@ export const COLLECTIONS: ComponentCollection[] = [
 ]
 
 export function getComponentNumber(id: string): number {
-  const match = id.match(/\d+/)
-  return match ? parseInt(match[0], 10) : 0
+  const index = COMPONENTS.findIndex((c) => c.id === id)
+  return index >= 0 ? index : 0
 }
 
 export function formatComponentLabel(item: ComponentItem): string {
@@ -91,7 +93,7 @@ export function installCommand(item: ComponentItem): string | null {
 export const PANEL_INFO = {
   sourceHint: 'Click the code icon in the top-right corner to view the source code.',
   keepInMind:
-    'These components are built with React, Tailwind CSS, and motion. They work with Next.js and any React framework.',
+    "All components here are original implementations, built from scratch with no copied code, assets, or content. We study UI/UX patterns we admire and craft our own versions, often with added features. If your work inspired something here and isn't credited, or a credit is incomplete, please open an issue - we'll fix it promptly.",
   contactEmail: 'hello@nexvyn.dev',
   contactNote: 'Questions or feedback? Reach out anytime.',
   license: [

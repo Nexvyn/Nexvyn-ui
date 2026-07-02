@@ -44,6 +44,22 @@ const librarySections = [
       },
     ],
   },
+  {
+    title: 'Developer Experience',
+    blocks: [
+      {
+        text: 'Developer experience (DX) is at the heart of our engineering. With fully typed components, clean named exports, and intuitive React hooks, integrating Nexvyn/UI into any modern codebase is seamless. We eliminate boilerplate, provide helpful TypeScript interfaces, and ensure compilation is warning-free to accelerate your feature delivery.',
+      },
+    ],
+  },
+  {
+    title: 'Customization',
+    blocks: [
+      {
+        text: "While we offer a premium default aesthetic, customization is fully supported. By utilizing semantic CSS variables (--color-accent, --color-bg, and custom scoping variables), you can easily override themes, radius coordinates, and animation springs to match your brand's unique identity without touching the core source files.",
+      },
+    ],
+  },
 ]
 
 export function BounceSidebarPreview() {
@@ -92,9 +108,9 @@ export function BounceSidebarPreview() {
   }, [])
 
   return (
-    <div className="flex h-full w-full justify-center items-center p-6">
-      <div className="flex gap-10 text-left max-w-3xl items-start w-full">
-        <aside className="w-44 shrink-0 flex flex-col justify-start sticky top-0 h-fit pl-2">
+    <div className="flex h-full w-full justify-center items-start pt-[4vh] p-6">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-4 text-left max-w-3xl items-stretch md:items-start w-full h-full max-h-[520px]">
+        <aside className="w-full md:w-40 shrink-0 sticky top-0 h-fit pl-2">
           <p className="mb-3 pl-2 text-xs font-semibold font-sans uppercase tracking-wider text-foreground/45">
             Library Guide
           </p>
@@ -109,8 +125,8 @@ export function BounceSidebarPreview() {
         <div
           ref={scrollRef}
           id="preview-scroll-viewport"
-          className="min-h-0 flex-1 overflow-y-auto pr-4 h-[200px] relative"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="min-h-0 flex-1 overflow-y-auto pr-4 h-full relative"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', marginLeft: '-1px' }}
         >
           <style
             dangerouslySetInnerHTML={{
@@ -141,7 +157,7 @@ export function BounceSidebarPreview() {
                 ))}
               </section>
             ))}
-            <div className="h-[60px]" />
+            <div className="h-[100px]" />
           </div>
         </div>
       </div>
