@@ -123,8 +123,17 @@ function NavItem({
   onLeave: () => void
 }) {
   const lineWidth = useSpring(isActive ? 55 : 32, LINE_SPRING)
-  const [isHovered, setIsHovered] = useState(false)
   const [widthValue, setWidthValue] = useState(isActive ? 55 : 32)
+  const [isHovered, setIsHovered] = useState(false)
+  const prefersReducedMotion = useRef(false)
+  const pathRef = useRef<SVGPathElement>(null)
+  const animFrameRef = useRef<number | null>(null)
+  const waveStartTime = useRef<number | null>(null)
+  const isAnimating = useRef(false)
+
+  useEffect(() => {
+    prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  }, [])
 
   useEffect(() => {
     lineWidth.set(isActive ? 55 : 32)
@@ -135,8 +144,74 @@ function NavItem({
     return unsubscribe
   }, [lineWidth])
 
-  const lineColor = isActive ? 'var(--color-accent)' : 'var(--color-border)'
-  const hoverColor = 'var(--color-accent)'
+  useEffect(() => {
+    return () => {
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
+    }
+  }, [])
+
+  const lineColor = isActive || isHovered ? 'var(--color-accent)' : 'var(--color-border)'
+
+  const LINE_LENGTH = 54
+  const CENTER_Y = 4
+  const AMPLITUDE = 3.5
+  const FREQUENCY = 0.8
+  const WAVE_DURATION = 500
+  const WAVE_HEAD_WIDTH = 20
+
+  const generateWavePath = (progress: number): string => {
+    const waveHead = progress * LINE_LENGTH
+    const points: string[] = []
+
+    for (let x = 0; x <= LINE_LENGTH; x += 1) {
+      const distFromHead = waveHead - x
+      const envelope = Math.max(0, 1 - Math.abs(distFromHead) / WAVE_HEAD_WIDTH)
+      const decay = Math.max(0, 1 - (waveHead / LINE_LENGTH) * 0.3)
+      const y = CENTER_Y + Math.sin((x - waveHead * 0.5) * FREQUENCY) * AMPLITUDE * envelope * decay
+      points.push(`${x === 0 ? 'M' : 'L'}${x} ${y.toFixed(2)}`)
+    }
+
+    return points.join(' ')
+  }
+
+  const startWave = () => {
+    if (prefersReducedMotion.current || isAnimating.current) return
+
+    isAnimating.current = true
+    waveStartTime.current = performance.now()
+
+    const animate = (time: number) => {
+      if (!waveStartTime.current || !pathRef.current) return
+
+      const elapsed = time - waveStartTime.current
+      const progress = Math.min(elapsed / WAVE_DURATION, 1)
+
+      const easedProgress = 1 - Math.pow(1 - progress, 3)
+      const d = generateWavePath(easedProgress)
+      pathRef.current.setAttribute('d', d)
+
+      if (progress < 1) {
+        animFrameRef.current = requestAnimationFrame(animate)
+      } else {
+        pathRef.current.setAttribute('d', `M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`)
+        isAnimating.current = false
+      }
+    }
+
+    animFrameRef.current = requestAnimationFrame(animate)
+  }
+
+  const stopWave = () => {
+    if (animFrameRef.current) {
+      cancelAnimationFrame(animFrameRef.current)
+      animFrameRef.current = null
+    }
+    isAnimating.current = false
+    waveStartTime.current = null
+    if (pathRef.current) {
+      pathRef.current.setAttribute('d', `M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`)
+    }
+  }
 
   return (
     <Link
@@ -147,33 +222,51 @@ function NavItem({
         lineWidth.set(55)
         setIsHovered(true)
         onHover()
+        startWave()
       }}
       onMouseLeave={() => {
         if (!isActive) lineWidth.set(32)
         setIsHovered(false)
+        stopWave()
         onLeave()
       }}
     >
       <svg
-        viewBox="0 0 55 8"
+        viewBox={`0 0 ${LINE_LENGTH} 8`}
         className="h-2 overflow-visible"
         style={{ width: widthValue }}
         preserveAspectRatio="none"
       >
-        <motion.path
-          initial={false}
-          animate={{
-            d: isHovered
-              ? 'M0 4C4.5 1 9 1 13.5 4C18 7 22.5 7 27 4C31.5 1 36 1 40.5 4C45 7 49.5 7 54 4'
-              : 'M0 4L54 4',
-            stroke: isHovered ? hoverColor : lineColor,
-          }}
-          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-          strokeWidth={1.5}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        />
+        {prefersReducedMotion.current ? (
+          <path
+            d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
+            stroke={lineColor}
+            strokeWidth={1.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+            style={{ transition: 'stroke 0.25s ease' }}
+          />
+        ) : (
+          <>
+            <path
+              ref={pathRef}
+              d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
+              stroke={lineColor}
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+              style={{ transition: 'stroke 0.25s ease' }}
+            />
+            <path
+              d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
+              stroke="transparent"
+              strokeWidth={8}
+              fill="none"
+            />
+          </>
+        )}
       </svg>
       <span
         className={cn(
@@ -348,7 +441,7 @@ export function Sidebar() {
       </AnimatePresence>
 
       <motion.div
-        className="detail-elevated-pill pointer-events-auto fixed left-5 top-5 z-21 flex items-center gap-0.5 rounded-2xl p-1 shadow-none"
+        className="detail-elevated-pill pointer-events-auto fixed left-5 top-5 z-21 flex items-center gap-2 rounded-2xl p-2 shadow-none"
         animate={{
           x: isExpanded && !screenSize.lessThan('md') ? 10 : 0,
           y: isExpanded && !screenSize.lessThan('md') ? -10 : 0,
@@ -358,7 +451,7 @@ export function Sidebar() {
         <Tooltip content="Toggle sidebar (Cmd+B)" side="bottom">
           <button
             type="button"
-            className="detail-toolbar-btn cursor-pointer rounded-xl p-1.5"
+            className="detail-toolbar-btn cursor-pointer rounded-xl p-2.5"
             style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
             onClick={toggleSidebar}
             aria-label="Toggle sidebar"
@@ -366,6 +459,16 @@ export function Sidebar() {
             <SidebarToggleIcon showSidebar={showSidebar} />
           </button>
         </Tooltip>
+        <Link
+          href="/components"
+          className="text-lg sm:text-xl md:text-2xl font-normal no-underline hover:opacity-80 transition-opacity px-1"
+          style={{
+            fontFamily: 'var(--font-handwriting), cursive',
+            color: 'var(--color-accent)',
+          }}
+        >
+          Nexvyn/Ui (...)
+        </Link>
       </motion.div>
 
       <motion.aside
