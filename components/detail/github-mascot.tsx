@@ -6,6 +6,17 @@ export function GitHubMascot({ isHovered = false }: { isHovered?: boolean }) {
   const leftEyeRef = useRef<SVGGElement>(null)
   const rightEyeRef = useRef<SVGGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const [isDark, setIsDark] = useState(false)
+
+  useEffect(() => {
+    const checkDark = () => {
+      setIsDark(document.documentElement.classList.contains('dark'))
+    }
+    checkDark()
+    const observer = new MutationObserver(checkDark)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -32,6 +43,11 @@ export function GitHubMascot({ isHovered = false }: { isHovered?: boolean }) {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
+  const starFill = isDark ? 'url(#darkStarGradient)' : 'url(#lightStarGradient)'
+  const starOutline = isDark ? '#1E293B' : '#040000'
+  const starOutlineOpacity = isDark ? 0.6 : 1
+  const eyeFill = isDark ? '#8BC3F0' : '#7AA7C7'
+
   return (
     <div
       ref={containerRef}
@@ -48,14 +64,36 @@ export function GitHubMascot({ isHovered = false }: { isHovered?: boolean }) {
               style={{ transition: 'height 0.3s ease-out' }}
             />
           </clipPath>
+          <linearGradient id="lightStarGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#F8FAFC" />
+            <stop offset="50%" stopColor="#F1F5F9" />
+            <stop offset="100%" stopColor="#E2E8F0" />
+          </linearGradient>
+          <linearGradient id="darkStarGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#F8FAFC" />
+            <stop offset="50%" stopColor="#F1F5F9" />
+            <stop offset="100%" stopColor="#E2E8F0" />
+          </linearGradient>
+          <filter id="darkGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
+            <feFlood floodColor="#7AA7C7" floodOpacity="0.15" result="color" />
+            <feComposite in="color" in2="blur" operator="in" result="glow" />
+            <feMerge>
+              <feMergeNode in="glow" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <filter id="ambientShadow" x="-10%" y="-10%" width="120%" height="130%">
+            <feDropShadow dx="0" dy="2" stdDeviation="4" floodColor="#000000" floodOpacity="0.1" />
+          </filter>
         </defs>
-        <g clipPath="url(#peek-clip)">
+        <g clipPath="url(#peek-clip)" filter={isDark ? 'url(#darkGlow)' : undefined}>
           <path
-            fill="#040000"
+            fill={isDark ? '#1E293B' : '#040000'}
             d="m126.2 49.7c-1.7-5.6-8.7-7.2-16.9-8.4l-15.2-1.8c-5.7-0.8-6.5-1.1-8.2-4.4-8.2-16.7-12.3-24.6-15-27.7-2.1-2.3-4.2-3.5-6.8-3.5s-4.9 1.1-7 3.1c-2.8 2.7-4.9 7.1-15 27.5-1.7 3.3-2.1 3.7-6.7 4.3l-15.3 1.9c-9.5 1.3-16.9 2.6-18.3 8.6-1.4 5.9 3.4 11.4 7.9 16.2 3.3 3.5 6.9 7.1 10.1 10.3l3.5 3.5c2.3 2.4 2.1 3.5 1.7 7.4l-0.3 2.1c-0.5 3.1-1 6.3-1.6 9.6-1.9 10.5-3.5 20.3 1.4 24.1 1.4 1 3.2 1.5 5.4 1.5 4.8 0 9-1.9 18.2-6.7l6.4-3.2c3.5-1.8 6.6-3.7 9.1-3.7h0.2c2.6 0 5 1.1 8.6 2.8l6.6 3.2c8.7 4.1 14.5 7.5 19.6 7.6 1.9 0 3.8-0.3 5-1.2 5-3.1 3.7-11 2.2-19.5l-2.2-13c-1.3-7.7-1.3-8.3 0.8-10.8 1.6-1.7 3.6-3.7 5.8-6 3.2-3.2 6.8-6.8 9.7-9.9 3.7-4 8-8.6 6.3-13.9z"
           />
           <path
-            fill="#FFFFFF"
+            fill={starFill}
             d="m63.9 7c-4.3 0.2-6.5 4.4-8.6 8.1l-10.6 21.3c-1.8 3.5-3.7 4.3-6.4 4.9-13.9 2.4-31.3 2.4-33.9 8.4-2.1 5.3 4.8 11.8 7.8 15l11.7 11.9c3.7 3.7 4.6 5.2 3.9 10.5l-2.4 13.4c-1.9 10.5-2.6 17.3 0.5 19.6 4 2.8 9.9 0.4 17.5-3.4l12-6.2c3.2-1.6 5.6-3.2 8.5-3.2 3 0 5.4 0.9 8.7 2.5l12.1 5.9c5.8 2.7 10.2 5.3 14 5.3 4.2 0 5.4-2.6 5.2-7.9-0.1-2.3-2.1-14.1-3.5-22.6-1.3-7.9-1.4-9.4 2.3-13.4l11.8-11.8c3-3.2 10-9.5 9.9-13.9 0-7.4-21.2-7.8-33.3-9.8-4.1-0.7-6.1-1.7-8.1-5.6l-10.1-20.3c-2.1-3.6-4.5-8.7-9-8.7z"
           />
           <path
@@ -95,16 +133,25 @@ export function GitHubMascot({ isHovered = false }: { isHovered?: boolean }) {
           />
           <g ref={leftEyeRef} style={{ transition: 'transform 0.1s ease-out' }}>
             <path
-              fill="#7AA7C7"
+              fill={eyeFill}
               d="m48.5 53.3c-3.5 0.7-5.4 6.7-5.3 15.8 0.2 4.4 0.9 12.9 5.2 13.9 4.3 0.7 6.5-4.3 6.6-13.5 0.1-9.1-2-16.8-6.5-16.2zm0.1 12.5c-1.3-0.3-2.2-2.1-2.2-4.8-0.1-3.5 1.3-5.1 2.5-4.9 1.7 0.1 2.5 2.4 2.4 5-0.1 2.8-1.1 4.8-2.7 4.7z"
             />
           </g>
           <g ref={rightEyeRef} style={{ transition: 'transform 0.1s ease-out' }}>
             <path
-              fill="#7AA7C7"
+              fill={eyeFill}
               d="m75.9 53.5c-3.5 1.2-5 6.6-5.1 14.5 0.1 6 1 11.7 3.2 13.8 1.7 1.7 4.2 1.7 5.7 0.1 1.9-2 3-7 3-14.3-0.1-7.7-1.7-15.2-6.8-14.1zm0.4 12.5c-1.4-0.1-2.3-2.5-2.2-5.4 0.2-3.6 1.9-4.8 3-4.4 1.5 0.4 2.1 2.9 1.9 5.6-0.1 2.5-1.4 4.1-2.7 4.2z"
             />
           </g>
+          {isDark && (
+            <path
+              fill="none"
+              stroke="#7AA7C7"
+              strokeWidth="1.5"
+              strokeOpacity="0.2"
+              d="M64 120 C40 118, 20 110, 10 100"
+            />
+          )}
         </g>
       </svg>
     </div>

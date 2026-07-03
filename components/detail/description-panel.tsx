@@ -100,11 +100,12 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
     const handler = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement).tagName
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
+      if (e.ctrlKey || e.metaKey || e.altKey) return
 
       if (e.key === 'f' || e.key === 'F') {
         setOpen((value) => !value)
       } else if ((e.key === 'p' || e.key === 'P') && item?.id) {
-        router.push(`/preview/${item.id}`)
+        window.open(`/preview/${item.id}`, '_blank', 'noopener,noreferrer')
       } else if (e.key === 'c' || e.key === 'C') {
         toggleCode()
       }
@@ -153,6 +154,8 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
           <Tooltip content="Standalone preview (P)" side="bottom">
             <Link
               href={`/preview/${item.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="View standalone preview"
               className="detail-toolbar-btn cursor-pointer rounded-xl p-1.5 flex items-center justify-center"
               style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
@@ -313,11 +316,11 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
                 <MailIcon className="size-5" />
               </CopyButton>
               <a
-                href="https://x.com/nexvyn"
+                href="https://x.com/intent/follow?screen_name=nexvyn"
                 target="_blank"
                 rel="noreferrer"
-                aria-label="X — @nexvyn"
-                title="@nexvyn"
+                aria-label="Follow @nexvyn on X"
+                title="Follow @nexvyn"
                 className="inline-flex size-8 items-center justify-center transition-colors"
                 style={{ color: 'var(--color-muted)' }}
               >

@@ -33,26 +33,12 @@ export default function DetailSidebarShell({ children }: { children: React.React
           className="h-full"
         >
           <div className="detail-preview-card relative z-0 h-full rounded-[45px] p-4 pt-16 sm:pt-20">
-            <div className="absolute z-10 pointer-events-auto top-4.5 left-[60px] translate-x-0 md:top-5 md:left-1/2 md:-translate-x-1/2">
-              <Link
-                href="/components"
-                className="text-xl sm:text-2xl md:text-4xl font-normal no-underline hover:opacity-80 transition-opacity"
-                style={{
-                  fontFamily: 'var(--font-handwriting), cursive',
-                  color: 'var(--color-accent)',
-                }}
-              >
-                Nexvyn/Ui (...)
-              </Link>
-            </div>
-            {children}
-
+            {children}{' '}
             {/* <div className="absolute bottom-5 right-5 z-10 pointer-events-auto hidden sm:block">
               <ComponentColorBar />
             </div> */}
-
-            {item?.registry && (
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 max-w-[calc(100%-2.5rem)] sm:max-w-sm md:max-w-md w-full pointer-events-auto">
+            {item?.registry && !infoOpen && (
+              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 max-w-[calc(100%-2.5rem)] sm:max-w-sm md:max-w-md w-full pointer-events-auto backdrop-blur-sm rounded-xl">
                 <InstallCommandBox registry={item.registry} />
               </div>
             )}
