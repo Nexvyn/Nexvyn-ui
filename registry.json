@@ -28,6 +28,19 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "scroll-indicator",
+      "type": "registry:ui",
+      "title": "Scroll Indicator",
+      "description": "A vertical scroll progress indicator with tick marks, section labels, and a floating position readout.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/ui/scroll-indicator.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

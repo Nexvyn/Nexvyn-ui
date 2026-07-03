@@ -1,5 +1,6 @@
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
 import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
+import { scrollIndicatorMetadata } from '@/components/ui/Doc/scroll-indicator-metadata'
 
 export type ComponentItem = {
   id: string
@@ -36,7 +37,11 @@ export type ComponentCollection = {
   components: ComponentItem[]
 }
 
-export const COMPONENTS: ComponentItem[] = [bounceSidebarMetadata, gooDropdownMetadata]
+export const COMPONENTS: ComponentItem[] = [
+  bounceSidebarMetadata,
+  gooDropdownMetadata,
+  scrollIndicatorMetadata,
+]
 
 export const COLLECTIONS: ComponentCollection[] = [
   {

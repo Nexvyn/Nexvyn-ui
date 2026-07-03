@@ -12,7 +12,11 @@ import { NotFoundCard } from '@/components/layout/not-found-card'
 import { useScreenSize } from '@/hooks/use-screen-size'
 import { COMPONENTS } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
-import { BounceSidebarPreview, GooDropdownPreview } from '@/components/ui/previews'
+import {
+  BounceSidebarPreview,
+  GooDropdownPreview,
+  ScrollIndicatorPreview,
+} from '@/components/ui/previews'
 
 function DemoFrame({
   children,
@@ -101,17 +105,15 @@ function ScrollFadeDemo() {
 export function ComponentDemo({ id }: { id: string }) {
   switch (id) {
     case 'bounce-sidebar':
-      return (
-        <DemoFrame className="flex items-center justify-center p-6">
-          <BounceSidebarPreview />
-        </DemoFrame>
-      )
+      return <BounceSidebarPreview />
     case 'goo-dropdown':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <GooDropdownPreview />
         </DemoFrame>
       )
+    case 'scroll-indicator':
+      return <ScrollIndicatorPreview />
     case 'button':
       return (
         <DemoFrame className="flex flex-wrap items-center justify-center gap-3 p-4">
