@@ -48,31 +48,7 @@ export default function PreviewPage() {
     >
       <div className="relative h-full">
         <header className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 sm:px-6 py-4">
-          <Link
-            href={`/components/${component.id}`}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-(--color-muted) hover:text-(--color-fg) transition-colors rounded-md px-2 py-1 -ml-2"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Back</span>
-          </Link>
-          <Link
-            href="/"
-            className="text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight no-underline hover:opacity-80 transition-opacity"
-            style={{ fontFamily: 'var(--font-handwriting), cursive', color: 'var(--color-accent)' }}
-          >
-            Nexvyn/Ui (...)
-          </Link>
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <a
-              href="https://github.com/Nexvyn/Nexvyn-ui"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Star on GitHub"
-              className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-md text-xs font-medium text-(--color-muted) hover:text-(--color-fg) hover:bg-(--color-surface) transition-colors outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) border border-(--color-border)"
-            >
-              <Star className="h-3.5 w-3.5 fill-current text-(--color-accent)" />
-              <span>{stars}</span>
-            </a>
             <ThemeToggle
               showShortcut={false}
               className="h-8 w-8 p-0 flex items-center justify-center rounded-md"

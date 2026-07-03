@@ -4,6 +4,7 @@ import path from 'node:path'
 const SOURCE_MAP: Record<string, string[]> = {
   'bounce-sidebar': ['components', 'ui', 'bounce-sidebar.tsx'],
   'goo-dropdown': ['components', 'ui', 'goo-dropdown.tsx'],
+  'scroll-indicator': ['components', 'ui', 'scroll-indicator.tsx'],
 }
 
 export async function GET(request: Request) {

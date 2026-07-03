@@ -25,7 +25,7 @@ export type BounceSidebarProps = {
 
 const itemClass = (active: boolean) =>
   cn(
-    'flex w-full cursor-pointer items-center rounded-lg p-1 text-left text-sm transition-colors duration-200',
+    'flex w-full cursor-pointer items-center rounded-lg p-1 text-left text-base transition-colors duration-200',
     active ? 'text-foreground' : 'text-foreground/55',
   )
 
