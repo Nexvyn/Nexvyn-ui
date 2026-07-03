@@ -1,24 +1,23 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import NumberFlow from '@number-flow/react'
 
 export function StarsCount() {
-  const [stars, setStars] = useState('1')
+  const [stars, setStars] = useState(1)
+  const [isHovered, setIsHovered] = useState(false)
+  const [isBlinking, setIsBlinking] = useState(false)
   const leftEyeRef = useRef<SVGGElement>(null)
   const rightEyeRef = useRef<SVGGElement>(null)
+  const containerRef = useRef<HTMLSpanElement>(null)
+  const blinkTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     fetch('https://api.github.com/repos/Nexvyn/Nexvyn-ui')
       .then((res) => res.json())
       .then((json) => {
         if (json && typeof json.stargazers_count === 'number') {
-          const formattedCount =
-            json.stargazers_count >= 1000
-              ? json.stargazers_count % 1000 === 0
-                ? `${Math.floor(json.stargazers_count / 1000)}k`
-                : `${(json.stargazers_count / 1000).toFixed(1)}k`
-              : json.stargazers_count.toLocaleString()
-          setStars(formattedCount.replace('.0k', 'k'))
+          setStars(json.stargazers_count)
         }
       })
       .catch(() => {})
@@ -49,12 +48,34 @@ export function StarsCount() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+    setIsBlinking(true)
+    blinkTimeout.current = setTimeout(() => setIsBlinking(false), 150)
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+    if (blinkTimeout.current) clearTimeout(blinkTimeout.current)
+    setIsBlinking(false)
+  }
+
   return (
-    <span className="flex items-center gap-1 text-xs font-normal opacity-70">
+    <span
+      ref={containerRef}
+      className="inline-flex items-center gap-1.5 cursor-pointer select-none"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        transform: isHovered ? 'translateY(-1px) scale(1.02)' : 'none',
+      }}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 128 128"
-        style={{ width: 20, height: 20 }}
+        className="inline-block align-middle"
+        style={{ width: 24, height: 24 }}
       >
         <path
           fill="var(--color-fg)"
@@ -99,20 +120,43 @@ export function StarsCount() {
           opacity="0.7"
           d="m97 117.3c-4.5 0.4-14.6-5-24.1-10.2-4.3-2.2-6.6-3.4-10.7-3.4-3.5 0-6.1 1.3-9 2.8-4.5 2.4-15.2 8.2-18.7 9.9-8.3 3.3-9.5-0.6-9.4-4.6-0.6 3.9 0.3 7.7 4.5 7.9 3.6 0.2 7-1.5 11.6-3.8l12-6c3.2-1.5 6-3.5 10.2-3.7 3.3-0.1 6.4 1.1 10 2.8l10.6 5c5.1 2.1 10.5 5.4 14.1 5.5 3.8 0.2 4.8-2.6 4.3-6-2 0.4-3.5 3.5-5.4 3.8z"
         />
-        <g ref={leftEyeRef} style={{ transition: 'transform 0.1s ease-out' }}>
+        <g
+          ref={leftEyeRef}
+          style={{
+            transition: 'transform 0.1s ease-out',
+            opacity: isBlinking ? 0.3 : 1,
+          }}
+        >
           <path
             fill="var(--color-accent)"
             d="m48.5 53.3c-3.5 0.7-5.4 6.7-5.3 15.8 0.2 4.4 0.9 12.9 5.2 13.9 4.3 0.7 6.5-4.3 6.6-13.5 0.1-9.1-2-16.8-6.5-16.2zm0.1 12.5c-1.3-0.3-2.2-2.1-2.2-4.8-0.1-3.5 1.3-5.1 2.5-4.9 1.7 0.1 2.5 2.4 2.4 5-0.1 2.8-1.1 4.8-2.7 4.7z"
           />
         </g>
-        <g ref={rightEyeRef} style={{ transition: 'transform 0.1s ease-out' }}>
+        <g
+          ref={rightEyeRef}
+          style={{
+            transition: 'transform 0.1s ease-out',
+            opacity: isBlinking ? 0.3 : 1,
+          }}
+        >
           <path
             fill="var(--color-accent)"
             d="m75.9 53.5c-3.5 1.2-5 6.6-5.1 14.5 0.1 6 1 11.7 3.2 13.8 1.7 1.7 4.2 1.7 5.7 0.1 1.9-2 3-7 3-14.3-0.1-7.7-1.7-15.2-6.8-14.1zm0.4 12.5c-1.4-0.1-2.3-2.5-2.2-5.4 0.2-3.6 1.9-4.8 3-4.4 1.5 0.4 2.1 2.9 1.9 5.6-0.1 2.5-1.4 4.1-2.7 4.2z"
           />
         </g>
       </svg>
-      <span>{stars}</span>
+      <NumberFlow
+        value={stars}
+        format={{ notation: 'compact', maximumFractionDigits: 1 }}
+        className="tabular-nums text-sm"
+        style={{
+          fontWeight: 500,
+          letterSpacing: '-0.02em',
+        }}
+        transformTiming={{ duration: 600, easing: 'ease-out' }}
+        spinTiming={{ duration: 500, easing: 'ease-out' }}
+        opacityTiming={{ duration: 400, easing: 'ease-out' }}
+      />
     </span>
   )
 }
