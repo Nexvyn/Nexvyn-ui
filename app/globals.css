@@ -141,6 +141,14 @@
   display: none;
 }
 
+html, body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  display: none;
+}
+
 .border-thin {
   border-width: 0.5px;
 }
