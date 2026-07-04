@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useRef, useCallback, type ReactNode } from 'react'
-import { motion, useSpring, useMotionValue } from 'motion/react'
+import { motion, useSpring, useMotionValue, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/utils'
 
 interface Section {
@@ -29,11 +29,15 @@ export function ScrollIndicator({
   const [isHovered, setIsHovered] = useState(false)
   const [trackHeight, setTrackHeight] = useState(0)
   const trackRef = useRef<HTMLDivElement>(null)
+  const reduceMotion = useReducedMotion()
 
   const activeIndex = controlledIndex ?? internalIndex
 
   const progressY = useMotionValue(0)
-  const smoothY = useSpring(progressY, { stiffness: 300, damping: 30 })
+  const smoothY = useSpring(progressY, {
+    stiffness: reduceMotion ? 1000 : 300,
+    damping: reduceMotion ? 100 : 30,
+  })
 
   const filteredSections = sections.filter((s) => s.level === 2 || s.level === 3)
   const totalTicks = 60
@@ -87,7 +91,7 @@ export function ScrollIndicator({
               i / (totalTicks - 1) <= activeIndex / Math.max(filteredSections.length - 1, 1)
 
             return (
-              <div key={i} className="absolute right-0 flex items-center" style={{ top: `${y}px` }}>
+              <div key={i} className="absolute end-0 flex items-center" style={{ top: `${y}px` }}>
                 <div
                   className={cn(
                     'h-px transition-all duration-150',
@@ -111,7 +115,7 @@ export function ScrollIndicator({
               <div key={section.id}>
                 <div
                   className={cn(
-                    'absolute right-0 h-px transition-all duration-200',
+                    'absolute end-0 h-px transition-all duration-200',
                     section.level === 2 ? 'w-4' : 'w-3',
                     isActive ? 'bg-(--color-accent)' : 'bg-(--color-fg)/60',
                   )}
@@ -120,7 +124,8 @@ export function ScrollIndicator({
 
                 <div
                   className={cn(
-                    'absolute flex items-center transition-all duration-300',
+                    'absolute flex items-center',
+                    reduceMotion ? '' : 'transition-all duration-200',
                     isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2',
                   )}
                   style={{
@@ -133,7 +138,9 @@ export function ScrollIndicator({
                     type="button"
                     onClick={() => handleClick(i)}
                     className={cn(
-                      'font-mono text-[11px] uppercase tracking-wider transition-colors duration-150 cursor-pointer bg-transparent border-0 p-0 whitespace-nowrap',
+                      'font-mono text-[11px] uppercase tracking-wider cursor-pointer bg-transparent border-0 p-0 whitespace-nowrap rounded-sm',
+                      'transition-colors duration-150',
+                      'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-(--color-accent) focus-visible:ring-offset-1 focus-visible:ring-offset-(--color-bg)',
                       isActive
                         ? 'text-(--color-accent)'
                         : 'text-(--color-muted) hover:text-(--color-fg)',
@@ -146,11 +153,11 @@ export function ScrollIndicator({
             )
           })}
 
-          <motion.div className="absolute right-0 z-20" style={{ top: smoothY }}>
+          <motion.div className="absolute end-0 z-20" style={{ top: smoothY }}>
             <div className="h-px w-4 bg-(--color-accent)" />
             <div
               className={cn(
-                'absolute top-0 -left-8 -translate-y-1/2 transition-opacity duration-200',
+                    'absolute top-0 -start-8 -translate-y-1/2 transition-opacity duration-200',
                 isHovered ? 'opacity-0' : 'opacity-100',
               )}
             >

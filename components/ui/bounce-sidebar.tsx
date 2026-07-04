@@ -12,7 +12,7 @@ import {
 } from 'motion/react'
 import { cn } from '@/lib/utils'
 
-const EASE_OUT = [0.23, 1, 0.32, 1] as const
+const EASE_OUT = [0.22, 1, 0.36, 1] as const
 
 export type BounceSidebarProps = {
   items: string[]
@@ -25,7 +25,9 @@ export type BounceSidebarProps = {
 
 const itemClass = (active: boolean) =>
   cn(
-    'flex w-full cursor-pointer items-center rounded-lg p-1 text-left text-base transition-colors duration-200',
+    'flex w-full cursor-pointer items-center rounded-lg p-1 text-left text-base',
+    'transition-colors duration-150',
+    'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-(--color-accent) focus-visible:ring-offset-1 focus-visible:ring-offset-(--color-bg)',
     active ? 'text-foreground' : 'text-foreground/55',
   )
 
@@ -108,7 +110,7 @@ export function BounceSidebar({
 
     const distance = Math.abs(delta)
 
-    const yDuration = 0.5
+    const yDuration = 0.45
     const yTransition: Transition = { duration: yDuration, ease: EASE_OUT }
 
     const strength = Math.min(0.6, 20 / distance)
@@ -128,11 +130,11 @@ export function BounceSidebar({
   }
 
   return (
-    <ul className={cn('relative flex flex-col gap-1 pl-6', className)}>
+    <ul className={cn('relative flex flex-col gap-1 ps-6', className)}>
       <motion.span
         ref={scope}
         aria-hidden
-        className="absolute left-2 top-0 rounded-full"
+        className="absolute start-2 top-0 rounded-full"
         style={{
           x: dotX,
           y: dotY,

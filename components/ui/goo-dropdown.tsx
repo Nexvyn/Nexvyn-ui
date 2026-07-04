@@ -47,7 +47,7 @@ const DEFAULT_ITEMS: DropdownItem[] = [
 const DEFAULT_SPRING: SpringConfig = {
   type: 'spring',
   visualDuration: 0.3,
-  bounce: 0.3,
+  bounce: 0.15,
 }
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t
@@ -215,7 +215,7 @@ export function GooDropdown({
           type="button"
           onClick={() => setOpen((o) => !o)}
           aria-expanded={open}
-          className="absolute top-0 flex items-center justify-center text-[15px] text-(--color-card-foreground)"
+          className="absolute top-0 flex items-center justify-center text-[15px] text-(--color-card-foreground) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg) rounded-[12px]"
           style={{
             left: geo.btnX,
             width: BTN_W,
@@ -251,7 +251,7 @@ export function GooDropdown({
                 tabIndex={open ? 0 : -1}
                 onClick={() => select(item)}
                 style={{ height: itemHeight }}
-                className="flex w-full items-center rounded-[14px] px-3 text-left text-[15px] text-(--color-muted) transition-colors hover:bg-black/5 hover:text-(--color-card-foreground)"
+                className="flex w-full items-center rounded-[14px] px-3 text-left text-[15px] text-(--color-muted) transition-colors duration-150 hover:bg-(--color-surface) hover:text-(--color-card-foreground) focus-visible:outline-none focus-visible:bg-(--color-surface) focus-visible:text-(--color-card-foreground)"
               >
                 {item.label}
               </button>
