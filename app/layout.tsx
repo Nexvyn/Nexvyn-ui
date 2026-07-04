@@ -49,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body
-        className="min-h-dvh bg-(--color-bg) text-(--color-fg) font-sans antialiased"
+        className="min-h-dvh bg-(--color-bg) text-(--color-fg) font-sans antialiased no-scrollbar"
         suppressHydrationWarning
       >
         <Providers>{children}</Providers>

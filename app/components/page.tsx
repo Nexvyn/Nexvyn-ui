@@ -58,7 +58,7 @@ export default function ComponentsPage() {
 
   return (
     <div
-      className="min-h-screen w-full font-sans flex flex-col no-scrollbar"
+      className="min-h-screen w-full font-sans flex flex-col"
       style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)' }}
     >
       <Header />
