@@ -9,7 +9,7 @@ import { ComponentPreview } from './component-preview'
 
 export function ComponentCard({ item }: { item: ComponentItem }) {
   return (
-    <Link href={getComponentHref(item.id)} className="block w-full sm:w-70 shrink-0">
+    <Link href={getComponentHref(item.id)} className="block w-full">
       <div
         className="relative w-full rounded-2xl p-1 border border-(--color-border) hover:border-(--color-accent) transition-colors duration-200"
         style={{ backgroundColor: 'var(--color-bg)' }}

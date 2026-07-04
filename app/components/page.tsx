@@ -58,7 +58,7 @@ export default function ComponentsPage() {
 
   return (
     <div
-      className="min-h-screen w-full font-sans flex flex-col"
+      className="min-h-screen w-full font-sans flex flex-col no-scrollbar"
       style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)' }}
     >
       <Header />
@@ -105,7 +105,7 @@ export default function ComponentsPage() {
                     className="text-lg font-normal tracking-tight"
                   />
                 </div>
-                <div className="flex flex-wrap gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {items.map((item) => (
                     <ComponentCard key={item.id} item={item} />
                   ))}
@@ -114,7 +114,7 @@ export default function ComponentsPage() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-wrap gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {sorted.map((item) => (
               <ComponentCard key={item.id} item={item} />
             ))}

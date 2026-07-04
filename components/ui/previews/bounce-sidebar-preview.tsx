@@ -138,7 +138,7 @@ export function BounceSidebarPreview() {
       </div>
 
       {/* Mobile: sidebar on top as horizontal strip */}
-      <div className="md:hidden shrink-0 border-b border-(--color-border) pl-4 pr-2 py-2">
+      <div className="md:hidden shrink-0 border-b border-(--color-border) ps-4 pe-2 py-2">
         <p className="mb-1.5 text-[10px] font-sans uppercase tracking-wider text-foreground/45">
           Library Guide
         </p>
@@ -150,7 +150,7 @@ export function BounceSidebarPreview() {
               onClick={() => goTo(index)}
               className={`shrink-0 px-2 py-1 rounded-md text-[11px] font-medium transition-colors ${
                 active === index
-                  ? 'bg-(--color-accent) text-white'
+                   ? 'bg-(--color-accent) text-(--color-bg)'
                   : 'text-foreground/55 hover:text-foreground hover:bg-(--color-surface)'
               }`}
             >
@@ -162,8 +162,8 @@ export function BounceSidebarPreview() {
 
       <div className="flex flex-col md:flex-row gap-0 md:gap-4 text-left w-full min-h-0 flex-1">
         {/* Desktop: vertical sidebar on left */}
-        <aside className="hidden md:block w-40 shrink-0 h-full pl-4 pr-2">
-          <p className="mb-3 pl-2 text-sm font-sans uppercase tracking-wider text-foreground/45">
+        <aside className="hidden md:block w-40 shrink-0 h-full ps-4 pe-2">
+          <p className="mb-3 ps-2 text-sm font-sans uppercase tracking-wider text-foreground/45">
             Library Guide
           </p>
           <BounceSidebar
@@ -177,8 +177,8 @@ export function BounceSidebarPreview() {
         <div
           ref={scrollRef}
           id="preview-scroll-viewport"
-          className="min-h-0 flex-1 overflow-y-auto pr-2 md:pr-4 h-full relative"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', marginLeft: '-1px' }}
+          className="min-h-0 flex-1 overflow-y-auto pe-2 md:pe-4 h-full relative"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', marginInlineStart: '-1px' }}
         >
           <style
             dangerouslySetInnerHTML={{

@@ -253,7 +253,6 @@ html.dark body {
   body {
     @apply font-sans;
     margin: 0;
-    overflow: hidden;
     background-color: var(--color-bg);
     color: var(--color-fg);
   }

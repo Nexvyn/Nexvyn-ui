@@ -119,8 +119,8 @@ export function ScrollIndicatorPreview() {
         <div
           ref={scrollRef}
           id="scroll-indicator-viewport"
-          className="min-h-0 flex-1 overflow-y-auto pr-2 md:pr-8 pt-3 md:pt-6 pb-4 h-full relative"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', marginLeft: '-1px' }}
+          className="min-h-0 flex-1 overflow-y-auto pe-2 md:pe-8 pt-3 md:pt-6 pb-4 h-full relative"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', marginInlineStart: '-1px' }}
         >
           <style
             dangerouslySetInnerHTML={{

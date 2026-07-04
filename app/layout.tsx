@@ -2,7 +2,6 @@ import { Caveat } from 'next/font/google'
 import { Providers } from '@/components/providers'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
-import { Agentation } from 'agentation'
 import Script from 'next/script'
 
 const caveat = Caveat({
@@ -55,7 +54,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <Providers>{children}</Providers>
         <Analytics />
-        {process.env.NODE_ENV === 'development' && <Agentation />}
       </body>
     </html>
   )
