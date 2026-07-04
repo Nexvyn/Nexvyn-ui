@@ -18,18 +18,18 @@ function LivePreview({ item }: { item: ComponentItem }) {
   switch (item.id) {
     case 'bounce-sidebar':
       return (
-        <div className="flex size-full items-center justify-center p-4">
+        <div className="flex size-full items-center justify-center p-2 sm:p-4">
           <BounceSidebar
             items={['Dashboard', 'Analytics', 'Projects', 'Team', 'Messages']}
             defaultValue={0}
-            className="w-36"
+            className="w-28 sm:w-36"
           />
         </div>
       )
     case 'goo-dropdown':
       return (
-        <div className="flex size-full items-center justify-center p-4">
-          <GooDropdown width={180} />
+        <div className="flex size-full items-center justify-center p-2 sm:p-4">
+          <GooDropdown width={140} />
         </div>
       )
     default:

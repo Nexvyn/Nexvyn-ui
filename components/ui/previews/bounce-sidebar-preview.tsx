@@ -129,9 +129,40 @@ export function BounceSidebarPreview() {
   }, [])
 
   return (
-    <div className="flex h-full w-full">
-      <div className="flex flex-col md:flex-row gap-6 md:gap-4 text-left w-full h-full">
-        <aside className="w-full md:w-40 shrink-0 h-full pl-4 pr-2">
+    <div className="flex flex-col h-full w-full">
+      {/* Mobile disclaimer */}
+      <div className="md:hidden shrink-0 bg-(--color-surface) border-b border-(--color-border) px-3 py-1.5 text-center">
+        <p className="text-[10px] font-sans text-foreground/50">
+          For best experience, open in browser on a wider screen
+        </p>
+      </div>
+
+      {/* Mobile: sidebar on top as horizontal strip */}
+      <div className="md:hidden shrink-0 border-b border-(--color-border) pl-4 pr-2 py-2">
+        <p className="mb-1.5 text-[10px] font-sans uppercase tracking-wider text-foreground/45">
+          Library Guide
+        </p>
+        <div className="flex gap-1 overflow-x-auto no-scrollbar">
+          {librarySections.map((section, index) => (
+            <button
+              key={section.title}
+              type="button"
+              onClick={() => goTo(index)}
+              className={`shrink-0 px-2 py-1 rounded-md text-[11px] font-medium transition-colors ${
+                active === index
+                  ? 'bg-(--color-accent) text-white'
+                  : 'text-foreground/55 hover:text-foreground hover:bg-(--color-surface)'
+              }`}
+            >
+              {section.title}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-0 md:gap-4 text-left w-full min-h-0 flex-1">
+        {/* Desktop: vertical sidebar on left */}
+        <aside className="hidden md:block w-40 shrink-0 h-full pl-4 pr-2">
           <p className="mb-3 pl-2 text-sm font-sans uppercase tracking-wider text-foreground/45">
             Library Guide
           </p>
@@ -146,7 +177,7 @@ export function BounceSidebarPreview() {
         <div
           ref={scrollRef}
           id="preview-scroll-viewport"
-          className="min-h-0 flex-1 overflow-y-auto pr-4 h-full relative"
+          className="min-h-0 flex-1 overflow-y-auto pr-2 md:pr-4 h-full relative"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', marginLeft: '-1px' }}
         >
           <style
@@ -156,29 +187,29 @@ export function BounceSidebarPreview() {
           `,
             }}
           />
-          <div className="max-w-xl mx-auto py-6 px-4 sm:px-0">
+          <div className="max-w-xl mx-auto py-4 md:py-6 px-3 sm:px-4">
             {librarySections.map((section, index) => (
               <section
                 key={section.title}
                 ref={(el) => {
                   sectionRefs.current[index] = el
                 }}
-                className="mb-8 last:mb-0 min-h-30 flex flex-col justify-start"
+                className="mb-6 md:mb-8 last:mb-0 min-h-20 md:min-h-30 flex flex-col justify-start"
               >
-                <h2 className="border-b pb-1.5 tracking-tight text-2xl text-foreground border-(--color-border)">
+                <h2 className="border-b pb-1 md:pb-1.5 tracking-tight text-lg md:text-2xl text-foreground border-(--color-border)">
                   {section.title}
                 </h2>
                 {section.blocks.map((block, blockIndex) => (
                   <p
                     key={blockIndex}
-                    className="mt-2 font-sans text-base leading-relaxed text-foreground/55"
+                    className="mt-1 md:mt-2 font-sans text-sm md:text-base leading-relaxed text-foreground/55"
                   >
                     {block.text}
                   </p>
                 ))}
               </section>
             ))}
-            <div className="h-25" />
+            <div className="h-16 md:h-25" />
           </div>
         </div>
       </div>

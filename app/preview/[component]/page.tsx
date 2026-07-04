@@ -43,11 +43,11 @@ export default function PreviewPage() {
 
   return (
     <div
-      className="detail-page h-dvh overflow-hidden p-2 font-sans"
+      className="detail-page h-dvh overflow-hidden p-1 sm:p-2 font-sans"
       style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)' }}
     >
       <div className="relative h-full">
-        <header className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 sm:px-6 py-4">
+        <header className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4">
           <div className="flex items-center gap-1.5 sm:gap-2">
             <ThemeToggle
               showShortcut={false}
@@ -56,7 +56,7 @@ export default function PreviewPage() {
           </div>
         </header>
 
-        <div className="detail-preview-card relative z-0 h-full rounded-[45px] p-4 flex items-center justify-center">
+        <div className="detail-preview-card relative z-0 h-full rounded-3xl sm:rounded-[45px] p-2 sm:p-4 flex items-center justify-center">
           <ComponentDemo id={component.id} />
         </div>
       </div>

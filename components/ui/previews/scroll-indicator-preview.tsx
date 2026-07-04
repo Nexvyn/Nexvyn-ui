@@ -80,12 +80,46 @@ export function ScrollIndicatorPreview() {
   }, [])
 
   return (
-    <div className="flex h-full w-full">
-      <div className="flex flex-col md:flex-row gap-6 md:gap-4 text-left w-full h-full">
+    <div className="flex flex-col h-full w-full">
+      {/* Mobile disclaimer */}
+      <div className="md:hidden shrink-0 bg-(--color-surface) border-b border-(--color-border) px-3 py-1.5 text-center">
+        <p className="text-[10px] font-sans text-foreground/50">
+          For best experience, open in browser on a wider screen
+        </p>
+      </div>
+
+      {/* Mobile: horizontal dot nav at top */}
+      <div className="md:hidden shrink-0 border-b border-(--color-border) px-3 py-2.5">
+        <div className="flex items-center gap-3 overflow-x-auto no-scrollbar">
+          {docSections.map((section, index) => (
+            <button
+              key={section.title}
+              type="button"
+              onClick={() => goTo(index)}
+              className="flex items-center gap-1.5 shrink-0 bg-transparent border-0 p-0 cursor-pointer"
+            >
+              <div
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  active === index ? 'bg-(--color-accent)' : 'bg-foreground/25'
+                }`}
+              />
+              <span
+                className={`text-[10px] uppercase tracking-wider transition-colors ${
+                  active === index ? 'text-(--color-accent)' : 'text-foreground/40'
+                }`}
+              >
+                {section.title}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-0 md:gap-0 text-left w-full min-h-0 flex-1">
         <div
           ref={scrollRef}
           id="scroll-indicator-viewport"
-          className="min-h-0 flex-1 overflow-y-auto pr-12 pt-6 pb-4 h-full relative"
+          className="min-h-0 flex-1 overflow-y-auto pr-2 md:pr-8 pt-3 md:pt-6 pb-4 h-full relative"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', marginLeft: '-1px' }}
         >
           <style
@@ -95,7 +129,7 @@ export function ScrollIndicatorPreview() {
           `,
             }}
           />
-          <div className="max-w-xl mx-auto px-4 sm:px-0">
+          <div className="max-w-xl mx-auto px-2 sm:px-4">
             {docSections.map((section, index) => (
               <section
                 key={section.title}
@@ -103,21 +137,22 @@ export function ScrollIndicatorPreview() {
                 ref={(el) => {
                   sectionRefs.current[index] = el
                 }}
-                className="mb-8 last:mb-0 min-h-30 flex flex-col justify-start"
+                className="mb-6 md:mb-8 last:mb-0 min-h-20 md:min-h-30 flex flex-col justify-start"
               >
-                <h2 className="border-b pb-1.5 tracking-tight text-2xl text-foreground border-(--color-border)">
+                <h2 className="border-b pb-1 md:pb-1.5 tracking-tight text-lg md:text-2xl text-foreground border-(--color-border)">
                   {section.title}
                 </h2>
-                <p className="mt-2 font-sans text-base leading-relaxed text-foreground/55">
+                <p className="mt-1 md:mt-2 font-sans text-sm md:text-base leading-relaxed text-foreground/55">
                   {section.text}
                 </p>
               </section>
             ))}
-            <div className="h-25" />
+            <div className="h-16 md:h-25" />
           </div>
         </div>
 
-        <aside className="w-8 shrink-0 h-full">
+        {/* Desktop: vertical scroll indicator on right */}
+        <aside className="hidden md:block w-8 shrink-0 h-full">
           <ScrollIndicator
             sections={docSections.map((s, i) => ({
               id: `section-${i}`,
