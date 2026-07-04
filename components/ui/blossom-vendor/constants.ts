@@ -11,7 +11,7 @@ export const OUTER_COLORS = [
   { h: 202, s: 68, l: 65 }, // #69B5E2
   { h: 151, s: 43, l: 63 }, // #77C9A2
   { h: 96, s: 49, l: 67 }, // #A4D483
-];
+]
 
 export const INNER_COLORS = [
   { h: 50, s: 95, l: 85 }, // #FDF1B6
@@ -20,16 +20,16 @@ export const INNER_COLORS = [
   { h: 283, s: 47, l: 84 }, // #DEC2E9
   { h: 209, s: 70, l: 87 }, // #C6DEF5
   { h: 116, s: 42, l: 87 }, // #D2ECD0
-];
+]
 
-export const DEFAULT_COLORS = [...INNER_COLORS, ...OUTER_COLORS];
+export const DEFAULT_COLORS = [...INNER_COLORS, ...OUTER_COLORS]
 
 export const BLOOM_EASING =
-  'linear(0, 0.060 3%, 0.200 7%, 0.420 13%, 0.680 20%, 0.900 28%, 1.020 35%, 1.060 45%, 1.025 53%, 0.997 62%, 1.0 68%)';
-export const HOVER_DELAY = 100;
-export const PETAL_STAGGER = 20;
+  'linear(0, 0.060 3%, 0.200 7%, 0.420 13%, 0.680 20%, 0.900 28%, 1.020 35%, 1.060 45%, 1.025 53%, 0.997 62%, 1.0 68%)'
+export const HOVER_DELAY = 100
+export const PETAL_STAGGER = 20
 
-export const BAR_GAP = 20;
-export const BAR_WIDTH = 12;
-export const SLIDER_OFFSET = 30;
-export const ARC_GRADIENT_STEPS = 11;
+export const BAR_GAP = 20
+export const BAR_WIDTH = 12
+export const SLIDER_OFFSET = 30
+export const ARC_GRADIENT_STEPS = 11

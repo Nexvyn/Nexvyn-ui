@@ -9,7 +9,8 @@ export const colorPickerMetadata: ComponentItem = {
     'A blossom-style color picker with concentric petal layers, a circular color bar, and an arc slider for lightness control. Expands from a compact core button into a full radial palette.',
   registry: 'color-picker',
   dependencies: [],
-  interaction: 'Click the core button to expand/collapse. Click a petal to select its color. Drag the arc slider to adjust lightness.',
+  interaction:
+    'Click the core button to expand/collapse. Click a petal to select its color. Drag the arc slider to adjust lightness.',
   credits: 'Original implementation inspired by blossom color picker patterns.',
   props: [
     {

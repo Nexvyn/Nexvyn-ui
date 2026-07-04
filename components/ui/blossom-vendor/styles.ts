@@ -345,4 +345,4 @@ export const blossomPickerStyles = `
     animation-duration: 0ms !important;
   }
 }
-`;
+`

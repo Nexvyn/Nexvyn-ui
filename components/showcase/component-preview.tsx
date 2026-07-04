@@ -9,8 +9,23 @@ const BounceSidebar = dynamic(
   { ssr: false },
 )
 
+const ColorPicker = dynamic(
+  () => import('@/components/ui/color-picker-standalone').then((m) => m.ColorPicker),
+  { ssr: false },
+)
+
 const GooDropdown = dynamic(
   () => import('@/components/ui/goo-dropdown').then((m) => m.GooDropdown),
+  { ssr: false },
+)
+
+const PasswordInput = dynamic(
+  () => import('@/components/ui/password-input').then((m) => m.PasswordInput),
+  { ssr: false },
+)
+
+const RatioSlider = dynamic(
+  () => import('@/components/ui/ratio-slider').then((m) => m.RatioSlider),
   { ssr: false },
 )
 
@@ -26,10 +41,28 @@ function LivePreview({ item }: { item: ComponentItem }) {
           />
         </div>
       )
+    case 'color-picker':
+      return (
+        <div className="flex size-full items-center justify-center p-2 sm:p-4">
+          <ColorPicker coreSize={40} petalSize={40} />
+        </div>
+      )
     case 'goo-dropdown':
       return (
         <div className="flex size-full items-center justify-center p-2 sm:p-4">
           <GooDropdown width={140} />
+        </div>
+      )
+    case 'password-input':
+      return (
+        <div className="flex size-full items-center justify-center p-2 sm:p-4">
+          <PasswordInput placeholder="Enter password" />
+        </div>
+      )
+    case 'ratio-slider':
+      return (
+        <div className="flex size-full items-center justify-center p-2 sm:p-4">
+          <RatioSlider className="w-48" />
         </div>
       )
     default:
@@ -75,7 +108,13 @@ function MediaPreview({ thumbnail, videoSrc }: { thumbnail: string; videoSrc: st
 
 import { COMPONENT_MEDIA } from '@/lib/component-media'
 
-const LIVE_PREVIEW_IDS = ['bounce-sidebar', 'goo-dropdown']
+const LIVE_PREVIEW_IDS = [
+  'bounce-sidebar',
+  'color-picker',
+  'goo-dropdown',
+  'password-input',
+  'ratio-slider',
+]
 
 export function ComponentPreview({ item }: { item: ComponentItem }) {
   if (LIVE_PREVIEW_IDS.includes(item.id)) {

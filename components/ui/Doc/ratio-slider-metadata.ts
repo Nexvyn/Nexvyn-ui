@@ -9,7 +9,8 @@ export const ratioSliderMetadata: ComponentItem = {
     'A split ratio slider with two color bars, a draggable divider, and responsive labels that collapse when space is tight.',
   registry: 'ratio-slider',
   dependencies: [{ name: 'motion' }],
-  interaction: 'Drag the divider or use arrow keys to adjust the ratio. Labels collapse on narrow widths.',
+  interaction:
+    'Drag the divider or use arrow keys to adjust the ratio. Labels collapse on narrow widths.',
   props: [
     {
       name: 'value',

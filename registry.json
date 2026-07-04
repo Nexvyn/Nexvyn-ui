@@ -17,6 +17,19 @@
       ]
     },
     {
+      "name": "color-picker",
+      "type": "registry:ui",
+      "title": "Color Picker",
+      "description": "A blossom-style color picker with concentric petal layers, circular color bar, and arc slider for lightness control.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/ui/color-picker-standalone.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "goo-dropdown",
       "type": "registry:ui",
       "title": "Gooey Dropdown",
@@ -25,6 +38,32 @@
       "files": [
         {
           "path": "components/ui/goo-dropdown.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "password-input",
+      "type": "registry:ui",
+      "title": "Password Input",
+      "description": "A password input with an animated eye toggle that follows your cursor and blinks periodically.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/password-input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "ratio-slider",
+      "type": "registry:ui",
+      "title": "Ratio Slider",
+      "description": "A split ratio slider with two color bars, a draggable divider, and responsive labels that collapse when space is tight.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/ratio-slider.tsx",
           "type": "registry:ui"
         }
       ]

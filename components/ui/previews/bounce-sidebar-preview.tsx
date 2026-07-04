@@ -150,7 +150,7 @@ export function BounceSidebarPreview() {
               onClick={() => goTo(index)}
               className={`shrink-0 px-2 py-1 rounded-md text-[11px] font-medium transition-colors ${
                 active === index
-                   ? 'bg-(--color-accent) text-(--color-bg)'
+                  ? 'bg-(--color-accent) text-(--color-bg)'
                   : 'text-foreground/55 hover:text-foreground hover:bg-(--color-surface)'
               }`}
             >

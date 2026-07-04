@@ -1,5 +1,8 @@
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
+import { colorPickerMetadata } from '@/components/ui/Doc/color-picker-metadata'
 import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
+import { passwordInputMetadata } from '@/components/ui/Doc/password-input-metadata'
+import { ratioSliderMetadata } from '@/components/ui/Doc/ratio-slider-metadata'
 import { scrollIndicatorMetadata } from '@/components/ui/Doc/scroll-indicator-metadata'
 
 export type ComponentItem = {
@@ -39,7 +42,10 @@ export type ComponentCollection = {
 
 export const COMPONENTS: ComponentItem[] = [
   bounceSidebarMetadata,
+  colorPickerMetadata,
   gooDropdownMetadata,
+  passwordInputMetadata,
+  ratioSliderMetadata,
   scrollIndicatorMetadata,
 ]
 

@@ -14,7 +14,10 @@ import { COMPONENTS } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import {
   BounceSidebarPreview,
+  ColorPickerPreview,
   GooDropdownPreview,
+  PasswordInputPreview,
+  RatioSliderPreview,
   ScrollIndicatorPreview,
 } from '@/components/ui/previews'
 
@@ -106,10 +109,28 @@ export function ComponentDemo({ id }: { id: string }) {
   switch (id) {
     case 'bounce-sidebar':
       return <BounceSidebarPreview />
+    case 'color-picker':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ColorPickerPreview />
+        </DemoFrame>
+      )
     case 'goo-dropdown':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <GooDropdownPreview />
+        </DemoFrame>
+      )
+    case 'password-input':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <PasswordInputPreview />
+        </DemoFrame>
+      )
+    case 'ratio-slider':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <RatioSliderPreview />
         </DemoFrame>
       )
     case 'scroll-indicator':

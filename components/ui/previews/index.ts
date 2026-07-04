@@ -1,3 +1,6 @@
 export { BounceSidebarPreview } from './bounce-sidebar-preview'
+export { ColorPickerPreview } from './color-picker-preview'
 export { GooDropdownPreview } from './goo-dropdown-preview'
+export { PasswordInputPreview } from './password-input-preview'
+export { RatioSliderPreview } from './ratio-slider-preview'
 export { ScrollIndicatorPreview } from './scroll-indicator-preview'

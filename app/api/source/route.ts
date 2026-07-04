@@ -3,7 +3,10 @@ import path from 'node:path'
 
 const SOURCE_MAP: Record<string, string[]> = {
   'bounce-sidebar': ['components', 'ui', 'bounce-sidebar.tsx'],
+  'color-picker': ['components', 'ui', 'color-picker-standalone.tsx'],
   'goo-dropdown': ['components', 'ui', 'goo-dropdown.tsx'],
+  'password-input': ['components', 'ui', 'password-input.tsx'],
+  'ratio-slider': ['components', 'ui', 'ratio-slider.tsx'],
   'scroll-indicator': ['components', 'ui', 'scroll-indicator.tsx'],
 }
 

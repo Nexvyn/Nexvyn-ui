@@ -1,20 +1,20 @@
-import type { SliderPosition } from './types';
+import type { SliderPosition } from './types'
 
 export interface ComputeAdaptivePositionInput {
-  elementRect: { left: number; top: number; width: number; height: number };
-  containerSize: number;
-  currentShiftOffset: { x: number; y: number };
-  windowWidth: number;
-  windowHeight: number;
-  sliderPosition?: SliderPosition;
-  adaptivePositioning: boolean;
-  circularBarWidth: number;
-  sliderOffset: number;
+  elementRect: { left: number; top: number; width: number; height: number }
+  containerSize: number
+  currentShiftOffset: { x: number; y: number }
+  windowWidth: number
+  windowHeight: number
+  sliderPosition?: SliderPosition
+  adaptivePositioning: boolean
+  circularBarWidth: number
+  sliderOffset: number
 }
 
 export interface ComputeAdaptivePositionResult {
-  effectivePosition: SliderPosition;
-  shiftOffset: { x: number; y: number };
+  effectivePosition: SliderPosition
+  shiftOffset: { x: number; y: number }
 }
 
 export function computeAdaptivePosition({
@@ -28,56 +28,54 @@ export function computeAdaptivePosition({
   circularBarWidth,
   sliderOffset,
 }: ComputeAdaptivePositionInput): ComputeAdaptivePositionResult {
-  const halfSize = containerSize / 2;
-  const centerX =
-    elementRect.left + elementRect.width / 2 - currentShiftOffset.x;
-  const centerY =
-    elementRect.top + elementRect.height / 2 - currentShiftOffset.y;
+  const halfSize = containerSize / 2
+  const centerX = elementRect.left + elementRect.width / 2 - currentShiftOffset.x
+  const centerY = elementRect.top + elementRect.height / 2 - currentShiftOffset.y
 
-  let newShiftX = 0;
-  let newShiftY = 0;
+  let newShiftX = 0
+  let newShiftY = 0
 
   if (adaptivePositioning) {
-    const padding = 10;
+    const padding = 10
 
     if (centerX + halfSize > windowWidth - padding) {
-      newShiftX = windowWidth - padding - (centerX + halfSize);
+      newShiftX = windowWidth - padding - (centerX + halfSize)
     } else if (centerX - halfSize < padding) {
-      newShiftX = padding - (centerX - halfSize);
+      newShiftX = padding - (centerX - halfSize)
     }
 
     if (centerY + halfSize > windowHeight - padding) {
-      newShiftY = windowHeight - padding - (centerY + halfSize);
+      newShiftY = windowHeight - padding - (centerY + halfSize)
     } else if (centerY - halfSize < padding) {
-      newShiftY = padding - (centerY - halfSize);
+      newShiftY = padding - (centerY - halfSize)
     }
   }
 
-  let effectivePosition: SliderPosition = sliderPosition || 'right';
+  let effectivePosition: SliderPosition = sliderPosition || 'right'
 
   if (!sliderPosition) {
-    const spaceRight = windowWidth - (centerX + newShiftX + halfSize);
-    const spaceLeft = centerX + newShiftX - halfSize;
-    const spaceTop = centerY + newShiftY - halfSize;
-    const spaceBottom = windowHeight - (centerY + newShiftY + halfSize);
+    const spaceRight = windowWidth - (centerX + newShiftX + halfSize)
+    const spaceLeft = centerX + newShiftX - halfSize
+    const spaceTop = centerY + newShiftY - halfSize
+    const spaceBottom = windowHeight - (centerY + newShiftY + halfSize)
 
-    const threshold = sliderOffset + circularBarWidth + 20;
+    const threshold = sliderOffset + circularBarWidth + 20
 
     if (spaceRight < threshold && spaceLeft > spaceRight) {
-      effectivePosition = 'left';
+      effectivePosition = 'left'
     } else if (spaceLeft < threshold && spaceRight > spaceLeft) {
-      effectivePosition = 'right';
+      effectivePosition = 'right'
     } else if (spaceBottom < threshold && spaceTop > spaceBottom) {
-      effectivePosition = 'top';
+      effectivePosition = 'top'
     } else if (spaceTop < threshold && spaceBottom > spaceTop) {
-      effectivePosition = 'bottom';
+      effectivePosition = 'bottom'
     } else {
-      effectivePosition = 'right';
+      effectivePosition = 'right'
     }
   }
 
   return {
     effectivePosition,
     shiftOffset: { x: newShiftX, y: newShiftY },
-  };
+  }
 }

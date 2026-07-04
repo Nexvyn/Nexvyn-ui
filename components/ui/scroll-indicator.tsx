@@ -157,7 +157,7 @@ export function ScrollIndicator({
             <div className="h-px w-4 bg-(--color-accent)" />
             <div
               className={cn(
-                    'absolute top-0 -start-8 -translate-y-1/2 transition-opacity duration-200',
+                'absolute top-0 -start-8 -translate-y-1/2 transition-opacity duration-200',
                 isHovered ? 'opacity-0' : 'opacity-100',
               )}
             >
