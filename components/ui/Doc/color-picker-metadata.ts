@@ -1,0 +1,100 @@
+import type { ComponentItem } from '@/lib/components-registry'
+
+export const colorPickerMetadata: ComponentItem = {
+  id: 'color-picker',
+  name: 'Color Picker',
+  collection: 'inputs',
+  previewType: 'default',
+  description:
+    'A blossom-style color picker with concentric petal layers, a circular color bar, and an arc slider for lightness control. Expands from a compact core button into a full radial palette.',
+  registry: 'color-picker',
+  dependencies: [],
+  interaction: 'Click the core button to expand/collapse. Click a petal to select its color. Drag the arc slider to adjust lightness.',
+  credits: 'Original implementation inspired by blossom color picker patterns.',
+  props: [
+    {
+      name: 'value',
+      type: 'BlossomColorPickerValue',
+      description: 'Controlled color value for the picker.',
+    },
+    {
+      name: 'defaultValue',
+      type: 'BlossomColorPickerValue',
+      description: 'Initial color value for uncontrolled usage.',
+    },
+    {
+      name: 'colors',
+      type: 'ColorInput[]',
+      description: 'Custom color palette. Accepts hex strings or {h, s, l} objects.',
+    },
+    {
+      name: 'onChange',
+      type: '(color: BlossomColorPickerColor) => void',
+      description: 'Called with the full color object when a color is selected or adjusted.',
+    },
+    {
+      name: 'onCollapse',
+      type: '(color: BlossomColorPickerColor) => void',
+      description: 'Called with the current color when the picker collapses.',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      description: 'Disables all interactions.',
+    },
+    {
+      name: 'openOnHover',
+      type: 'boolean',
+      description: 'Expands the picker on mouse hover instead of click.',
+    },
+    {
+      name: 'initialExpanded',
+      type: 'boolean',
+      description: 'Starts the picker in expanded state.',
+    },
+    {
+      name: 'animationDuration',
+      type: 'number',
+      description: 'Duration of expand/collapse animations in ms.',
+    },
+    {
+      name: 'showAlphaSlider',
+      type: 'boolean',
+      description: 'Shows the arc slider for lightness adjustment.',
+    },
+    {
+      name: 'coreSize',
+      type: 'number',
+      description: 'Size of the core button in pixels.',
+    },
+    {
+      name: 'petalSize',
+      type: 'number',
+      description: 'Size of each petal in pixels.',
+    },
+    {
+      name: 'collapsible',
+      type: 'boolean',
+      description: 'Whether the picker can be collapsed.',
+    },
+    {
+      name: 'className',
+      type: 'string',
+      description: 'Additional CSS classes for the root element.',
+    },
+  ],
+  usage: `import { ColorPicker } from "@/components/ui/color-picker-standalone"
+
+export function Demo() {
+  return (
+    <ColorPicker
+      initialExpanded
+      coreSize={48}
+      petalSize={48}
+      circularBarWidth={14}
+      sliderWidth={14}
+      sliderOffset={38}
+    />
+  )
+}`,
+}
