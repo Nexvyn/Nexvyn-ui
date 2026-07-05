@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { Caveat } from 'next/font/google'
 import { Providers } from '@/components/providers'
 import { Analytics } from '@vercel/analytics/react'
@@ -10,21 +11,58 @@ const caveat = Caveat({
   display: 'swap',
 })
 
-const FAVICON_VERSION = Date.now()
-
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL('https://ui.nexvyn.dev'),
   title: {
     default: 'Nexvyn/UI',
     template: '%s | Nexvyn/UI',
   },
-  description: 'A modern React component library built with Next.js, TypeScript, and Tailwind CSS.',
+  description:
+    'A modern React component library built with Next.js, TypeScript, and Tailwind CSS.',
+  keywords: [
+    'react component library',
+    'nextjs ui library',
+    'tailwind css components',
+    'typescript ui',
+    'nexvyn',
+  ],
+  authors: [{ name: 'Nexvyn' }],
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/site.webmanifest',
+  openGraph: {
+    title: 'Nexvyn/UI',
+    description:
+      'A modern React component library built with Next.js, TypeScript, and Tailwind CSS.',
+    url: 'https://ui.nexvyn.dev',
+    siteName: 'Nexvyn/UI',
+    images: [{ url: '/og.png', width: 1200, height: 630 }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Nexvyn/UI',
+    description:
+      'A modern React component library built with Next.js, TypeScript, and Tailwind CSS.',
+    images: ['/og.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={caveat.variable} suppressHydrationWarning>
       <head>
-        <link rel="icon" href={`/favicon.svg?v=${FAVICON_VERSION}`} type="image/svg+xml" />
         <Script
           id="theme-setup"
           strategy="beforeInteractive"
