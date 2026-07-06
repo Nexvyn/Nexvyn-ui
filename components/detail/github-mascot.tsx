@@ -7,6 +7,7 @@ export function GitHubMascot({ isHovered = false }: { isHovered?: boolean }) {
   const rightEyeRef = useRef<SVGGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [isDark, setIsDark] = useState(false)
+  const [isBlinking, setIsBlinking] = useState(false)
 
   useEffect(() => {
     const checkDark = () => {
@@ -16,6 +17,19 @@ export function GitHubMascot({ isHovered = false }: { isHovered?: boolean }) {
     const observer = new MutationObserver(checkDark)
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const scheduleBlink = () => {
+      const delay = 2000 + Math.random() * 1000
+      return setTimeout(() => {
+        setIsBlinking(true)
+        setTimeout(() => setIsBlinking(false), 150)
+        blinkTimer.current = scheduleBlink()
+      }, delay)
+    }
+    const blinkTimer = { current: scheduleBlink() as ReturnType<typeof setTimeout> }
+    return () => clearTimeout(blinkTimer.current)
   }, [])
 
   useEffect(() => {
@@ -131,13 +145,13 @@ export function GitHubMascot({ isHovered = false }: { isHovered?: boolean }) {
             opacity="0.7"
             d="m97 117.3c-4.5 0.4-14.6-5-24.1-10.2-4.3-2.2-6.6-3.4-10.7-3.4-3.5 0-6.1 1.3-9 2.8-4.5 2.4-15.2 8.2-18.7 9.9-8.3 3.3-9.5-0.6-9.4-4.6-0.6 3.9 0.3 7.7 4.5 7.9 3.6 0.2 7-1.5 11.6-3.8l12-6c3.2-1.5 6-3.5 10.2-3.7 3.3-0.1 6.4 1.1 10 2.8l10.6 5c5.1 2.1 10.5 5.4 14.1 5.5 3.8 0.2 4.8-2.6 4.3-6-2 0.4-3.5 3.5-5.4 3.8z"
           />
-          <g ref={leftEyeRef} style={{ transition: 'transform 0.1s ease-out' }}>
+          <g ref={leftEyeRef} style={{ transition: 'transform 0.1s ease-out', transformOrigin: '48px 62px', transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)' }}>
             <path
               fill={eyeFill}
               d="m48.5 53.3c-3.5 0.7-5.4 6.7-5.3 15.8 0.2 4.4 0.9 12.9 5.2 13.9 4.3 0.7 6.5-4.3 6.6-13.5 0.1-9.1-2-16.8-6.5-16.2zm0.1 12.5c-1.3-0.3-2.2-2.1-2.2-4.8-0.1-3.5 1.3-5.1 2.5-4.9 1.7 0.1 2.5 2.4 2.4 5-0.1 2.8-1.1 4.8-2.7 4.7z"
             />
           </g>
-          <g ref={rightEyeRef} style={{ transition: 'transform 0.1s ease-out' }}>
+          <g ref={rightEyeRef} style={{ transition: 'transform 0.1s ease-out', transformOrigin: '76px 62px', transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)' }}>
             <path
               fill={eyeFill}
               d="m75.9 53.5c-3.5 1.2-5 6.6-5.1 14.5 0.1 6 1 11.7 3.2 13.8 1.7 1.7 4.2 1.7 5.7 0.1 1.9-2 3-7 3-14.3-0.1-7.7-1.7-15.2-6.8-14.1zm0.4 12.5c-1.4-0.1-2.3-2.5-2.2-5.4 0.2-3.6 1.9-4.8 3-4.4 1.5 0.4 2.1 2.9 1.9 5.6-0.1 2.5-1.4 4.1-2.7 4.2z"
