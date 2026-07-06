@@ -28,13 +28,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Nexvyn' }],
   icons: {
-    icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-    ],
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
   },
   manifest: '/site.webmanifest',
   openGraph: {
@@ -46,12 +42,12 @@ export const metadata: Metadata = {
     images: [{ url: '/og.png', width: 1200, height: 630 }],
     type: 'website',
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Nexvyn/UI',
-    description:
+  other: {
+    'twitter:card': 'summary_large_image',
+    'twitter:title': 'Nexvyn/UI',
+    'twitter:description':
       'A modern React component library built with Next.js, TypeScript, and Tailwind CSS.',
-    images: ['/og.png'],
+    'twitter:image': '/og.png',
   },
   robots: {
     index: true,

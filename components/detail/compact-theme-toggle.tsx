@@ -54,12 +54,20 @@ export default function CompactThemeToggle({ className = '' }: { className?: str
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
   const toggle = useCallback(() => {
+    document.documentElement.classList.add('no-transitions')
     const next = !document.documentElement.classList.contains('dark')
     document.documentElement.classList.toggle('dark', next)
     document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light')
     try {
       localStorage.setItem('theme', next ? 'dark' : 'light')
     } catch {}
+    
+    // Force reflow
+    window.getComputedStyle(document.documentElement).opacity
+
+    setTimeout(() => {
+      document.documentElement.classList.remove('no-transitions')
+    }, 0)
   }, [])
 
   return (

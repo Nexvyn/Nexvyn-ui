@@ -90,17 +90,145 @@ export function SidebarToggleIcon({ showSidebar }: { showSidebar: boolean }) {
   )
 }
 
-function NavSectionHeader({ title, active }: { title: string; active?: boolean }) {
+function NavSectionHeader({ title, active, href }: { title: string; active?: boolean; href?: string }) {
+  const lineWidth = useSpring(active ? 55 : 32, LINE_SPRING)
+  const [widthValue, setWidthValue] = useState(active ? 55 : 32)
+  const [isHovered, setIsHovered] = useState(false)
+  const prefersReducedMotion = useRef(false)
+  const pathRef = useRef<SVGPathElement>(null)
+  const animFrameRef = useRef<number | null>(null)
+  const waveStartTime = useRef<number | null>(null)
+  const isAnimating = useRef(false)
+
+  useEffect(() => {
+    prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  }, [])
+
+  useEffect(() => {
+    lineWidth.set(active ? 55 : 32)
+  }, [active, lineWidth])
+
+  useEffect(() => {
+    const unsubscribe = lineWidth.on('change', (v) => setWidthValue(v))
+    return unsubscribe
+  }, [lineWidth])
+
+  useEffect(() => {
+    return () => {
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
+    }
+  }, [])
+
+  const lineColor = active || isHovered ? 'var(--color-accent)' : 'var(--color-border)'
+
+  const LINE_LENGTH = 54
+  const CENTER_Y = 4
+  const AMPLITUDE = 3.5
+  const FREQUENCY = 0.8
+  const WAVE_DURATION = 500
+  const WAVE_HEAD_WIDTH = 20
+
+  const generateWavePath = (progress: number): string => {
+    const waveHead = progress * LINE_LENGTH
+    const points: string[] = []
+    for (let x = 0; x <= LINE_LENGTH; x += 1) {
+      const distFromHead = waveHead - x
+      const envelope = Math.max(0, 1 - Math.abs(distFromHead) / WAVE_HEAD_WIDTH)
+      const decay = Math.max(0, 1 - (waveHead / LINE_LENGTH) * 0.3)
+      const y = CENTER_Y + Math.sin((x - waveHead * 0.5) * FREQUENCY) * AMPLITUDE * envelope * decay
+      points.push(`${x === 0 ? 'M' : 'L'}${x} ${y.toFixed(2)}`)
+    }
+    return points.join(' ')
+  }
+
+  const startWave = () => {
+    if (prefersReducedMotion.current || isAnimating.current) return
+    isAnimating.current = true
+    waveStartTime.current = performance.now()
+    const animate = (time: number) => {
+      if (!waveStartTime.current || !pathRef.current) return
+      const elapsed = time - waveStartTime.current
+      const progress = Math.min(elapsed / WAVE_DURATION, 1)
+      const easedProgress = 1 - Math.pow(1 - progress, 3)
+      pathRef.current.setAttribute('d', generateWavePath(easedProgress))
+      if (progress < 1) {
+        animFrameRef.current = requestAnimationFrame(animate)
+      } else {
+        pathRef.current.setAttribute('d', `M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`)
+        isAnimating.current = false
+      }
+    }
+    animFrameRef.current = requestAnimationFrame(animate)
+  }
+
+  const stopWave = () => {
+    if (animFrameRef.current) {
+      cancelAnimationFrame(animFrameRef.current)
+      animFrameRef.current = null
+    }
+    isAnimating.current = false
+    waveStartTime.current = null
+    if (pathRef.current) {
+      pathRef.current.setAttribute('d', `M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`)
+    }
+  }
+
   return (
     <Link
-      href="/components"
+      href={href ?? '/components'}
       className="group relative flex h-px cursor-pointer items-center gap-3 after:absolute after:left-0 after:top-1/2 after:size-full after:-translate-y-1/2 after:p-3.5"
+      onMouseEnter={() => {
+        lineWidth.set(55)
+        setIsHovered(true)
+        startWave()
+      }}
+      onMouseLeave={() => {
+        if (!active) lineWidth.set(32)
+        setIsHovered(false)
+        stopWave()
+      }}
     >
-      <span className="bg-foreground group-hover:bg-(--color-accent) inline-block h-px w-8 transition-colors" />
+      <svg
+        viewBox={`0 0 ${LINE_LENGTH} 8`}
+        className="h-2 overflow-visible"
+        style={{ width: widthValue }}
+        preserveAspectRatio="none"
+      >
+        {prefersReducedMotion.current ? (
+          <path
+            d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
+            stroke={lineColor}
+            strokeWidth={1.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+            style={{ transition: 'stroke 0.25s ease' }}
+          />
+        ) : (
+          <>
+            <path
+              ref={pathRef}
+              d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
+              stroke={lineColor}
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+              style={{ transition: 'stroke 0.25s ease' }}
+            />
+            <path
+              d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
+              stroke="transparent"
+              strokeWidth={8}
+              fill="none"
+            />
+          </>
+        )}
+      </svg>
       <span
         className={cn(
           'text-foreground whitespace-nowrap transition-all ease-out group-hover:text-(--color-accent) group-hover:opacity-100',
-          active ? 'opacity-100' : 'opacity-60',
+          active ? 'text-(--color-accent) opacity-100' : 'opacity-60',
         )}
       >
         {title}
@@ -283,6 +411,7 @@ function NavItem({
 
 function SidebarNav() {
   const params = useParams()
+  const pathname = usePathname()
   const activeId = typeof params?.component === 'string' ? params.component : null
   const [sortById, setSortById] = useState(true)
   const [hoveredItem, setHoveredItem] = useState<ComponentItem | null>(null)
@@ -306,6 +435,9 @@ function SidebarNav() {
       return () => clearTimeout(timer)
     }
   }, [activeId, sortById])
+
+  const isMcpPage = pathname === '/mcp'
+  const isIllustrationPage = pathname === '/illustration'
 
   return (
     <>
@@ -347,6 +479,11 @@ function SidebarNav() {
               <SortArrowIcon />
             </button>
           </div>
+
+          <NavSectionHeader title="MCP" active={isMcpPage} href="/mcp" />
+          <Separator />
+          <NavSectionHeader title="Illustration" active={isIllustrationPage} href="/illustration" />
+          <Separator count={4} />
 
           {sortById ? (
             <>
@@ -414,7 +551,10 @@ function SidebarNav() {
 
 export function Sidebar() {
   const pathname = usePathname()
-  const shouldShowSidebar = pathname.startsWith('/components/') && pathname !== '/components'
+  const shouldShowSidebar =
+    (pathname.startsWith('/components/') && pathname !== '/components') ||
+    pathname === '/mcp' ||
+    pathname === '/illustration'
   const { showSidebar, toggleSidebar, setShowSidebar } = useSidebar()
   const screenSize = useScreenSize()
   const containerRef = useClickOutside<HTMLDivElement>(() => {

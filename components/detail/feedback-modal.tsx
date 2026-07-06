@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { X, Check, AlertCircle } from 'lucide-react'
-import { SPRING_PANEL } from '@/lib/motion-tokens'
 
 type FeedbackModalProps = {
   isOpen: boolean
@@ -74,7 +73,7 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
             initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
-            transition={SPRING_PANEL}
+            transition={{ type: 'spring', stiffness: 350, damping: 30 }}
             className="fixed left-1/2 top-1/2 z-[100] w-[90%] max-w-90 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-(--color-border-strong) bg-(--color-bg) p-6 shadow-2xl select-none"
           >
             {status === 'success' && (

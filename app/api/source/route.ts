@@ -8,6 +8,7 @@ const SOURCE_MAP: Record<string, string[]> = {
   'password-input': ['components', 'ui', 'password-input.tsx'],
   'ratio-slider': ['components', 'ui', 'ratio-slider.tsx'],
   'scroll-indicator': ['components', 'ui', 'scroll-indicator.tsx'],
+  'table-of-contents': ['components', 'ui', 'table-of-contents.tsx'],
 }
 
 export async function GET(request: Request) {

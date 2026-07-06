@@ -283,3 +283,9 @@ html.dark body {
     transition-duration: 0.01ms !important;
   }
 }
+
+.no-transitions,
+.no-transitions * {
+  transition: none !important;
+  animation-duration: 0s !important;
+}

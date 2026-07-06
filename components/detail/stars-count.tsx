@@ -48,6 +48,19 @@ export function StarsCount() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
+  useEffect(() => {
+    const scheduleBlink = () => {
+      const delay = 2000 + Math.random() * 1000
+      return setTimeout(() => {
+        setIsBlinking(true)
+        setTimeout(() => setIsBlinking(false), 150)
+        blinkTimer.current = scheduleBlink()
+      }, delay)
+    }
+    const blinkTimer = { current: scheduleBlink() as ReturnType<typeof setTimeout> }
+    return () => clearTimeout(blinkTimer.current)
+  }, [])
+
   const handleMouseEnter = () => {
     setIsHovered(true)
     setIsBlinking(true)
@@ -124,7 +137,8 @@ export function StarsCount() {
           ref={leftEyeRef}
           style={{
             transition: 'transform 0.1s ease-out',
-            opacity: isBlinking ? 0.3 : 1,
+            transformOrigin: '48px 62px',
+            transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
           }}
         >
           <path
@@ -136,7 +150,8 @@ export function StarsCount() {
           ref={rightEyeRef}
           style={{
             transition: 'transform 0.1s ease-out',
-            opacity: isBlinking ? 0.3 : 1,
+            transformOrigin: '76px 62px',
+            transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
           }}
         >
           <path

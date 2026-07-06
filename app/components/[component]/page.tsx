@@ -19,6 +19,7 @@ import {
   PasswordInputPreview,
   RatioSliderPreview,
   ScrollIndicatorPreview,
+  TableOfContentsPreview,
 } from '@/components/ui/previews'
 
 function DemoFrame({
@@ -135,6 +136,8 @@ export function ComponentDemo({ id }: { id: string }) {
       )
     case 'scroll-indicator':
       return <ScrollIndicatorPreview />
+    case 'table-of-contents':
+      return <TableOfContentsPreview />
     case 'button':
       return (
         <DemoFrame className="flex flex-wrap items-center justify-center gap-3 p-4">

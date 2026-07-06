@@ -19,10 +19,12 @@ export default function DetailSidebarShell({ children }: { children: React.React
   const item = activeComponent(pathname)
   const screenSize = useScreenSize()
   const isMobile = screenSize.lessThan('md')
+  const isContentPage = pathname === '/mcp' || pathname === '/icons' || pathname === '/illustration'
+
   return (
     <PreviewControlProvider>
       <div className="detail-page relative h-full font-sans">
-        <DescriptionPanel open={infoOpen} setOpen={setInfoOpen} />
+        {!isContentPage && <DescriptionPanel open={infoOpen} setOpen={setInfoOpen} />}
 
         <motion.div
           initial={false}
@@ -32,11 +34,12 @@ export default function DetailSidebarShell({ children }: { children: React.React
           transition={{ type: 'spring', stiffness: 280, damping: 32 }}
           className="h-full"
         >
-          <div className="detail-preview-card relative z-0 h-full rounded-[45px] p-4 pt-16 sm:pt-20">
-            {children}{' '}
-            {/* <div className="absolute bottom-5 right-5 z-10 pointer-events-auto hidden sm:block">
-              <ComponentColorBar />
-            </div> */}
+          <div
+            className={`detail-preview-card relative z-0 h-full rounded-[45px] p-4 ${
+              isContentPage ? 'pt-3 sm:pt-3' : 'pt-16 sm:pt-20'
+            }`}
+          >
+            {children}
             {item?.registry && !infoOpen && (
               <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 max-w-[calc(100%-2.5rem)] sm:max-w-sm md:max-w-md w-full pointer-events-auto backdrop-blur-sm rounded-xl">
                 <InstallCommandBox registry={item.registry} />
