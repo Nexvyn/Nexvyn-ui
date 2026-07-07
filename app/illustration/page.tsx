@@ -28,7 +28,6 @@ export default function IllustrationPage() {
           <p className="text-sm text-(--color-muted) mb-8 max-w-2xl text-center">
             Illustrations and visual assets for your projects.
           </p>
-
         </div>
       </div>
     </div>

@@ -4,8 +4,7 @@ import { Providers } from '@/components/providers'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 import Script from 'next/script'
-import { Agentation } from "agentation";
-
+import { Agentation } from 'agentation'
 
 const caveat = Caveat({
   subsets: ['latin'],
@@ -19,8 +18,7 @@ export const metadata: Metadata = {
     default: 'Nexvyn/UI',
     template: '%s | Nexvyn/UI',
   },
-  description:
-    'A modern React component library built with Next.js, TypeScript, and Tailwind CSS.',
+  description: 'A modern React component library built with Next.js, TypeScript, and Tailwind CSS.',
   keywords: [
     'react component library',
     'nextjs ui library',
@@ -89,7 +87,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         suppressHydrationWarning
       >
         <Providers>{children}</Providers>
-              {process.env.NODE_ENV === "development" && <Agentation />}
+        {process.env.NODE_ENV === 'development' && <Agentation />}
 
         <Analytics />
       </body>

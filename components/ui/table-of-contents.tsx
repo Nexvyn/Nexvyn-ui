@@ -40,7 +40,9 @@ export function TableOfContents({
 
     const getScrollTop = () => (el ? el.scrollTop : window.scrollY)
     const getScrollHeight = () =>
-      el ? el.scrollHeight - el.clientHeight : document.documentElement.scrollHeight - window.innerHeight
+      el
+        ? el.scrollHeight - el.clientHeight
+        : document.documentElement.scrollHeight - window.innerHeight
 
     const handleScroll = () => {
       if (!ticking) {
@@ -139,10 +141,7 @@ export function TableOfContents({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 40, scale: 0.95 }}
           transition={entranceTransition}
-          className={cn(
-            'fixed bottom-8 end-8 z-[100] w-[calc(100%-2rem)] max-w-sm',
-            className,
-          )}
+          className={cn('fixed bottom-8 end-8 z-[100] w-[calc(100%-2rem)] max-w-sm', className)}
         >
           <AnimatePresence>
             {isExpanded && (
@@ -195,7 +194,12 @@ export function TableOfContents({
                 className="text-(--color-muted) group-hover:text-(--color-fg)"
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M5 15l7-7 7 7"
+                  />
                 </svg>
               </motion.div>
             </div>

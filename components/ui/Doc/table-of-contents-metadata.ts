@@ -10,7 +10,8 @@ export const tableOfContentsMetadata: ComponentItem = {
     'A fixed bottom-left floating block that tracks scroll position, shows the active section via IntersectionObserver, and expands into a navigable section list.',
   registry: 'table-of-contents',
   dependencies: [{ name: 'motion' }],
-  interaction: 'Scroll down to reveal the pill. Click to expand the section list. Click a section to smooth-scroll to it.',
+  interaction:
+    'Scroll down to reveal the pill. Click to expand the section list. Click a section to smooth-scroll to it.',
   props: [
     {
       name: 'sections',
@@ -32,7 +33,8 @@ export const tableOfContentsMetadata: ComponentItem = {
     {
       name: 'scrollContainer',
       type: 'RefObject<HTMLElement | null>',
-      description: 'Optional ref to a scrollable container. When provided, tracks that element instead of the window.',
+      description:
+        'Optional ref to a scrollable container. When provided, tracks that element instead of the window.',
     },
     {
       name: 'className',

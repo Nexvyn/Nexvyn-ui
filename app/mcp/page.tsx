@@ -59,29 +59,46 @@ export default function MCPPage() {
             <div className="relative rounded-lg overflow-hidden border border-(--color-border) bg-(--color-surface)">
               <pre className="p-4 overflow-x-auto">
                 <code className="text-sm font-mono leading-relaxed">
-                  <span className="text-(--color-fg)">{'{'}</span>{'\n'}
-                  <span className="text-(--color-fg)">  </span>
+                  <span className="text-(--color-fg)">{'{'}</span>
+                  {'\n'}
+                  <span className="text-(--color-fg)"> </span>
                   <span className="text-(--color-accent)">"registries"</span>
-                  <span className="text-(--color-fg)">: {'{'}</span>{'\n'}
-                  <span className="text-(--color-fg)">    </span>
+                  <span className="text-(--color-fg)">: {'{'}</span>
+                  {'\n'}
+                  <span className="text-(--color-fg)"> </span>
                   <span className="text-(--color-accent)">"@nexvyn"</span>
                   <span className="text-(--color-fg)">: </span>
-                  <span className="text-(--color-muted)">"https://ui.nexvyn.dev/r/{'{name}'}.json"</span>{'\n'}
-                  <span className="text-(--color-fg)">  {'}'}</span>{'\n'}
+                  <span className="text-(--color-muted)">
+                    "https://ui.nexvyn.dev/r/{'{name}'}.json"
+                  </span>
+                  {'\n'}
+                  <span className="text-(--color-fg)"> {'}'}</span>
+                  {'\n'}
                   <span className="text-(--color-fg)">{'}'}</span>
                 </code>
               </pre>
               <button
                 type="button"
-                onClick={() => navigator.clipboard.writeText(`{
+                onClick={() =>
+                  navigator.clipboard.writeText(`{
   "registries": {
     "@nexvyn": "https://ui.nexvyn.dev/r/{name}.json"
   }
-}`)}
+}`)
+                }
                 className="absolute top-3 right-3 p-1.5 rounded-md hover:bg-(--color-surface-2) transition-colors text-(--color-muted) hover:text-(--color-fg)"
                 aria-label="Copy"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
                   <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
                 </svg>

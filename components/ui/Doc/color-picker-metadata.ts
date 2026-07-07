@@ -16,7 +16,8 @@ export const colorPickerMetadata: ComponentItem = {
     {
       name: 'variant',
       type: "'blossom' | 'blossom-arc' | 'ring'",
-      description: 'Picker style. blossom = petals only, blossom-arc = petals + arc slider, ring = animated dot ring.',
+      description:
+        'Picker style. blossom = petals only, blossom-arc = petals + arc slider, ring = animated dot ring.',
     },
     {
       name: 'value',
