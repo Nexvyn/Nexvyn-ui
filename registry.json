@@ -26,6 +26,62 @@
         {
           "path": "components/ui/color-picker-standalone.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/types.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/constants.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/dom-helpers.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/utils.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/layout.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/arc-geometry.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/adaptive.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/styles.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/BlossomColorPicker.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/renderers/BackgroundRenderer.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/renderers/ColorBarRenderer.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/renderers/CoreButtonRenderer.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/renderers/PetalRenderer.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/blossom picker/renderers/ArcSliderRenderer.ts",
+          "type": "registry:ui"
         }
       ]
     },

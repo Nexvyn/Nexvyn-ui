@@ -296,7 +296,7 @@ export class BlossomColorPicker {
     if (this.isExpanded && !this.opts.showCoreColor) return '#FFFFFF'
     const lightness = val.lightness ?? sliderValueToLightness(val.saturation)
     const saturation = val.originalSaturation ?? this.baseSaturation
-    return hslaToString(val.hue, saturation, lightness, val.alpha)
+    return hslaToString(val.hue, saturation, lightness, 100)
   }
 
   private get currentLightness(): number {

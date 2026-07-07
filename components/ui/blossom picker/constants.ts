@@ -32,4 +32,4 @@ export const PETAL_STAGGER = 20
 export const BAR_GAP = 20
 export const BAR_WIDTH = 12
 export const SLIDER_OFFSET = 30
-export const ARC_GRADIENT_STEPS = 11
+export const ARC_GRADIENT_STEPS = 15

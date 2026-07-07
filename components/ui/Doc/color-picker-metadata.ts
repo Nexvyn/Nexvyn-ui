@@ -2,17 +2,22 @@ import type { ComponentItem } from '@/lib/components-registry'
 
 export const colorPickerMetadata: ComponentItem = {
   id: 'color-picker',
-  name: 'Color Picker',
+  name: 'Blossom Picker',
   collection: 'inputs',
   previewType: 'default',
   description:
-    'A blossom-style color picker with concentric petal layers, a circular color bar, and an arc slider for lightness control. Expands from a compact core button into a full radial palette.',
+    'A blossom-style color picker with 3 variants: petal-only, petals with arc lightness slider, and an animated ring picker with spring-physics cursor repulsion.',
   registry: 'color-picker',
-  dependencies: [],
+  dependencies: [{ name: 'motion' }],
   interaction:
-    'Click the core button to expand/collapse. Click a petal to select its color. Drag the arc slider to adjust lightness.',
+    'Click the core button to expand/collapse. Click a petal or dot to select its color. Drag the arc slider to adjust lightness. Use the variant prop to switch between blossom, blossom-arc, and ring modes.',
   credits: 'Original implementation inspired by blossom color picker patterns.',
   props: [
+    {
+      name: 'variant',
+      type: "'blossom' | 'blossom-arc' | 'ring'",
+      description: 'Picker style. blossom = petals only, blossom-arc = petals + arc slider, ring = animated dot ring.',
+    },
     {
       name: 'value',
       type: 'BlossomColorPickerValue',
@@ -84,18 +89,14 @@ export const colorPickerMetadata: ComponentItem = {
       description: 'Additional CSS classes for the root element.',
     },
   ],
-  usage: `import { ColorPicker } from "@/components/ui/color-picker-standalone"
+  usage: `import { BlossomPicker } from "@/components/ui/color-picker-standalone"
 
 export function Demo() {
   return (
-    <ColorPicker
-      initialExpanded
-      coreSize={48}
-      petalSize={48}
-      circularBarWidth={14}
-      sliderWidth={14}
-      sliderOffset={38}
-    />
+    <div className="flex gap-8">
+      <BlossomPicker variant="blossom" initialExpanded coreSize={48} petalSize={48} />
+      <BlossomPicker variant="blossom-arc" initialExpanded coreSize={48} petalSize={48} />
+    </div>
   )
 }`,
 }

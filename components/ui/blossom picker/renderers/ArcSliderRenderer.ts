@@ -237,7 +237,7 @@ export class ArcSliderRenderer {
     const handleAngle = valStartAngle + (value / 100) * (valEndAngle - valStartAngle)
     const handlePos = polarToCartesian(this.center, this.center, this.arcRadius, handleAngle)
 
-    const handleLightness = 100 - (value / 100) * 90
+    const handleLightness = sliderValueToLightness(value)
     const handleSaturation = getVisualSaturation(value, baseSaturation)
     const handleColor = hslToString(hue, handleSaturation, handleLightness)
 

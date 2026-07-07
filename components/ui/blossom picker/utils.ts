@@ -1,15 +1,15 @@
 import { BlossomColorPickerColor, ColorInput } from './types'
 
 export function lightnessToSliderValue(l: number): number {
-  const minLightness = 20
-  const maxLightness = 100
+  const minLightness = 5
+  const maxLightness = 95
   const clampedL = Math.max(minLightness, Math.min(maxLightness, l))
   return ((maxLightness - clampedL) / (maxLightness - minLightness)) * 100
 }
 
 export function sliderValueToLightness(sliderValue: number): number {
-  const minLightness = 20
-  const maxLightness = 100
+  const minLightness = 5
+  const maxLightness = 95
   return maxLightness - (sliderValue / 100) * (maxLightness - minLightness)
 }
 

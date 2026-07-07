@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prebuild": "npx tsx scripts/build-registry.ts",
     "build:registry": "npx tsx scripts/build-registry.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
