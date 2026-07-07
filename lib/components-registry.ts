@@ -4,6 +4,7 @@ import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
 import { passwordInputMetadata } from '@/components/ui/Doc/password-input-metadata'
 import { ratioSliderMetadata } from '@/components/ui/Doc/ratio-slider-metadata'
 import { scrollIndicatorMetadata } from '@/components/ui/Doc/scroll-indicator-metadata'
+import { tableOfContentsMetadata } from '@/components/ui/Doc/table-of-contents-metadata'
 
 export type ComponentItem = {
   id: string
@@ -47,6 +48,7 @@ export const COMPONENTS: ComponentItem[] = [
   passwordInputMetadata,
   ratioSliderMetadata,
   scrollIndicatorMetadata,
+  tableOfContentsMetadata,
 ]
 
 export const COLLECTIONS: ComponentCollection[] = [
