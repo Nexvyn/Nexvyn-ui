@@ -4,6 +4,8 @@ import { Providers } from '@/components/providers'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 import Script from 'next/script'
+import { Agentation } from "agentation";
+
 
 const caveat = Caveat({
   subsets: ['latin'],
@@ -87,6 +89,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         suppressHydrationWarning
       >
         <Providers>{children}</Providers>
+              {process.env.NODE_ENV === "development" && <Agentation />}
+
         <Analytics />
       </body>
     </html>

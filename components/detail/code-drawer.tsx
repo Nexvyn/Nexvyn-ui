@@ -1,70 +1,27 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
-import { motion, useDragControls } from 'motion/react'
+import { useEffect, useState } from 'react'
+import { motion, useDragControls, AnimatePresence } from 'motion/react'
 import type { ComponentItem } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import { ChevronLeft, Download, Copy, Check } from 'lucide-react'
 
-function highlightCode(code: string) {
-  let html = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+import { CodeSnippet } from './code-snippet'
 
-  html = html.replace(/("(?:\\"|[^"])*")/g, '<span class="text-(--color-muted)">$1</span>')
-  html = html.replace(/('(?:\\'|[^'])*')/g, '<span class="text-(--color-muted)">$1</span>')
-
-  const keywords = [
-    'const',
-    'let',
-    'var',
-    'return',
-    'import',
-    'from',
-    'export',
-    'default',
-    'function',
-    'true',
-    'false',
-    'type',
-    'interface',
-    'as',
-    'async',
-    'await',
-  ]
-  keywords.forEach((kw) => {
-    const reg = new RegExp(`\\b(${kw})\\b`, 'g')
-    html = html.replace(reg, '<span class="text-(--color-accent) font-semibold">$1</span>')
-  })
-
-  html = html.replace(
-    /(&lt;\/?[A-Z][a-zA-Z0-9]*)/g,
-    '<span class="text-(--color-accent) font-medium">$1</span>',
-  )
-  html = html.replace(
-    /(&lt;\/?[a-z]+)/g,
-    '<span class="text-(--color-accent) font-medium">$1</span>',
-  )
-
-  const attrs = [
-    'className',
-    'key',
-    'style',
-    'onClick',
-    'type',
-    'ref',
-    'value',
-    'onChange',
-    'href',
-    'target',
-    'rel',
-  ]
-  attrs.forEach((attr) => {
-    const reg = new RegExp(`\\b(${attr})\\b`, 'g')
-    html = html.replace(reg, '<span class="text-(--color-fg)">$1</span>')
-  })
-
-  html = html.replace(/(\/\/.*)/g, '<span class="text-(--color-muted) italic">$1</span>')
-
-  return html
+const getLanguageFromFileName = (fileName: string): string => {
+  const ext = fileName.split('.').pop()?.toLowerCase()
+  const languageMap: Record<string, string> = {
+    tsx: 'typescript',
+    ts: 'typescript',
+    jsx: 'javascript',
+    js: 'javascript',
+    css: 'css',
+    html: 'html',
+    json: 'json',
+    md: 'markdown',
+    mdx: 'markdown',
+  }
+  return languageMap[ext || ''] || 'typescript'
 }
 
 function CopyButton({ value }: { value: string }) {
@@ -94,25 +51,62 @@ type CodeDrawerProps = {
   item?: ComponentItem
 }
 
+interface RegistryFile {
+  path: string
+  type: string
+  content: string
+}
+
+const getFileName = (pathString: string) => {
+  return pathString.split('/').pop() || pathString
+}
+
 export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
   const dragControls = useDragControls()
-  const [code, setCode] = useState<string | null>(null)
+  const [files, setFiles] = useState<RegistryFile[]>([])
+  const [selectedFileIndex, setSelectedFileIndex] = useState(0)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (!open || !item?.registry) return
     let cancelled = false
     setLoading(true)
-    setCode(null)
-    fetch(`/api/source?name=${encodeURIComponent(item.registry)}`)
-      .then((res) => (res.ok ? res.text() : Promise.reject(new Error())))
-      .then((text) => !cancelled && setCode(text))
-      .catch(() => !cancelled && setCode('// Unable to load source.'))
-      .finally(() => !cancelled && setLoading(false))
+    setFiles([])
+    setSelectedFileIndex(0)
+
+    fetch(`/r/${item.registry}.json`)
+      .then((res) => {
+        if (!res.ok) throw new Error()
+        return res.json()
+      })
+      .then((data) => {
+        if (!cancelled && data && Array.isArray(data.files)) {
+          setFiles(data.files)
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setFiles([
+            {
+              path: item.id ? `${item.id}.tsx` : 'code.tsx',
+              type: 'registry:ui',
+              content: '// Unable to load source.',
+            },
+          ])
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+
     return () => {
       cancelled = true
     }
   }, [open, item?.registry])
+
+  const selectedFile = files[selectedFileIndex] || files[0]
+  const code = selectedFile?.content || ''
+  const filename = selectedFile ? getFileName(selectedFile.path) : 'code.tsx'
 
   const handleDownload = () => {
     if (!code) return
@@ -120,12 +114,12 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = item?.id ? `${item.id}.tsx` : 'code.tsx'
+    a.download = filename
     a.click()
     URL.revokeObjectURL(url)
   }
 
-  const filename = item?.id ? `${item.id}.tsx` : 'code.tsx'
+  const hasMultipleFiles = files.length > 1
 
   return (
     <motion.div
@@ -149,57 +143,106 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
       }}
     >
       <div
-        className="w-full flex justify-center pt-3 pb-1 shrink-0 select-none cursor-row-resize touch-none"
+        className="w-full flex justify-center pt-4 pb-1 shrink-0 select-none cursor-row-resize touch-none"
         onPointerDown={(e) => dragControls.start(e)}
       >
         <div className="h-1.5 w-12 rounded-full bg-(--color-muted) opacity-30" />
       </div>
 
-      <div className="shrink-0 flex items-center justify-between px-6 pb-4 select-none">
-        <button
-          type="button"
-          onClick={onClose}
-          className="flex items-center gap-2 text-sm font-medium text-(--color-fg) hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-0 p-0"
-        >
-          <ChevronLeft className="h-4.5 w-4.5" />
-          <span>Source Code</span>
-        </button>
-
-        <div className="flex items-center gap-3">
+      <div className="shrink-0 flex flex-col pt-1 select-none">
+        <div className="flex items-center justify-between px-6 pb-3">
           <button
             type="button"
-            onClick={handleDownload}
-            disabled={!code || loading}
-            className="flex items-center gap-1.5 text-xs text-(--color-muted) hover:text-(--color-fg) transition-colors cursor-pointer bg-transparent border-0 p-0 disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Download TSX source file"
+            onClick={onClose}
+            className="flex items-center gap-2 text-sm font-medium text-(--color-fg) hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-0 p-0"
           >
-            <Download className="h-4 w-4" />
-            <span className="font-mono">{filename}</span>
+            <ChevronLeft className="h-4.5 w-4.5" />
+            <span>Source Code</span>
           </button>
-          {code && !loading && <CopyButton value={code} />}
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={handleDownload}
+              disabled={!code || loading}
+              className="flex items-center gap-1.5 text-xs text-(--color-muted) hover:text-(--color-fg) transition-colors cursor-pointer bg-transparent border-0 p-0 disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Download source file"
+            >
+              <Download className="h-4 w-4" />
+              <span className="font-mono">{filename}</span>
+            </button>
+            {code && !loading && <CopyButton value={code} />}
+          </div>
         </div>
+
+        {hasMultipleFiles && (
+          <div
+            className="flex items-center justify-start w-full gap-0.5 mt-2 border-b border-solid overflow-x-auto no-scrollbar px-4 sm:px-6"
+            style={{ borderColor: 'var(--color-border)' }}
+            role="tablist"
+          >
+            {files.map((file, index) => {
+              const displayName = getFileName(file.path)
+              const isActive = selectedFileIndex === index
+              return (
+                <button
+                  key={file.path}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setSelectedFileIndex(index)}
+                  className={cn(
+                    "px-3 sm:px-4 py-2 text-[11px] sm:text-[13px] font-normal relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 transition-colors cursor-pointer border-0 bg-transparent shrink-0 whitespace-nowrap",
+                    "text-(--color-muted) hover:text-(--color-fg)",
+                    isActive && "text-(--color-fg) font-semibold",
+                  )}
+                >
+                  {displayName}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeCodeTab"
+                        className="absolute bottom-0 left-0 right-0 h-0.5"
+                        style={{ backgroundColor: 'var(--color-accent)' }}
+                        initial={false}
+                        transition={{
+                          type: "spring",
+                          stiffness: 500,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+                  </AnimatePresence>
+                </button>
+              )
+            })}
+          </div>
+        )}
       </div>
 
       <div
-        className="pointer-events-none absolute inset-x-0 top-15 z-20 h-10"
+        className="pointer-events-none absolute inset-x-0 z-20 h-10"
         style={{
+          top: hasMultipleFiles ? '104px' : '60px',
           background: 'linear-gradient(to bottom, var(--detail-code-bg) 30%, transparent)',
         }}
       />
 
-      <div className="flex-1 overflow-y-auto px-4 sm:px-6 md:px-8 py-6 select-text no-scrollbar">
-        <pre
-          className="no-scrollbar overflow-x-auto text-[13.5px] font-mono leading-relaxed bg-transparent border-0 p-0"
-          style={{ color: 'var(--color-fg)' }}
-        >
-          {loading ? (
-            <code className="text-(--color-muted)">Loading...</code>
-          ) : code ? (
-            <code dangerouslySetInnerHTML={{ __html: highlightCode(code) }} />
-          ) : (
-            <code className="text-(--color-muted)">// No code loaded.</code>
-          )}
-        </pre>
+      <div className="flex-1 overflow-y-auto py-6 select-text no-scrollbar">
+        {loading ? (
+          <pre className="px-4 sm:px-6 md:px-8 text-[13px] font-mono text-(--color-muted)">
+            <code>Loading...</code>
+          </pre>
+        ) : code ? (
+          <CodeSnippet
+            code={code}
+            language={selectedFile ? getLanguageFromFileName(selectedFile.path) : 'typescript'}
+          />
+        ) : (
+          <pre className="px-4 sm:px-6 md:px-8 text-[13px] font-mono text-(--color-muted)">
+            <code>// No code loaded.</code>
+          </pre>
+        )}
       </div>
 
       <div

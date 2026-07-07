@@ -1,7 +1,7 @@
 /* Scoped styles for /components/[component] detail layout */
 
 .detail-page {
-  --detail-code-bg: var(--color-surface);
+  --detail-code-bg: var(--color-bg);
   --detail-code-fg: var(--color-fg);
   --detail-code-muted: var(--color-muted);
   --detail-code-border: var(--color-border);
@@ -15,7 +15,7 @@
 }
 
 .dark .detail-page {
-  --detail-code-bg: #0d0d0d;
+  --detail-code-bg: var(--color-bg);
   --detail-code-fg: var(--color-fg);
   --detail-code-muted: var(--color-muted);
   --detail-code-border: var(--color-border);
