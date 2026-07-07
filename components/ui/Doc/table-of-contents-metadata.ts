@@ -4,6 +4,7 @@ export const tableOfContentsMetadata: ComponentItem = {
   id: 'table-of-contents',
   name: 'Table of Contents',
   collection: 'navigation',
+  isNew: true,
   previewType: 'default',
   description:
     'A fixed bottom-left floating block that tracks scroll position, shows the active section via IntersectionObserver, and expands into a navigable section list.',

@@ -19,17 +19,16 @@ export default function IllustrationPage() {
             __html: `#illustration-scroll-viewport::-webkit-scrollbar { display: none; }`,
           }}
         />
-        <div className="max-w-xl mx-auto py-4 md:py-6 px-3 sm:px-4">
+        <div className="max-w-xl mx-auto py-4 md:py-6 px-3 sm:px-4 flex flex-col items-center justify-center min-h-full">
           <AnimatedTitle
             title="Illustration"
             className="text-2xl sm:text-3xl font-normal tracking-tight mb-4"
           />
 
-          <p className="text-sm text-(--color-muted) mb-8 max-w-2xl">
+          <p className="text-sm text-(--color-muted) mb-8 max-w-2xl text-center">
             Illustrations and visual assets for your projects.
           </p>
 
-          <div className="h-16 md:h-25" />
         </div>
       </div>
     </div>
