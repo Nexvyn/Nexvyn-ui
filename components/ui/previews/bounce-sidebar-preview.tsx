@@ -160,7 +160,7 @@ export function BounceSidebarPreview() {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-0 md:gap-4 text-left w-full min-h-0 flex-1">
+      <div className="flex flex-col md:flex-row gap-0 md:gap-4 text-left w-full min-h-0 flex-1 max-w-4xl mx-auto">
         {/* Desktop: vertical sidebar on left */}
         <aside className="hidden md:block w-40 shrink-0 h-full ps-4 pe-2">
           <p className="mb-3 ps-2 text-sm font-sans uppercase tracking-wider text-foreground/45">
@@ -212,6 +212,9 @@ export function BounceSidebarPreview() {
             <div className="h-16 md:h-25" />
           </div>
         </div>
+
+        {/* Balancing spacer to center the scroll content relative to the parent card */}
+        <div className="hidden md:block w-40 shrink-0 h-full ps-4 pe-2" />
       </div>
     </div>
   )

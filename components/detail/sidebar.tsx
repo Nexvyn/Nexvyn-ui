@@ -466,8 +466,8 @@ function SidebarNav() {
           pointerY.set(event.clientY - rect.top + 14)
         }}
       >
-        <ScrollFade side="top" background="var(--color-bg)" className="z-10" />
-        <ScrollFade side="bottom" background="var(--color-bg)" className="z-10" />
+        <ScrollFade side="top" background="var(--background)" className="z-10" />
+        <ScrollFade side="bottom" background="var(--background)" className="z-10" />
 
         <div className="relative flex w-full flex-col gap-2 pb-[15vh] pt-[32vh]">
           <div className="mb-10 flex items-center justify-between">

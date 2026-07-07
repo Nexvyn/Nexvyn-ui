@@ -11,7 +11,7 @@ export default function PropsTable({ props }: PropsTableProps) {
     <div className="flex flex-col">
       <div className="detail-props-header">
         <div className="w-24 shrink-0">Prop</div>
-        <div className="w-28 shrink-0">Type</div>
+        <div className="w-36 shrink-0">Type</div>
         <div className="flex-1">Description</div>
       </div>
 
@@ -24,9 +24,9 @@ export default function PropsTable({ props }: PropsTableProps) {
             </code>
           </div>
 
-          <div className="flex w-28 shrink-0 flex-col gap-1 pt-0.5">
+          <div className="flex w-36 shrink-0 flex-col gap-1 pt-0.5">
             {(prop.options ?? [prop.type]).map((value) => (
-              <span key={value} className="detail-props-type">
+              <span key={value} className="detail-props-type wrap-break-word">
                 {value}
               </span>
             ))}
