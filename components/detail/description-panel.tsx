@@ -1,9 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion } from 'motion/react'
-import { CodeXml, Maximize, Minimize, ExternalLink, Copy, Check, MessageSquare } from 'lucide-react'
+import {
+  CodeXml,
+  Maximize,
+  Minimize,
+  ExternalLink,
+  Copy,
+  Check,
+  MessageSquare,
+  Frame,
+} from 'lucide-react'
 import { activeComponent, installCommand, PANEL_INFO } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
@@ -17,6 +26,7 @@ import { StarsCount } from '@/components/detail/stars-count'
 import { InstallCommandBox } from './install-command-box'
 import { FeedbackModal } from './feedback-modal'
 import { useScreenSize } from '@/hooks/use-screen-size'
+import { usePreviewControl } from './preview-controls'
 
 function CopyButton({
   value,
@@ -28,11 +38,20 @@ function CopyButton({
   children?: React.ReactNode
 }) {
   const [copied, setCopied] = useState(false)
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(
+    () => () => {
+      if (resetTimer.current) clearTimeout(resetTimer.current)
+    },
+    [],
+  )
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(value)
     setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
+    if (resetTimer.current) clearTimeout(resetTimer.current)
+    resetTimer.current = setTimeout(() => setCopied(false), 1500)
   }
 
   return (
@@ -40,7 +59,7 @@ function CopyButton({
       type="button"
       onClick={handleCopy}
       className={cn(
-        'rounded-lg hover:bg-(--color-surface-2) transition-colors cursor-pointer flex items-center justify-center shrink-0 border-0 bg-transparent',
+        'hit-area-44 rounded-lg hover:bg-(--color-surface-2) transition-colors cursor-pointer flex items-center justify-center shrink-0 border-0 bg-transparent',
         className,
       )}
       style={{ color: 'var(--color-muted)' }}
@@ -73,6 +92,34 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 import { Tooltip } from './tooltip'
 
+const ANATOMY_COMPONENTS = [
+  'badge',
+  'breadcrumbs',
+  'bounce-sidebar',
+  'button',
+  'checkbox',
+  'color-picker',
+  'combobox',
+  'command-palette',
+  'context-menu',
+  'dropdown-menu',
+  'fader',
+  'goo-dropdown',
+  'icon-bar',
+  'input',
+  'mobile-drawer',
+  'morph-nav',
+  'nav-menu',
+  'password-input',
+  'radio-group',
+  'ratio-slider',
+  'scroll-indicator',
+  'select',
+  'selection-toolbar',
+  'switch',
+  'table-of-contents',
+]
+
 export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
   const pathname = usePathname()
   const router = useRouter()
@@ -83,6 +130,11 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
 
   const [codeOpen, setCodeOpen] = useState(false)
   const [feedbackOpen, setFeedbackOpen] = useState(false)
+  const hasAnatomy = item?.id ? ANATOMY_COMPONENTS.includes(item.id) : false
+  const [anatomyView, setAnatomyView] = usePreviewControl(
+    item?.id ? `${item.id}-view` : 'preview',
+    'preview',
+  )
   useEffect(() => {
     if (!open) setCodeOpen(false)
   }, [open])
@@ -129,7 +181,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
             type="button"
             onClick={() => setOpen((value) => !value)}
             aria-label={open ? 'Close description' : 'Open description'}
-            className="detail-toolbar-btn cursor-pointer rounded-xl p-1.5"
+            className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl p-1.5"
             style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
           >
             {open ? <Maximize className="h-5 w-5" /> : <Minimize className="h-5 w-5" />}
@@ -142,10 +194,31 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               type="button"
               onClick={toggleCode}
               aria-label={codeOpen ? 'Hide code' : 'Get code'}
-              className="detail-toolbar-btn cursor-pointer rounded-xl p-1.5"
+              className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl p-1.5"
               style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
             >
               <CodeXml className="h-5 w-5" />
+            </button>
+          </Tooltip>
+        )}
+
+        {hasAnatomy && (
+          <Tooltip
+            content={anatomyView === 'anatomy' ? 'Hide anatomy' : 'Show anatomy'}
+            side="bottom"
+          >
+            <button
+              type="button"
+              onClick={() => setAnatomyView(anatomyView === 'anatomy' ? 'preview' : 'anatomy')}
+              aria-label={anatomyView === 'anatomy' ? 'Hide anatomy' : 'Show anatomy'}
+              aria-pressed={anatomyView === 'anatomy'}
+              className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl p-1.5"
+              style={{
+                backgroundColor: 'var(--color-bg)',
+                color: anatomyView === 'anatomy' ? 'var(--color-fg)' : 'var(--color-muted)',
+              }}
+            >
+              <Frame className="h-5 w-5" />
             </button>
           </Tooltip>
         )}
@@ -157,7 +230,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="View standalone preview"
-              className="detail-toolbar-btn cursor-pointer rounded-xl p-1.5 flex items-center justify-center"
+              className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl p-1.5 flex items-center justify-center"
               style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
             >
               <ExternalLink className="h-5 w-5" />
@@ -172,7 +245,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub Repository"
-              className="detail-toolbar-btn cursor-pointer rounded-xl px-2 h-8 flex items-center gap-1 text-xs font-medium"
+              className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl px-2 h-8 flex items-center gap-1 text-xs font-medium"
               style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
             >
               <StarsCount />
@@ -214,7 +287,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               href="/"
               className="text-(--color-muted) hover:text-(--color-fg) transition-colors"
             >
-              Nexvyn
+              Home
             </Link>
             <span className="text-(--color-subtle) leading-none">·</span>
             <Link
