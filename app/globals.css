@@ -7,9 +7,6 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-serif: var(--font-serif), serif;
-  --font-mono: var(--font-mono), monospace;
-  --font-sans: var(--font-mono), monospace;
   --font-handwriting: var(--font-handwriting), cursive;
 }
 
@@ -64,6 +61,14 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+  --motion-dur-instant: 50ms;
+  --motion-dur-fast: 120ms;
+  --motion-dur-base: 200ms;
+  --motion-dur-slow: 320ms;
+  --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --motion-dur-showcase: 250ms;
+  --motion-dur-ambient: 1000ms;
 }
 
 :root {
@@ -209,8 +214,8 @@ html.dark,
   --card-foreground: oklch(1 0 0);
   --popover: #262626;
   --popover-foreground: oklch(0.9219 0 0);
-  --primary: oklch(0 0 0);
-  --primary-foreground: oklch(1 0 0);
+  --primary: oklch(1 0 0);
+  --primary-foreground: oklch(0 0 0);
   --secondary: oklch(0.1822 0 0);
   --secondary-foreground: oklch(1 0 0);
   --muted: #171717;
@@ -247,7 +252,6 @@ html.dark,
   --color-accent: #7aa7c7;
 }
 
-/* Ensure html and body pick up the correct dark mode colors */
 .dark html,
 .dark body,
 html.dark,
@@ -268,13 +272,9 @@ html.dark body {
   }
 }
 
-* {
-  border-color: var(--border);
-}
-
 ::selection {
-  background-color: rgba(122, 167, 199, 0.2);
-  color: var(--color-accent);
+  background-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  color: var(--color-fg);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -282,7 +282,6 @@ html.dark body {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
   }
 }
 
@@ -290,4 +289,13 @@ html.dark body {
 .no-transitions * {
   transition: none !important;
   animation-duration: 0s !important;
+}
+
+.squircle {
+  border-radius: 9999px;
+  corner-shape: squircle;
+}
+
+.squircle-corners {
+  corner-shape: squircle;
 }
