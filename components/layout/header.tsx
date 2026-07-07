@@ -7,13 +7,27 @@ import { Button } from '@/components/layout/button'
 import { GitHubMascot } from '@/components/detail/github-mascot'
 import { usePathname } from 'next/navigation'
 import { GithubIcon, type GithubIconHandle } from '@/components/layout/github-icon'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, motion, useAnimate } from 'motion/react'
 
 export function Header() {
   const pathname = usePathname()
   const isComponentsRoute = pathname === '/components'
   const [isGitHubHovered, setIsGitHubHovered] = useState(false)
   const iconRef = useRef<GithubIconHandle>(null)
+  const logoRef = useRef<HTMLAnchorElement>(null)
+  const [bounceScope, animateBounce] = useAnimate()
+
+  const handleMascotLand = () => {
+    const run = async () => {
+      await animateBounce('.gh-btn', { y: 2, scaleY: 0.96 }, { duration: 0.1, ease: 'easeOut' })
+      await animateBounce(
+        '.gh-btn',
+        { y: 0, scaleY: 1 },
+        { type: 'spring', stiffness: 400, damping: 25 },
+      )
+    }
+    void run()
+  }
 
   useEffect(() => {
     if (isGitHubHovered) {
@@ -30,8 +44,9 @@ export function Header() {
     >
       <div className="flex-1 pointer-events-auto">
         <Link
+          ref={logoRef}
           href="/"
-          className="text-xl sm:text-2xl no-underline outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) rounded-md inline-block"
+          className="text-xl sm:text-2xl no-underline outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) rounded-md inline-block relative z-20"
           style={{ fontFamily: 'var(--font-handwriting), cursive', color: 'var(--color-accent)' }}
         >
           Nexvyn/Ui (...)
@@ -39,16 +54,22 @@ export function Header() {
       </div>
       <div className="flex-1 flex justify-end items-center gap-2">
         <div
+          ref={bounceScope}
           className="relative w-fit"
           onMouseEnter={() => setIsGitHubHovered(true)}
           onMouseLeave={() => setIsGitHubHovered(false)}
         >
-          {!isComponentsRoute && <GitHubMascot isHovered={isGitHubHovered} />}
+          {!isComponentsRoute && (
+            <GitHubMascot
+              isHovered={isGitHubHovered}
+              onLand={handleMascotLand}
+              runFromRef={logoRef}
+            />
+          )}
           <Button
             variant="ghost"
             size="sm"
-            className="gap-1.5 relative z-10 rounded-2xl squircle-corners"
-            style={{ color: 'var(--color-fg)' }}
+            className="gh-btn gap-1.5 relative z-10 rounded-2xl squircle-corners bg-(--color-fg) text-(--color-bg) hover:bg-(--color-fg) hover:text-(--color-bg)"
             asChild
           >
             <a
