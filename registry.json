@@ -80,6 +80,23 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "table-of-contents",
+      "type": "registry:ui",
+      "title": "Table of Contents",
+      "description": "A fixed bottom-left floating block that tracks scroll position, shows the active section, and expands into a navigable section list.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/table-of-contents.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/circular-progress.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

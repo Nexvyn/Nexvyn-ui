@@ -65,6 +65,45 @@ function LivePreview({ item }: { item: ComponentItem }) {
           <RatioSlider className="w-48" />
         </div>
       )
+    case 'table-of-contents':
+      return (
+        <div className="flex size-full items-center justify-center p-2 sm:p-4">
+          <div className="w-full max-w-[180px] space-y-1.5">
+            {['Introduction', 'Getting Started', 'API Reference'].map((label, i) => (
+              <div
+                key={label}
+                className="flex items-center gap-2 rounded-sm px-2.5 py-1.5 text-[10px]"
+                style={{
+                  backgroundColor: i === 0 ? 'var(--color-accent)' : 'transparent',
+                  color: i === 0 ? 'var(--color-bg)' : 'var(--color-muted)',
+                }}
+              >
+                <div
+                  className="size-1.5 shrink-0 rounded-full"
+                  style={{
+                    backgroundColor: i === 0 ? 'var(--color-bg)' : 'var(--color-border)',
+                  }}
+                />
+                {label}
+              </div>
+            ))}
+          </div>
+          <div
+            className="mt-2 flex h-8 w-full max-w-[180px] items-center justify-between rounded-md border px-3"
+            style={{
+              borderColor: 'var(--color-border)',
+              backgroundColor: 'var(--color-surface)',
+            }}
+          >
+            <span className="text-[10px] font-medium" style={{ color: 'var(--color-fg)' }}>
+              Introduction
+            </span>
+            <svg className="size-3" style={{ color: 'var(--color-muted)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
+            </svg>
+          </div>
+        </div>
+      )
     default:
       return null
   }
@@ -114,6 +153,7 @@ const LIVE_PREVIEW_IDS = [
   'goo-dropdown',
   'password-input',
   'ratio-slider',
+  'table-of-contents',
 ]
 
 export function ComponentPreview({ item }: { item: ComponentItem }) {
