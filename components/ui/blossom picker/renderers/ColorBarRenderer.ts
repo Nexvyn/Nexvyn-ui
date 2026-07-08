@@ -56,10 +56,10 @@ export class ColorBarRenderer {
     hue: number,
     saturation: number,
     lightness: number,
-    alpha: number,
+    _alpha: number,
     isExpanded: boolean,
   ): void {
-    const color = hslaToString(hue, saturation, lightness, alpha)
+    const color = hslaToString(hue, saturation, lightness, 100)
     this.colorCircle.setAttribute('stroke', color)
 
     setStyles(this.el, {

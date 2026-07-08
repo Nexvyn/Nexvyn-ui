@@ -75,7 +75,7 @@ export function calculateArcGradientColors(
   return Array.from({ length: steps }, (_, i) => {
     const t = i / (steps - 1)
     const saturation = getVisualSaturation(t * 100, baseSaturation)
-    const lightness = 100 - t * 90
-    return hslToString(hue, saturation, lightness)
+    const lightness = 95 - t * 90
+    return hslToString(hue, saturation, Math.max(5, lightness))
   })
 }

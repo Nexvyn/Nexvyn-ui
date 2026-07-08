@@ -6,15 +6,15 @@ import { cn } from '@/lib/utils'
 import {
   BlossomColorPicker as LocalBlossomColorPicker,
   type BlossomColorPickerOptions,
-} from './blossom-vendor/BlossomColorPicker'
-import { DEFAULT_COLORS, INNER_COLORS, OUTER_COLORS } from './blossom-vendor/constants'
-import { blossomPickerStyles } from './blossom-vendor/styles'
+} from './blossom picker/BlossomColorPicker'
+import { DEFAULT_COLORS, INNER_COLORS, OUTER_COLORS } from './blossom picker/constants'
+import { blossomPickerStyles } from './blossom picker/styles'
 import type {
   BlossomColorPickerColor,
   BlossomColorPickerValue,
   ColorInput,
   SliderPosition,
-} from './blossom-vendor/types'
+} from './blossom picker/types'
 import {
   createColorOutput,
   getVisualSaturation,
@@ -29,21 +29,25 @@ import {
   rgbaToString,
   rgbToHsl,
   sliderValueToLightness,
-} from './blossom-vendor/utils'
+} from './blossom picker/utils'
 
-export type ColorPickerValue = BlossomColorPickerValue
-export type ColorPickerColor = BlossomColorPickerColor
+export type BlossomPickerVariant = 'blossom' | 'blossom-arc'
+
+export type BlossomPickerValue = BlossomColorPickerValue
+export type BlossomPickerColor = BlossomColorPickerColor
 export type { ColorInput, SliderPosition }
 
-export interface ColorPickerProps
+export interface BlossomPickerProps
   extends
     Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue' | 'value'>,
-    BlossomColorPickerOptions {}
+    BlossomColorPickerOptions {
+  variant?: BlossomPickerVariant
+}
 
 export type { BlossomColorPickerValue, BlossomColorPickerColor, BlossomColorPickerOptions }
-export type BlossomColorPickerProps = ColorPickerProps
+export type ColorPickerProps = BlossomPickerProps
 
-function propsToOptions(props: ColorPickerProps): Partial<BlossomColorPickerOptions> {
+function propsToOptions(props: BlossomPickerProps): Partial<BlossomColorPickerOptions> {
   const options: Partial<BlossomColorPickerOptions> = {}
 
   if (props.value !== undefined) options.value = props.value
@@ -92,16 +96,27 @@ function syncRef(ref: Ref<HTMLDivElement> | undefined, node: HTMLDivElement | nu
   }
 }
 
-export const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(
+export const BlossomPicker = forwardRef<HTMLDivElement, BlossomPickerProps>(
+  ({ className, variant = 'blossom-arc', ...props }, ref) => {
+    const blossomProps = {
+      ...props,
+      showAlphaSlider: variant === 'blossom' ? false : (props.showAlphaSlider ?? true),
+    }
+
+    return <BlossomPickerInner ref={ref} className={className} {...blossomProps} />
+  },
+)
+
+BlossomPicker.displayName = 'BlossomPicker'
+
+const BlossomPickerInner = forwardRef<HTMLDivElement, Omit<BlossomPickerProps, 'variant'>>(
   ({ className, ...props }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null)
     const pickerRef = useRef<LocalBlossomColorPicker | null>(null)
 
     useEffect(() => {
       if (!containerRef.current) return
-
       pickerRef.current = new LocalBlossomColorPicker(containerRef.current, propsToOptions(props))
-
       return () => {
         pickerRef.current?.destroy()
         pickerRef.current = null
@@ -134,7 +149,7 @@ export const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(
 
     return (
       <>
-        <style>{blossomPickerStyles}</style>
+        <style dangerouslySetInnerHTML={{ __html: blossomPickerStyles }} />
         <div
           ref={(node) => {
             containerRef.current = node
@@ -149,11 +164,12 @@ export const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(
   },
 )
 
-ColorPicker.displayName = 'ColorPicker'
+BlossomPickerInner.displayName = 'BlossomPickerInner'
 
-export function ColorPickerPreview() {
+export function BlossomPickerPreview() {
   return (
-    <ColorPicker
+    <BlossomPicker
+      variant="blossom-arc"
       initialExpanded
       coreSize={48}
       petalSize={48}
@@ -164,7 +180,8 @@ export function ColorPickerPreview() {
   )
 }
 
-export const BlossomColorPicker = ColorPicker
+export const ColorPicker = BlossomPicker
+export const BlossomColorPicker = BlossomPicker
 
 export {
   DEFAULT_COLORS,
@@ -185,4 +202,4 @@ export {
   sliderValueToLightness,
 }
 
-export default ColorPicker
+export default BlossomPicker
