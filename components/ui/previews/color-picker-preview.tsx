@@ -22,8 +22,6 @@ export function ColorPickerPreview() {
           adaptivePositioning={false}
         />
       </div>
-
-      
     </div>
   )
 }
