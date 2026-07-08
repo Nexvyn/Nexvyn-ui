@@ -1,0 +1,248 @@
+{
+  "light": {
+    "plain": {
+      "color": "#1f2937",
+      "backgroundColor": "#f7f7f7"
+    },
+    "styles": [
+      {
+        "types": ["comment", "prolog", "doctype", "cdata"],
+        "style": {
+          "color": "#6b7280",
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "types": ["punctuation"],
+        "style": {
+          "color": "#374151"
+        }
+      },
+      {
+        "types": [
+          "property",
+          "tag",
+          "boolean",
+          "number",
+          "constant",
+          "symbol",
+          "deleted"
+        ],
+        "style": {
+          "color": "#dc2626"
+        }
+      },
+      {
+        "types": ["string", "char", "builtin", "inserted"],
+        "style": {
+          "color": "#0ea5e9"
+        }
+      },
+      {
+        "types": ["selector", "attr-name"],
+        "style": {
+          "color": "#059669"
+        }
+      },
+      {
+        "types": ["operator", "entity", "url", "variable"],
+        "style": {
+          "color": "#1f2937"
+        }
+      },
+      {
+        "types": ["atrule", "attr-value", "function", "class-name"],
+        "style": {
+          "color": "#10b981"
+        }
+      },
+      {
+        "types": ["keyword"],
+        "style": {
+          "color": "#059669",
+          "fontWeight": "600"
+        }
+      },
+      {
+        "types": ["regex", "important"],
+        "style": {
+          "color": "#ea580c"
+        }
+      },
+      {
+        "types": ["bold"],
+        "style": {
+          "fontWeight": "700"
+        }
+      },
+      {
+        "types": ["italic"],
+        "style": {
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "types": ["namespace"],
+        "style": {
+          "opacity": 0.8
+        }
+      },
+      {
+        "types": ["interpolation"],
+        "style": {
+          "color": "#0ea5e9",
+          "backgroundColor": "#e0f2fe",
+          "padding": "0.125rem 0.25rem",
+          "borderRadius": "0.25rem"
+        }
+      },
+      {
+        "types": ["parameter"],
+        "style": {
+          "color": "#10b981"
+        }
+      },
+      {
+        "types": ["property-access"],
+        "style": {
+          "color": "#6b7280"
+        }
+      },
+      {
+        "types": ["maybe-class-name"],
+        "style": {
+          "color": "#10b981"
+        }
+      },
+      {
+        "types": ["string-property"],
+        "style": {
+          "color": "#0ea5e9"
+        }
+      }
+    ]
+  },
+  "dark": {
+    "plain": {
+      "color": "#e5e7eb",
+      "backgroundColor": "#121212"
+    },
+    "styles": [
+      {
+        "types": ["comment", "prolog", "doctype", "cdata"],
+        "style": {
+          "color": "#757575",
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "types": ["punctuation"],
+        "style": {
+          "color": "#a3a3a3"
+        }
+      },
+      {
+        "types": [
+          "property",
+          "tag",
+          "boolean",
+          "number",
+          "constant",
+          "symbol",
+          "deleted"
+        ],
+        "style": {
+          "color": "#ff6658"
+        }
+      },
+      {
+        "types": ["string", "char", "builtin", "inserted"],
+        "style": {
+          "color": "#38bdf8"
+        }
+      },
+      {
+        "types": ["selector", "attr-name"],
+        "style": {
+          "color": "#10b981"
+        }
+      },
+      {
+        "types": ["operator", "entity", "url", "variable"],
+        "style": {
+          "color": "#ffffff"
+        }
+      },
+      {
+        "types": ["atrule", "attr-value", "function", "class-name"],
+        "style": {
+          "color": "#34d399"
+        }
+      },
+      {
+        "types": ["keyword"],
+        "style": {
+          "color": "#10b981",
+          "fontWeight": "600"
+        }
+      },
+      {
+        "types": ["regex", "important"],
+        "style": {
+          "color": "#dfab5c"
+        }
+      },
+      {
+        "types": ["bold"],
+        "style": {
+          "fontWeight": "700"
+        }
+      },
+      {
+        "types": ["italic"],
+        "style": {
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "types": ["namespace"],
+        "style": {
+          "opacity": 0.8
+        }
+      },
+      {
+        "types": ["interpolation"],
+        "style": {
+          "color": "#38bdf8",
+          "backgroundColor": "#1e3a5f",
+          "padding": "0.125rem 0.25rem",
+          "borderRadius": "0.25rem"
+        }
+      },
+      {
+        "types": ["parameter"],
+        "style": {
+          "color": "#34d399"
+        }
+      },
+      {
+        "types": ["property-access"],
+        "style": {
+          "color": "#a3a3a3"
+        }
+      },
+      {
+        "types": ["maybe-class-name"],
+        "style": {
+          "color": "#34d399"
+        }
+      },
+      {
+        "types": ["string-property"],
+        "style": {
+          "color": "#38bdf8"
+        }
+      }
+    ]
+  }
+}

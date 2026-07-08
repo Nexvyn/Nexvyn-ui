@@ -208,6 +208,25 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
 
         <div className="no-scrollbar flex flex-1 flex-col gap-8 sm:gap-12 overflow-y-auto p-4 sm:p-6 md:p-8 pt-16 sm:pt-20 text-left">
           <div className="h-[35vh] md:h-[22vh] shrink-0" />
+
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2.5 text-sm -mb-4 sm:-mb-8">
+            <Link
+              href="/"
+              className="text-(--color-muted) hover:text-(--color-fg) transition-colors"
+            >
+              Nexvyn
+            </Link>
+            <span className="text-(--color-subtle) leading-none">·</span>
+            <Link
+              href="/components"
+              className="text-(--color-muted) hover:text-(--color-fg) transition-colors"
+            >
+              Components
+            </Link>
+            <span className="text-(--color-subtle) leading-none">·</span>
+            <span className="text-(--color-fg) font-semibold">{item?.name ?? 'Component'}</span>
+          </nav>
+
           <div className="flex flex-col gap-1 text-left">
             <h1 className="text-3xl font-semibold tracking-tight text-(--color-fg)">
               {item?.name ?? 'Component'}
