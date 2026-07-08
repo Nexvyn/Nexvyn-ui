@@ -90,7 +90,17 @@ export function SidebarToggleIcon({ showSidebar }: { showSidebar: boolean }) {
   )
 }
 
-function NavSectionHeader({ title, active, href, isNew }: { title: string; active?: boolean; href?: string; isNew?: boolean }) {
+function NavSectionHeader({
+  title,
+  active,
+  href,
+  isNew,
+}: {
+  title: string
+  active?: boolean
+  href?: string
+  isNew?: boolean
+}) {
   const lineWidth = useSpring(active ? 55 : 32, LINE_SPRING)
   const [widthValue, setWidthValue] = useState(active ? 55 : 32)
   const [isHovered, setIsHovered] = useState(false)
@@ -483,7 +493,12 @@ function SidebarNav() {
 
           <NavSectionHeader title="MCP" active={isMcpPage} href="/mcp" isNew />
           <Separator />
-          <NavSectionHeader title="Illustration" active={isIllustrationPage} href="/illustration" isNew />
+          <NavSectionHeader
+            title="Illustration"
+            active={isIllustrationPage}
+            href="/illustration"
+            isNew
+          />
           <Separator count={4} />
 
           {sortById ? (

@@ -98,8 +98,19 @@ function LivePreview({ item }: { item: ComponentItem }) {
             <span className="text-[10px] font-medium" style={{ color: 'var(--color-fg)' }}>
               Introduction
             </span>
-            <svg className="size-3" style={{ color: 'var(--color-muted)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
+            <svg
+              className="size-3"
+              style={{ color: 'var(--color-muted)' }}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.5}
+                d="M5 15l7-7 7 7"
+              />
             </svg>
           </div>
         </div>

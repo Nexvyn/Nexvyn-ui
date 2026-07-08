@@ -61,7 +61,7 @@ export default function CompactThemeToggle({ className = '' }: { className?: str
     try {
       localStorage.setItem('theme', next ? 'dark' : 'light')
     } catch {}
-    
+
     // Force reflow
     window.getComputedStyle(document.documentElement).opacity
 

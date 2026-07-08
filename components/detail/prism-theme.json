@@ -19,15 +19,7 @@
         }
       },
       {
-        "types": [
-          "property",
-          "tag",
-          "boolean",
-          "number",
-          "constant",
-          "symbol",
-          "deleted"
-        ],
+        "types": ["property", "tag", "boolean", "number", "constant", "symbol", "deleted"],
         "style": {
           "color": "#dc2626"
         }
@@ -142,15 +134,7 @@
         }
       },
       {
-        "types": [
-          "property",
-          "tag",
-          "boolean",
-          "number",
-          "constant",
-          "symbol",
-          "deleted"
-        ],
+        "types": ["property", "tag", "boolean", "number", "constant", "symbol", "deleted"],
         "style": {
           "color": "#ff6658"
         }

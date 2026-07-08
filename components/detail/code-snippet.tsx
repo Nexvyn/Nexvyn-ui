@@ -49,7 +49,10 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
       <Highlight theme={theme} code={code.trim()} language={language}>
         {({ className: prismClass, style, tokens, getLineProps, getTokenProps }) => (
           <pre
-            className={cn(prismClass, 'text-[13px] overflow-x-auto font-mono font-medium no-scrollbar')}
+            className={cn(
+              prismClass,
+              'text-[13px] overflow-x-auto font-mono font-medium no-scrollbar',
+            )}
             style={{ ...style, backgroundColor: 'transparent' }}
           >
             {tokens.map((line, i) => (

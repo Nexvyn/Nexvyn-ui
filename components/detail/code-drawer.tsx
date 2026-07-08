@@ -192,9 +192,9 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
                   aria-selected={isActive}
                   onClick={() => setSelectedFileIndex(index)}
                   className={cn(
-                    "px-3 sm:px-4 py-2 text-[11px] sm:text-[13px] font-normal relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 transition-colors cursor-pointer border-0 bg-transparent shrink-0 whitespace-nowrap",
-                    "text-(--color-muted) hover:text-(--color-fg)",
-                    isActive && "text-(--color-fg) font-semibold",
+                    'px-3 sm:px-4 py-2 text-[11px] sm:text-[13px] font-normal relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 transition-colors cursor-pointer border-0 bg-transparent shrink-0 whitespace-nowrap',
+                    'text-(--color-muted) hover:text-(--color-fg)',
+                    isActive && 'text-(--color-fg) font-semibold',
                   )}
                 >
                   {displayName}
@@ -206,7 +206,7 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
                         style={{ backgroundColor: 'var(--color-accent)' }}
                         initial={false}
                         transition={{
-                          type: "spring",
+                          type: 'spring',
                           stiffness: 500,
                           damping: 30,
                         }}
