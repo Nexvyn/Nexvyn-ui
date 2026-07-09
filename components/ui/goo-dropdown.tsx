@@ -90,12 +90,15 @@ export function GooDropdown({
   className,
 }: GooDropdownProps) {
   const [open, setOpen] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(0)
   const shouldReduceMotion = useReducedMotion()
   const filterId = useId().replace(/[:]/g, '')
 
   const rootRef = useRef<HTMLDivElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
 
   const geo = useMemo(() => {
     const panelTop = BTN_H + gap
@@ -145,15 +148,26 @@ export function GooDropdown({
     return () => animation.stop()
   }, [open, progress, spring, shouldReduceMotion])
 
+  const openMenu = () => {
+    setOpen(true)
+    setActiveIndex(0)
+    itemRefs.current[0]?.focus()
+  }
+
+  const closeMenu = () => {
+    setOpen(false)
+    triggerRef.current?.focus()
+  }
+
   useEffect(() => {
     if (!open) return
     const onPointerDown = (e: PointerEvent) => {
       if (rootRef.current && !rootRef.current.contains(e.target as Node)) {
-        setOpen(false)
+        closeMenu()
       }
     }
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false)
+      if (e.key === 'Escape') closeMenu()
     }
     window.addEventListener('pointerdown', onPointerDown)
     window.addEventListener('keydown', onKey)
@@ -161,11 +175,35 @@ export function GooDropdown({
       window.removeEventListener('pointerdown', onPointerDown)
       window.removeEventListener('keydown', onKey)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
   const select = (item: DropdownItem) => {
     item.onClick?.()
-    setOpen(false)
+    closeMenu()
+  }
+
+  const onItemKeyDown = (e: React.KeyboardEvent, index: number) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      const next = (index + 1) % items.length
+      setActiveIndex(next)
+      itemRefs.current[next]?.focus()
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      const prev = (index - 1 + items.length) % items.length
+      setActiveIndex(prev)
+      itemRefs.current[prev]?.focus()
+    } else if (e.key === 'Home') {
+      e.preventDefault()
+      setActiveIndex(0)
+      itemRefs.current[0]?.focus()
+    } else if (e.key === 'End') {
+      e.preventDefault()
+      const last = items.length - 1
+      setActiveIndex(last)
+      itemRefs.current[last]?.focus()
+    }
   }
 
   return (
@@ -212,9 +250,11 @@ export function GooDropdown({
 
       <div className="absolute inset-0">
         <button
+          ref={triggerRef}
           type="button"
-          onClick={() => setOpen((o) => !o)}
+          onClick={() => (open ? closeMenu() : openMenu())}
           aria-expanded={open}
+          aria-haspopup="menu"
           className="absolute top-0 flex items-center justify-center text-[15px] text-(--color-card-foreground) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg) rounded-[12px]"
           style={{
             left: geo.btnX,
@@ -243,13 +283,17 @@ export function GooDropdown({
               padding: PANEL_PAD,
             }}
           >
-            {items.map((item) => (
+            {items.map((item, index) => (
               <button
                 key={item.label}
+                ref={(el) => {
+                  itemRefs.current[index] = el
+                }}
                 role="menuitem"
                 type="button"
-                tabIndex={open ? 0 : -1}
+                tabIndex={open && activeIndex === index ? 0 : -1}
                 onClick={() => select(item)}
+                onKeyDown={(e) => onItemKeyDown(e, index)}
                 style={{ height: itemHeight }}
                 className="flex w-full items-center rounded-[14px] px-3 text-left text-[15px] text-(--color-muted) transition-colors duration-150 hover:bg-(--color-surface) hover:text-(--color-card-foreground) focus-visible:outline-none focus-visible:bg-(--color-surface) focus-visible:text-(--color-card-foreground)"
               >
