@@ -37,6 +37,7 @@ export class ArcSliderRenderer {
   private boundMouseMove: (e: MouseEvent) => void
   private boundTouchMove: (e: TouchEvent) => void
   private boundEnd: () => void
+  private boundKeyDown: (e: KeyboardEvent) => void
 
   constructor(
     barRadius: number,
@@ -111,6 +112,12 @@ export class ArcSliderRenderer {
       fill: '#fff',
       stroke: 'white',
       'stroke-width': '2',
+      tabindex: '0',
+      role: 'slider',
+      'aria-label': 'Lightness',
+      'aria-valuemin': '0',
+      'aria-valuemax': '100',
+      'aria-valuenow': String(this.currentValue),
     })
     this.handle.classList.add('bcp-slider-handle')
     this.handle.addEventListener('mousedown', (e) => {
@@ -126,6 +133,8 @@ export class ArcSliderRenderer {
     this.boundMouseMove = (e: MouseEvent) => this.calculateValueFromEvent(e)
     this.boundTouchMove = (e: TouchEvent) => this.calculateValueFromEvent(e)
     this.boundEnd = () => this.endDrag()
+    this.boundKeyDown = (e: KeyboardEvent) => this.handleKeyDown(e)
+    this.handle.addEventListener('keydown', this.boundKeyDown)
 
     this.updateGeometry()
   }
@@ -151,6 +160,30 @@ export class ArcSliderRenderer {
 
   private handleTrackClick(e: MouseEvent): void {
     this.calculateValueFromEvent(e)
+  }
+
+  private handleKeyDown(e: KeyboardEvent): void {
+    const step = e.shiftKey ? 10 : 1
+    let next: number | null = null
+
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+      next = Math.min(100, this.currentValue + step)
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+      next = Math.max(0, this.currentValue - step)
+    } else if (e.key === 'Home') {
+      next = 0
+    } else if (e.key === 'End') {
+      next = 100
+    } else if (e.key === 'PageUp') {
+      next = Math.min(100, this.currentValue + 10)
+    } else if (e.key === 'PageDown') {
+      next = Math.max(0, this.currentValue - 10)
+    }
+
+    if (next !== null) {
+      e.preventDefault()
+      this.onChange(next)
+    }
   }
 
   private calculateValueFromEvent(e: MouseEvent | TouchEvent): void {
@@ -244,6 +277,7 @@ export class ArcSliderRenderer {
     this.handle.setAttribute('cx', String(handlePos.x))
     this.handle.setAttribute('cy', String(handlePos.y))
     this.handle.setAttribute('fill', handleColor)
+    this.handle.setAttribute('aria-valuenow', String(Math.round(value)))
 
     this.updateHandleTransition()
 
@@ -267,6 +301,7 @@ export class ArcSliderRenderer {
     window.removeEventListener('mouseup', this.boundEnd)
     window.removeEventListener('touchmove', this.boundTouchMove)
     window.removeEventListener('touchend', this.boundEnd)
+    this.handle.removeEventListener('keydown', this.boundKeyDown)
     this.el.remove()
   }
 }

@@ -119,6 +119,8 @@ export class BlossomColorPicker {
 
   private boundClickOutside: (e: MouseEvent) => void
   private boundMouseMove: (e: MouseEvent) => void
+  private boundMouseEnter: () => void
+  private boundMouseLeave: () => void
 
   constructor(container: HTMLElement, options?: Partial<BlossomColorPickerOptions>) {
     this.container = container
@@ -153,6 +155,8 @@ export class BlossomColorPicker {
 
     this.boundClickOutside = this.handleClickOutside.bind(this)
     this.boundMouseMove = this.handleMouseMove.bind(this)
+    this.boundMouseEnter = this.handleMouseEnter.bind(this)
+    this.boundMouseLeave = this.handleMouseLeave.bind(this)
 
     this.computeLayout()
     this.render()
@@ -271,6 +275,18 @@ export class BlossomColorPicker {
   }
 
   destroy(): void {
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout)
+      this.hoverTimeout = null
+    }
+    if (this.closeTimeout) {
+      clearTimeout(this.closeTimeout)
+      this.closeTimeout = null
+    }
+    if (this.rafId !== null) {
+      cancelAnimationFrame(this.rafId)
+      this.rafId = null
+    }
     this.unbindEvents()
     this.destroyInner()
     if (this.rootEl && this.rootEl.parentNode) {
@@ -627,17 +643,15 @@ export class BlossomColorPicker {
   }
 
   private bindEvents(): void {
-    this.containerEl.addEventListener('mouseenter', () => {
-      this.handleMouseEnter()
-    })
-    this.containerEl.addEventListener('mouseleave', () => {
-      this.handleMouseLeave()
-    })
+    this.containerEl.addEventListener('mouseenter', this.boundMouseEnter)
+    this.containerEl.addEventListener('mouseleave', this.boundMouseLeave)
     this.containerEl.addEventListener('mousemove', this.boundMouseMove)
   }
 
   private unbindEvents(): void {
     document.removeEventListener('mousedown', this.boundClickOutside)
+    this.containerEl.removeEventListener('mouseenter', this.boundMouseEnter)
+    this.containerEl.removeEventListener('mouseleave', this.boundMouseLeave)
     this.containerEl.removeEventListener('mousemove', this.boundMouseMove)
   }
 
