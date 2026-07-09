@@ -134,7 +134,7 @@ export function BounceSidebar({
       <motion.span
         ref={scope}
         aria-hidden
-        className="absolute start-2 top-0 rounded-full"
+        className="absolute inset-s-2 top-0 rounded-full"
         style={{
           x: dotX,
           y: dotY,
