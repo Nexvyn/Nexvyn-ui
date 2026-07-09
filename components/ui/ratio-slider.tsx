@@ -41,7 +41,7 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
       leftColor = 'var(--color-fg)',
       rightColor = 'var(--color-muted)',
       leftLabelColor = 'var(--color-bg)',
-      rightLabelColor = 'var(--color-fg)',
+      rightLabelColor = 'var(--color-bg)',
       disabled = false,
       className,
       ...rest
@@ -63,6 +63,8 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
     const [draggingState, setDraggingState] = useState(false)
 
     const ratio = 100 - leftRatio
+    const resolvedLeftLabelColor = isCompact ? undefined : leftLabelColor
+    const resolvedRightLabelColor = isCompact ? undefined : rightLabelColor
     const barHeight = isCompact ? 32 : 60
     const labelsRowHeight = 32
     const gap = 16
@@ -185,12 +187,12 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
               reduceMotion ? '' : 'transition-all duration-200 ease-out',
             )}
             style={{
-              color: leftLabelColor,
+              color: resolvedLeftLabelColor,
               top: isCompact ? labelsRowHeight / 2 : labelsRowHeight + gap + barHeight / 2,
               transform: 'translateY(-50%)',
             }}
           >
-            <span className="opacity-80">{leftLabel}</span>
+            <span>{leftLabel}</span>
             <span className="font-bold tabular-nums">{leftRatio}%</span>
           </div>
           <div
@@ -200,13 +202,13 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
               reduceMotion ? '' : 'transition-all duration-200 ease-out',
             )}
             style={{
-              color: rightLabelColor,
+              color: resolvedRightLabelColor,
               top: isCompact ? labelsRowHeight / 2 : labelsRowHeight + gap + barHeight / 2,
               transform: 'translateY(-50%)',
             }}
           >
             <span className="font-bold tabular-nums">{ratio}%</span>
-            <span className="opacity-80">{rightLabel}</span>
+            <span>{rightLabel}</span>
           </div>
         </div>
 
