@@ -1,8 +1,16 @@
 'use client'
 
 import { forwardRef, useState, useRef, useCallback, useEffect, type HTMLAttributes } from 'react'
-import { useReducedMotion } from 'motion/react'
+import {
+  animate,
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useReducedMotion,
+  useTransform,
+} from 'motion/react'
 import { cn } from '@/lib/utils'
+import { springs } from '@/lib/motion-tokens'
 
 export interface RatioSliderProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -68,6 +76,47 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
     const gap = 16
     const edgePadding = 16
 
+    const leftPercent = useMotionValue(leftRatio)
+    const settleRef = useRef<ReturnType<typeof animate> | null>(null)
+    const settleTargetRef = useRef<number | null>(null)
+
+    const stopSettle = useCallback(() => {
+      settleRef.current?.stop()
+      settleRef.current = null
+      settleTargetRef.current = null
+    }, [])
+
+    const settleTo = useCallback(
+      (target: number) => {
+        stopSettle()
+        if (reduceMotion) {
+          leftPercent.jump(target)
+          return
+        }
+        settleTargetRef.current = target
+        settleRef.current = animate(leftPercent, target, {
+          ...springs.settle,
+          velocity: leftPercent.getVelocity(),
+          onComplete: () => {
+            settleRef.current = null
+            settleTargetRef.current = null
+          },
+        })
+      },
+      [leftPercent, reduceMotion, stopSettle],
+    )
+
+    useEffect(() => {
+      if (settleRef.current && settleTargetRef.current === leftRatio) return
+      stopSettle()
+      leftPercent.set(leftRatio)
+    }, [leftRatio, leftPercent, stopSettle])
+
+    useEffect(() => () => settleRef.current?.stop(), [])
+
+    const leftWidth = useTransform(leftPercent, (p) => `calc(${p}% - 9px)`)
+    const rightWidth = useTransform(leftPercent, (p) => `calc(${100 - p}% - 9px)`)
+
     const commit = useCallback(
       (next: number) => {
         const clamped = clamp(Math.round(next / step) * step, min, max)
@@ -77,23 +126,24 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
       [isControlled, onChange, min, max, step],
     )
 
+    const checkLabelFit = useCallback(() => {
+      const leftBar = leftBarRef.current
+      const rightBar = rightBarRef.current
+      const leftLabel = leftLabelRef.current
+      const rightLabel = rightLabelRef.current
+      if (!leftBar || !rightBar || !leftLabel || !rightLabel) return
+      const leftBarWidth = leftBar.getBoundingClientRect().width
+      const rightBarWidth = rightBar.getBoundingClientRect().width
+      const leftLabelWidth = leftLabel.getBoundingClientRect().width
+      const rightLabelWidth = rightLabel.getBoundingClientRect().width
+      setIsCompact(
+        leftBarWidth < leftLabelWidth + edgePadding ||
+          rightBarWidth < rightLabelWidth + edgePadding,
+      )
+    }, [edgePadding])
+
     useEffect(() => {
       if (typeof window === 'undefined') return
-      const checkLabelFit = () => {
-        const leftBar = leftBarRef.current
-        const rightBar = rightBarRef.current
-        const leftLabel = leftLabelRef.current
-        const rightLabel = rightLabelRef.current
-        if (!leftBar || !rightBar || !leftLabel || !rightLabel) return
-        const leftBarWidth = leftBar.getBoundingClientRect().width
-        const rightBarWidth = rightBar.getBoundingClientRect().width
-        const leftLabelWidth = leftLabel.getBoundingClientRect().width
-        const rightLabelWidth = rightLabel.getBoundingClientRect().width
-        setIsCompact(
-          leftBarWidth < leftLabelWidth + edgePadding ||
-            rightBarWidth < rightLabelWidth + edgePadding,
-        )
-      }
       checkLabelFit()
       const rafId = requestAnimationFrame(checkLabelFit)
       window.addEventListener('resize', checkLabelFit)
@@ -101,35 +151,44 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
         window.removeEventListener('resize', checkLabelFit)
         cancelAnimationFrame(rafId)
       }
-    }, [leftRatio])
+    }, [leftRatio, checkLabelFit])
 
-    const updateFromPosition = useCallback(
-      (clientX: number) => {
-        if (!sliderRef.current) return
-        const rect = sliderRef.current.getBoundingClientRect()
-        const x = clientX - rect.left
-        commit((x / rect.width) * 100)
-      },
-      [commit],
-    )
+    useMotionValueEvent(leftPercent, 'change', checkLabelFit)
+
+    const percentFromPosition = useCallback((clientX: number) => {
+      if (!sliderRef.current) return null
+      const rect = sliderRef.current.getBoundingClientRect()
+      const x = clientX - rect.left
+      return clamp((x / rect.width) * 100, 0, 100)
+    }, [])
 
     const onPointerDown = useCallback(
       (e: React.PointerEvent) => {
         if (disabled) return
+        e.preventDefault()
         isDragging.current = true
         setDraggingState(true)
-        updateFromPosition(e.clientX)
+        const percent = percentFromPosition(e.clientX)
+        if (percent !== null) {
+          commit(percent)
+          settleTo(percent)
+        }
         ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
       },
-      [updateFromPosition, disabled],
+      [percentFromPosition, commit, settleTo, disabled],
     )
 
     const onPointerMove = useCallback(
       (e: React.PointerEvent) => {
         if (!isDragging.current || disabled) return
-        updateFromPosition(e.clientX)
+        const percent = percentFromPosition(e.clientX)
+        if (percent !== null) {
+          stopSettle()
+          leftPercent.set(percent)
+          commit(percent)
+        }
       },
-      [updateFromPosition, disabled],
+      [percentFromPosition, stopSettle, leftPercent, commit, disabled],
     )
 
     const onPointerUp = useCallback(() => {
@@ -181,13 +240,14 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
           <div
             ref={leftLabelRef}
             className={cn(
-              'absolute start-3 flex items-center gap-2 font-medium text-sm tracking-wide whitespace-nowrap z-[1]',
-              reduceMotion ? '' : 'transition-all duration-200 ease-out',
+              'absolute inset-s-3 top-0 flex items-center gap-2 font-medium text-xs tracking-wide whitespace-nowrap z-1',
+              reduceMotion
+                ? ''
+                : 'transition-[color,transform] duration-200 ease-(--motion-ease-in-out)',
             )}
             style={{
-              color: leftLabelColor,
-              top: isCompact ? labelsRowHeight / 2 : labelsRowHeight + gap + barHeight / 2,
-              transform: 'translateY(-50%)',
+              color: isCompact ? leftColor : leftLabelColor,
+              transform: `translateY(calc(${isCompact ? labelsRowHeight / 2 : labelsRowHeight + gap + barHeight / 2}px - 50%))`,
             }}
           >
             <span className="opacity-80">{leftLabel}</span>
@@ -196,13 +256,14 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
           <div
             ref={rightLabelRef}
             className={cn(
-              'absolute end-3 flex items-center gap-2 font-medium text-sm tracking-wide whitespace-nowrap z-[1]',
-              reduceMotion ? '' : 'transition-all duration-200 ease-out',
+              'absolute inset-e-3 top-0 flex items-center gap-2 font-medium text-xs tracking-wide whitespace-nowrap z-1',
+              reduceMotion
+                ? ''
+                : 'transition-[color,transform] duration-200 ease-(--motion-ease-in-out)',
             )}
             style={{
-              color: rightLabelColor,
-              top: isCompact ? labelsRowHeight / 2 : labelsRowHeight + gap + barHeight / 2,
-              transform: 'translateY(-50%)',
+              color: isCompact ? rightColor : rightLabelColor,
+              transform: `translateY(calc(${isCompact ? labelsRowHeight / 2 : labelsRowHeight + gap + barHeight / 2}px - 50%))`,
             }}
           >
             <span className="font-bold tabular-nums">{ratio}%</span>
@@ -218,32 +279,32 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
           )}
           style={{ height: barHeight }}
         >
-          <div
+          <motion.div
             ref={leftBarRef}
             className={cn(
               'h-full rounded-lg flex items-center justify-start overflow-hidden',
               reduceMotion ? '' : 'transition-[filter] duration-100',
             )}
-            style={{ backgroundColor: leftColor, width: `calc(${leftRatio}% - 9px)` }}
+            style={{ backgroundColor: leftColor, width: leftWidth }}
           />
           <div
             className={cn(
               'w-1.5 h-[80%] rounded-full z-10 shrink-0',
-              reduceMotion ? '' : 'transition-[transform,box-shadow] duration-150',
+              reduceMotion ? '' : 'transition-transform duration-150',
             )}
             style={{
               backgroundColor: 'var(--color-accent)',
-              boxShadow: draggingState ? '0 0 10px var(--color-accent)' : 'none',
+              border: '1.5px solid var(--color-fg)',
               transform: draggingState ? 'scaleY(1.15)' : 'scaleY(1)',
             }}
           />
-          <div
+          <motion.div
             ref={rightBarRef}
             className={cn(
               'h-full rounded-lg flex items-center justify-end overflow-hidden',
               reduceMotion ? '' : 'transition-[filter] duration-100',
             )}
-            style={{ backgroundColor: rightColor, width: `calc(${ratio}% - 9px)` }}
+            style={{ backgroundColor: rightColor, width: rightWidth }}
           />
         </div>
       </div>
@@ -256,7 +317,7 @@ RatioSlider.displayName = 'RatioSlider'
 export function RatioSliderPreview() {
   return (
     <div
-      className="w-full h-full min-h-[200px] rounded-lg overflow-hidden flex items-center justify-center p-4"
+      className="w-full h-full min-h-50 rounded-lg overflow-hidden flex items-center justify-center p-4"
       style={{ backgroundColor: 'var(--color-surface)' }}
     >
       <div className="w-full max-w-md">
