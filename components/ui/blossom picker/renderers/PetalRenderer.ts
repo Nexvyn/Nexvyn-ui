@@ -26,6 +26,7 @@ export class PetalRenderer {
   private config: PetalConfig
   private isHovered = false
   private isSelected = false
+  private interactive: boolean
 
   get hue(): number {
     return this.config.hue
@@ -38,11 +39,22 @@ export class PetalRenderer {
     private onMouseLeave?: () => void,
   ) {
     this.config = config
-    this.el = createElement('button', undefined, {
-      type: 'button',
-      'aria-label': `Select color hue ${config.hue}`,
-      tabIndex: '-1',
-    })
+    this.interactive = !!onClick
+    this.el = createElement(
+      'button',
+      undefined,
+      this.interactive
+        ? {
+            type: 'button',
+            'aria-label': `Select color hue ${config.hue}`,
+            tabIndex: '-1',
+          }
+        : {
+            type: 'button',
+            'aria-hidden': 'true',
+            tabIndex: '-1',
+          },
+    )
     this.el.className = 'bcp-petal'
 
     if (config.alpha !== 0) {
@@ -170,7 +182,9 @@ export class PetalRenderer {
       pointerEvents: c.pointerEvents,
     })
 
-    this.el.tabIndex = isExpanded ? 0 : -1
+    if (this.interactive) {
+      this.el.tabIndex = isExpanded ? 0 : -1
+    }
     this.lastExpanded = isExpanded
   }
 

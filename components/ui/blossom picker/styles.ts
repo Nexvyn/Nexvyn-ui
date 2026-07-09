@@ -24,7 +24,7 @@ export const blossomPickerStyles = `
 
 .bcp-petal-visible:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2.5px rgba(255, 255, 255, 0.95), 0 0 0 4px rgba(59, 130, 246, 0.8);
+  box-shadow: 0 0 0 2.5px rgba(255, 255, 255, 0.95), 0 0 0 4px color-mix(in srgb, var(--color-accent) 80%, transparent);
 }
 
 .bcp-core {
@@ -37,7 +37,7 @@ export const blossomPickerStyles = `
 
 .bcp-core:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2.5px rgba(59, 130, 246, 0.9), 0 0 0 5px rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 2.5px color-mix(in srgb, var(--color-accent) 90%, transparent), 0 0 0 5px rgba(255, 255, 255, 0.9);
 }
 
 .bcp-core:disabled {
