@@ -177,7 +177,7 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
 
         {hasMultipleFiles && (
           <div
-            className="flex items-center justify-start w-full gap-0.5 mt-2 border-b border-solid overflow-x-auto no-scrollbar px-4 sm:px-6"
+            className="flex items-center justify-start md:justify-center w-full gap-0.5 mt-2 border-b border-solid overflow-x-auto no-scrollbar px-4 sm:px-6"
             style={{ borderColor: 'var(--color-border)' }}
             role="tablist"
           >
