@@ -1,15 +1,24 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export function CopyInstallButton({ value }: { value: string }) {
   const [copied, setCopied] = useState(false)
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(
+    () => () => {
+      if (resetTimer.current) clearTimeout(resetTimer.current)
+    },
+    [],
+  )
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(value)
       setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
+      if (resetTimer.current) clearTimeout(resetTimer.current)
+      resetTimer.current = setTimeout(() => setCopied(false), 1500)
     } catch {}
   }
 
@@ -17,7 +26,7 @@ export function CopyInstallButton({ value }: { value: string }) {
     <button
       type="button"
       onClick={handleCopy}
-      className="p-1 text-[var(--color-muted)] hover:text-[var(--color-fg)] active:scale-[0.96] transition-[color,transform] duration-150 rounded-md cursor-pointer flex items-center justify-center"
+      className="hit-area-44 p-1 text-(--color-muted) hover:text-(--color-fg) active:scale-[0.96] transition-[color,transform] duration-150 rounded-md cursor-pointer flex items-center justify-center"
       title="Copy install command"
     >
       {copied ? (

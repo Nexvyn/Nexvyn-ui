@@ -237,7 +237,7 @@ export default function ComponentColorBar() {
           <button
             type="button"
             onClick={() => toggleMenu('bg')}
-            className={`h-8 w-8 cursor-pointer rounded-xl border-0 transition-[transform] duration-150 active:scale-95 flex items-center justify-center ${
+            className={`hit-area-44 h-8 w-8 cursor-pointer rounded-xl border-0 transition-[transform] duration-150 active:scale-95 flex items-center justify-center ${
               activeMenu === 'bg'
                 ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)'
                 : ''
@@ -260,7 +260,9 @@ export default function ComponentColorBar() {
                   key={color}
                   type="button"
                   onClick={() => handleBgSelect(color)}
-                  className={`h-6.5 w-6.5 rounded-md border border-(--color-border-strong) cursor-pointer transition-transform hover:scale-105 active:scale-95 ${
+                  aria-label={`Use ${color} for background`}
+                  title={color}
+                  className={`hit-area-44 h-6.5 w-6.5 rounded-md border border-(--color-border-strong) cursor-pointer transition-transform hover:scale-105 active:scale-95 ${
                     activeBg === color
                       ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)'
                       : ''
@@ -268,10 +270,8 @@ export default function ComponentColorBar() {
                   style={{ backgroundColor: color }}
                 />
               ))}
-              <button
-                type="button"
-                onClick={() => bgCustomRef.current?.click()}
-                className="h-6.5 w-6.5 rounded-md border border-(--color-border-strong) bg-(--color-surface-2) text-(--color-fg) cursor-pointer flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+              <label
+                className="hit-area-44 h-6.5 w-6.5 rounded-md border border-(--color-border-strong) bg-(--color-surface-2) text-(--color-fg) cursor-pointer flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
                 title="Custom Color"
               >
                 <Plus className="h-3.5 w-3.5" />
@@ -280,9 +280,10 @@ export default function ComponentColorBar() {
                   type="color"
                   value={activeBg}
                   onChange={(e) => handleBgSelect(e.target.value)}
+                  aria-label="Custom background color"
                   className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                 />
-              </button>
+              </label>
             </motion.div>
           )}
         </AnimatePresence>
@@ -293,7 +294,7 @@ export default function ComponentColorBar() {
           <button
             type="button"
             onClick={() => toggleMenu('fg')}
-            className={`h-8 w-8 cursor-pointer rounded-xl border-0 transition-[transform] duration-150 active:scale-95 flex items-center justify-center ${
+            className={`hit-area-44 h-8 w-8 cursor-pointer rounded-xl border-0 transition-[transform] duration-150 active:scale-95 flex items-center justify-center ${
               activeMenu === 'fg'
                 ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)'
                 : ''
@@ -316,7 +317,9 @@ export default function ComponentColorBar() {
                   key={color}
                   type="button"
                   onClick={() => handleFgSelect(color)}
-                  className={`h-6.5 w-6.5 rounded-md border border-(--color-border-strong) cursor-pointer transition-transform hover:scale-105 active:scale-95 ${
+                  aria-label={`Use ${color} for text`}
+                  title={color}
+                  className={`hit-area-44 h-6.5 w-6.5 rounded-md border border-(--color-border-strong) cursor-pointer transition-transform hover:scale-105 active:scale-95 ${
                     activeFg === color
                       ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)'
                       : ''
@@ -324,10 +327,8 @@ export default function ComponentColorBar() {
                   style={{ backgroundColor: color }}
                 />
               ))}
-              <button
-                type="button"
-                onClick={() => fgCustomRef.current?.click()}
-                className="h-6.5 w-6.5 rounded-md border border-(--color-border-strong) bg-(--color-surface-2) text-(--color-fg) cursor-pointer flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+              <label
+                className="hit-area-44 h-6.5 w-6.5 rounded-md border border-(--color-border-strong) bg-(--color-surface-2) text-(--color-fg) cursor-pointer flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
                 title="Custom Color"
               >
                 <Plus className="h-3.5 w-3.5" />
@@ -336,9 +337,10 @@ export default function ComponentColorBar() {
                   type="color"
                   value={activeFg}
                   onChange={(e) => handleFgSelect(e.target.value)}
+                  aria-label="Custom text color"
                   className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                 />
-              </button>
+              </label>
             </motion.div>
           )}
         </AnimatePresence>
@@ -349,7 +351,7 @@ export default function ComponentColorBar() {
           <button
             type="button"
             onClick={() => toggleMenu('ac')}
-            className={`h-8 w-8 cursor-pointer rounded-xl border-0 transition-[transform] duration-150 active:scale-95 flex items-center justify-center ${
+            className={`hit-area-44 h-8 w-8 cursor-pointer rounded-xl border-0 transition-[transform] duration-150 active:scale-95 flex items-center justify-center ${
               activeMenu === 'ac'
                 ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)'
                 : ''
@@ -372,7 +374,9 @@ export default function ComponentColorBar() {
                   key={color}
                   type="button"
                   onClick={() => handleAccentSelect(color)}
-                  className={`h-6.5 w-6.5 rounded-md border border-(--color-border-strong) cursor-pointer transition-transform hover:scale-105 active:scale-95 ${
+                  aria-label={`Use ${color} for accent`}
+                  title={color}
+                  className={`hit-area-44 h-6.5 w-6.5 rounded-md border border-(--color-border-strong) cursor-pointer transition-transform hover:scale-105 active:scale-95 ${
                     activeAccent === color
                       ? 'ring-2 ring-(--color-accent) ring-offset-1 ring-offset-(--color-bg)'
                       : ''
@@ -380,10 +384,8 @@ export default function ComponentColorBar() {
                   style={{ backgroundColor: color }}
                 />
               ))}
-              <button
-                type="button"
-                onClick={() => acCustomRef.current?.click()}
-                className="h-6.5 w-6.5 rounded-md border border-(--color-border-strong) bg-(--color-surface-2) text-(--color-fg) cursor-pointer flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+              <label
+                className="hit-area-44 h-6.5 w-6.5 rounded-md border border-(--color-border-strong) bg-(--color-surface-2) text-(--color-fg) cursor-pointer flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
                 title="Custom Color"
               >
                 <Plus className="h-3.5 w-3.5" />
@@ -392,9 +394,10 @@ export default function ComponentColorBar() {
                   type="color"
                   value={activeAccent}
                   onChange={(e) => handleAccentSelect(e.target.value)}
+                  aria-label="Custom accent color"
                   className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                 />
-              </button>
+              </label>
             </motion.div>
           )}
         </AnimatePresence>
@@ -405,7 +408,7 @@ export default function ComponentColorBar() {
           <button
             type="button"
             onClick={() => toggleMenu('round')}
-            className={`h-8 w-8 cursor-pointer rounded-xl flex items-center justify-center transition-[transform] duration-150 bg-transparent hover:bg-(--color-surface-2) text-(--color-muted) active:scale-95 ${
+            className={`hit-area-44 h-8 w-8 cursor-pointer rounded-xl flex items-center justify-center transition-[transform] duration-150 bg-transparent hover:bg-(--color-surface-2) text-(--color-muted) active:scale-95 ${
               activeMenu === 'round' ? 'bg-(--color-surface-2)' : ''
             }`}
           >
@@ -479,7 +482,7 @@ export default function ComponentColorBar() {
         <button
           type="button"
           onClick={handleReset}
-          className="h-8 w-8 cursor-pointer rounded-xl flex items-center justify-center transition-[transform] duration-150 bg-transparent hover:bg-(--color-surface-2) text-(--color-muted) active:scale-95"
+          className="hit-area-44 h-8 w-8 cursor-pointer rounded-xl flex items-center justify-center transition-[transform] duration-150 bg-transparent hover:bg-(--color-surface-2) text-(--color-muted) active:scale-95"
         >
           <RotateCcw className="h-4.5 w-4.5" />
         </button>

@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { CopyInstallButton } from './copy-install-button'
 import { Tooltip } from './tooltip'
+import { cn } from '@/lib/utils'
 
 type PackageManager = 'npm' | 'pnpm' | 'yarn' | 'bun'
 
@@ -25,160 +26,91 @@ const PM_LABELS: Record<PackageManager, string> = {
 
 export function InstallCommandBox({ registry }: { registry?: string }) {
   const [pm, setPm] = useState<PackageManager>('npm')
-  const [scrollDir, setScrollDir] = useState<1 | -1>(1)
-  const [hovered, setHovered] = useState(false)
-  const lastScrollTime = useRef(0)
+  const [isOpen, setIsOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   if (!registry) return null
 
   const command = COMMANDS[pm](registry)
   const pms: PackageManager[] = ['npm', 'pnpm', 'yarn', 'bun']
 
-  const currentIndex = pms.indexOf(pm)
-  const prevIndex = (currentIndex - 1 + pms.length) % pms.length
-  const nextIndex = (currentIndex + 1) % pms.length
-
-  const wheelRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const el = wheelRef.current
-    if (!el) return
-
-    const handleWheelEvent = (e: WheelEvent) => {
-      e.preventDefault()
-      const now = Date.now()
-      if (now - lastScrollTime.current < 250) return
-      lastScrollTime.current = now
-
-      const dir = e.deltaY > 0 ? 1 : -1
-      setScrollDir(dir)
-
-      setPm((currentPm) => {
-        const idx = pms.indexOf(currentPm)
-        let nextIdx = idx + dir
-        if (nextIdx < 0) nextIdx = pms.length - 1
-        if (nextIdx >= pms.length) nextIdx = 0
-        return pms[nextIdx]
-      })
-    }
-
-    el.addEventListener('wheel', handleWheelEvent, { passive: false })
-    return () => el.removeEventListener('wheel', handleWheelEvent)
-  }, [])
-
-  const cyclePm = () => {
-    setScrollDir(1)
-    setPm((currentPm) => {
-      const idx = pms.indexOf(currentPm)
-      const nextIdx = (idx + 1) % pms.length
-      return pms[nextIdx]
-    })
-  }
-
   return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="relative flex items-center justify-between rounded-xl px-4 py-2 border-0 bg-(--color-surface-2) font-mono select-all w-full transition-[border-color,box-shadow] duration-200"
-    >
+    <div className="relative flex items-center justify-between rounded-xl px-4 py-2 border-0 bg-(--color-surface-2) font-mono select-all w-full transition-[border-color,box-shadow] duration-200">
       <div className="flex items-center gap-2 flex-1 min-w-0">
-        <div
-          ref={wheelRef}
-          onClick={cyclePm}
-          onKeyDown={(e) => {
-            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-              e.preventDefault()
-              const dir = e.key === 'ArrowUp' ? -1 : 1
-              setScrollDir(dir as 1 | -1)
-              setPm((currentPm) => {
-                const idx = pms.indexOf(currentPm)
-                let nextIdx = idx + dir
-                if (nextIdx < 0) nextIdx = pms.length - 1
-                if (nextIdx >= pms.length) nextIdx = 0
-                return pms[nextIdx]
-              })
-            }
-          }}
-          tabIndex={0}
-          role="button"
-          aria-label="Package manager selector"
-          className="cursor-ns-resize select-none text-(--color-fg) relative h-8 w-11 flex items-center justify-center shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) rounded"
-          style={{ perspective: '200px', transformStyle: 'preserve-3d' }}
-          title="Scroll, click, or use arrow keys to switch package manager"
-        >
-          <AnimatePresence>
-            {hovered && (
-              <motion.button
-                initial={{ opacity: 0, y: -4, rotateX: -70, scale: 0.7 }}
-                animate={{ opacity: 0.6, y: -30, x: -4, rotateX: -40, scale: 0.9 }}
-                exit={{ opacity: 0, y: -4, rotateX: -70, scale: 0.7 }}
-                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setScrollDir(-1)
-                  setPm(pms[prevIndex])
-                }}
-                className="absolute text-sm font-mono font-normal text-(--color-muted) hover:text-(--color-fg) transition-colors cursor-pointer whitespace-nowrap px-2 py-0.5 rounded"
-                style={{ transformOrigin: 'bottom center' }}
-              >
-                {PM_LABELS[pms[prevIndex]]}
-              </motion.button>
-            )}
-          </AnimatePresence>
-
-          <div
-            className="h-5 flex items-center justify-center relative w-full"
-            style={{ transformStyle: 'preserve-3d' }}
+        <div ref={dropdownRef} className="relative shrink-0 flex items-center">
+          <button
+            type="button"
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center gap-1 cursor-pointer select-none text-(--color-fg) hover:text-(--color-accent) text-[11px] sm:text-[14px] font-mono font-normal leading-none outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) rounded px-1.5 py-0 transition-colors"
+            aria-haspopup="listbox"
+            aria-expanded={isOpen}
+            aria-label="Select package manager"
           >
-            <AnimatePresence mode="popLayout" initial={false}>
-              <motion.span
-                key={pm}
-                initial={{
-                  y: scrollDir > 0 ? 14 : -14,
-                  rotateX: scrollDir > 0 ? 40 : -40,
-                  opacity: 0,
-                  scale: 0.8,
-                }}
-                animate={{ y: 0, rotateX: 0, opacity: 1, scale: 1 }}
-                exit={{
-                  y: scrollDir > 0 ? -14 : 14,
-                  rotateX: scrollDir > 0 ? -40 : 40,
-                  opacity: 0,
-                  scale: 0.8,
-                }}
-                transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-                className="absolute inset-0 flex items-center justify-center text-base font-mono font-normal text-(--color-accent)"
-              >
-                {PM_LABELS[pm]}
-              </motion.span>
-            </AnimatePresence>
-          </div>
+            <span>{PM_LABELS[pm]}</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="shrink-0"
+            >
+              <path d="m7 15 5 5 5-5M7 9l5-5 5 5" />
+            </svg>
+          </button>
 
           <AnimatePresence>
-            {hovered && (
-              <motion.button
-                initial={{ opacity: 0, y: 4, rotateX: 70, scale: 0.7 }}
-                animate={{ opacity: 0.6, y: 30, x: -4, rotateX: 40, scale: 0.9 }}
-                exit={{ opacity: 0, y: 4, rotateX: 70, scale: 0.7 }}
-                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setScrollDir(1)
-                  setPm(pms[nextIndex])
-                }}
-                className="absolute text-sm font-mono font-normal text-(--color-muted) hover:text-(--color-fg) transition-colors cursor-pointer whitespace-nowrap px-2 py-0.5 rounded"
-                style={{ transformOrigin: 'top center' }}
+            {isOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 4, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 4, scale: 0.95 }}
+                transition={{ duration: 0.15, ease: 'easeOut' }}
+                style={{ bottom: 'calc(100% + 16px)', left: '-6px' }}
+                className="absolute w-18 bg-(--color-surface-2) border-0 rounded-[12px] shadow-xl p-1 z-50 flex flex-col font-mono text-sm"
+                role="listbox"
               >
-                {PM_LABELS[pms[nextIndex]]}
-              </motion.button>
+                {pms.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    role="option"
+                    aria-selected={pm === option}
+                    onClick={() => {
+                      setPm(option)
+                      setIsOpen(false)
+                    }}
+                    className={cn(
+                      'w-full text-left px-2 py-1 text-[11px] sm:text-[14px] transition-colors cursor-pointer rounded-[6px] hover:bg-black/[0.06] dark:hover:bg-white/[0.06]',
+                      pm === option
+                        ? 'text-(--color-fg) font-semibold'
+                        : 'text-(--color-muted) hover:text-(--color-fg)',
+                    )}
+                  >
+                    {PM_LABELS[option]}
+                  </button>
+                ))}
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
 
         <div
-          className="flex-1 overflow-x-auto whitespace-nowrap pr-4 text-(--color-muted) select-all text-[11px] sm:text-[14px]"
+          className="flex-1 overflow-x-auto whitespace-nowrap pr-4 text-(--color-muted) select-all text-[11px] sm:text-[14px] flex items-center leading-none"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           <span>

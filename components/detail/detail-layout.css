@@ -1,5 +1,3 @@
-/* Scoped styles for /components/[component] detail layout */
-
 .detail-page {
   --detail-code-bg: var(--color-bg);
   --detail-code-fg: var(--color-fg);
@@ -24,17 +22,16 @@
   --detail-install-fg: var(--color-fg);
 }
 
-/* Preview card */
 .detail-page .detail-preview-card {
   corner-shape: squircle;
-  background-color: var(--color-surface-2);
+  background-color: #f5f5f5;
   box-shadow:
     0 1px 2px rgb(0 0 0 / 0.04),
     0 8px 24px rgb(0 0 0 / 0.06);
 }
 
 .dark .detail-page .detail-preview-card {
-  background-color: var(--color-surface);
+  background-color: var(--color-surface-2);
   box-shadow:
     0 1px 2px rgb(0 0 0 / 0.2),
     0 12px 32px rgb(0 0 0 / 0.35);
@@ -50,7 +47,6 @@
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
 }
 
-/* Toolbar pill */
 .detail-page .detail-elevated-pill {
   corner-shape: squircle;
   background-color: var(--color-bg);
@@ -63,7 +59,6 @@
   box-shadow: none;
 }
 
-/* Detail panel */
 .detail-page .detail-panel {
   background-color: var(--color-bg) !important;
 }
@@ -73,6 +68,7 @@
 }
 
 .detail-page .detail-toolbar-btn {
+  corner-shape: squircle;
   transition:
     transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
     color 0.15s ease;
@@ -107,7 +103,6 @@
   border: 0.5px solid var(--color-border);
 }
 
-/* Code blocks */
 .detail-page .detail-code-block {
   margin: 0;
   border-radius: 0.75rem;
@@ -136,7 +131,6 @@
   white-space: nowrap;
 }
 
-/* Syntax Highlighting */
 .code-keyword {
   color: var(--preview-accent-text, var(--color-accent)) !important;
   font-weight: 600;
@@ -198,7 +192,6 @@
   color: var(--color-fg);
 }
 
-/* Props table */
 .detail-page .detail-props-header {
   display: flex;
   gap: 1rem;
@@ -236,7 +229,6 @@
   color: var(--color-fg);
 }
 
-/* Swatches */
 .detail-page .detail-swatch {
   transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -251,7 +243,6 @@
     0 0 0 3.5px var(--color-accent);
 }
 
-/* Entrance */
 .detail-page .detail-preview-enter {
   animation: detail-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
