@@ -71,7 +71,8 @@ export function ThemeToggle({
   return (
     <Button
       onClick={toggle}
-      className={cn('h-9 px-3 gap-1.5 group', className)}
+      className={cn('h-9 px-3 gap-1.5 group rounded-2xl squircle-corners', className)}
+      style={{ color: 'var(--color-fg)' }}
       variant={variant}
       size="sm"
       aria-label={dark ? 'Switch to light mode (T)' : 'Switch to dark mode (T)'}
