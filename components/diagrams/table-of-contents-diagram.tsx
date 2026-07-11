@@ -363,7 +363,11 @@ function TagsLayer() {
         height={20}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="item-1" label="TableOfContents.Item" className="items-center justify-start" />
+        <AnatomyTag
+          part="item-1"
+          label="TableOfContents.Item"
+          className="items-center justify-start"
+        />
       </foreignObject>
       <foreignObject
         x={34}

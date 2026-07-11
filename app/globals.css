@@ -128,11 +128,11 @@
   --color-error: #dc2626;
   --color-success: #16a34a;
 
-  --mascot-stop-1: #7AA6C6;
-  --mascot-stop-2: #AFC7DC;
-  --mascot-stop-3: #D8E6F1;
-  --mascot-stop-4: #EEF4FA;
-  --mascot-stop-5: #FFFFFF;
+  --mascot-stop-1: #7aa6c6;
+  --mascot-stop-2: #afc7dc;
+  --mascot-stop-3: #d8e6f1;
+  --mascot-stop-4: #eef4fa;
+  --mascot-stop-5: #ffffff;
   --mascot-stop-6: #000000;
 
   --bg: var(--color-bg);
@@ -258,11 +258,11 @@ html.dark,
   --color-border-strong: #404040;
   --color-accent: #7aa7c7;
 
-  --mascot-stop-1: #FFFFFF;
-  --mascot-stop-2: #EEF4FA;
-  --mascot-stop-3: #D8E6F1;
-  --mascot-stop-4: #AFC7DC;
-  --mascot-stop-5: #7AA6C6;
+  --mascot-stop-1: #ffffff;
+  --mascot-stop-2: #eef4fa;
+  --mascot-stop-3: #d8e6f1;
+  --mascot-stop-4: #afc7dc;
+  --mascot-stop-5: #7aa6c6;
 }
 
 .dark html,

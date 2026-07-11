@@ -68,7 +68,12 @@ export function ColorPickerWireframe() {
         className={BP_FILL_SOLID}
       />
       <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_CX - BP_CORE_R} y={BP_CY - BP_CORE_R} w={BP_CORE_R * 2} h={BP_CORE_R * 2} />
+        <Selection
+          x={BP_CX - BP_CORE_R}
+          y={BP_CY - BP_CORE_R}
+          w={BP_CORE_R * 2}
+          h={BP_CORE_R * 2}
+        />
         <DimH
           x1={BP_CX - BP_CORE_R}
           x2={BP_CX + BP_CORE_R}
@@ -263,7 +268,12 @@ function TagsLayer() {
         height={20}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="core" label="Core Button" className="items-start justify-center" isAccent />
+        <AnatomyTag
+          part="core"
+          label="Core Button"
+          className="items-start justify-center"
+          isAccent
+        />
       </foreignObject>
       <foreignObject
         x={130}

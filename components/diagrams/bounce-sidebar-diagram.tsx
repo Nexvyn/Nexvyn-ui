@@ -87,7 +87,15 @@ function ContainerShape({ theme }: { theme: BlueprintTheme }) {
   )
 }
 
-function ItemShape({ theme, index, label }: { theme: BlueprintTheme; index: number; label: string }) {
+function ItemShape({
+  theme,
+  index,
+  label,
+}: {
+  theme: BlueprintTheme
+  index: number
+  label: string
+}) {
   const { hovered, setHovered } = useAnatomy()
   const partId = `item-${index}`
   const spotlight = useSpotlight(partId)
