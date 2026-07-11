@@ -41,7 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # internal docs (not published)
-DESIGN.md
-COMPONENT-GUIDE.md
+doc
 
-
+.claude
+.mimocode
