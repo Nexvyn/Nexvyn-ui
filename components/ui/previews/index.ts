@@ -1,3 +1,6 @@
+export { BadgePreview } from './badge-preview'
+export { BadgeAnatomy as BadgeBreakdown } from '@/components/diagrams/badge-diagram'
+export { BadgeDemo } from './badge-demo'
 export { BounceSidebarPreview } from './bounce-sidebar-preview'
 export { BounceSidebarBreakdown } from '@/components/diagrams/bounce-sidebar-diagram'
 export { BounceSidebarDemo } from './bounce-sidebar-demo'

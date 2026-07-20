@@ -4,6 +4,19 @@
   "homepage": "https://ui.nexvyn.dev",
   "items": [
     {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "A compact status label with solid, muted, and dot variants for tagging content inline.",
+      "dependencies": ["class-variance-authority", "@radix-ui/react-slot"],
+      "files": [
+        {
+          "path": "components/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "bounce-sidebar",
       "type": "registry:ui",
       "title": "Bounce Sidebar",

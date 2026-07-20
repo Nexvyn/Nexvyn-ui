@@ -13,6 +13,7 @@ import { useScreenSize } from '@/hooks/use-screen-size'
 import { COMPONENTS } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import {
+  BadgeDemo,
   BounceSidebarDemo,
   ColorPickerDemo,
   GooDropdownDemo,
@@ -108,6 +109,12 @@ function ScrollFadeDemo() {
 
 export function ComponentDemo({ id }: { id: string }) {
   switch (id) {
+    case 'badge':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <BadgeDemo />
+        </DemoFrame>
+      )
     case 'bounce-sidebar':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
