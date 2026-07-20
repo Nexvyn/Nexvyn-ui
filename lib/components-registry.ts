@@ -1,4 +1,4 @@
-import { badgeMetadata } from '@/components/ui/badge-metadata'
+import { badgeMetadata } from '@/components/ui/Doc/badge-metadata'
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
 import { clipboardFieldMetadata } from '@/components/ui/Doc/clipboard-field-metadata'
 import { colorPickerMetadata } from '@/components/ui/Doc/color-picker-metadata'
@@ -7,7 +7,7 @@ import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
 import { passwordInputMetadata } from '@/components/ui/Doc/password-input-metadata'
 import { ratioSliderMetadata } from '@/components/ui/Doc/ratio-slider-metadata'
 import { scrollIndicatorMetadata } from '@/components/ui/Doc/scroll-indicator-metadata'
-import { selectMetadata } from '@/components/ui/select-metadata'
+import { selectMetadata } from '@/components/ui/Doc/select-metadata'
 import { tableOfContentsMetadata } from '@/components/ui/Doc/table-of-contents-metadata'
 
 export type ComponentItem = {
@@ -19,6 +19,7 @@ export type ComponentItem = {
   videoSrc?: string
   previewType?: 'video' | 'icons' | 'pixels' | 'toggle' | 'default'
   isNew?: boolean
+  basic?: boolean
   description?: string
   registry?: string
   dependencies?: { name: string; icon?: string }[]
@@ -59,31 +60,33 @@ export const COMPONENTS: ComponentItem[] = [
   tableOfContentsMetadata,
 ]
 
+export const BASIC_COMPONENTS: ComponentItem[] = COMPONENTS.filter((c) => c.basic)
+
 export const COLLECTIONS: ComponentCollection[] = [
   {
     id: 'effects',
     name: 'Effects',
-    components: COMPONENTS.filter((c) => c.collection === 'effects'),
+    components: COMPONENTS.filter((c) => c.collection === 'effects' && !c.basic),
   },
   {
     id: 'inputs',
     name: 'Inputs',
-    components: COMPONENTS.filter((c) => c.collection === 'inputs'),
+    components: COMPONENTS.filter((c) => c.collection === 'inputs' && !c.basic),
   },
   {
     id: 'navigation',
     name: 'Navigation',
-    components: COMPONENTS.filter((c) => c.collection === 'navigation'),
+    components: COMPONENTS.filter((c) => c.collection === 'navigation' && !c.basic),
   },
   {
     id: 'preloaders',
     name: 'Preloaders',
-    components: COMPONENTS.filter((c) => c.collection === 'preloaders'),
+    components: COMPONENTS.filter((c) => c.collection === 'preloaders' && !c.basic),
   },
   {
     id: 'scroll',
     name: 'Scroll',
-    components: COMPONENTS.filter((c) => c.collection === 'scroll'),
+    components: COMPONENTS.filter((c) => c.collection === 'scroll' && !c.basic),
   },
 ]
 
