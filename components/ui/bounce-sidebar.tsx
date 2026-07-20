@@ -65,7 +65,6 @@ export function BounceSidebar({
     let cancelled = false
     const dpr = window.devicePixelRatio || 1
     const computedSize = Math.round(6 * dpr) / dpr
-    setDotSize(computedSize)
 
     const initialIndex = activeIndex
     const snap = () => {
@@ -76,10 +75,13 @@ export function BounceSidebar({
       dotY.set(toY)
       prevY.current = toY
     }
-    const raf = requestAnimationFrame(snap)
-    document.fonts?.ready.then(snap)
+
     const ro = new ResizeObserver(snap)
     itemRefs.current.forEach((el) => el && ro.observe(el))
+    setDotSize(computedSize)
+
+    const raf = requestAnimationFrame(snap)
+    document.fonts?.ready.then(snap)
     return () => {
       cancelled = true
       cancelAnimationFrame(raf)
@@ -119,13 +121,15 @@ export function BounceSidebar({
     })
   }, [activeIndex, animate, dotX, dotY, dotSize, reduceMotion])
 
-  const select = useCallback((index: number) => {
-    playBounceSound()
-    if (value === undefined) setInternalValue(index)
-    onChange?.(index)
-  }, [value, onChange])
+  const select = useCallback(
+    (index: number) => {
+      playBounceSound()
+      if (value === undefined) setInternalValue(index)
+      onChange?.(index)
+    },
+    [value, onChange],
+  )
 
-  // Arrow key navigation (roving tabindex pattern)
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLUListElement>) => {
       const count = items.length
@@ -149,7 +153,6 @@ export function BounceSidebar({
 
       if (next !== activeIndex) {
         select(next)
-        // Focus the button
         const buttons = itemRefs.current.map((el) => el?.querySelector('button'))
         buttons[next]?.focus()
       }

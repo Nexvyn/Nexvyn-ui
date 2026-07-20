@@ -1,10 +1,5 @@
 'use client'
 
-// SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
-// this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
-
 import {
   Blueprint,
   BP_FILL_PANEL,
@@ -50,7 +45,6 @@ export function ClipboardFieldBlueprint() {
 
   return (
     <Blueprint>
-      {/* Surface: hollow → surface-2 panel + border (real field). */}
       <rect
         x={BP.x}
         y={BP.y}
@@ -61,8 +55,6 @@ export function ClipboardFieldBlueprint() {
         strokeOpacity={theme.wireframe.strokeOpacity}
         className={BP_FILL_PANEL}
       />
-
-      {/* Prompt "$" — muted mono. */}
       <text
         x={promptX}
         y={midY + 4}
@@ -72,8 +64,6 @@ export function ClipboardFieldBlueprint() {
       >
         $
       </text>
-
-      {/* Command string. */}
       <text
         x={commandX}
         y={midY + 4}
@@ -83,8 +73,6 @@ export function ClipboardFieldBlueprint() {
       >
         npx shadcn@latest add …
       </text>
-
-      {/* Real copy icon: stacked pages (matches CopyIcon in component). */}
       <g
         stroke="currentColor"
         strokeWidth={1.4}

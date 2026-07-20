@@ -102,7 +102,9 @@ export function useFader(options: UseFaderOptions) {
     return ((v - min) / (max - min)) * 100
   }
   const percent = toPercent(value)
-  percentRef.current = percent
+  useEffect(() => {
+    percentRef.current = percent
+  }, [percent])
 
   const stepRatio = (max - min) / step
   const fullSteps = Math.floor(stepRatio + 1e-9)

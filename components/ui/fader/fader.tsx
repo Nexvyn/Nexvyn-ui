@@ -112,6 +112,7 @@ export function Fader({
   return (
     <BaseSlider.Root
       ref={ref}
+      // eslint-disable-next-line react-hooks/refs
       {...slider.rootProps}
       className={cn('w-full data-disabled:opacity-45', className)}
     >
@@ -208,6 +209,7 @@ export function Fader({
             {behavior.label}
           </BaseSlider.Label>
           <BaseSlider.Value
+            // eslint-disable-next-line react-hooks/refs
             ref={slider.valueRef}
             className={cn('text-foreground tabular-nums', sizeStyle.text)}
           >

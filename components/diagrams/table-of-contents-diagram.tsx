@@ -52,7 +52,6 @@ export function TableOfContentsWireframe() {
           <rect x={28} y={44} width={156} height={18} rx={4} fillOpacity={0.3} />
         </g>
       </g>
-      {/* Trigger fills to surface on morph (real floating TOC chip). */}
       <rect
         x={BP_TRIGGER.x}
         y={BP_TRIGGER.y}
@@ -290,7 +289,6 @@ function ProgressShape() {
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
       <rect x={176} y={182} width={24} height={24} fill="transparent" />
-      {/* Real component rotates -90deg so progress starts at 12 o'clock, like a clock hand. */}
       <g transform="rotate(-90 188 194)">
         <circle
           cx={188}

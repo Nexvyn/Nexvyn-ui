@@ -11,11 +11,6 @@ import {
 import { cn } from '@/lib/utils'
 import { playHoverSound, playClickSound } from '@/lib/sound'
 
-// ---------------------------------------------------------------------------
-// Scoped keyframes — injected once via <style>. Namespaced with `cf-` prefix.
-// All motion is GPU-composited (transform + opacity only), zero layout shift.
-// ---------------------------------------------------------------------------
-
 const KEYFRAME_STYLE_ID = '__clipboard_field_kf__'
 
 function ensureKeyframes() {
@@ -48,19 +43,12 @@ export interface ClipboardFieldProps extends Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
   'children' | 'onCopy' | 'value'
 > {
-  /** Command / value written to the clipboard on click. */
   value: string
-  /** Leading prompt glyph shown before the command. Defaults to `"$"`. */
   prompt?: string
-  /** Success label revealed after a successful copy. */
   copiedLabel?: string
-  /** Accessible label while idle. */
   copyLabel?: string
-  /** How long the success state stays visible (ms). Defaults to `2000`. */
   resetDelay?: number
-  /** Fired after the value is copied successfully. */
   onCopy?: () => void
-  /** Hide the trailing copy / check icon. */
   hideIcon?: boolean
 }
 
@@ -103,11 +91,6 @@ function CheckIcon({ className }: { className?: string }) {
   )
 }
 
-/**
- * Hero-style install/copy field. JS only copies and toggles `data-copied`;
- * all motion is pure CSS @keyframes (GPU-composited: transform + opacity).
- * Both text layers share the same grid cell — crossfade only, zero layout shift.
- */
 export const ClipboardField = forwardRef<HTMLButtonElement, ClipboardFieldProps>(
   (
     {
@@ -129,8 +112,9 @@ export const ClipboardField = forwardRef<HTMLButtonElement, ClipboardFieldProps>
     const [copied, setCopied] = useState(false)
     const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-    // Inject scoped keyframes once on mount
-    useEffect(() => { ensureKeyframes() }, [])
+    useEffect(() => {
+      ensureKeyframes()
+    }, [])
 
     useEffect(
       () => () => {
@@ -149,7 +133,6 @@ export const ClipboardField = forwardRef<HTMLButtonElement, ClipboardFieldProps>
         if (resetTimer.current) clearTimeout(resetTimer.current)
         resetTimer.current = setTimeout(() => setCopied(false), resetDelay)
       } catch {
-        // Clipboard API unavailable — leave idle state.
       }
     }, [disabled, value, onCopy, resetDelay])
 
@@ -166,7 +149,6 @@ export const ClipboardField = forwardRef<HTMLButtonElement, ClipboardFieldProps>
         }}
         onMouseEnter={() => playHoverSound()}
         onPointerDown={(e) => {
-          // Keep focus ring keyboard-only on custom press.
           e.preventDefault()
         }}
         className={cn(
@@ -174,10 +156,7 @@ export const ClipboardField = forwardRef<HTMLButtonElement, ClipboardFieldProps>
           'rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2)',
           'px-3 py-2.5 font-mono text-[13px] leading-none text-(--color-fg)',
           'outline-none select-none',
-          // Fixed grid: prompt | text (both layers) | icon — never changes.
-          hideIcon
-            ? 'grid-cols-[auto_1fr]'
-            : 'grid-cols-[auto_1fr_auto]',
+          hideIcon ? 'grid-cols-[auto_1fr]' : 'grid-cols-[auto_1fr_auto]',
           'transition-[border-color,background-color] duration-(--motion-dur-fast) ease-(--motion-ease-in-out) motion-reduce:transition-none',
           'hover:border-(--color-border-strong) hover:bg-(--color-surface)',
           'focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-1 focus-visible:ring-offset-(--color-bg)',
