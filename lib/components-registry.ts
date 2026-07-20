@@ -1,5 +1,6 @@
 import { badgeMetadata } from '@/components/ui/Doc/badge-metadata'
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
+import { breadcrumbsMetadata } from '@/components/ui/Doc/breadcrumbs-metadata'
 import { clipboardFieldMetadata } from '@/components/ui/Doc/clipboard-field-metadata'
 import { colorPickerMetadata } from '@/components/ui/Doc/color-picker-metadata'
 import { faderMetadata } from '@/components/ui/Doc/fader-metadata'
@@ -49,6 +50,7 @@ export type ComponentCollection = {
 export const COMPONENTS: ComponentItem[] = [
   badgeMetadata,
   bounceSidebarMetadata,
+  breadcrumbsMetadata,
   clipboardFieldMetadata,
   colorPickerMetadata,
   faderMetadata,
