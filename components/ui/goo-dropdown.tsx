@@ -3,6 +3,7 @@
 import React, { useEffect, useId, useMemo, useRef, useState } from 'react'
 import { animate, useMotionValue, useMotionValueEvent, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { playHoverSound, playClickSound } from '@/lib/sound'
 
 export type DropdownItem = {
   label: string
@@ -179,6 +180,7 @@ export function GooDropdown({
   }, [open])
 
   const select = (item: DropdownItem) => {
+    playClickSound()
     item.onClick?.()
     closeMenu()
   }
@@ -252,7 +254,11 @@ export function GooDropdown({
         <button
           ref={triggerRef}
           type="button"
-          onClick={() => (open ? closeMenu() : openMenu())}
+          onMouseEnter={() => playHoverSound()}
+          onClick={() => {
+            playClickSound()
+            open ? closeMenu() : openMenu()
+          }}
           aria-expanded={open}
           aria-haspopup="menu"
           className="absolute top-0 flex items-center justify-center text-[15px] text-(--color-card-foreground) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg) rounded-[12px]"
@@ -269,6 +275,7 @@ export function GooDropdown({
         <div
           ref={contentRef}
           role="menu"
+          aria-label="Actions"
           className="absolute inset-0 will-change-[clip-path]"
           style={{
             clipPath: closedShape,

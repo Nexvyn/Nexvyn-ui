@@ -4,6 +4,7 @@ import type {
   ColorInput,
   SliderPosition,
 } from './types'
+import { playHoverSound, playClickSound, playTickSound } from '@/lib/sound'
 
 import { computeAdaptivePosition } from './adaptive'
 import {
@@ -741,6 +742,7 @@ export class BlossomColorPicker {
   }
 
   private handleMouseEnter(): void {
+    playHoverSound()
     if (this.opts.disabled || !this.opts.openOnHover || !this.opts.collapsible) return
 
     if (this.closeTimeout) {
@@ -771,10 +773,12 @@ export class BlossomColorPicker {
 
   private handleCoreClick(): void {
     if (this.opts.disabled || !this.opts.collapsible) return
+    playClickSound()
     this.setExpanded(!this.isExpanded)
   }
 
   private handlePetalClick(color: { h: number; s: number; l: number }, layerIdx: number): void {
+    playClickSound()
     const sliderValue = lightnessToSliderValue(color.l)
     const layerStr: 'inner' | 'outer' = layerIdx === 0 ? 'inner' : 'outer'
     const visualSaturation = color.s
@@ -810,6 +814,7 @@ export class BlossomColorPicker {
   }
 
   private handleSliderChange(sliderValue: number): void {
+    playTickSound()
     const lightness = sliderValueToLightness(sliderValue)
     const visualSaturation = getVisualSaturation(sliderValue, this.baseSaturation)
 

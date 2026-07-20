@@ -16,6 +16,27 @@
         {
           "path": "components/ui/badge.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "clipboard-field",
+      "type": "registry:ui",
+      "title": "Clipboard Field",
+      "description": "A one-click install/copy field that morphs between the command and a success label using CSS grid fr tracks — JS only copies and toggles state.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/ui/clipboard-field.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -44,6 +65,10 @@
         {
           "path": "components/ui/fader/index.ts",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -59,6 +84,10 @@
         {
           "path": "components/ui/bounce-sidebar.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -128,6 +157,10 @@
         {
           "path": "components/ui/blossom picker/renderers/ArcSliderRenderer.ts",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -143,6 +176,10 @@
         {
           "path": "components/ui/goo-dropdown.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -158,6 +195,10 @@
         {
           "path": "components/ui/password-input.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -173,6 +214,10 @@
         {
           "path": "components/ui/ratio-slider.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -186,6 +231,10 @@
         {
           "path": "components/ui/scroll-indicator.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -205,6 +254,10 @@
         {
           "path": "components/ui/circular-progress.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     }

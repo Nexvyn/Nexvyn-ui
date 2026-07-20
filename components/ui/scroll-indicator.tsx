@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef, useCallback, type ReactNode } from 'react'
 import { motion, useSpring, useMotionValue, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { playHoverSound, playClickSound } from '@/lib/sound'
 
 interface Section {
   id: string
@@ -61,6 +62,7 @@ export function ScrollIndicator({
   }, [activeIndex, trackHeight, filteredSections.length, progressY])
 
   const handleClick = (index: number) => {
+    playClickSound()
     if (onIndexChange) {
       onIndexChange(index)
     } else {
@@ -142,6 +144,7 @@ export function ScrollIndicator({
                 >
                   <button
                     type="button"
+                    onMouseEnter={() => playHoverSound()}
                     onClick={() => handleClick(i)}
                     className={cn(
                       'font-mono text-[11px] uppercase tracking-wider cursor-pointer bg-transparent border-0 p-0 whitespace-nowrap rounded-sm',

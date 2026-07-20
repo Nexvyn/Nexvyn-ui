@@ -11,7 +11,7 @@ export const tableOfContentsMetadata: ComponentItem = {
   registry: 'table-of-contents',
   dependencies: [{ name: 'motion' }],
   interaction:
-    'Scroll down to reveal the pill. Click to expand the section list. Click a section to smooth-scroll to it.',
+    'Hover for micro-clicks; click the pill to expand section list with click audio. Click any section to smooth-scroll.',
   props: [
     {
       name: 'sections',

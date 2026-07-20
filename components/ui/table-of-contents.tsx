@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback, type RefObject } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { playHoverSound, playClickSound } from '@/lib/sound'
 import { CircularProgress } from './circular-progress'
 
 export interface TOCSection {
@@ -104,6 +105,7 @@ export function TableOfContents({
 
   const scrollToSection = useCallback(
     (id: string) => {
+      playClickSound()
       const element = document.getElementById(id)
       if (!element) return
 
@@ -159,11 +161,12 @@ export function TableOfContents({
                     return (
                       <button
                         key={section.id}
+                        onMouseEnter={() => playHoverSound()}
                         onClick={() => scrollToSection(section.id)}
                         className={cn(
                           'relative w-full rounded-md px-4 py-2.5 text-left text-sm transition-colors',
                           isActive
-                            ? 'bg-accent/15 text-(--color-fg)'
+                            ? 'bg-(--color-fg)/10 text-(--color-fg)'
                             : 'text-(--color-muted) hover:bg-(--color-surface-2) hover:text-(--color-fg)',
                           level > 2 ? 'pl-8 text-[13px]' : 'pl-4 font-medium',
                         )}
@@ -178,7 +181,20 @@ export function TableOfContents({
           </AnimatePresence>
 
           <button
-            onClick={() => setIsExpanded(!isExpanded)}
+            type="button"
+            aria-expanded={isExpanded}
+            aria-label={`Table of contents: ${activeSection?.title ?? ''}`}
+            onMouseEnter={() => playHoverSound()}
+            onClick={() => {
+              playClickSound()
+              setIsExpanded(!isExpanded)
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape' && isExpanded) {
+                e.preventDefault()
+                setIsExpanded(false)
+              }
+            }}
             className="group flex h-14 w-full items-center justify-between rounded-md border border-(--color-border) bg-(--color-surface) px-6 transition-transform active:scale-[0.98]"
           >
             <span className="truncate text-sm font-semibold text-(--color-fg)">
