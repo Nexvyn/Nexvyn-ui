@@ -22,14 +22,16 @@ export function useSidebar() {
 export function SidebarProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const [showSidebar, setShowSidebar] = useState(false)
+  const [prevPathname, setPrevPathname] = useState(pathname)
 
   const toggleSidebar = useCallback(() => {
     setShowSidebar((open) => !open)
   }, [])
 
-  useEffect(() => {
+ if (pathname !== prevPathname) {
+    setPrevPathname(pathname)
     setShowSidebar(false)
-  }, [pathname])
+  }
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {

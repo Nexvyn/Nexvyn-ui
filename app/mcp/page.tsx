@@ -62,14 +62,14 @@ export default function MCPPage() {
                   <span className="text-(--color-fg)">{'{'}</span>
                   {'\n'}
                   <span className="text-(--color-fg)"> </span>
-                  <span className="text-(--color-accent)">"registries"</span>
+                  <span className="text-(--color-accent)">&quot;registries&quot;</span>
                   <span className="text-(--color-fg)">: {'{'}</span>
                   {'\n'}
                   <span className="text-(--color-fg)"> </span>
-                  <span className="text-(--color-accent)">"@nexvyn"</span>
+                  <span className="text-(--color-accent)">&quot;@nexvyn&quot;</span>
                   <span className="text-(--color-fg)">: </span>
                   <span className="text-(--color-muted)">
-                    "https://ui.nexvyn.dev/r/{'{name}'}.json"
+                    &quot;https://ui.nexvyn.dev/r/{'{name}'}.json&quot;
                   </span>
                   {'\n'}
                   <span className="text-(--color-fg)"> {'}'}</span>

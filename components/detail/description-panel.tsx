@@ -136,9 +136,11 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
     item?.id ? `${item.id}-view` : 'preview',
     'preview',
   )
-  useEffect(() => {
+  const [prevOpen, setPrevOpen] = useState(open)
+ if (open !== prevOpen) {
+    setPrevOpen(open)
     if (!open) setCodeOpen(false)
-  }, [open])
+  }
 
   const toggleCode = () => {
     if (codeOpen) {
@@ -382,7 +384,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
             <p className="text-sm leading-relaxed" style={{ color: 'var(--color-muted)' }}>
               All components here are original implementations, built from scratch with no copied
               code, assets, or content. We study UI/UX patterns we admire and craft our own
-              versions, often with added features. If your work inspired something here and isn't
+              versions, often with added features. If your work inspired something here and isn&apos;t
               credited, or a credit is incomplete, please{' '}
               <a
                 href="https://github.com/Nexvyn/Nexvyn-ui/issues/new"
@@ -392,7 +394,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               >
                 open an issue
               </a>{' '}
-              - we'll fix it promptly.
+              - we&apos;ll fix it promptly.
             </p>
           </div>
 
