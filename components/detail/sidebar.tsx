@@ -19,6 +19,7 @@ import {
   type ComponentItem,
 } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
+import { playHoverSound, playClickSound } from '@/lib/sound'
 
 const SIDEBAR_EASE = [0.23, 0.88, 0.26, 0.92] as const
 const LINE_SPRING = { stiffness: 250, damping: 30 }
@@ -200,6 +201,7 @@ function NavSectionHeader({
       href={href ?? '/components'}
       className="group relative flex h-px cursor-pointer items-center gap-3 after:absolute after:left-0 after:top-1/2 after:size-full after:-translate-y-1/2 after:p-3.5"
       onMouseEnter={() => {
+        playHoverSound()
         lineWidth.set(55)
         setIsHovered(true)
         startWave()
@@ -366,6 +368,7 @@ function NavItem({
       href={getComponentHref(item.id)}
       className="group sidebar-nav-item relative flex h-px cursor-pointer items-center gap-3 after:absolute after:left-0 after:top-1/2 after:size-full after:-translate-y-1/2 after:p-3.5"
       onMouseEnter={() => {
+        playHoverSound()
         lineWidth.set(55)
         setIsHovered(true)
         onHover()
@@ -604,7 +607,7 @@ export function Sidebar() {
       </AnimatePresence>
 
       <motion.div
-        className="detail-elevated-pill pointer-events-auto fixed left-5 top-5 z-21 flex items-center gap-2 rounded-2xl p-2 shadow-none"
+        className="detail-elevated-pill pointer-events-auto fixed left-5 top-4 z-21 flex items-center gap-2 rounded-2xl p-2 shadow-none"
         animate={{
           x: isExpanded && !screenSize.lessThan('md') ? 10 : 0,
           y: isExpanded && !screenSize.lessThan('md') ? -10 : 0,
@@ -614,12 +617,16 @@ export function Sidebar() {
         <Tooltip content="Toggle sidebar (Cmd+B)" side="bottom">
           <button
             type="button"
-            className="detail-toolbar-btn cursor-pointer rounded-xl p-2.5"
+            className="detail-toolbar-btn cursor-pointer rounded-xl p-2"
             style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
-            onClick={toggleSidebar}
+            onMouseEnter={() => playHoverSound()}
+            onClick={() => {
+              playClickSound()
+              toggleSidebar()
+            }}
             aria-label="Toggle sidebar"
           >
-            <SidebarToggleIcon showSidebar={showSidebar} />
+            <SidebarToggleIcon showSidebar={showSidebar} className="h-5 w-5" />
           </button>
         </Tooltip>
         <Link

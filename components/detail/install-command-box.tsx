@@ -45,7 +45,7 @@ export function InstallCommandBox({ registry }: { registry?: string }) {
   const pms: PackageManager[] = ['npm', 'pnpm', 'yarn', 'bun']
 
   return (
-    <div className="relative flex items-center justify-between rounded-xl px-4 py-2 border-0 bg-(--color-surface-2) font-mono select-all w-full transition-[border-color,box-shadow] duration-200">
+    <div className="relative flex items-center justify-between rounded-xl px-4 py-2 border border-(--color-border) bg-(--color-surface-2) font-mono select-all w-full transition-[border-color,box-shadow] duration-200 focus-within:border-(--color-accent) focus-within:ring-1 focus-within:ring-(--color-accent)/20">
       <div className="flex items-center gap-2 flex-1 min-w-0">
         <div ref={dropdownRef} className="relative shrink-0 flex items-center">
           <button
@@ -118,9 +118,9 @@ export function InstallCommandBox({ registry }: { registry?: string }) {
             {pm === 'pnpm' ? 'pnpm dlx ' : ''}
             {pm === 'yarn' ? 'yarn dlx ' : ''}
             {pm === 'bun' ? 'bunx ' : ''}
-            shadcn@latest add{' '}
+            shadcn@latest add
           </span>
-          <span className="text-(--color-accent) font-normal">
+          <span className="text-(--color-accent) font-normal ms-1">
             {REGISTRY_URL}/r/{registry}.json
           </span>
         </div>
