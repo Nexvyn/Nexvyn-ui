@@ -30,6 +30,9 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
       (m) => m.ScrollIndicatorWireframe,
     ),
   ),
+  'select-blueprint': dynamic(() =>
+    import('@/components/diagrams/select-diagram').then((m) => m.SelectBlueprint),
+  ),
   'table-of-contents-blueprint': dynamic(() =>
     import('@/components/diagrams/table-of-contents-diagram').then(
       (m) => m.TableOfContentsWireframe,
