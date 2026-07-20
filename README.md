@@ -57,4 +57,13 @@ npm run lint          # Run ESLint
 
 ## License
 
-MIT © Nexvyn
+MIT © Nexvyn — all installable components (`components/ui/**`) and everything
+else in this repository, including what ships through the shadcn registry.
+
+**Exception:** the wireframe/anatomy diagram source in `components/diagrams/**`
+and its two shared drawing primitives (`components/showcase/parts.tsx`,
+`components/showcase/anatomy-parts.tsx`) are licensed separately under
+CC BY-NC 4.0 — see [`components/diagrams/LICENSE`](components/diagrams/LICENSE).
+These files are documentation-site assets only; they are never included in
+any component's registry files and are not shipped to consumers who install
+a component via the CLI.

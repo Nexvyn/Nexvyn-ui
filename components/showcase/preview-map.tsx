@@ -4,6 +4,9 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'badge-blueprint': dynamic(() =>
     import('@/components/diagrams/badge-diagram').then((m) => m.BadgeBlueprint),
   ),
+  'clipboard-field-blueprint': dynamic(() =>
+    import('@/components/diagrams/clipboard-field-diagram').then((m) => m.ClipboardFieldBlueprint),
+  ),
   'fader-blueprint': dynamic(() =>
     import('@/components/diagrams/fader-diagram').then((m) => m.FaderBlueprint),
   ),

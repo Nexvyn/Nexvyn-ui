@@ -1,5 +1,6 @@
 import { badgeMetadata } from '@/components/ui/badge-metadata'
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
+import { clipboardFieldMetadata } from '@/components/ui/Doc/clipboard-field-metadata'
 import { colorPickerMetadata } from '@/components/ui/Doc/color-picker-metadata'
 import { faderMetadata } from '@/components/ui/fader-metadata'
 import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
@@ -46,6 +47,7 @@ export type ComponentCollection = {
 export const COMPONENTS: ComponentItem[] = [
   badgeMetadata,
   bounceSidebarMetadata,
+  clipboardFieldMetadata,
   colorPickerMetadata,
   faderMetadata,
   gooDropdownMetadata,

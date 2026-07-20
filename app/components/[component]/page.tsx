@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils'
 import {
   BadgeDemo,
   BounceSidebarDemo,
+  ClipboardFieldDemo,
   ColorPickerDemo,
   FaderDemo,
   GooDropdownDemo,
@@ -114,6 +115,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <BadgeDemo />
+        </DemoFrame>
+      )
+    case 'clipboard-field':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ClipboardFieldDemo />
         </DemoFrame>
       )
     case 'bounce-sidebar':
