@@ -11,6 +11,7 @@ import { useClickOutside } from '@/hooks/use-click-outside'
 import { useScreenSize } from '@/hooks/use-screen-size'
 import { Tooltip } from './tooltip'
 import {
+  BASIC_COMPONENTS,
   COLLECTIONS,
   COMPONENTS,
   formatComponentLabel,
@@ -268,12 +269,14 @@ function NavItem({
   itemRef,
   onHover,
   onLeave,
+  showNumber = true,
 }: {
   item: ComponentItem
   isActive: boolean
   itemRef?: RefObject<HTMLAnchorElement | null>
   onHover: () => void
   onLeave: () => void
+  showNumber?: boolean
 }) {
   const lineWidth = useSpring(isActive ? 55 : 32, LINE_SPRING)
   const [widthValue, setWidthValue] = useState(isActive ? 55 : 32)
@@ -424,7 +427,7 @@ function NavItem({
           isActive ? 'text-(--color-accent) opacity-100' : 'opacity-40',
         )}
       >
-        {formatComponentLabel(item)}
+        {showNumber ? formatComponentLabel(item) : item.name}
         {item.isNew && <sup className="text-[10px]"> New</sup>}
       </span>
     </Link>
@@ -445,7 +448,10 @@ function SidebarNav() {
   const previewOpacity = useSpring(0, { stiffness: 400, damping: 30 })
 
   const sortedById = useMemo(
-    () => [...COMPONENTS].sort((a, b) => getComponentNumber(a.id) - getComponentNumber(b.id)),
+    () =>
+      COMPONENTS.filter((c) => !c.basic).sort(
+        (a, b) => getComponentNumber(a.id) - getComponentNumber(b.id),
+      ),
     [],
   )
 
@@ -568,6 +574,36 @@ function SidebarNav() {
                 </Fragment>
               ),
             )
+          )}
+
+          {BASIC_COMPONENTS.length > 0 && (
+            <>
+              <Separator count={4} />
+              <NavSectionHeader title="Basic" active />
+              <Separator />
+              {BASIC_COMPONENTS.map((item, index) => {
+                const isActive = activeId === item.id
+                return (
+                  <Fragment key={item.id}>
+                    <NavItem
+                      item={item}
+                      isActive={isActive}
+                      itemRef={isActive ? activeRef : undefined}
+                      showNumber={false}
+                      onHover={() => {
+                        setHoveredItem(item)
+                        previewOpacity.set(1)
+                      }}
+                      onLeave={() => {
+                        setHoveredItem(null)
+                        previewOpacity.set(0)
+                      }}
+                    />
+                    {index !== BASIC_COMPONENTS.length - 1 && <Separator />}
+                  </Fragment>
+                )
+              })}
+            </>
           )}
         </div>
       </div>
