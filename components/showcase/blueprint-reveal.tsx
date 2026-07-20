@@ -21,6 +21,10 @@ const ColorPicker = dynamic(
   () => import('@/components/ui/color-picker-standalone').then((m) => m.ColorPicker),
   { ssr: false, loading: loadingSlot(80, 80) },
 )
+const Fader = dynamic(() => import('@/components/ui/fader').then((m) => m.Fader), {
+  ssr: false,
+  loading: loadingSlot(180, 40),
+})
 const GooDropdown = dynamic(
   () => import('@/components/ui/goo-dropdown').then((m) => m.GooDropdown),
   {
@@ -40,8 +44,18 @@ const RatioSlider = dynamic(
   },
 )
 
+function FaderStatic() {
+  const [volume, setVolume] = useState(65)
+  return (
+    <div className="w-45">
+      <Fader label="Volume" value={volume} onValueChange={setVolume} unit="%" size="sm" />
+    </div>
+  )
+}
+
 const LIVE: Record<string, () => ReactNode> = {
   'badge-blueprint': () => <Badge>Early Access</Badge>,
+  'fader-blueprint': () => <FaderStatic />,
   'bounce-sidebar-blueprint': () => (
     <BounceSidebar items={['Dashboard', 'Projects', 'Team']} defaultValue={0} className="w-20" />
   ),

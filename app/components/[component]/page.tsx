@@ -16,6 +16,7 @@ import {
   BadgeDemo,
   BounceSidebarDemo,
   ColorPickerDemo,
+  FaderDemo,
   GooDropdownDemo,
   PasswordInputDemo,
   RatioSliderDemo,
@@ -125,6 +126,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <ColorPickerDemo />
+        </DemoFrame>
+      )
+    case 'fader':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <FaderDemo />
         </DemoFrame>
       )
     case 'goo-dropdown':
