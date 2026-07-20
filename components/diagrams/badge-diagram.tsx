@@ -1,5 +1,10 @@
 'use client'
 
+// SPDX-License-Identifier: CC-BY-NC-4.0
+// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
+// This file is NOT covered by the repository's root MIT LICENSE.
+
 import {
   Blueprint,
   BP_FILL_PANEL,
@@ -12,26 +17,26 @@ import {
   PadGuide,
   Selection,
   squirclePillPath,
-} from '@/components/showcase/parts'
+} from '@/components/diagrams/lib/parts'
 import {
   AnatomyFrame,
   AnatomyTag,
   OverlayLine,
   useAnatomy,
   useSpotlight,
-} from '@/components/showcase/anatomy-parts'
+} from '@/components/diagrams/lib/anatomy-parts'
 
 const BADGE = {
   h: 26,
   padX: 12,
   r: 13,
   font: 12,
-  solidW: 92,
+  solidW: 100,
   dotW: 104,
   dot: 7,
 } as const
 
-const BP = { x: 64, y: 57 } as const
+const BP = { x: (220 - BADGE.solidW) / 2, y: (140 - BADGE.h) / 2 } as const
 
 export function BadgeBlueprint() {
   const theme = blueprintTheme
@@ -45,12 +50,12 @@ export function BadgeBlueprint() {
       />
       <text
         x={BP.x + BADGE.solidW / 2}
-        y={BP.y + 17}
+        y={BP.y + BADGE.h / 2 + 4}
         textAnchor="middle"
         fontSize={BADGE.font}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={`fill-current ${BP_TEXT_SOFT}`}
+        className={BP_TEXT_SOFT}
       >
         Early Access
       </text>
@@ -58,17 +63,27 @@ export function BadgeBlueprint() {
         <Selection x={BP.x} y={BP.y} w={BADGE.solidW} h={BADGE.h} />
         <PadGuide
           x={BP.x + BADGE.padX}
-          y={BP.y + 12}
+          y={BP.y + 6}
           w={BADGE.solidW - BADGE.padX * 2}
-          h={2}
-          offset={10}
+          h={BADGE.h - 12}
+          offset={0.8}
           boxX={BP.x}
           boxY={BP.y}
           boxW={BADGE.solidW}
           boxH={BADGE.h}
           boxRx={BADGE.r}
-          clipOffset={10}
+          clipOffset={0.8}
         />
+        <DimLabel x={BP.x + BADGE.padX / 2} y={BP.y + BADGE.h / 2 + 2} anchor="middle">
+          12
+        </DimLabel>
+        <DimLabel
+          x={BP.x + BADGE.solidW - BADGE.padX / 2}
+          y={BP.y + BADGE.h / 2 + 2}
+          anchor="middle"
+        >
+          12
+        </DimLabel>
         <DimH x1={BP.x} x2={BP.x + BADGE.solidW} y={BP.y - 14} label={`${BADGE.solidW}`} />
         <DimV x={BP.x - 14} y1={BP.y} y2={BP.y + BADGE.h} label={`${BADGE.h}`} labelXOffset={-6} />
         <DimLabel x={BP.x} y={BP.y - 6} anchor="start">
@@ -170,17 +185,34 @@ function AnnotationsLayer() {
     >
       <PadGuide
         x={AN.x + BADGE.padX}
-        y={AN_MID_Y - 1}
+        y={AN.y + 6}
         w={BADGE.dotW - BADGE.padX * 2}
-        h={2}
-        offset={10}
+        h={BADGE.h - 12}
+        offset={0.8}
         boxX={AN.x}
         boxY={AN.y}
         boxW={BADGE.dotW}
         boxH={BADGE.h}
         boxRx={BADGE.r}
-        clipOffset={10}
+        clipOffset={0.8}
       />
+      <DimLabel x={AN.x + BADGE.padX / 2} y={AN_MID_Y + 2} anchor="middle">
+        12
+      </DimLabel>
+      <DimLabel x={AN.x + BADGE.dotW - BADGE.padX / 2} y={AN_MID_Y + 2} anchor="middle">
+        12
+      </DimLabel>
+      <g
+        stroke="var(--bp-accent, var(--color-accent))"
+        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeDasharray="2 2"
+        opacity={blueprintTheme.guide.structOpacity}
+      >
+        <line x1={AN_DOT_CX + BADGE.dot / 2} y1={AN_MID_Y} x2={AN_TEXT_X} y2={AN_MID_Y} />
+      </g>
+      <DimLabel x={(AN_DOT_CX + BADGE.dot / 2 + AN_TEXT_X) / 2} y={AN_MID_Y - 6} anchor="middle">
+        6
+      </DimLabel>
       <Selection x={AN.x} y={AN.y} w={BADGE.dotW} h={BADGE.h} />
       <DimH x1={AN.x} x2={AN.x + BADGE.dotW} y={AN.y - 15} label={`${BADGE.dotW}`} />
       <DimV
@@ -202,8 +234,8 @@ function LinesLayer() {
   return (
     <g strokeWidth="1" className="pointer-events-none">
       <OverlayLine id="container" x1={AN.x + BADGE.dotW} y1={AN_MID_Y} x2={292} y2={AN_MID_Y} />
-      <OverlayLine id="dot" x1={AN_DOT_CX} y1={AN.y + BADGE.h} x2={AN_DOT_CX} y2={124} />
-      <OverlayLine id="text" x1={AN_TEXT_CENTER} y1={AN.y} x2={AN_TEXT_CENTER} y2={36} />
+      <OverlayLine id="dot" x1={AN_DOT_CX} y1={AN_MID_Y + BADGE.dot / 2} x2={AN_DOT_CX} y2={124} />
+      <OverlayLine id="text" x1={AN_TEXT_CENTER} y1={AN_MID_Y - 6} x2={AN_TEXT_CENTER} y2={36} />
     </g>
   )
 }
@@ -212,28 +244,28 @@ function TagsLayer() {
   return (
     <>
       <foreignObject
-        x={AN_DOT_CX - 50}
-        y={122}
-        width={100}
-        height={20}
+        x={AN_DOT_CX - 48}
+        y={118}
+        width={110}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
         <AnatomyTag part="dot" label="Dot Indicator" className="items-start justify-center" />
       </foreignObject>
       <foreignObject
-        x={AN_TEXT_CENTER - 50}
-        y={16}
+        x={AN_TEXT_CENTER - 44}
+        y={12}
         width={100}
-        height={20}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
         <AnatomyTag part="text" label="Label Text" className="items-end justify-center" />
       </foreignObject>
       <foreignObject
         x={290}
-        y={AN_MID_Y - 10}
-        width={120}
-        height={20}
+        y={AN_MID_Y - 12}
+        width={130}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
         <AnatomyTag
@@ -249,7 +281,7 @@ function TagsLayer() {
 
 export function BadgeAnatomy() {
   return (
-    <AnatomyFrame viewBox="105 0 320 160" maxWidthClassName="max-w-xl">
+    <AnatomyFrame viewBox="-14 -2 448 164" maxWidthClassName="max-w-[538px]">
       <ContainerShape />
       <DotShape />
       <LabelShape />
