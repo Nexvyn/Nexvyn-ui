@@ -379,24 +379,26 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
             </div>
           )}
 
-          <div className="detail-section">
-            <SectionLabel>Keep in mind</SectionLabel>
-            <p className="text-sm leading-relaxed" style={{ color: 'var(--color-muted)' }}>
-              All components here are original implementations, built from scratch with no copied
-              code, assets, or content. We study UI/UX patterns we admire and craft our own
-              versions, often with added features. If your work inspired something here and isn&apos;t
-              credited, or a credit is incomplete, please{' '}
-              <a
-                href="https://github.com/Nexvyn/Nexvyn-ui/issues/new"
-                target="_blank"
-                rel="noreferrer"
-                className="underline hover:text-foreground transition-colors"
-              >
-                open an issue
-              </a>{' '}
-              - we&apos;ll fix it promptly.
-            </p>
-          </div>
+          {item?.credits && (
+            <div className="detail-section">
+              <SectionLabel>Keep in mind</SectionLabel>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--color-muted)' }}>
+                All components here are original implementations, built from scratch with no copied
+                code, assets, or content. We study UI/UX patterns we admire and craft our own
+                versions, often with added features. If your work inspired something here and isn&apos;t
+                credited, or a credit is incomplete, please{' '}
+                <a
+                  href="https://github.com/Nexvyn/Nexvyn-ui/issues/new"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline hover:text-foreground transition-colors"
+                >
+                  open an issue
+                </a>{' '}
+                - we&apos;ll fix it promptly.
+              </p>
+            </div>
+          )}
 
           <div className="detail-section">
             <SectionLabel>Contact</SectionLabel>

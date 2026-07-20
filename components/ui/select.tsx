@@ -21,6 +21,7 @@ import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useReducedMotion, type MotionValue } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { useMounted } from '@/hooks/use-mounted'
+import { playHoverSound, playClickSound } from '@/lib/sound'
 import { springs } from '@/lib/motion-tokens'
 import { useProximityHighlight, ProximityHighlight } from '@/lib/hooks/use-proximity-highlight'
 const MAX_HEIGHT = 320
@@ -186,7 +187,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       <SelectContext.Provider value={ctx}>
         <div className={cn('relative inline-block', className)}>
           {children}
-          {/* Visually-hidden native <select> for form validation + react-hook-form */}
+          
           <select
             ref={ref as React.Ref<HTMLSelectElement>}
             tabIndex={-1}
@@ -199,7 +200,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             onChange={(e) => setValue(e.target.value)}
             onFocus={(e) => e.preventDefault()}
           >
-            <option value="">{/* placeholder */}</option>
+            <option value=""></option>
             {options.map((opt) => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}
@@ -253,6 +254,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
         onClick={(e) => {
           onClick?.(e)
           if (!disabled) {
+            playClickSound()
             openInteractionRef.current = 'pointer'
             setOpen(!open)
           }
@@ -611,7 +613,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
 
     return createPortal(
       <SelectContentContext.Provider value={contentCtx}>
-        {/* Hidden div for label registration when closed */}
+        
         {!open && (
           <div hidden aria-hidden="true">
             {indexedChildren}
@@ -660,7 +662,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                 }}
                 {...props}
               >
-                {/* Selected highlight — accent tint */}
+                
                 <AnimatePresence>
                   {selectedRect && (
                     <motion.div
@@ -681,7 +683,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                     />
                   )}
                 </AnimatePresence>
-                {/* Hover highlight — muted, springs via proximity */}
+                
                 <ProximityHighlight
                   highlightX={highlightX}
                   highlightSize={highlightSize}
@@ -689,7 +691,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                   axis={axis}
                   className="mx-1.5 rounded-md supports-[corner-shape:squircle]:corner-squircle bg-(--color-surface-2)"
                 />
-                {/* Focus ring — keyboard-only, springs.fast */}
+                
                 <AnimatePresence>
                   {focusRect && showFocusRing && (
                     <motion.div
@@ -805,12 +807,18 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
         }}
         onClick={(e) => {
           onClickProp?.(e)
-          if (!disabled) setValue(itemValue)
+          if (!disabled) {
+            playClickSound()
+            setValue(itemValue)
+          }
         }}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault()
-            if (!disabled) setValue(itemValue)
+            if (!disabled) {
+              playClickSound()
+              setValue(itemValue)
+            }
           }
         }}
         {...props}
@@ -818,7 +826,7 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
         <span className="relative z-10 flex min-w-0 flex-1 items-center gap-2 truncate">
           {children}
         </span>
-        {/* Drawn check */}
+        
         <AnimatePresence>
           {isSelected && (
             <motion.svg
