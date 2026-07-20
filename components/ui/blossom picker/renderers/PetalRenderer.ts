@@ -1,6 +1,7 @@
 import { BLOOM_EASING } from '../constants'
 import { createElement, setStyles } from '../dom-helpers'
 import { hslToString, hslaToString } from '../utils'
+import { playHoverSound, playClickSound } from '@/lib/sound'
 
 export interface PetalConfig {
   hue: number
@@ -61,9 +62,13 @@ export class PetalRenderer {
       this.el.classList.add('bcp-petal-visible')
     }
 
-    this.el.addEventListener('click', () => this.onClick?.())
+    this.el.addEventListener('click', () => {
+      playClickSound()
+      this.onClick?.()
+    })
     this.el.addEventListener('mouseenter', () => {
       this.isHovered = true
+      playHoverSound()
       this.onMouseEnter?.()
       this.updateStyles(this.lastExpanded)
     })
