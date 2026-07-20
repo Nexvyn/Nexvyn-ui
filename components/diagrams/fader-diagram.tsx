@@ -234,7 +234,6 @@ function AnatomyThumb() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      {/* ≥24px hit pad — WCAG 2.5.8 interaction zone */}
       <rect x={barX - 10} y={AN.y} width={24} height={AN.h} fill="transparent" />
       <rect
         x={barX}

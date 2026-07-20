@@ -30,8 +30,7 @@ const BP_HEADING_INDICES = [0, 6, 11] as const
 
 export function ScrollIndicatorWireframe() {
   const ticks = Array.from({ length: BP_TICK_COUNT })
-  const activeY =
-    BP_RAIL_Y1 + (BP_ACTIVE_INDEX / (BP_TICK_COUNT - 1)) * (BP_RAIL_Y2 - BP_RAIL_Y1)
+  const activeY = BP_RAIL_Y1 + (BP_ACTIVE_INDEX / (BP_TICK_COUNT - 1)) * (BP_RAIL_Y2 - BP_RAIL_Y1)
   return (
     <Blueprint>
       <g>
@@ -116,7 +115,13 @@ function TicksShape() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      <rect x={RAIL_X - 20} y={RAIL_Y1 - 4} width={24} height={RAIL_Y2 - RAIL_Y1 + 8} fill="transparent" />
+      <rect
+        x={RAIL_X - 20}
+        y={RAIL_Y1 - 4}
+        width={24}
+        height={RAIL_Y2 - RAIL_Y1 + 8}
+        fill="transparent"
+      />
       {Array.from({ length: TICK_COUNT }).map((_, i) => {
         const isMajor = HEADINGS.includes(i as (typeof HEADINGS)[number])
         const isPast = i <= ACTIVE
@@ -229,7 +234,13 @@ function LabelsShape() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      <rect x={RAIL_X + 4} y={RAIL_Y1 - 8} width={72} height={RAIL_Y2 - RAIL_Y1 + 16} fill="transparent" />
+      <rect
+        x={RAIL_X + 4}
+        y={RAIL_Y1 - 8}
+        width={72}
+        height={RAIL_Y2 - RAIL_Y1 + 16}
+        fill="transparent"
+      />
       {HEADINGS.map((i, idx) => {
         const isActive = i === ACTIVE
         return (
@@ -278,15 +289,10 @@ function LinesLayer() {
   const leftEdge = RAIL_X - 16
   return (
     <g strokeWidth="1" className="pointer-events-none">
-      {/* Tick Rail — top left → top of rail */}
       <OverlayLine id="ticks" x1={118} y1={RAIL_Y1 + 2} x2={leftEdge} y2={RAIL_Y1 + 2} />
-      {/* Section Mark — left → DESIGN major tick */}
       <OverlayLine id="section-marks" x1={118} y1={SECTION_Y} x2={leftEdge} y2={SECTION_Y} />
-      {/* Thumb — left → accent line (slightly below section mark) */}
       <OverlayLine id="thumb" x1={118} y1={ACTIVE_Y + 28} x2={leftEdge} y2={ACTIVE_Y - 3} />
-      {/* Counter — left → 2/4 text (stays below the Thumb leader so they don't cross) */}
       <OverlayLine id="counter" x1={118} y1={ACTIVE_Y + 56} x2={RAIL_X - 40} y2={ACTIVE_Y + 8} />
-      {/* Section Label — FROM BOTTOM tag UP to DESIGN label */}
       <OverlayLine
         id="labels"
         x1={RAIL_X + 36}
@@ -301,7 +307,13 @@ function LinesLayer() {
 function TagsLayer() {
   return (
     <>
-      <foreignObject x={4} y={RAIL_Y1 - 10} width={116} height={24} className="pointer-events-none overflow-visible">
+      <foreignObject
+        x={4}
+        y={RAIL_Y1 - 10}
+        width={116}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
         <AnatomyTag part="ticks" label="Tick Rail" isAccent className="items-center justify-end" />
       </foreignObject>
       <foreignObject
@@ -311,7 +323,11 @@ function TagsLayer() {
         height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="section-marks" label="Section Mark" className="items-center justify-end" />
+        <AnatomyTag
+          part="section-marks"
+          label="Section Mark"
+          className="items-center justify-end"
+        />
       </foreignObject>
       <foreignObject
         x={4}
@@ -331,7 +347,6 @@ function TagsLayer() {
       >
         <AnatomyTag part="counter" label="Counter" className="items-center justify-end" />
       </foreignObject>
-      {/* Bottom-centered under the label column */}
       <foreignObject
         x={RAIL_X - 20}
         y={RAIL_Y2 + 20}

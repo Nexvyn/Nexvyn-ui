@@ -40,7 +40,6 @@ export function ColorPickerWireframe() {
   const theme = blueprintTheme
   return (
     <Blueprint>
-      {/* Petals — construction only at rest; solidify on morph */}
       {BP_PETALS.map((p, i) => (
         <circle
           key={i}

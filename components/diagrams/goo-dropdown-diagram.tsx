@@ -55,8 +55,6 @@ export function GooDropdownWireframe() {
       >
         Share
       </text>
-
-      {/* Panel appears on morph (open state preview) */}
       <rect
         x={BP_PANEL.x}
         y={BP_PANEL.y}

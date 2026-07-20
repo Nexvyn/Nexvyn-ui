@@ -121,7 +121,7 @@ export function TableOfContents({
       }
       setIsExpanded(false)
     },
-    [scrollOffset, scrollContainer],
+    [scrollOffset],
   )
 
   const activeSection = sections.find((s) => s.id === activeId) || sections[0]

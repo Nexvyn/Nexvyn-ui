@@ -48,7 +48,6 @@ export function RatioSliderWireframe() {
 
   return (
     <Blueprint>
-      {/* Left bar — RICH (fills to foreground) */}
       <rect
         x={BP.x}
         y={BP.y}
@@ -59,9 +58,7 @@ export function RatioSliderWireframe() {
         strokeOpacity={theme.wireframe.strokeOpacity}
         className={BP_FILL_SOLID}
       />
-      {/* In-bar left label (real non-compact: text on leftColor → bg).
-          Solid low-opacity fill instead of hollow stroke — at this size/weight, stroke-only
-          text overlaps into an unreadable mess; a soft fill reads cleanly and still morphs. */}
+      
       <text
         x={BP.x + 10}
         y={midY + 4}
@@ -72,8 +69,6 @@ export function RatioSliderWireframe() {
       >
         RICH <tspan fontWeight={700}>60%</tspan>
       </text>
-
-      {/* Divider handle */}
       <g
         style={{ transformOrigin: `${BP_DIV_X + BP.divW / 2}px ${midY}px` }}
         className="transition-transform duration-(--motion-dur-fast) ease-(--motion-ease-out) group-hover:scale-y-[1.15] group-focus-visible:scale-y-[1.15] motion-reduce:transition-none motion-reduce:transform-none"
@@ -89,8 +84,6 @@ export function RatioSliderWireframe() {
           className={`${BP_MORPH} fill-transparent group-hover:fill-(--color-accent) group-focus-visible:fill-(--color-accent)`}
         />
       </g>
-
-      {/* Right bar — LIGHT (fills to muted) */}
       <rect
         x={BP_RIGHT_X}
         y={BP.y}
@@ -129,9 +122,19 @@ export function RatioSliderWireframe() {
           strokeDasharray="2 2"
           opacity={theme.guide.structOpacity}
         >
-          <line x1={BP.x + BP_LEFT_W} y1={BP.y + BP.h + 16} x2={BP.x + BP_LEFT_W} y2={BP.y + BP.h + 21} />
+          <line
+            x1={BP.x + BP_LEFT_W}
+            y1={BP.y + BP.h + 16}
+            x2={BP.x + BP_LEFT_W}
+            y2={BP.y + BP.h + 21}
+          />
           <line x1={BP_RIGHT_X} y1={BP.y + BP.h + 16} x2={BP_RIGHT_X} y2={BP.y + BP.h + 21} />
-          <line x1={BP.x + BP_LEFT_W} y1={BP.y + BP.h + 18.5} x2={BP_RIGHT_X} y2={BP.y + BP.h + 18.5} />
+          <line
+            x1={BP.x + BP_LEFT_W}
+            y1={BP.y + BP.h + 18.5}
+            x2={BP_RIGHT_X}
+            y2={BP.y + BP.h + 18.5}
+          />
         </g>
         <DimLabel x={BP.x + BP_LEFT_W + BP.gap / 2} y={BP.y + BP.h + 30} anchor="middle">
           gap 8
@@ -181,7 +184,6 @@ function LeftBarShape() {
         fillOpacity={active ? 0.95 : 0.88}
         className={spotlight.className}
       />
-      {/* In-bar label like real non-compact mode (sits ON the left fill) */}
       <text
         x={AN.x + 14}
         y={AN_MID_Y + 4}
@@ -251,7 +253,6 @@ function DividerShape() {
         transition: 'transform 150ms ease-out',
       }}
     >
-      {/* ≥24px hit target */}
       <rect
         x={AN_DIV_X - 10}
         y={AN.y - 4}
@@ -286,7 +287,6 @@ function GapShape() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      {/* Left gap between left bar and divider */}
       <rect
         x={AN.x + AN_LEFT_W}
         y={AN.y}
@@ -296,7 +296,6 @@ function GapShape() {
         fillOpacity={fillOpacity}
         className={spotlight.className}
       />
-      {/* Right gap */}
       <rect
         x={AN_DIV_X + AN.divW}
         y={AN.y}
@@ -335,15 +334,19 @@ function AnnotationsLayer() {
       <DimLabel x={AN.x} y={AN.y - 4} anchor="start">
         {`r${AN.rx}`}
       </DimLabel>
-      {/* Caliper bracketing the actual gap span, sitting right above its own "gap 8" label
-          so it doesn't collide with "handle 6" (which anchors to the divider, above the bars). */}
+      
       <g
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={blueprintTheme.guide.strokeWidth}
         strokeDasharray="2 2"
         opacity={blueprintTheme.guide.structOpacity}
       >
-        <line x1={AN.x + AN_LEFT_W} y1={AN.y + AN.h + 4} x2={AN.x + AN_LEFT_W} y2={AN.y + AN.h + 10} />
+        <line
+          x1={AN.x + AN_LEFT_W}
+          y1={AN.y + AN.h + 4}
+          x2={AN.x + AN_LEFT_W}
+          y2={AN.y + AN.h + 10}
+        />
         <line x1={AN_RIGHT_X} y1={AN.y + AN.h + 4} x2={AN_RIGHT_X} y2={AN.y + AN.h + 10} />
         <line x1={AN.x + AN_LEFT_W} y1={AN.y + AN.h + 7} x2={AN_RIGHT_X} y2={AN.y + AN.h + 7} />
       </g>
@@ -360,9 +363,7 @@ function AnnotationsLayer() {
 function LinesLayer() {
   return (
     <g strokeWidth="1" className="pointer-events-none">
-      {/* Left bar */}
       <OverlayLine id="left-bar" x1={40} y1={AN_MID_Y} x2={AN.x} y2={AN_MID_Y} />
-      {/* Divider */}
       <OverlayLine
         id="divider"
         x1={AN_DIV_X + AN.divW / 2}
@@ -370,7 +371,6 @@ function LinesLayer() {
         x2={AN_DIV_X + AN.divW / 2}
         y2={AN_MID_Y + AN.divH / 2}
       />
-      {/* Right bar */}
       <OverlayLine
         id="right-bar"
         x1={AN.x + AN.w + 50}
@@ -378,7 +378,6 @@ function LinesLayer() {
         x2={AN.x + AN.w}
         y2={AN_MID_Y}
       />
-      {/* In-bar labels callouts */}
       <OverlayLine id="left-label" x1={AN.x + 50} y1={AN.y - 28} x2={AN.x + 50} y2={AN.y + 8} />
       <OverlayLine
         id="right-label"

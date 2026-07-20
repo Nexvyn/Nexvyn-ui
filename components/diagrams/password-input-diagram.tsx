@@ -34,7 +34,6 @@ export function PasswordInputWireframe() {
   const theme = blueprintTheme
   return (
     <Blueprint>
-      {/* Label “Password” */}
       <text
         x={BP_FIELD.x}
         y={BP_FIELD.y - 12}
@@ -56,8 +55,6 @@ export function PasswordInputWireframe() {
         strokeOpacity={theme.wireframe.strokeOpacity}
         className={BP_FILL_PANEL}
       />
-
-      {/* Masked dots → filled on morph */}
       {BP_DOT_XS.map((x) => (
         <circle
           key={x}
@@ -69,8 +66,6 @@ export function PasswordInputWireframe() {
           opacity={theme.wireframe.strokeOpacity}
         />
       ))}
-
-      {/* Eye toggle (real show/hide control) */}
       <g
         fill="none"
         stroke="currentColor"
@@ -85,7 +80,6 @@ export function PasswordInputWireframe() {
 
       <g className={BP_HIDE_ON_MORPH}>
         <Selection x={BP_FIELD.x} y={BP_FIELD.y} w={BP_FIELD.w} h={BP_FIELD.h} />
-        {/* Text-safe zone: ps-3.5 (14) start / pe-12 (48) end — end margin reserves room for the eye */}
         <PadGuide
           x={BP_FIELD.x + 14}
           y={BP_FIELD.y + 10}
@@ -99,7 +93,6 @@ export function PasswordInputWireframe() {
           boxRx={BP_FIELD.rx}
           clipOffset={0.8}
         />
-        {/* Eye toggle's own inset-e-3 hit target */}
         <circle
           cx={BP_EYE.cx}
           cy={BP_EYE.cy}

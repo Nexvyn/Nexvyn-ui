@@ -68,8 +68,6 @@ export function BounceSidebarWireframe() {
           </g>
         )
       })}
-
-      {/* Accent bounce dot — moves to 2nd item on morph */}
       <circle
         cx={BP.x + 6}
         cy={rowY(0) + BP.rowH / 2}
@@ -239,8 +237,7 @@ function AnnotationsLayer() {
         label={`${AN.listH}`}
         labelXOffset={-6}
       />
-      {/* Real component only pads the start edge (ps-6) — items run flush to the end edge, so
-          this guide is a single line, not a mirrored box. */}
+      
       <g
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={blueprintTheme.guide.strokeWidth}
@@ -271,8 +268,6 @@ export function BounceSidebarBreakdown() {
       <ActiveShape />
       <DotShape />
       <AnnotationsLayer />
-
-      {/* Lines — placed in root SVG space (no translate group) */}
       <OverlayLine id="container" x1={160} y1={140} x2={210} y2={140} />
       <OverlayLine
         id="item-0"
@@ -295,8 +290,6 @@ export function BounceSidebarBreakdown() {
         x2={AN.listX + 10}
         y2={-2}
       />
-
-      {/* Tags */}
       <foreignObject
         x={210}
         y={128}

@@ -18,7 +18,6 @@ function initAudio(): AudioContext | null {
   return audioCtx
 }
 
-// Global user interaction listener to unlock AudioContext immediately on first gesture
 if (typeof window !== 'undefined') {
   const unlock = () => {
     initAudio()
@@ -35,9 +34,6 @@ export function getAudioContext(): AudioContext | null {
   return initAudio()
 }
 
-/**
- * Plays a soft, tactile micro-click sound for hover interactions.
- */
 export function playHoverSound(volume = 0.12, pitch = 1.2) {
   try {
     const ctx = getAudioContext()
@@ -60,13 +56,9 @@ export function playHoverSound(volume = 0.12, pitch = 1.2) {
     osc.start(now)
     osc.stop(now + 0.012)
   } catch {
-    // Ignore audio initialization edge cases
   }
 }
 
-/**
- * Plays a crisp tactile click sound for click actions and selections.
- */
 export function playClickSound(volume = 0.2, pitch = 1.0) {
   try {
     const ctx = getAudioContext()
@@ -89,13 +81,9 @@ export function playClickSound(volume = 0.2, pitch = 1.0) {
     osc.start(now)
     osc.stop(now + 0.02)
   } catch {
-    // Ignore audio initialization edge cases
   }
 }
 
-/**
- * Plays a subtle micro-tick sound for slider/fader dragging or value ticks.
- */
 export function playTickSound(volume = 0.1, pitch = 1.5) {
   try {
     const ctx = getAudioContext()
@@ -118,20 +106,15 @@ export function playTickSound(volume = 0.1, pitch = 1.5) {
     osc.start(now)
     osc.stop(now + 0.01)
   } catch {
-    // Ignore audio initialization edge cases
   }
 }
 
-/**
- * Plays a rich, clear "bouncing ball" boing/pop sound for bounce navigation.
- */
 export function playBounceSound(volume = 0.3, pitch = 1.0) {
   try {
     const ctx = getAudioContext()
     if (!ctx) return
     const now = ctx.currentTime
 
-    // Main oscillator for the bouncy pitch contour (boing / pop)
     const osc = ctx.createOscillator()
     const gain = ctx.createGain()
 
@@ -149,7 +132,6 @@ export function playBounceSound(volume = 0.3, pitch = 1.0) {
     osc.start(now)
     osc.stop(now + 0.14)
 
-    // Sub-pop oscillator for punchy ball impact body
     const subOsc = ctx.createOscillator()
     const subGain = ctx.createGain()
 
@@ -166,6 +148,5 @@ export function playBounceSound(volume = 0.3, pitch = 1.0) {
     subOsc.start(now)
     subOsc.stop(now + 0.05)
   } catch {
-    // Ignore audio initialization edge cases
   }
 }
