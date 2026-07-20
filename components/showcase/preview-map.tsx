@@ -1,6 +1,9 @@
 import dynamic from 'next/dynamic'
 
 export const blueprintPreviews: Record<string, React.ComponentType> = {
+  'badge-blueprint': dynamic(() =>
+    import('@/components/diagrams/badge-diagram').then((m) => m.BadgeBlueprint),
+  ),
   'bounce-sidebar-blueprint': dynamic(() =>
     import('@/components/diagrams/bounce-sidebar-diagram').then((m) => m.BounceSidebarWireframe),
   ),

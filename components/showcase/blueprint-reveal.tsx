@@ -9,6 +9,10 @@ const loadingSlot = (w: number, h: number) =>
     return <div className="shrink-0" style={{ width: w, height: h }} aria-hidden />
   }
 
+const Badge = dynamic(() => import('@/components/ui/badge').then((m) => m.Badge), {
+  ssr: false,
+  loading: loadingSlot(92, 26),
+})
 const BounceSidebar = dynamic(
   () => import('@/components/ui/bounce-sidebar').then((m) => m.BounceSidebar),
   { ssr: false, loading: loadingSlot(80, 140) },
@@ -37,6 +41,7 @@ const RatioSlider = dynamic(
 )
 
 const LIVE: Record<string, () => ReactNode> = {
+  'badge-blueprint': () => <Badge>Early Access</Badge>,
   'bounce-sidebar-blueprint': () => (
     <BounceSidebar items={['Dashboard', 'Projects', 'Team']} defaultValue={0} className="w-20" />
   ),

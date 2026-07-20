@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 
 const SOURCE_MAP: Record<string, string[]> = {
+  badge: ['components', 'ui', 'badge.tsx'],
   'bounce-sidebar': ['components', 'ui', 'bounce-sidebar.tsx'],
   'color-picker': ['components', 'ui', 'color-picker-standalone.tsx'],
   'goo-dropdown': ['components', 'ui', 'goo-dropdown.tsx'],
