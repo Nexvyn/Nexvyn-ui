@@ -62,7 +62,7 @@ export function RatioSliderWireframe() {
       <text
         x={BP.x + 10}
         y={midY + 4}
-        fontSize={12}
+        fontSize={9}
         fontWeight={500}
         fontFamily="var(--font-sans)"
         className={`${BP_MORPH} fill-current opacity-35 group-hover:fill-background group-hover:opacity-100 group-focus-visible:fill-background group-focus-visible:opacity-100`}
@@ -98,7 +98,7 @@ export function RatioSliderWireframe() {
         x={BP_RIGHT_X + BP_RIGHT_W - 10}
         y={midY + 4}
         textAnchor="end"
-        fontSize={12}
+        fontSize={9}
         fontWeight={500}
         fontFamily="var(--font-sans)"
         className={`${BP_MORPH} fill-current opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}

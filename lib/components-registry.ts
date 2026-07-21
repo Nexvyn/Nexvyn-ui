@@ -4,11 +4,12 @@ import { breadcrumbsMetadata } from '@/components/ui/Doc/breadcrumbs-metadata'
 import { clipboardFieldMetadata } from '@/components/ui/Doc/clipboard-field-metadata'
 import { colorPickerMetadata } from '@/components/ui/Doc/color-picker-metadata'
 import { faderMetadata } from '@/components/ui/Doc/fader-metadata'
+import { dropdownMenuMetadata } from '@/components/ui/Doc/dropdown-menu-metadata'
 import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
 import { passwordInputMetadata } from '@/components/ui/Doc/password-input-metadata'
 import { ratioSliderMetadata } from '@/components/ui/Doc/ratio-slider-metadata'
 import { scrollIndicatorMetadata } from '@/components/ui/Doc/scroll-indicator-metadata'
-import { selectMetadata } from '@/components/ui/select-metadata'
+import { selectMetadata } from '@/components/ui/Doc/select-metadata'
 import { tableOfContentsMetadata } from '@/components/ui/Doc/table-of-contents-metadata'
 
 export type ComponentItem = {
@@ -53,6 +54,7 @@ export const COMPONENTS: ComponentItem[] = [
   breadcrumbsMetadata,
   clipboardFieldMetadata,
   colorPickerMetadata,
+  dropdownMenuMetadata,
   faderMetadata,
   gooDropdownMetadata,
   passwordInputMetadata,

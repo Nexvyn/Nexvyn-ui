@@ -260,6 +260,71 @@
           "type": "registry:lib"
         }
       ]
+    },
+    {
+      "name": "breadcrumbs",
+      "type": "registry:ui",
+      "title": "Breadcrumbs",
+      "description": "A horizontal trail of links that auto-collapses into an ellipsis button when the trail exceeds maxItems.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "components/ui/breadcrumbs.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "A popover action menu with a proximity-driven morphing highlight. The muted hover highlight springs between items as the pointer moves, giving the menu a fluid, alive feel.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "A form select with a two-layer proximity highlight (selected accent tint + muted hover), drawn check animation, and a trigger label morph on selection change.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/select.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
     }
   ]
 }

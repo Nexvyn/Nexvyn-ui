@@ -27,6 +27,8 @@ const BP = {
   w: 160,
   triggerH: 32,
   triggerRx: 6,
+  triggerPadX: 16,
+  triggerPadY: 12,
   gap: 6,
   panelPad: 5,
   itemH: 20,
@@ -144,6 +146,32 @@ export function SelectBlueprint() {
         <DimLabel x={BP.x} y={BP.y - 4} anchor="start">
           {`r${BP.triggerRx}`}
         </DimLabel>
+        
+        <PadGuide
+          x={BP.x + BP.triggerPadX}
+          y={BP.y + BP.triggerPadY}
+          w={BP.w - BP.triggerPadX * 2}
+          h={BP.triggerH - BP.triggerPadY * 2}
+          offset={0.8}
+          boxX={BP.x}
+          boxY={BP.y}
+          boxW={BP.w}
+          boxH={BP.triggerH}
+          boxRx={BP.triggerRx}
+          clipOffset={0.8}
+        />
+        <DimLabel x={BP.x + 7} y={BP.y + BP.triggerH / 2 + 2.5} anchor="middle">
+          {`${BP.triggerPadX}`}
+        </DimLabel>
+        <DimLabel x={BP.x + BP.w - 7} y={BP.y + BP.triggerH / 2 + 2.5} anchor="middle">
+          {`${BP.triggerPadX}`}
+        </DimLabel>
+        <DimLabel x={BP.x + BP.w / 2} y={BP.y + 6} anchor="middle">
+          {`${BP.triggerPadY}`}
+        </DimLabel>
+        <DimLabel x={BP.x + BP.w / 2} y={BP.y + BP.triggerH - 2} anchor="middle">
+          {`${BP.triggerPadY}`}
+        </DimLabel>
         <DimLabel x={BP.x + BP.panelPad / 2} y={BP_PANEL_Y + BP_PANEL_H / 2 + 2} anchor="middle">
           {`${BP.panelPad}`}
         </DimLabel>
@@ -158,6 +186,8 @@ const AN = {
   w: 130,
   triggerH: 36,
   triggerRx: 6,
+  triggerPadX: 16,
+  triggerPadY: 12,
   gap: 8,
   panelPad: 6,
   itemH: 32,
@@ -308,6 +338,32 @@ function AnnotationsLayer() {
       </DimLabel>
       <DimLabel x={AN.x} y={AN_PANEL_Y - 4} anchor="start">
         {`r${AN.triggerRx}`}
+      </DimLabel>
+      
+      <PadGuide
+        x={AN.x + AN.triggerPadX}
+        y={AN.y + AN.triggerPadY}
+        w={AN.w - AN.triggerPadX * 2}
+        h={AN.triggerH - AN.triggerPadY * 2}
+        offset={0.8}
+        boxX={AN.x}
+        boxY={AN.y}
+        boxW={AN.w}
+        boxH={AN.triggerH}
+        boxRx={AN.triggerRx}
+        clipOffset={0.8}
+      />
+      <DimLabel x={AN.x + 7} y={AN.y + AN.triggerH / 2 + 2.5} anchor="middle">
+        {`${AN.triggerPadX}`}
+      </DimLabel>
+      <DimLabel x={AN.x + AN.w - 7} y={AN.y + AN.triggerH / 2 + 2.5} anchor="middle">
+        {`${AN.triggerPadX}`}
+      </DimLabel>
+      <DimLabel x={AN.x + AN.w / 2} y={AN.y + 7} anchor="middle">
+        {`${AN.triggerPadY}`}
+      </DimLabel>
+      <DimLabel x={AN.x + AN.w / 2} y={AN.y + AN.triggerH - 3} anchor="middle">
+        {`${AN.triggerPadY}`}
       </DimLabel>
       <PadGuide
         x={AN.x + AN.panelPad}
