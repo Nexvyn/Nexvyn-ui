@@ -7,9 +7,9 @@ export const breadcrumbsMetadata: ComponentItem = {
   basic: true,
   previewType: 'default',
   description:
-    'A horizontal trail of links that auto-collapses into an ellipsis menu when the trail exceeds maxItems. Uses DropdownMenu for the collapsed items.',
+    'A horizontal trail of links that auto-collapses into an ellipsis button when the trail exceeds maxItems.',
   registry: 'breadcrumbs',
-  dependencies: [{ name: 'motion' }],
+  dependencies: [{ name: 'class-variance-authority' }],
   interaction:
     'Navigate through breadcrumb links. When the trail is long, collapsed items appear in an ellipsis dropdown menu.',
   props: [

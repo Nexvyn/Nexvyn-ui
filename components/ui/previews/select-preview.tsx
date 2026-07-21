@@ -7,7 +7,7 @@ export function SelectPreview() {
   const [value, setValue] = useState('')
   return (
     <div className="flex h-full w-full items-center justify-center p-2 sm:p-6">
-      <div className="w-56 space-y-4">
+      <div className="w-48 space-y-4">
         <Select value={value} onValueChange={setValue} name="size">
           <SelectTrigger>
             <SelectValue placeholder="Choose size" />

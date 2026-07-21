@@ -17,6 +17,7 @@ import {
   BounceSidebarDemo,
   BreadcrumbsDemo,
   ClipboardFieldDemo,
+  DropdownMenuDemo,
   ColorPickerDemo,
   FaderDemo,
   GooDropdownDemo,
@@ -129,6 +130,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <ClipboardFieldDemo />
+        </DemoFrame>
+      )
+    case 'dropdown-menu':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <DropdownMenuDemo />
         </DemoFrame>
       )
     case 'bounce-sidebar':

@@ -10,6 +10,7 @@ import {
   useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -39,6 +40,8 @@ interface SelectContextValue {
   labelMap: React.MutableRefObject<Map<string, string>>
   registerOption: (value: string, label: string) => void
   openInteractionRef: React.MutableRefObject<'keyboard' | 'pointer'>
+  itemsWidth: number | null
+  setItemsWidth: (w: number | null) => void
 }
 
 const SelectContext = createContext<SelectContextValue | null>(null)
@@ -59,7 +62,6 @@ interface SelectContentContextValue {
   setFocusedIndex: (i: number) => void
   setOpen: (next: boolean) => void
   registerItem: (index: number, el: HTMLElement | null) => void
-  selectedIndex: number
 }
 
 const SelectContentContext = createContext<SelectContentContextValue | null>(null)
@@ -111,6 +113,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     const value = isControlled ? valueProp : internalValue
 
     const [open, setOpen] = useState(false)
+    const [itemsWidth, setItemsWidth] = useState<number | null>(null)
     const openInteractionRef = useRef<'keyboard' | 'pointer'>('pointer')
     const labelMap = useRef(new Map<string, string>())
     const [options, setOptions] = useState<{ value: string; label: string }[]>([])
@@ -179,8 +182,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         labelMap,
         registerOption,
         openInteractionRef,
+        itemsWidth,
+        setItemsWidth,
       }),
-      [value, setValue, open, disabled, triggerId, contentId, registerOption],
+      [value, setValue, open, disabled, triggerId, contentId, registerOption, itemsWidth],
     )
 
     return (
@@ -220,7 +225,10 @@ export interface SelectTriggerProps extends Omit<HTMLAttributes<HTMLButtonElemen
 }
 
 export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
-  ({ children, showChevron = true, className, disabled: disabledProp, onClick, ...props }, ref) => {
+  (
+    { children, showChevron = true, className, disabled: disabledProp, onClick, onMouseEnter, ...props },
+    ref,
+  ) => {
     const {
       open,
       setOpen,
@@ -228,6 +236,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
       triggerId,
       contentId,
       openInteractionRef,
+      itemsWidth,
     } = useSelectCtx('SelectTrigger')
     const reduceMotion = useReducedMotion()
     const disabled = disabledProp ?? rootDisabled
@@ -243,6 +252,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
         aria-haspopup="listbox"
         aria-controls={open ? contentId : undefined}
         disabled={disabled}
+        style={itemsWidth ? { width: itemsWidth } : undefined}
         className={cn(
           'flex min-h-11 w-full items-center justify-between gap-2 border border-(--color-border) bg-(--color-surface) px-4 py-3 text-left text-sm font-medium text-(--color-fg) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
           'rounded-lg supports-[corner-shape:squircle]:corner-squircle supports-[corner-shape:squircle]:rounded-[11px]',
@@ -267,6 +277,10 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
               setOpen(true)
             }
           }
+        }}
+        onMouseEnter={(e) => {
+          onMouseEnter?.(e)
+          if (!disabled) playHoverSound()
         }}
         {...props}
       >
@@ -325,16 +339,16 @@ export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(
         className={cn('min-w-0 truncate', !label && 'text-(--color-muted)', className)}
         {...props}
       >
-        <AnimatePresence mode="wait" initial={false}>
+        <AnimatePresence initial={false} mode="wait">
           {label ? (
             <motion.span
               key={label}
-              initial={{ opacity: 0, y: 4 }}
+              initial={{ opacity: 0, y: 3 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
+              exit={{ opacity: 0, y: -3 }}
               transition={{
                 ...springs.fast,
-                opacity: { duration: 0.12 },
+                opacity: { duration: 0.1 },
               }}
               className="inline-block min-w-0 truncate"
             >
@@ -346,7 +360,7 @@ export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.08 }}
+              transition={{ duration: 0.06 }}
               className="inline-block min-w-0 truncate"
             >
               {placeholder}
@@ -365,10 +379,11 @@ export interface SelectContentProps extends HTMLAttributes<HTMLDivElement> {
 
 export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
   ({ align = 'start', side = 'bottom', children, className, ...props }, ref) => {
-    const { open, setOpen, triggerId, contentId, value, openInteractionRef } =
+    const { open, setOpen, triggerId, contentId, value, openInteractionRef, itemsWidth, setItemsWidth } =
       useSelectCtx('SelectContent')
     const panelRef = useRef<HTMLDivElement | null>(null)
-    const [position, setPosition] = useState({ left: 0, top: 0, minWidth: 48 })
+    const [position, setPosition] = useState({ left: 0, top: 0 })
+    const maxWidthRef = useRef(0)
     const mounted = useMounted()
     const {
       activeIndex,
@@ -425,36 +440,36 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       })
     }, [open, focusedIndex])
 
-    const [selectedIndex, setSelectedIndex] = useState(-1)
     const [selectedRect, setSelectedRect] = useState<{ top: number; height: number } | null>(null)
 
-    useEffect(() => {
-      if (!open) return
-      const items = panelRef.current?.querySelectorAll<HTMLElement>('[role="option"]')
-      if (!items?.length) return
-      let found = -1
-      items.forEach((el, i) => {
-        if (el.getAttribute('data-value') === value) found = i
-      })
-      setSelectedIndex(found)
-    }, [open, value])
-
-    useEffect(() => {
+    useLayoutEffect(() => {
       const items = open
         ? panelRef.current?.querySelectorAll<HTMLElement>('[role="option"]')
         : undefined
-      const el = selectedIndex >= 0 ? items?.[selectedIndex] : undefined
-      if (!el) {
-        setSelectedRect(null)
-        return
-      }
-      setSelectedRect({ top: el.offsetTop, height: el.offsetHeight })
-    }, [open, selectedIndex])
+      const el = items && Array.from(items).find((item) => item.getAttribute('data-value') === value)
+      setSelectedRect(el ? { top: el.offsetTop, height: el.offsetHeight } : null)
+    }, [open, value])
 
     const indexedChildren = useMemo(() => {
       const counter = { current: 0 }
       return assignSelectItemIndices(children, counter)
     }, [children])
+
+    const measureRef = useRef<HTMLDivElement | null>(null)
+    useLayoutEffect(() => {
+      const el = measureRef.current
+      if (!el || typeof ResizeObserver === 'undefined') return
+      const update = () => {
+        const w = el.getBoundingClientRect().width
+        maxWidthRef.current = Math.max(maxWidthRef.current, w)
+        setItemsWidth(maxWidthRef.current)
+      }
+      update()
+      const ro = new ResizeObserver(update)
+      ro.observe(el)
+      return () => ro.disconnect()
+    }, [indexedChildren, setItemsWidth])
+
     useEffect(() => {
       if (!open) return
       const measure = () => {
@@ -478,7 +493,10 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
         } else {
           top = triggerRect.bottom + SIDE_OFFSET
         }
-        setPosition({ left, top, minWidth: triggerRect.width })
+        setPosition({ left, top })
+        const natural = Math.max(triggerRect.width, contentRect.width)
+        maxWidthRef.current = Math.max(maxWidthRef.current, natural)
+        setItemsWidth(maxWidthRef.current)
       }
 
       const frame = requestAnimationFrame(measure)
@@ -489,7 +507,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
         window.removeEventListener('resize', measure)
         window.removeEventListener('scroll', measure, true)
       }
-    }, [open, align, side, triggerId])
+    }, [open, align, side, triggerId, setItemsWidth])
     useEffect(() => {
       if (!open) return
       let typeaheadQuery = ''
@@ -593,7 +611,6 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
         setFocusedIndex,
         setOpen,
         registerItem,
-        selectedIndex,
       }),
       [
         activeIndex,
@@ -605,7 +622,6 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
         focusedIndex,
         setOpen,
         registerItem,
-        selectedIndex,
       ],
     )
 
@@ -615,7 +631,15 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       <SelectContentContext.Provider value={contentCtx}>
         
         {!open && (
-          <div hidden aria-hidden="true">
+          <div
+            ref={measureRef}
+            aria-hidden="true"
+            className={cn(
+              'pointer-events-none invisible fixed top-0 left-0 min-w-48 border border-(--color-border) bg-(--color-bg) p-1.5 **:min-w-max',
+              'rounded-lg supports-[corner-shape:squircle]:corner-squircle supports-[corner-shape:squircle]:rounded-[11px]',
+              className,
+            )}
+          >
             {indexedChildren}
           </div>
         )}
@@ -634,9 +658,9 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                 position: 'fixed',
                 left: position.left,
                 top: position.top,
+                width: itemsWidth ?? undefined,
                 zIndex: 30,
                 transformOrigin: 'top center',
-                minWidth: position.minWidth,
                 maxWidth: 'calc(100vw - 1.5rem)',
                 maxHeight: MAX_HEIGHT,
                 overflowY: 'auto',
@@ -649,7 +673,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                 aria-labelledby={triggerId}
                 data-select-content
                 className={cn(
-                  'relative min-w-48 overflow-hidden border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
+                  'relative w-full min-w-48 overflow-hidden border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
                   'rounded-lg supports-[corner-shape:squircle]:corner-squircle supports-[corner-shape:squircle]:rounded-[11px]',
                   'shadow-xl',
                   className,
@@ -848,7 +872,7 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
                 d="M4 12L9 17L20 6"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={reduceMotion ? { duration: 0 } : springs.fast}
+                transition={reduceMotion ? { duration: 0 } : springs.press}
               />
             </motion.svg>
           )}
