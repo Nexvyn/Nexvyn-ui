@@ -10,6 +10,9 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'dropdown-menu-blueprint': dynamic(() =>
     import('@/components/diagrams/dropdown-menu-diagram').then((m) => m.DropdownMenuBlueprint),
   ),
+  'nav-menu-blueprint': dynamic(() =>
+    import('@/components/diagrams/nav-menu-diagram').then((m) => m.NavMenuBlueprint),
+  ),
   'clipboard-field-blueprint': dynamic(() =>
     import('@/components/diagrams/clipboard-field-diagram').then((m) => m.ClipboardFieldBlueprint),
   ),

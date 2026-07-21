@@ -5,6 +5,7 @@ import { clipboardFieldMetadata } from '@/components/ui/Doc/clipboard-field-meta
 import { colorPickerMetadata } from '@/components/ui/Doc/color-picker-metadata'
 import { faderMetadata } from '@/components/ui/Doc/fader-metadata'
 import { dropdownMenuMetadata } from '@/components/ui/Doc/dropdown-menu-metadata'
+import { navMenuMetadata } from '@/components/ui/Doc/nav-menu-metadata'
 import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
 import { passwordInputMetadata } from '@/components/ui/Doc/password-input-metadata'
 import { ratioSliderMetadata } from '@/components/ui/Doc/ratio-slider-metadata'
@@ -57,6 +58,7 @@ export const COMPONENTS: ComponentItem[] = [
   dropdownMenuMetadata,
   faderMetadata,
   gooDropdownMetadata,
+  navMenuMetadata,
   passwordInputMetadata,
   ratioSliderMetadata,
   scrollIndicatorMetadata,

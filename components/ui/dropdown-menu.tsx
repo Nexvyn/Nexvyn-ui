@@ -458,6 +458,7 @@ export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps
 
     const indexRef = useRef<number | null>(null)
     if (indexRef.current === null) indexRef.current = nextIndex()
+    // eslint-disable-next-line react-hooks/refs
     const index = indexRef.current
     useEffect(() => {
       const el = itemRef.current
