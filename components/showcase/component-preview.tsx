@@ -5,6 +5,8 @@ import type { ComponentItem } from '@/lib/components-registry'
 import { blueprintPreviews } from '@/components/showcase/preview-map'
 import { BlueprintReveal } from '@/components/showcase/blueprint-reveal'
 
+const Badge = dynamic(() => import('@/components/ui/badge').then((m) => m.Badge), { ssr: false })
+
 const BounceSidebar = dynamic(
   () => import('@/components/ui/bounce-sidebar').then((m) => m.BounceSidebar),
   { ssr: false },
@@ -32,6 +34,8 @@ const RatioSlider = dynamic(
 
 function LivePreview({ item }: { item: ComponentItem }) {
   switch (item.id) {
+    case 'badge':
+      return <Badge>Early Access</Badge>
     case 'bounce-sidebar':
       return (
         <BounceSidebar
@@ -77,6 +81,7 @@ function LivePreview({ item }: { item: ComponentItem }) {
 }
 
 const LIVE_PREVIEW_IDS = [
+  'badge',
   'bounce-sidebar',
   'color-picker',
   'goo-dropdown',
