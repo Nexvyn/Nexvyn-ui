@@ -25,12 +25,21 @@ import { NewStarIcon } from '@/components/layout/new-star'
 const SIDEBAR_EASE = [0.23, 0.88, 0.26, 0.92] as const
 const LINE_SPRING = { stiffness: 250, damping: 30 }
 
-function Separator({ count = 2 }: { count?: number }) {
+function Separator({ count = 2, growFrom }: { count?: number; growFrom?: 'start' | 'end' }) {
   return (
     <>
-      {Array.from({ length: count }).map((_, i) => (
-        <span key={i} className="block h-px w-8 bg-foreground/20" />
-      ))}
+      {Array.from({ length: count }).map((_, i) => {
+        const distance = growFrom === 'end' ? count - 1 - i : i
+        const decay = Math.max(0, 1 - distance / Math.max(count - 1, 1))
+        const scale = growFrom ? 1 + 2 * decay : 1
+        return (
+          <span
+            key={i}
+            className="block h-px w-8 origin-center bg-foreground/20 transition-transform duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none"
+            style={{ transform: `scaleY(${scale})` }}
+          />
+        )
+      })}
     </>
   )
 }
@@ -270,14 +279,14 @@ function NavItem({
   itemRef,
   onHover,
   onLeave,
-  showNumber = true,
+  number,
 }: {
   item: ComponentItem
   isActive: boolean
   itemRef?: RefObject<HTMLAnchorElement | null>
   onHover: () => void
   onLeave: () => void
-  showNumber?: boolean
+  number?: number
 }) {
   const lineWidth = useSpring(isActive ? 55 : 32, LINE_SPRING)
   const [widthValue, setWidthValue] = useState(isActive ? 55 : 32)
@@ -429,7 +438,7 @@ function NavItem({
         )}
       >
         {item.isNew && <NewStarIcon />}
-        {showNumber ? formatComponentLabel(item) : item.name}
+        {typeof number === 'number' ? formatComponentLabel(number, item.name) : item.name}
         {item.isNew && <span className="text-[10px] font-medium">New</span>}
       </span>
     </Link>
@@ -468,6 +477,8 @@ function SidebarNav() {
 
   const isMcpPage = pathname === '/mcp'
   const isIllustrationPage = pathname === '/illustration'
+  const isChangelogPage = pathname === '/changelog'
+  const isDesignPage = pathname === '/design'
 
   return (
     <>
@@ -523,15 +534,17 @@ function SidebarNav() {
             {sortById ? (
               <>
                 <NavSectionHeader title="All Components" active />
-                <Separator />
+                <Separator growFrom={hoveredItem?.id === sortedById[0]?.id ? 'end' : undefined} />
                 {sortedById.map((item, index) => {
                   const isActive = activeId === item.id
+                  const nextItem = sortedById[index + 1]
                   return (
                     <Fragment key={item.id}>
                       <NavItem
                         item={item}
                         isActive={isActive}
                         itemRef={isActive ? activeRef : undefined}
+                        number={index}
                         onHover={() => {
                           setHoveredItem(item)
                           previewOpacity.set(1)
@@ -541,7 +554,17 @@ function SidebarNav() {
                           previewOpacity.set(0)
                         }}
                       />
-                      {index !== sortedById.length - 1 && <Separator />}
+                      {index !== sortedById.length - 1 && (
+                        <Separator
+                          growFrom={
+                            hoveredItem?.id === item.id
+                              ? 'start'
+                              : hoveredItem?.id === nextItem?.id
+                                ? 'end'
+                                : undefined
+                          }
+                        />
+                      )}
                     </Fragment>
                   )
                 })}
@@ -551,15 +574,21 @@ function SidebarNav() {
                 (collection, collectionIndex, filteredArray) => (
                   <Fragment key={collection.id}>
                     <NavSectionHeader title={collection.name} active />
-                    <Separator />
+                    <Separator
+                      growFrom={
+                        hoveredItem?.id === collection.components[0]?.id ? 'end' : undefined
+                      }
+                    />
                     {collection.components.map((item, index) => {
                       const isActive = activeId === item.id
+                      const nextItem = collection.components[index + 1]
                       return (
                         <Fragment key={item.id}>
                           <NavItem
                             item={item}
                             isActive={isActive}
                             itemRef={isActive ? activeRef : undefined}
+                            number={index}
                             onHover={() => {
                               setHoveredItem(item)
                               previewOpacity.set(1)
@@ -569,7 +598,17 @@ function SidebarNav() {
                               previewOpacity.set(0)
                             }}
                           />
-                          {index !== collection.components.length - 1 && <Separator />}
+                          {index !== collection.components.length - 1 && (
+                            <Separator
+                              growFrom={
+                                hoveredItem?.id === item.id
+                                  ? 'start'
+                                  : hoveredItem?.id === nextItem?.id
+                                    ? 'end'
+                                    : undefined
+                              }
+                            />
+                          )}
                         </Fragment>
                       )
                     })}
@@ -583,16 +622,18 @@ function SidebarNav() {
               <>
                 <Separator count={4} />
                 <NavSectionHeader title="Basic" active />
-                <Separator />
+                <Separator
+                  growFrom={hoveredItem?.id === BASIC_COMPONENTS[0]?.id ? 'end' : undefined}
+                />
                 {BASIC_COMPONENTS.map((item, index) => {
                   const isActive = activeId === item.id
+                  const nextItem = BASIC_COMPONENTS[index + 1]
                   return (
                     <Fragment key={item.id}>
                       <NavItem
                         item={item}
                         isActive={isActive}
                         itemRef={isActive ? activeRef : undefined}
-                        showNumber={sortById}
                         onHover={() => {
                           setHoveredItem(item)
                           previewOpacity.set(1)
@@ -602,12 +643,27 @@ function SidebarNav() {
                           previewOpacity.set(0)
                         }}
                       />
-                      {index !== BASIC_COMPONENTS.length - 1 && <Separator />}
+                      {index !== BASIC_COMPONENTS.length - 1 && (
+                        <Separator
+                          growFrom={
+                            hoveredItem?.id === item.id
+                              ? 'start'
+                              : hoveredItem?.id === nextItem?.id
+                                ? 'end'
+                                : undefined
+                          }
+                        />
+                      )}
                     </Fragment>
                   )
                 })}
               </>
             )}
+
+            <Separator count={4} />
+            <NavSectionHeader title="Changelog" active={isChangelogPage} href="/changelog" />
+            <Separator />
+            <NavSectionHeader title="Design" active={isDesignPage} href="/design" />
           </div>
         </div>
       </div>
@@ -620,7 +676,9 @@ export function Sidebar() {
   const shouldShowSidebar =
     (pathname.startsWith('/components/') && pathname !== '/components') ||
     pathname === '/mcp' ||
-    pathname === '/illustration'
+    pathname === '/illustration' ||
+    pathname === '/changelog' ||
+    pathname === '/design'
   const { showSidebar, toggleSidebar, setShowSidebar } = useSidebar()
   const containerRef = useClickOutside<HTMLDivElement>(() => {
     if (showSidebar) setShowSidebar(false)

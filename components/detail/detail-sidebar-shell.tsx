@@ -21,7 +21,12 @@ export default function DetailSidebarShell({ children }: { children: React.React
   const item = activeComponent(pathname)
   const screenSize = useScreenSize()
   const isMobile = screenSize.lessThan('md')
-  const isContentPage = pathname === '/mcp' || pathname === '/icons' || pathname === '/illustration'
+  const isContentPage =
+    pathname === '/mcp' ||
+    pathname === '/icons' ||
+    pathname === '/illustration' ||
+    pathname === '/changelog' ||
+    pathname === '/design'
 
   return (
     <PreviewControlProvider>
