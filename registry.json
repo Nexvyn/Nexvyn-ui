@@ -413,6 +413,19 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "A composable data table with semantic markup and a per-row hover highlight that dims into the active row.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

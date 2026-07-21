@@ -20,6 +20,7 @@ const SOURCE_MAP: Record<string, string[]> = {
   'scroll-indicator': ['components', 'ui', 'scroll-indicator.tsx'],
   select: ['components', 'ui', 'select.tsx'],
   switch: ['components', 'ui', 'switch.tsx'],
+  table: ['components', 'ui', 'table.tsx'],
   'table-of-contents': ['components', 'ui', 'table-of-contents.tsx'],
 }
 

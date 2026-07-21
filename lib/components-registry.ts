@@ -16,6 +16,7 @@ import { ratioSliderMetadata } from '@/components/ui/Doc/ratio-slider-metadata'
 import { scrollIndicatorMetadata } from '@/components/ui/Doc/scroll-indicator-metadata'
 import { selectMetadata } from '@/components/ui/Doc/select-metadata'
 import { switchMetadata } from '@/components/ui/Doc/switch-metadata'
+import { tableMetadata } from '@/components/ui/Doc/table-metadata'
 import { tableOfContentsMetadata } from '@/components/ui/Doc/table-of-contents-metadata'
 
 export type ComponentItem = {
@@ -73,6 +74,7 @@ export const COMPONENTS: ComponentItem[] = [
   scrollIndicatorMetadata,
   selectMetadata,
   switchMetadata,
+  tableMetadata,
   tableOfContentsMetadata,
 ]
 
