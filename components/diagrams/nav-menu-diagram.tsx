@@ -21,7 +21,6 @@ import {
   DimH,
   DimLabel,
   DimV,
-  PadGuide,
   Selection,
 } from '@/components/diagrams/lib/parts'
 
@@ -39,7 +38,6 @@ const NAV_H = ITEM_Y[3] + NM.itemH
 
 const ITEM_LABELS = ['Overview', 'Install', 'Theming', 'Components'] as const
 
-
 const BP = {
   itemH: 20,
   itemGap: 2,
@@ -50,7 +48,8 @@ const BP = {
 const BP_ITEM_Y = [0, BP.itemH + BP.itemGap, 2 * (BP.itemH + BP.itemGap), 3 * (BP.itemH + BP.itemGap)]
 const BP_NAV_H = BP_ITEM_Y[3] + BP.itemH
 const BP_X = 30
-const BP_Y = 16
+
+const BP_Y = 20
 
 export function NavMenuBlueprint() {
   const theme = blueprintTheme
@@ -106,11 +105,31 @@ export function NavMenuBlueprint() {
         <Selection x={BP_X} y={BP_Y} w={BP.navW} h={BP_NAV_H} />
         <DimH x1={BP_X} x2={BP_X + BP.navW} y={BP_Y - 12} label={`${BP.navW}`} />
         <DimV x={BP_X - 12} y1={BP_Y} y2={BP_Y + BP_NAV_H} label={`${BP_NAV_H}`} />
+        
+        <g
+          stroke="var(--bp-accent, var(--color-accent))"
+          strokeWidth={theme.guide.strokeWidth}
+          strokeDasharray="2 2"
+          opacity={theme.guide.structOpacity}
+        >
+          <line x1={BP_X} y1={BP_Y + 8} x2={BP_X + NM.inset} y2={BP_Y + 8} />
+          <line
+            x1={BP_X + BP.navW - NM.inset}
+            y1={BP_Y + 8}
+            x2={BP_X + BP.navW}
+            y2={BP_Y + 8}
+          />
+        </g>
+        <DimLabel x={BP_X + NM.inset / 2} y={BP_Y + 8 - 3} anchor="middle">
+          {`${NM.inset}`}
+        </DimLabel>
+        <DimLabel x={BP_X + BP.navW - NM.inset / 2} y={BP_Y + 8 - 3} anchor="middle">
+          {`${NM.inset}`}
+        </DimLabel>
       </g>
     </Blueprint>
   )
 }
-
 
 const TX = 60
 const TY = 20
@@ -138,24 +157,21 @@ function NavShape() {
         className={spotlight.className}
         style={spotlight.style}
       />
+      
       <g className="pointer-events-none">
-        <PadGuide
-          x={NM.inset}
-          y={0}
-          w={NM.navW - NM.inset * 2}
-          h={NAV_H}
-          offset={0.8}
-          boxX={0}
-          boxY={0}
-          boxW={NM.navW}
-          boxH={NAV_H}
-          boxRx={6}
-          clipOffset={0.8}
-        />
-        <DimLabel x={NM.inset - 2} y={NAV_H / 2 + 2.5} anchor="end">
+        <g
+          stroke="var(--bp-accent, var(--color-accent))"
+          strokeWidth={blueprintTheme.guide.strokeWidth}
+          strokeDasharray="2 2"
+          opacity={blueprintTheme.guide.structOpacity}
+        >
+          <line x1={0} y1={16} x2={NM.inset} y2={16} />
+          <line x1={NM.navW - NM.inset} y1={16} x2={NM.navW} y2={16} />
+        </g>
+        <DimLabel x={NM.inset / 2} y={16 - 4} anchor="middle">
           {`${NM.inset}`}
         </DimLabel>
-        <DimLabel x={NM.navW - NM.inset + 2} y={NAV_H / 2 + 2.5} anchor="start">
+        <DimLabel x={NM.navW - NM.inset / 2} y={16 - 4} anchor="middle">
           {`${NM.inset}`}
         </DimLabel>
       </g>

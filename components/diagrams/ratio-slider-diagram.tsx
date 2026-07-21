@@ -60,7 +60,7 @@ export function RatioSliderWireframe() {
       />
       
       <text
-        x={BP.x + 10}
+        x={BP.x + 12}
         y={midY + 4}
         fontSize={9}
         fontWeight={500}
@@ -95,7 +95,7 @@ export function RatioSliderWireframe() {
         className={`${BP_FILL_MUTED} stroke-current`}
       />
       <text
-        x={BP_RIGHT_X + BP_RIGHT_W - 10}
+        x={BP_RIGHT_X + BP_RIGHT_W - 12}
         y={midY + 4}
         textAnchor="end"
         fontSize={9}
@@ -138,6 +138,22 @@ export function RatioSliderWireframe() {
         </g>
         <DimLabel x={BP.x + BP_LEFT_W + BP.gap / 2} y={BP.y + BP.h + 30} anchor="middle">
           gap 8
+        </DimLabel>
+        
+        <g
+          stroke="var(--bp-accent, var(--color-accent))"
+          strokeWidth={theme.guide.strokeWidth}
+          strokeDasharray="2 2"
+          opacity={theme.guide.structOpacity}
+        >
+          <line x1={BP.x} y1={BP.y + 8} x2={BP.x + 12} y2={BP.y + 8} />
+          <line x1={BP_RIGHT_X + BP_RIGHT_W - 12} y1={BP.y + 8} x2={BP_RIGHT_X + BP_RIGHT_W} y2={BP.y + 8} />
+        </g>
+        <DimLabel x={BP.x + 6} y={BP.y + 8 - 3} anchor="middle">
+          12
+        </DimLabel>
+        <DimLabel x={BP_RIGHT_X + BP_RIGHT_W - 6} y={BP.y + 8 - 3} anchor="middle">
+          12
         </DimLabel>
       </g>
     </Blueprint>
@@ -185,7 +201,7 @@ function LeftBarShape() {
         className={spotlight.className}
       />
       <text
-        x={AN.x + 14}
+        x={AN.x + 12}
         y={AN_MID_Y + 4}
         fontSize={12}
         fontWeight={500}
@@ -221,7 +237,7 @@ function RightBarShape() {
         className={spotlight.className}
       />
       <text
-        x={AN_RIGHT_X + AN_RIGHT_W - 14}
+        x={AN_RIGHT_X + AN_RIGHT_W - 12}
         y={AN_MID_Y + 4}
         textAnchor="end"
         fontSize={12}
@@ -355,6 +371,27 @@ function AnnotationsLayer() {
       </DimLabel>
       <DimLabel x={AN_DIV_X + AN.divW / 2} y={AN.y - 12} anchor="middle">
         handle 6
+      </DimLabel>
+      
+      <g
+        stroke="var(--bp-accent, var(--color-accent))"
+        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeDasharray="2 2"
+        opacity={blueprintTheme.guide.structOpacity}
+      >
+        <line x1={AN.x} y1={AN.y + 12} x2={AN.x + 12} y2={AN.y + 12} />
+        <line
+          x1={AN_RIGHT_X + AN_RIGHT_W - 12}
+          y1={AN.y + 12}
+          x2={AN_RIGHT_X + AN_RIGHT_W}
+          y2={AN.y + 12}
+        />
+      </g>
+      <DimLabel x={AN.x + 6} y={AN.y + 12 - 4} anchor="middle">
+        12
+      </DimLabel>
+      <DimLabel x={AN_RIGHT_X + AN_RIGHT_W - 6} y={AN.y + 12 - 4} anchor="middle">
+        12
       </DimLabel>
     </g>
   )

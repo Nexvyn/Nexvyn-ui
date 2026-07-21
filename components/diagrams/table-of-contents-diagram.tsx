@@ -26,9 +26,10 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 
-const BP_TRIGGER = { x: 20, y: 94, w: 180, h: 36, rx: 4 } as const
 const BP_PANEL = { x: 20, y: 10, w: 180, h: 74, rx: 8 } as const
-const BP_RING = { cx: 162, cy: 112, r: 6 } as const
+const BP_GAP = 12
+const BP_TRIGGER = { x: 20, y: BP_PANEL.y + BP_PANEL.h + BP_GAP, w: 180, h: 36, rx: 4 } as const
+const BP_RING = { cx: 162, cy: BP_TRIGGER.y + BP_TRIGGER.h / 2, r: 6 } as const
 
 export function TableOfContentsWireframe() {
   const theme = blueprintTheme
@@ -149,6 +150,23 @@ export function TableOfContentsWireframe() {
         </DimLabel>
         <DimLabel x={BP_TRIGGER.x} y={BP_TRIGGER.y - 4} anchor="start">
           r4
+        </DimLabel>
+        
+        <g
+          stroke="var(--bp-accent, var(--color-accent))"
+          strokeWidth={theme.guide.strokeWidth}
+          strokeDasharray="2 2"
+          opacity={theme.guide.structOpacity}
+        >
+          <line
+            x1={BP_TRIGGER.x + 40}
+            y1={BP_PANEL.y + BP_PANEL.h}
+            x2={BP_TRIGGER.x + 40}
+            y2={BP_TRIGGER.y}
+          />
+        </g>
+        <DimLabel x={BP_TRIGGER.x + 46} y={(BP_PANEL.y + BP_PANEL.h + BP_TRIGGER.y) / 2 + 2.5} anchor="start">
+          {`${BP_GAP}`}
         </DimLabel>
       </g>
     </Blueprint>
