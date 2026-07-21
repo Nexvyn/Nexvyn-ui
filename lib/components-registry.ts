@@ -9,6 +9,7 @@ import { dropdownMenuMetadata } from '@/components/ui/Doc/dropdown-menu-metadata
 import { navMenuMetadata } from '@/components/ui/Doc/nav-menu-metadata'
 import { iconBarMetadata } from '@/components/ui/Doc/icon-bar-metadata'
 import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
+import { inputMetadata } from '@/components/ui/Doc/input-metadata'
 import { passwordInputMetadata } from '@/components/ui/Doc/password-input-metadata'
 import { radioGroupMetadata } from '@/components/ui/Doc/radio-group-metadata'
 import { ratioSliderMetadata } from '@/components/ui/Doc/ratio-slider-metadata'
@@ -64,6 +65,7 @@ export const COMPONENTS: ComponentItem[] = [
   faderMetadata,
   gooDropdownMetadata,
   iconBarMetadata,
+  inputMetadata,
   navMenuMetadata,
   passwordInputMetadata,
   radioGroupMetadata,
