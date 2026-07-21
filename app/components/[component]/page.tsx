@@ -16,6 +16,7 @@ import {
   BadgeDemo,
   BounceSidebarDemo,
   BreadcrumbsDemo,
+  CheckboxDemo,
   ClipboardFieldDemo,
   DropdownMenuDemo,
   ColorPickerDemo,
@@ -126,6 +127,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <BreadcrumbsDemo />
+        </DemoFrame>
+      )
+    case 'checkbox':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <CheckboxDemo />
         </DemoFrame>
       )
     case 'clipboard-field':

@@ -16,6 +16,9 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'icon-bar-blueprint': dynamic(() =>
     import('@/components/diagrams/icon-bar-diagram').then((m) => m.IconBarBlueprint),
   ),
+  'checkbox-blueprint': dynamic(() =>
+    import('@/components/diagrams/checkbox-diagram').then((m) => m.CheckboxBlueprint),
+  ),
   'clipboard-field-blueprint': dynamic(() =>
     import('@/components/diagrams/clipboard-field-diagram').then((m) => m.ClipboardFieldBlueprint),
   ),
