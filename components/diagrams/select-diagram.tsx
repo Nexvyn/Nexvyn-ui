@@ -67,8 +67,9 @@ export function SelectBlueprint() {
       >
         Select…
       </text>
+      
       <path
-        d={`M${BP.x + BP.w - 20} ${BP.y + BP.triggerH / 2 - 3} l4 4 4-4`}
+        d={`M${BP.x + BP.w - BP.triggerPadX - 8} ${BP.y + BP.triggerH / 2 - 3} l4 4 4-4`}
         strokeWidth={1.5}
         stroke="currentColor"
         fill="none"
@@ -160,10 +161,11 @@ export function SelectBlueprint() {
           boxRx={BP.triggerRx}
           clipOffset={0.8}
         />
-        <DimLabel x={BP.x + 7} y={BP.y + BP.triggerH / 2 + 2.5} anchor="middle">
+        
+        <DimLabel x={BP.x + 7} y={BP.y + BP.triggerH - 4} anchor="middle">
           {`${BP.triggerPadX}`}
         </DimLabel>
-        <DimLabel x={BP.x + BP.w - 7} y={BP.y + BP.triggerH / 2 + 2.5} anchor="middle">
+        <DimLabel x={BP.x + BP.w - 7} y={BP.y + BP.triggerH - 4} anchor="middle">
           {`${BP.triggerPadX}`}
         </DimLabel>
         <DimLabel x={BP.x + BP.w / 2} y={BP.y + 6} anchor="middle">
@@ -235,8 +237,9 @@ function TriggerShape() {
       >
         Select…
       </text>
+      
       <path
-        d={`M${AN.x + AN.w - 22} ${AN.y + AN.triggerH / 2 - 3} l4 4 4-4`}
+        d={`M${AN.x + AN.w - AN.triggerPadX - 8} ${AN.y + AN.triggerH / 2 - 3} l4 4 4-4`}
         stroke="currentColor"
         strokeWidth={1.5}
         strokeLinecap="round"
@@ -353,10 +356,11 @@ function AnnotationsLayer() {
         boxRx={AN.triggerRx}
         clipOffset={0.8}
       />
-      <DimLabel x={AN.x + 7} y={AN.y + AN.triggerH / 2 + 2.5} anchor="middle">
+      
+      <DimLabel x={AN.x + 7} y={AN.y + AN.triggerH - 4} anchor="middle">
         {`${AN.triggerPadX}`}
       </DimLabel>
-      <DimLabel x={AN.x + AN.w - 7} y={AN.y + AN.triggerH / 2 + 2.5} anchor="middle">
+      <DimLabel x={AN.x + AN.w - 7} y={AN.y + AN.triggerH - 4} anchor="middle">
         {`${AN.triggerPadX}`}
       </DimLabel>
       <DimLabel x={AN.x + AN.w / 2} y={AN.y + 7} anchor="middle">

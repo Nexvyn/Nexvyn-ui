@@ -263,6 +263,27 @@
       ]
     },
     {
+      "name": "icon-bar",
+      "type": "registry:ui",
+      "title": "Icon Bar",
+      "description": "A horizontal toolbar of icon buttons with bloom-open label reveal on hover/selection, accent dot indicator, and roving tabindex.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/icon-bar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/weight-shift-text.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
       "name": "nav-menu",
       "type": "registry:ui",
       "title": "Nav Menu",

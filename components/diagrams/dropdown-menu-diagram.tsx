@@ -1,5 +1,10 @@
 'use client'
 
+// SPDX-License-Identifier: CC-BY-NC-4.0
+// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
+// This file is NOT covered by the repository's root MIT LICENSE.
+
 import {
   AnatomyFrame,
   AnatomyTag,
@@ -20,11 +25,10 @@ import {
   Selection,
 } from '@/components/diagrams/lib/parts'
 
-
 const DM = {
 
   triggerW: 160,
-  triggerH: 28,
+  triggerH: 32,
   triggerRx: 8,
   panelW: 160,
   panelRx: 8,
@@ -33,7 +37,6 @@ const DM = {
   itemPadX: 12,
   padY: 6,
   sepGap: 6,
-
 
   itemGap: 2,
 } as const
@@ -45,11 +48,10 @@ const PANEL_H = ITEM2_Y + DM.itemH + DM.padY
 
 const ITEM_LABELS = ['Edit', 'Duplicate', 'Delete'] as const
 
-
-const BP_TRIGGER = { x: 30, y: 16, w: DM.triggerW, h: DM.triggerH, rx: DM.triggerRx } as const
+const BP_TRIGGER = { x: 30, y: 20, w: DM.triggerW, h: DM.triggerH, rx: DM.triggerRx } as const
 const BP_PANEL = {
   x: 30,
-  y: BP_TRIGGER.y + BP_TRIGGER.h + 6,
+  y: BP_TRIGGER.y + BP_TRIGGER.h + 2,
   w: DM.panelW,
   h: PANEL_H,
   rx: DM.panelRx,
@@ -124,8 +126,9 @@ export function DropdownMenuBlueprint() {
       >
         Actions
       </text>
+      
       <path
-        d={`M${BP_TRIGGER.x + BP_TRIGGER.w - 20} ${BP_TRIGGER.y + BP_TRIGGER.h / 2 - 3} l4 4 4-4`}
+        d={`M${BP_TRIGGER.x + BP_TRIGGER.w - 24} ${BP_TRIGGER.y + BP_TRIGGER.h / 2 - 3} l4 4 4-4`}
         strokeWidth={1.5}
         stroke="currentColor"
         fill="none"
@@ -136,12 +139,48 @@ export function DropdownMenuBlueprint() {
         <Selection x={BP_PANEL.x} y={BP_PANEL.y} w={BP_PANEL.w} h={BP_PANEL.h} />
         <DimH x1={BP_TRIGGER.x} x2={BP_TRIGGER.x + BP_TRIGGER.w} y={BP_TRIGGER.y - 12} label={`${BP_PANEL.w}`} />
         <DimV x={BP_PANEL.x - 12} y1={BP_PANEL.y} y2={BP_PANEL.y + BP_PANEL.h} label={`${BP_PANEL.h}`} />
+        
+        <PadGuide
+          x={BP_TRIGGER.x + 16}
+          y={BP_TRIGGER.y + 12}
+          w={BP_TRIGGER.w - 32}
+          h={BP_TRIGGER.h - 24}
+          offset={0.8}
+          boxX={BP_TRIGGER.x}
+          boxY={BP_TRIGGER.y}
+          boxW={BP_TRIGGER.w}
+          boxH={BP_TRIGGER.h}
+          boxRx={BP_TRIGGER.rx}
+          clipOffset={0.8}
+        />
+        
+        <DimLabel x={BP_TRIGGER.x + 8} y={BP_TRIGGER.y + BP_TRIGGER.h - 4} anchor="middle">
+          16
+        </DimLabel>
+        <DimLabel x={BP_TRIGGER.x + BP_TRIGGER.w / 2} y={BP_TRIGGER.y + 9} anchor="middle">
+          12
+        </DimLabel>
+        
+        <PadGuide
+          x={BP_PANEL.x + DM.padY}
+          y={BP_PANEL.y + DM.padY}
+          w={BP_PANEL.w - DM.padY * 2}
+          h={BP_PANEL.h - DM.padY * 2}
+          offset={0.8}
+          boxX={BP_PANEL.x}
+          boxY={BP_PANEL.y}
+          boxW={BP_PANEL.w}
+          boxH={BP_PANEL.h}
+          boxRx={BP_PANEL.rx}
+          clipOffset={0.8}
+        />
+        <DimLabel x={BP_PANEL.x + DM.padY - 2} y={BP_PANEL.y + BP_PANEL.h / 2 + 2.5} anchor="end">
+          {`${DM.padY}`}
+        </DimLabel>
       </g>
     </Blueprint>
   )
 }
-
-
 
 const AN = {
   triggerH: 44,
