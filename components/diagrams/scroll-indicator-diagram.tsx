@@ -239,7 +239,13 @@ function LabelsShape() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      <rect x={AN_RAIL_X + 6} y={AN_RAIL_Y1} width={70} height={AN_RAIL_Y2 - AN_RAIL_Y1} fill="transparent" />
+      <rect
+        x={AN_RAIL_X + 6}
+        y={AN_RAIL_Y1}
+        width={70}
+        height={AN_RAIL_Y2 - AN_RAIL_Y1}
+        fill="transparent"
+      />
       {AN_HEADING_INDICES.map((i, idx) => (
         <text
           key={i}
@@ -312,7 +318,11 @@ function TagsLayer() {
         height={20}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="section-marks" label="Section Mark" className="items-center justify-end" />
+        <AnatomyTag
+          part="section-marks"
+          label="Section Mark"
+          className="items-center justify-end"
+        />
       </foreignObject>
       <foreignObject
         x={40}
