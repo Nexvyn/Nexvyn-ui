@@ -10,9 +10,11 @@ import { navMenuMetadata } from '@/components/ui/Doc/nav-menu-metadata'
 import { iconBarMetadata } from '@/components/ui/Doc/icon-bar-metadata'
 import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
 import { passwordInputMetadata } from '@/components/ui/Doc/password-input-metadata'
+import { radioGroupMetadata } from '@/components/ui/Doc/radio-group-metadata'
 import { ratioSliderMetadata } from '@/components/ui/Doc/ratio-slider-metadata'
 import { scrollIndicatorMetadata } from '@/components/ui/Doc/scroll-indicator-metadata'
 import { selectMetadata } from '@/components/ui/Doc/select-metadata'
+import { switchMetadata } from '@/components/ui/Doc/switch-metadata'
 import { tableOfContentsMetadata } from '@/components/ui/Doc/table-of-contents-metadata'
 
 export type ComponentItem = {
@@ -64,9 +66,11 @@ export const COMPONENTS: ComponentItem[] = [
   iconBarMetadata,
   navMenuMetadata,
   passwordInputMetadata,
+  radioGroupMetadata,
   ratioSliderMetadata,
   scrollIndicatorMetadata,
   selectMetadata,
+  switchMetadata,
   tableOfContentsMetadata,
 ]
 
@@ -105,10 +109,9 @@ export function getComponentNumber(id: string): number {
   return index >= 0 ? index : 0
 }
 
-export function formatComponentLabel(item: ComponentItem): string {
-  const num = getComponentNumber(item.id)
-  const prefix = num < 10 ? `0${num}` : `${num}`
-  return `${prefix} ${item.name}`
+export function formatComponentLabel(index: number, name: string): string {
+  const prefix = index < 10 ? `0${index}` : `${index}`
+  return `${prefix} ${name}`
 }
 
 export function getComponentHref(id: string): string {

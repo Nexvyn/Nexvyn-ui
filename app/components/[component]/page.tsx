@@ -25,9 +25,11 @@ import {
   IconBarDemo,
   NavMenuDemo,
   PasswordInputDemo,
+  RadioGroupDemo,
   RatioSliderDemo,
   ScrollIndicatorDemo,
   SelectDemo,
+  SwitchDemo,
   TableOfContentsDemo,
 } from '@/components/ui/previews'
 
@@ -189,6 +191,12 @@ export function ComponentDemo({ id }: { id: string }) {
           <PasswordInputDemo />
         </DemoFrame>
       )
+    case 'radio-group':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <RadioGroupDemo />
+        </DemoFrame>
+      )
     case 'ratio-slider':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
@@ -199,6 +207,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <ScrollIndicatorDemo />
+        </DemoFrame>
+      )
+    case 'switch':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <SwitchDemo />
         </DemoFrame>
       )
     case 'select':

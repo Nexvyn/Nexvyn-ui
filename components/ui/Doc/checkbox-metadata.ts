@@ -6,6 +6,7 @@ export const checkboxMetadata: ComponentItem = {
   collection: 'inputs',
   previewType: 'default',
   isNew: true,
+  basic: true,
   description:
     'A checkbox with drawn check animation, indeterminate state, and hidden native input for forms.',
   registry: 'checkbox',
