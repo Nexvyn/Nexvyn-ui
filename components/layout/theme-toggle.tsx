@@ -70,7 +70,10 @@ export function ThemeToggle({
   return (
     <Button
       onClick={toggle}
-      className={cn('h-9 px-3 gap-1.5 group rounded-2xl squircle-corners hit-area-44', className)}
+      className={cn(
+        'h-9 px-3 gap-1.5 group rounded-2xl squircle-corners hit-area-44 hover:bg-(--color-surface-2) hover:text-(--color-fg)',
+        className,
+      )}
       style={{ color: 'var(--color-fg)' }}
       variant={variant}
       size="sm"

@@ -26,7 +26,6 @@ import {
 } from '@/components/diagrams/lib/parts'
 
 const DM = {
-
   triggerW: 160,
   triggerH: 32,
   triggerRx: 8,
@@ -126,7 +125,7 @@ export function DropdownMenuBlueprint() {
       >
         Actions
       </text>
-      
+
       <path
         d={`M${BP_TRIGGER.x + BP_TRIGGER.w - 24} ${BP_TRIGGER.y + BP_TRIGGER.h / 2 - 3} l4 4 4-4`}
         strokeWidth={1.5}
@@ -137,9 +136,19 @@ export function DropdownMenuBlueprint() {
       />
       <g className={BP_HIDE_ON_MORPH}>
         <Selection x={BP_PANEL.x} y={BP_PANEL.y} w={BP_PANEL.w} h={BP_PANEL.h} />
-        <DimH x1={BP_TRIGGER.x} x2={BP_TRIGGER.x + BP_TRIGGER.w} y={BP_TRIGGER.y - 12} label={`${BP_PANEL.w}`} />
-        <DimV x={BP_PANEL.x - 12} y1={BP_PANEL.y} y2={BP_PANEL.y + BP_PANEL.h} label={`${BP_PANEL.h}`} />
-        
+        <DimH
+          x1={BP_TRIGGER.x}
+          x2={BP_TRIGGER.x + BP_TRIGGER.w}
+          y={BP_TRIGGER.y - 12}
+          label={`${BP_PANEL.w}`}
+        />
+        <DimV
+          x={BP_PANEL.x - 12}
+          y1={BP_PANEL.y}
+          y2={BP_PANEL.y + BP_PANEL.h}
+          label={`${BP_PANEL.h}`}
+        />
+
         <PadGuide
           x={BP_TRIGGER.x + 16}
           y={BP_TRIGGER.y + 12}
@@ -153,14 +162,14 @@ export function DropdownMenuBlueprint() {
           boxRx={BP_TRIGGER.rx}
           clipOffset={0.8}
         />
-        
+
         <DimLabel x={BP_TRIGGER.x + 8} y={BP_TRIGGER.y + BP_TRIGGER.h - 4} anchor="middle">
           16
         </DimLabel>
         <DimLabel x={BP_TRIGGER.x + BP_TRIGGER.w / 2} y={BP_TRIGGER.y + 9} anchor="middle">
           12
         </DimLabel>
-        
+
         <PadGuide
           x={BP_PANEL.x + DM.padY}
           y={BP_PANEL.y + DM.padY}
@@ -252,7 +261,7 @@ function TriggerShape() {
         fill="none"
         className={`opacity-60 ${spotlight.className}`}
       />
-      
+
       <g className="pointer-events-none">
         <PadGuide
           x={AN.triggerPadX}
@@ -307,7 +316,7 @@ function PanelShape() {
         className={spotlight.className}
         style={spotlight.style}
       />
-      
+
       <g className="pointer-events-none">
         <PadGuide
           x={AN.panelPad}
@@ -359,7 +368,6 @@ function ItemShape({
       className="cursor-pointer"
       style={{ pointerEvents: 'all' }}
     >
-      
       <rect
         x={AN.panelPad}
         y={y}
@@ -449,7 +457,6 @@ function AnnotationsLayer() {
 }
 
 function OverlayLines() {
-
   const triggerMidX = TX + AN_TRIGGER_W / 2
   const triggerBottom = TY + AN_TRIGGER_Y + AN.triggerH
   const panelMidX = TX + AN.panelW / 2
@@ -460,10 +467,22 @@ function OverlayLines() {
   const sepMidY = TY + AN_SEP_LINE_Y
   return (
     <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="trigger" x1={triggerMidX} y1={triggerBottom} x2={triggerMidX} y2={triggerBottom + 16} />
+      <OverlayLine
+        id="trigger"
+        x1={triggerMidX}
+        y1={triggerBottom}
+        x2={triggerMidX}
+        y2={triggerBottom + 16}
+      />
       <OverlayLine id="panel" x1={panelMidX} y1={panelTop} x2={panelMidX} y2={panelTop - 12} />
       <OverlayLine id="item-1" x1={item1Right} y1={item1MidY} x2={item1Right + 26} y2={item1MidY} />
-      <OverlayLine id="highlight" x1={item1Right} y1={item2MidY} x2={item1Right + 26} y2={item2MidY} />
+      <OverlayLine
+        id="highlight"
+        x1={item1Right}
+        y1={item2MidY}
+        x2={item1Right + 26}
+        y2={item2MidY}
+      />
       <OverlayLine id="separator" x1={item1Right} y1={sepMidY} x2={item1Right + 26} y2={sepMidY} />
     </g>
   )
@@ -488,7 +507,12 @@ function Tags() {
         height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="trigger" label="Trigger" className="items-start justify-center" isAccent />
+        <AnatomyTag
+          part="trigger"
+          label="Trigger"
+          className="items-start justify-center"
+          isAccent
+        />
       </foreignObject>
       <foreignObject
         x={panelMidX - 60}
@@ -499,7 +523,13 @@ function Tags() {
       >
         <AnatomyTag part="panel" label="Panel" className="items-end justify-center" />
       </foreignObject>
-      <foreignObject x={tagX} y={item1MidY - 12} width={80} height={24} className="pointer-events-none overflow-visible">
+      <foreignObject
+        x={tagX}
+        y={item1MidY - 12}
+        width={80}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
         <AnatomyTag part="item-1" label="Item" className="items-center justify-start" />
       </foreignObject>
       <foreignObject
@@ -509,9 +539,20 @@ function Tags() {
         height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="highlight" label="Hover" className="items-center justify-start" isAccent />
+        <AnatomyTag
+          part="highlight"
+          label="Hover"
+          className="items-center justify-start"
+          isAccent
+        />
       </foreignObject>
-      <foreignObject x={tagX} y={sepMidY - 12} width={100} height={24} className="pointer-events-none overflow-visible">
+      <foreignObject
+        x={tagX}
+        y={sepMidY - 12}
+        width={100}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
         <AnatomyTag part="separator" label="Separator" className="items-center justify-start" />
       </foreignObject>
     </>

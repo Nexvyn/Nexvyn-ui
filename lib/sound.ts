@@ -1,5 +1,47 @@
 'use client'
 
+const MUTE_KEY = 'sound-muted'
+const MUTE_EVENT = 'sound-mute-change'
+
+let muted = false
+if (typeof window !== 'undefined') {
+  try {
+    muted = localStorage.getItem(MUTE_KEY) === '1'
+  } catch {}
+}
+
+export function isSoundMuted(): boolean {
+  return muted
+}
+
+export function setSoundMuted(value: boolean) {
+  muted = value
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem(MUTE_KEY, value ? '1' : '0')
+    } catch {}
+    window.dispatchEvent(new CustomEvent(MUTE_EVENT))
+  }
+}
+
+export function toggleSoundMuted(): boolean {
+  setSoundMuted(!muted)
+  return muted
+}
+
+export function subscribeSoundMuted(callback: () => void) {
+  if (typeof window === 'undefined') return () => {}
+  window.addEventListener(MUTE_EVENT, callback)
+  const onStorage = (e: StorageEvent) => {
+    if (e.key === MUTE_KEY) callback()
+  }
+  window.addEventListener('storage', onStorage)
+  return () => {
+    window.removeEventListener(MUTE_EVENT, callback)
+    window.removeEventListener('storage', onStorage)
+  }
+}
+
 let audioCtx: AudioContext | null = null
 
 function initAudio(): AudioContext | null {
@@ -35,6 +77,7 @@ export function getAudioContext(): AudioContext | null {
 }
 
 export function playHoverSound(volume = 0.12, pitch = 1.2) {
+  if (muted) return
   try {
     const ctx = getAudioContext()
     if (!ctx) return
@@ -55,11 +98,11 @@ export function playHoverSound(volume = 0.12, pitch = 1.2) {
 
     osc.start(now)
     osc.stop(now + 0.012)
-  } catch {
-  }
+  } catch {}
 }
 
 export function playClickSound(volume = 0.2, pitch = 1.0) {
+  if (muted) return
   try {
     const ctx = getAudioContext()
     if (!ctx) return
@@ -80,11 +123,11 @@ export function playClickSound(volume = 0.2, pitch = 1.0) {
 
     osc.start(now)
     osc.stop(now + 0.02)
-  } catch {
-  }
+  } catch {}
 }
 
 export function playTickSound(volume = 0.1, pitch = 1.5) {
+  if (muted) return
   try {
     const ctx = getAudioContext()
     if (!ctx) return
@@ -105,11 +148,11 @@ export function playTickSound(volume = 0.1, pitch = 1.5) {
 
     osc.start(now)
     osc.stop(now + 0.01)
-  } catch {
-  }
+  } catch {}
 }
 
 export function playBounceSound(volume = 0.3, pitch = 1.0) {
+  if (muted) return
   try {
     const ctx = getAudioContext()
     if (!ctx) return
@@ -147,6 +190,5 @@ export function playBounceSound(volume = 0.3, pitch = 1.0) {
 
     subOsc.start(now)
     subOsc.stop(now + 0.05)
-  } catch {
-  }
+  } catch {}
 }

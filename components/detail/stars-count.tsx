@@ -38,7 +38,11 @@ export function StarsCount() {
     const playBounceSequence = async () => {
       await wait(1500)
       while (isPlaying) {
-        await animate('.mascot-coin', { y: -8 }, { type: 'spring', stiffness: 500, damping: 20, mass: 0.6 })
+        await animate(
+          '.mascot-coin',
+          { y: -8 },
+          { type: 'spring', stiffness: 500, damping: 20, mass: 0.6 },
+        )
         if (!isPlaying) return
         await animate('.mascot-coin', { y: 0 }, { type: 'spring', stiffness: 400, damping: 25 })
         if (!isPlaying) return
@@ -103,14 +107,22 @@ export function StarsCount() {
           .mascot-eye, .mascot-coin { animation: none !important; transform: none !important; }
         }
       `}</style>
-      <span className="relative inline-block" style={{ width: 24, height: 24, perspective: '1000px' }}>
+      <span
+        className="relative inline-block"
+        style={{ width: 24, height: 24, perspective: '1000px' }}
+      >
         <div className="mascot-coin">
           <svg aria-hidden="true" viewBox="0 35 120 120" fill="none" className="mascot-face">
             <path d={starRest} fill="currentColor" className="mascot-wave-path" />
             <circle cx="40" cy="92" r="5" fill="var(--color-bg)" className="mascot-eye" />
             <circle cx="76" cy="92" r="5" fill="var(--color-bg)" className="mascot-eye" />
           </svg>
-          <svg aria-hidden="true" viewBox="0 35 120 120" fill="none" className="mascot-face mascot-face-back">
+          <svg
+            aria-hidden="true"
+            viewBox="0 35 120 120"
+            fill="none"
+            className="mascot-face mascot-face-back"
+          >
             <path d={starRest} fill="currentColor" />
           </svg>
         </div>

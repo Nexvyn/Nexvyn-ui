@@ -107,7 +107,7 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
     if (!open || !item?.registry) return
     let cancelled = false
     const request = fetch(`/r/${item.registry}.json`)
-   setLoading(true)
+    setLoading(true)
     setFiles([])
     setSelectedFileIndex(0)
 

@@ -120,7 +120,6 @@ export function IconBarBlueprint() {
   const theme = blueprintTheme
   return (
     <Blueprint>
-      
       <rect
         x={BP_X + BP_BTN_X[0]}
         y={BP_Y}
@@ -141,7 +140,7 @@ export function IconBarBlueprint() {
         strokeOpacity={theme.wireframe.strokeOpacity * 0.3}
         className={BP_FILL_PANEL}
       />
-      
+
       <IconGlyph
         paths={PEN_PATHS}
         x={BP_X + BP_BTN_X[0]}
@@ -170,7 +169,6 @@ export function IconBarBlueprint() {
         className={BP_HIDE_ON_MORPH}
       />
 
-      
       <rect
         x={BP_X + BP_BTN_X[1]}
         y={BP_Y}
@@ -191,7 +189,6 @@ export function IconBarBlueprint() {
         className={`${BP_MORPH} opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100`}
       />
 
-      
       <rect
         x={BP_X + BP_BTN_X[2]}
         y={BP_Y}
@@ -202,7 +199,7 @@ export function IconBarBlueprint() {
         strokeOpacity={theme.wireframe.strokeOpacity * 0.15}
         className={BP_FILL_PANEL}
       />
-      
+
       <IconGlyph
         paths={FILL_PATHS}
         x={BP_X + BP_BTN_X[2]}
@@ -217,7 +214,7 @@ export function IconBarBlueprint() {
         <Selection x={BP_X} y={BP_Y} w={BP_TOTAL_W} h={BP.btnH} />
         <DimH x1={BP_X} x2={BP_X + BP_TOTAL_W} y={BP_Y - 12} label={`${BP_TOTAL_W}`} />
         <DimV x={BP_X - 12} y1={BP_Y} y2={BP_Y + BP.btnH} label={`${BP.btnH}`} />
-        
+
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
@@ -230,7 +227,12 @@ export function IconBarBlueprint() {
             x2={BP_X + BP_BTN_X[1] - BP.gap}
             y2={BP_Y + BP.btnH + 9}
           />
-          <line x1={BP_X + BP_BTN_X[1]} y1={BP_Y + BP.btnH + 4} x2={BP_X + BP_BTN_X[1]} y2={BP_Y + BP.btnH + 9} />
+          <line
+            x1={BP_X + BP_BTN_X[1]}
+            y1={BP_Y + BP.btnH + 4}
+            x2={BP_X + BP_BTN_X[1]}
+            y2={BP_Y + BP.btnH + 9}
+          />
           <line
             x1={BP_X + BP_BTN_X[1] - BP.gap}
             y1={BP_Y + BP.btnH + 6.5}
@@ -427,7 +429,7 @@ function AnnotationsLayer() {
       <Selection x={0} y={0} w={TOTAL_W} h={IB.btnH} />
       <DimH x1={0} x2={TOTAL_W} y={-14} label={`${TOTAL_W}`} />
       <DimV x={-12} y1={0} y2={IB.btnH} label={`${IB.btnH}`} labelXOffset={-6} />
-      
+
       <g
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={blueprintTheme.guide.strokeWidth}
@@ -463,10 +465,28 @@ function OverlayLines() {
   const dotBottom = TY + IB.dotInset + IB.dotR + IB.dotR
   return (
     <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="toolbar" x1={toolbarMidX} y1={toolbarTop} x2={toolbarMidX} y2={toolbarTop - 12} />
-      <OverlayLine id="button" x1={btn2BottomMidX} y1={btn2Bottom} x2={btn2BottomMidX} y2={ROW_BUTTON_Y} />
+      <OverlayLine
+        id="toolbar"
+        x1={toolbarMidX}
+        y1={toolbarTop}
+        x2={toolbarMidX}
+        y2={toolbarTop - 12}
+      />
+      <OverlayLine
+        id="button"
+        x1={btn2BottomMidX}
+        y1={btn2Bottom}
+        x2={btn2BottomMidX}
+        y2={ROW_BUTTON_Y}
+      />
       <OverlayLine id="dot" x1={dotCx} y1={dotBottom} x2={dotCx} y2={ROW_DOT_Y} />
-      <OverlayLine id="selected" x1={btn1BottomMidX} y1={btn1Bottom} x2={btn1BottomMidX} y2={ROW_SELECTED_Y} />
+      <OverlayLine
+        id="selected"
+        x1={btn1BottomMidX}
+        y1={btn1Bottom}
+        x2={btn1BottomMidX}
+        y2={ROW_SELECTED_Y}
+      />
       <OverlayLine id="bloom" x1={bloomMidX} y1={bloomBottom} x2={bloomMidX} y2={ROW_BLOOM_Y} />
     </g>
   )
@@ -515,7 +535,12 @@ function Tags() {
         height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="selected" label="Selected fill" className="items-start justify-center" isAccent />
+        <AnatomyTag
+          part="selected"
+          label="Selected fill"
+          className="items-start justify-center"
+          isAccent
+        />
       </foreignObject>
       <foreignObject
         x={bloomMidX - 55}

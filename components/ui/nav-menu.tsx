@@ -24,7 +24,6 @@ import {
 } from '@/lib/hooks/use-proximity-highlight'
 import { WeightShiftText } from '@/components/ui/weight-shift-text'
 
-
 interface NavMenuContextValue {
   activeSlug: string | null
   nextIndex: () => number
@@ -56,7 +55,6 @@ function useNavMenuContentCtx(componentName: string) {
   if (!ctx) throw new Error(`${componentName} must be used within NavMenuContent`)
   return ctx
 }
-
 
 export interface NavMenuProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode
@@ -227,7 +225,6 @@ export const NavMenu = forwardRef<HTMLElement, NavMenuProps>(
 )
 NavMenu.displayName = 'NavMenu'
 
-
 export interface NavMenuItemProps extends HTMLAttributes<HTMLAnchorElement> {
   href: string
   label: string
@@ -340,7 +337,6 @@ export const NavMenuItem = forwardRef<HTMLAnchorElement, NavMenuItemProps>(
   },
 )
 NavMenuItem.displayName = 'NavMenuItem'
-
 
 export function NavMenuPreview() {
   return (

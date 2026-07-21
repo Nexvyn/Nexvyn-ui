@@ -35,7 +35,7 @@ function Tooltip({
   const tooltipRef = useRef<HTMLDivElement | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
- if (side !== prevSide) {
+  if (side !== prevSide) {
     setPrevSide(side)
     setComputedSide(side)
   }

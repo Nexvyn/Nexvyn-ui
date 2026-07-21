@@ -58,7 +58,7 @@ export function RatioSliderWireframe() {
         strokeOpacity={theme.wireframe.strokeOpacity}
         className={BP_FILL_SOLID}
       />
-      
+
       <text
         x={BP.x + 12}
         y={midY + 4}
@@ -139,7 +139,7 @@ export function RatioSliderWireframe() {
         <DimLabel x={BP.x + BP_LEFT_W + BP.gap / 2} y={BP.y + BP.h + 30} anchor="middle">
           gap 8
         </DimLabel>
-        
+
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
@@ -147,7 +147,12 @@ export function RatioSliderWireframe() {
           opacity={theme.guide.structOpacity}
         >
           <line x1={BP.x} y1={BP.y + 8} x2={BP.x + 12} y2={BP.y + 8} />
-          <line x1={BP_RIGHT_X + BP_RIGHT_W - 12} y1={BP.y + 8} x2={BP_RIGHT_X + BP_RIGHT_W} y2={BP.y + 8} />
+          <line
+            x1={BP_RIGHT_X + BP_RIGHT_W - 12}
+            y1={BP.y + 8}
+            x2={BP_RIGHT_X + BP_RIGHT_W}
+            y2={BP.y + 8}
+          />
         </g>
         <DimLabel x={BP.x + 6} y={BP.y + 8 - 3} anchor="middle">
           12
@@ -350,7 +355,7 @@ function AnnotationsLayer() {
       <DimLabel x={AN.x} y={AN.y - 4} anchor="start">
         {`r${AN.rx}`}
       </DimLabel>
-      
+
       <g
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={blueprintTheme.guide.strokeWidth}
@@ -372,7 +377,7 @@ function AnnotationsLayer() {
       <DimLabel x={AN_DIV_X + AN.divW / 2} y={AN.y - 12} anchor="middle">
         handle 6
       </DimLabel>
-      
+
       <g
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={blueprintTheme.guide.strokeWidth}

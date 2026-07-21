@@ -47,7 +47,7 @@ interface DropdownMenuContentContextValue {
   focusedIndex: number
   setFocusedIndex: (i: number) => void
   setOpen: (next: boolean) => void
-  
+
   registerItem: (index: number, el: HTMLElement | null) => void
 }
 
@@ -151,7 +151,8 @@ export interface DropdownMenuTriggerProps extends Omit<
 
 export const DropdownMenuTrigger = forwardRef<HTMLButtonElement, DropdownMenuTriggerProps>(
   ({ children, showChevron = true, className, onClick, onMouseEnter, ...props }, ref) => {
-    const { open, setOpen, triggerId, contentId, itemsWidth } = useDropdownMenuCtx('DropdownMenuTrigger')
+    const { open, setOpen, triggerId, contentId, itemsWidth } =
+      useDropdownMenuCtx('DropdownMenuTrigger')
     const reduceMotion = useReducedMotion()
 
     return (
@@ -227,7 +228,6 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuConten
     const probeNextIndex = useCallback(() => probeIndexRef.current++, [])
     const panelRef = useRef<HTMLDivElement | null>(null)
     const [position, setPosition] = useState({ left: 0, top: 0 })
-
 
     const maxWidthRef = useRef(0)
     const {
@@ -362,7 +362,6 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuConten
       ],
     )
 
-
     const measureRef = useRef<HTMLDivElement | null>(null)
     useLayoutEffect(() => {
       const el = measureRef.current
@@ -423,7 +422,6 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuConten
           {...handlers}
           {...props}
         >
-
           <ProximityHighlight
             highlightX={highlightX}
             highlightSize={highlightSize}
@@ -449,7 +447,10 @@ export interface DropdownMenuItemProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps>(
-  ({ children, disabled, destructive, textValue, onClick, onMouseEnter, className, ...props }, ref) => {
+  (
+    { children, disabled, destructive, textValue, onClick, onMouseEnter, className, ...props },
+    ref,
+  ) => {
     const { nextIndex } = useDropdownMenuCtx('DropdownMenuItem')
     const { setActiveIndex, focusedIndex, setFocusedIndex, setOpen, registerItem } =
       useDropdownMenuContentCtx('DropdownMenuItem')

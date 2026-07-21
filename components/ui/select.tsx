@@ -192,7 +192,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       <SelectContext.Provider value={ctx}>
         <div className={cn('relative inline-block', className)}>
           {children}
-          
+
           <select
             ref={ref as React.Ref<HTMLSelectElement>}
             tabIndex={-1}
@@ -226,7 +226,15 @@ export interface SelectTriggerProps extends Omit<HTMLAttributes<HTMLButtonElemen
 
 export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
   (
-    { children, showChevron = true, className, disabled: disabledProp, onClick, onMouseEnter, ...props },
+    {
+      children,
+      showChevron = true,
+      className,
+      disabled: disabledProp,
+      onClick,
+      onMouseEnter,
+      ...props
+    },
     ref,
   ) => {
     const {
@@ -379,8 +387,16 @@ export interface SelectContentProps extends HTMLAttributes<HTMLDivElement> {
 
 export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
   ({ align = 'start', side = 'bottom', children, className, ...props }, ref) => {
-    const { open, setOpen, triggerId, contentId, value, openInteractionRef, itemsWidth, setItemsWidth } =
-      useSelectCtx('SelectContent')
+    const {
+      open,
+      setOpen,
+      triggerId,
+      contentId,
+      value,
+      openInteractionRef,
+      itemsWidth,
+      setItemsWidth,
+    } = useSelectCtx('SelectContent')
     const panelRef = useRef<HTMLDivElement | null>(null)
     const [position, setPosition] = useState({ left: 0, top: 0 })
     const maxWidthRef = useRef(0)
@@ -446,7 +462,8 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       const items = open
         ? panelRef.current?.querySelectorAll<HTMLElement>('[role="option"]')
         : undefined
-      const el = items && Array.from(items).find((item) => item.getAttribute('data-value') === value)
+      const el =
+        items && Array.from(items).find((item) => item.getAttribute('data-value') === value)
       setSelectedRect(el ? { top: el.offsetTop, height: el.offsetHeight } : null)
     }, [open, value])
 
@@ -629,7 +646,6 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
 
     return createPortal(
       <SelectContentContext.Provider value={contentCtx}>
-        
         {!open && (
           <div
             ref={measureRef}
@@ -686,7 +702,6 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                 }}
                 {...props}
               >
-                
                 <AnimatePresence>
                   {selectedRect && (
                     <motion.div
@@ -707,7 +722,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                     />
                   )}
                 </AnimatePresence>
-                
+
                 <ProximityHighlight
                   highlightX={highlightX}
                   highlightSize={highlightSize}
@@ -715,7 +730,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                   axis={axis}
                   className="mx-1.5 rounded-md supports-[corner-shape:squircle]:corner-squircle bg-(--color-surface-2)"
                 />
-                
+
                 <AnimatePresence>
                   {focusRect && showFocusRing && (
                     <motion.div
@@ -850,7 +865,7 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
         <span className="relative z-10 flex min-w-0 flex-1 items-center gap-2 truncate">
           {children}
         </span>
-        
+
         <AnimatePresence>
           {isSelected && (
             <motion.svg
