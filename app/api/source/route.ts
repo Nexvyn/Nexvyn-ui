@@ -12,6 +12,7 @@ const SOURCE_MAP: Record<string, string[]> = {
   'dropdown-menu': ['components', 'ui', 'dropdown-menu.tsx'],
   'goo-dropdown': ['components', 'ui', 'goo-dropdown.tsx'],
   'icon-bar': ['components', 'ui', 'icon-bar.tsx'],
+  input: ['components', 'ui', 'input.tsx'],
   'nav-menu': ['components', 'ui', 'nav-menu.tsx'],
   'password-input': ['components', 'ui', 'password-input.tsx'],
   'radio-group': ['components', 'ui', 'radio-group.tsx'],

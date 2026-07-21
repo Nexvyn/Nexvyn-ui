@@ -23,6 +23,7 @@ import {
   FaderDemo,
   GooDropdownDemo,
   IconBarDemo,
+  InputDemo,
   NavMenuDemo,
   PasswordInputDemo,
   RadioGroupDemo,
@@ -159,6 +160,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <IconBarDemo />
+        </DemoFrame>
+      )
+    case 'input':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <InputDemo />
         </DemoFrame>
       )
     case 'bounce-sidebar':

@@ -327,6 +327,19 @@
       ]
     },
     {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "The text field foundation with adornments, size variants, and animated focus ring.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "nav-menu",
       "type": "registry:ui",
       "title": "Nav Menu",
