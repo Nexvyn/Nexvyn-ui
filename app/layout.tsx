@@ -88,7 +88,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <Providers>{children}</Providers>
         {process.env.NODE_ENV === 'development' && <Agentation />}
-
+        <svg
+          width="0"
+          height="0"
+          style={{ position: 'absolute', width: 0, height: 0, pointerEvents: 'none' }}
+        >
+          <defs>
+            <clipPath id="squircle-clip" clipPathUnits="objectBoundingBox">
+              <path d="M 0,0.5 C 0,0.22 0.22,0 0.5,0 C 0.78,0 1,0.22 1,0.5 C 1,0.78 0.78,1 0.5,1 C 0.22,1 0,0.78 0,0.5 Z" />
+            </clipPath>
+          </defs>
+        </svg>
         <Analytics />
       </body>
     </html>

@@ -62,7 +62,6 @@ export default function CompactThemeToggle({ className = '' }: { className?: str
       localStorage.setItem('theme', next ? 'dark' : 'light')
     } catch {}
 
-    // Force reflow
     window.getComputedStyle(document.documentElement).opacity
 
     setTimeout(() => {
@@ -75,7 +74,7 @@ export default function CompactThemeToggle({ className = '' }: { className?: str
       type="button"
       onClick={toggle}
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-      className={cn('detail-toolbar-btn cursor-pointer rounded-full p-1.5', className)}
+      className={cn('detail-toolbar-btn hit-area-44 cursor-pointer rounded-full p-1.5', className)}
       style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-fg)' }}
       suppressHydrationWarning
     >

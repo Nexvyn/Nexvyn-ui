@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { Header } from '@/components/layout/header'
-// import { Footer } from '@/components/layout/footer'
+import { Footer } from '@/components/layout/footer'
 import { ComponentCard } from '@/components/showcase/component-card'
 import { AnimatedTitle } from '@/components/showcase/animated-title'
 import { COMPONENTS, COLLECTIONS } from '@/lib/components-registry'
@@ -77,7 +77,7 @@ export default function ComponentsPage() {
                 setTimeout(() => setSortAnimating(false), 300)
               }}
               className={cn(
-                'inline-flex items-center justify-center h-9 px-3 rounded-md text-sm font-medium transition-colors hover:bg-(--color-surface) text-(--color-fg) hover:text-(--color-fg) outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) gap-2',
+                'inline-flex items-center justify-center h-9 px-3 rounded-2xl squircle-corners text-sm font-medium transition-colors hover:bg-(--color-surface) text-(--color-fg) hover:text-(--color-fg) outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) gap-2',
                 sortByCategory ? 'opacity-100' : 'opacity-40 hover:opacity-75',
               )}
               title="Sort by category"
@@ -122,7 +122,7 @@ export default function ComponentsPage() {
         )}
       </main>
 
-      {/* <Footer /> */}
+      <Footer />
     </div>
   )
 }

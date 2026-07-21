@@ -21,14 +21,12 @@ export function ScrollFade({
       aria-hidden
       data-side={side}
       className={cn(
-        'pointer-events-none absolute inset-x-0 h-[5rem] sm:h-[8.5rem] w-full',
+        'pointer-events-none absolute inset-x-0 h-[3rem] sm:h-[5rem] w-full',
         side === 'top' ? 'top-0' : 'bottom-0',
         className,
       )}
       style={{
         background: gradient,
-        backdropFilter: 'blur(6px)',
-        WebkitBackdropFilter: 'blur(6px)',
         maskImage:
           side === 'top'
             ? 'linear-gradient(to bottom, black 40%, transparent)'

@@ -2,11 +2,11 @@
 
 import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
-import { AnimatePresence, motion, useMotionValue, useSpring } from 'motion/react'
+import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react'
 import { Fragment, useEffect, useMemo, useRef, useState, type RefObject } from 'react'
 import { ComponentPreview } from '@/components/showcase/component-preview'
 import { useSidebar } from '@/components/detail/sidebar-provider'
-import { ScrollFade } from '@/components/detail/scroll-fade'
+
 import { useClickOutside } from '@/hooks/use-click-outside'
 import { useScreenSize } from '@/hooks/use-screen-size'
 import { Tooltip } from './tooltip'
@@ -62,31 +62,47 @@ function SortArrowIcon() {
   )
 }
 
-export function SidebarToggleIcon({ showSidebar }: { showSidebar: boolean }) {
+const OUTER =
+  'M11 3H13C16.7712 3 18.6569 3 19.8284 4.17157C21 5.34315 21 7.22876 21 11V13C21 16.7712 21 18.6569 19.8284 19.8284C18.6569 21 16.7712 21 13 21H11C7.2288 21 5.3431 21 4.1716 19.8284C3 18.6569 3 16.7712 3 13V11C3 7.22876 3 5.34315 4.1716 4.17157C5.3431 3 7.2288 3 11 3Z'
+
+const PANEL_CLOSED =
+  'M10 5.5 C10 4.793 10 4.439 9.780 4.220 C9.560 4 9.207 4 8.5 4 H8.5 C6.379 4 5.318 4 4.659 4.659 C4 5.318 4 6.379 4 8.5 V15.5 C4 17.621 4 18.682 4.659 19.341 C5.318 20 6.379 20 8.5 20 H8.5 C9.207 20 9.561 20 9.780 19.780 C10 19.561 10 19.207 10 18.5 V5.5 Z'
+
+const PANEL_OPEN =
+  'M14 6 C14 5.057 14 4.586 13.707 4.293 C13.414 4 12.943 4 12 4 H10 C7.172 4 5.757 4 4.879 4.879 C4 5.757 4 7.172 4 10 V14 C4 16.828 4 18.243 4.879 19.121 C5.757 20 7.172 20 10 20 H12 C12.943 20 13.414 20 13.707 19.707 C14 19.414 14 18.943 14 18 V6 Z'
+
+export function SidebarToggleIcon({
+  showSidebar,
+  strokeWidth = 1.5,
+  className,
+}: {
+  showSidebar: boolean
+  strokeWidth?: number
+  className?: string
+}) {
   return (
-    <div className="text-foreground/50 flex size-full cursor-pointer items-center justify-center">
-      <div className="relative grid cursor-pointer items-center justify-center">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M0.32698 2.63803C0 3.27976 0 4.11984 0 5.8V10.2C0 11.8802 0 12.7202 0.32698 13.362C0.614601 13.9265 1.07354 14.3854 1.63803 14.673C2.27976 15 3.11984 15 4.8 15H11.2C12.8802 15 13.7202 15 14.362 14.673C14.9265 14.3854 15.3854 13.9265 15.673 13.362C16 12.7202 16 11.8802 16 10.2V5.8C16 4.11984 16 3.27976 15.673 2.63803C15.3854 2.07354 14.9265 1.6146 14.362 1.32698C13.7202 1 12.8802 1 11.2 1H4.8C3.11984 1 2.27976 1 1.63803 1.32698C1.07354 1.6146 0.614601 2.07354 0.32698 2.63803Z"
-            fill="currentColor"
-          />
-        </svg>
-        <motion.div
-          initial={false}
-          animate={{ width: showSidebar ? 4.5 : 1.5 }}
-          className="bg-background absolute left-0.75 h-2.5 rounded-[1px]"
-        />
-      </div>
-    </div>
+    <svg
+      className={cn('h-4 w-4', className)}
+      fill="none"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d={OUTER}
+        fill="currentColor"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={strokeWidth}
+      />
+
+      <motion.path
+        animate={{ d: showSidebar ? PANEL_OPEN : PANEL_CLOSED }}
+        d={showSidebar ? PANEL_OPEN : PANEL_CLOSED}
+        style={{ fill: 'var(--background)' }}
+        transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+      />
+    </svg>
   )
 }
 
@@ -104,15 +120,11 @@ function NavSectionHeader({
   const lineWidth = useSpring(active ? 55 : 32, LINE_SPRING)
   const [widthValue, setWidthValue] = useState(active ? 55 : 32)
   const [isHovered, setIsHovered] = useState(false)
-  const prefersReducedMotion = useRef(false)
+  const prefersReducedMotion = useReducedMotion()
   const pathRef = useRef<SVGPathElement>(null)
   const animFrameRef = useRef<number | null>(null)
   const waveStartTime = useRef<number | null>(null)
   const isAnimating = useRef(false)
-
-  useEffect(() => {
-    prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  }, [])
 
   useEffect(() => {
     lineWidth.set(active ? 55 : 32)
@@ -152,7 +164,7 @@ function NavSectionHeader({
   }
 
   const startWave = () => {
-    if (prefersReducedMotion.current || isAnimating.current) return
+    if (prefersReducedMotion || isAnimating.current) return
     isAnimating.current = true
     waveStartTime.current = performance.now()
     const animate = (time: number) => {
@@ -204,7 +216,7 @@ function NavSectionHeader({
         style={{ width: widthValue }}
         preserveAspectRatio="none"
       >
-        {prefersReducedMotion.current ? (
+        {prefersReducedMotion ? (
           <path
             d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
             stroke={lineColor}
@@ -237,7 +249,7 @@ function NavSectionHeader({
       </svg>
       <span
         className={cn(
-          'text-foreground whitespace-nowrap transition-all ease-out group-hover:text-(--color-accent) group-hover:opacity-100',
+          'text-foreground whitespace-nowrap transition-[color,opacity] duration-150 ease group-hover:text-(--color-accent) group-hover:opacity-100',
           active ? 'text-(--color-accent) opacity-100' : 'opacity-60',
         )}
       >
@@ -264,15 +276,11 @@ function NavItem({
   const lineWidth = useSpring(isActive ? 55 : 32, LINE_SPRING)
   const [widthValue, setWidthValue] = useState(isActive ? 55 : 32)
   const [isHovered, setIsHovered] = useState(false)
-  const prefersReducedMotion = useRef(false)
+  const prefersReducedMotion = useReducedMotion()
   const pathRef = useRef<SVGPathElement>(null)
   const animFrameRef = useRef<number | null>(null)
   const waveStartTime = useRef<number | null>(null)
   const isAnimating = useRef(false)
-
-  useEffect(() => {
-    prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  }, [])
 
   useEffect(() => {
     lineWidth.set(isActive ? 55 : 32)
@@ -314,7 +322,7 @@ function NavItem({
   }
 
   const startWave = () => {
-    if (prefersReducedMotion.current || isAnimating.current) return
+    if (prefersReducedMotion || isAnimating.current) return
 
     isAnimating.current = true
     waveStartTime.current = performance.now()
@@ -376,7 +384,7 @@ function NavItem({
         style={{ width: widthValue }}
         preserveAspectRatio="none"
       >
-        {prefersReducedMotion.current ? (
+        {prefersReducedMotion ? (
           <path
             d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
             stroke={lineColor}
@@ -409,7 +417,7 @@ function NavItem({
       </svg>
       <span
         className={cn(
-          'text-foreground whitespace-nowrap transition-all ease-out group-hover:text-(--color-accent) group-hover:opacity-100',
+          'text-foreground whitespace-nowrap transition-[color,opacity] duration-150 ease group-hover:text-(--color-accent) group-hover:opacity-100',
           isActive ? 'text-(--color-accent) opacity-100' : 'opacity-40',
         )}
       >
@@ -462,7 +470,9 @@ function SidebarNav() {
               opacity: previewOpacity,
             }}
           >
-            <ComponentPreview item={hoveredItem} />
+            <div className="flex h-full w-full scale-75 items-center justify-center">
+              <ComponentPreview item={hoveredItem} />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -476,9 +486,6 @@ function SidebarNav() {
           pointerY.set(event.clientY - rect.top + 14)
         }}
       >
-        <ScrollFade side="top" background="var(--background)" className="z-10" />
-        <ScrollFade side="bottom" background="var(--background)" className="z-10" />
-
         <div className="relative flex w-full flex-col gap-2 pb-[15vh] pt-[32vh]">
           <div className="mb-10 flex items-center justify-between">
             <button

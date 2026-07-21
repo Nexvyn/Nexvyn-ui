@@ -141,7 +141,7 @@ export function TableOfContents({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 40, scale: 0.95 }}
           transition={entranceTransition}
-          className={cn('fixed bottom-8 end-8 z-[100] w-[calc(100%-2rem)] max-w-sm', className)}
+          className={cn('fixed bottom-8 inset-e-8 z-100 w-[calc(100%-2rem)] max-w-sm', className)}
         >
           <AnimatePresence>
             {isExpanded && (
@@ -161,9 +161,9 @@ export function TableOfContents({
                         key={section.id}
                         onClick={() => scrollToSection(section.id)}
                         className={cn(
-                          'relative w-full rounded-xl px-4 py-2.5 text-left text-sm transition-colors',
+                          'relative w-full rounded-md px-4 py-2.5 text-left text-sm transition-colors',
                           isActive
-                            ? 'bg-(--color-accent)/15 text-(--color-fg)'
+                            ? 'bg-accent/15 text-(--color-fg)'
                             : 'text-(--color-muted) hover:bg-(--color-surface-2) hover:text-(--color-fg)',
                           level > 2 ? 'pl-8 text-[13px]' : 'pl-4 font-medium',
                         )}

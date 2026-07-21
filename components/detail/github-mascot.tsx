@@ -1,23 +1,189 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
+import { useAnimate } from 'motion/react'
 
-export function GitHubMascot({ isHovered = false }: { isHovered?: boolean }) {
+// TODO(nexvyn): Make the mascot animation feel more human-like — add natural
+
+const starRest =
+  'M44.3662 64.2642C50.49 53.2829 53.5495 47.7922 58.1267 47.7922C62.7038 47.7922 65.7633 53.2829 71.8872 64.2642L73.4725 67.1062C75.2125 70.2285 76.0825 71.7897 77.4358 72.8192C78.7892 73.8487 80.4808 74.2305 83.8642 74.9942L86.9382 75.6902C98.8282 78.3824 104.768 79.726 106.185 84.2742C107.596 88.8175 103.546 93.559 95.44 103.037L93.3423 105.488C91.0417 108.18 89.8865 109.528 89.3694 111.191C88.8522 112.859 89.0262 114.657 89.3742 118.248L89.6932 121.52C90.916 134.169 91.5298 140.491 87.8275 143.299C84.1252 146.107 78.5572 143.545 67.4308 138.422L64.5453 137.098C61.3843 135.638 59.8038 134.913 58.1267 134.913C56.4495 134.913 54.869 135.638 51.708 137.098L48.8273 138.422C37.6962 143.545 32.1282 146.107 28.4307 143.304C24.7235 140.491 25.3373 134.169 26.5602 121.52L26.8792 118.253C27.2272 114.657 27.4012 112.859 26.8792 111.196C26.3668 109.528 25.2117 108.18 22.911 105.493L20.8133 103.037C12.7078 93.5639 8.65751 88.8224 10.0688 84.2742C11.4802 79.726 17.43 78.3775 29.32 75.6902L32.394 74.9942C35.7725 74.2305 37.4593 73.8487 38.8175 72.8192C40.1757 71.7897 41.0408 70.2285 42.7808 67.1062L44.3662 64.2642Z'
+
+const starWaveUp =
+  'M44.3662 64.2642C50.4901 53.2829 53.5496 47.7922 58.1267 47.7922C62.7039 47.7922 65.7634 53.2829 71.8872 64.2642L73.4726 67.1062C75.2126 70.2285 76.0826 71.7897 77.4359 72.8192C78.7892 73.8487 80.4809 74.2305 83.8642 74.9942L86.9382 75.6902C98.8282 78.3824 107.2686 70.446 108.6846 74.9942C110.0956 79.5375 103.5456 93.559 95.4401 103.0372L93.3424 105.4877C91.0417 108.1799 89.8866 109.5284 89.3694 111.191C88.8522 112.8585 89.0262 114.6565 89.3742 118.2477L89.6932 121.5199C90.9161 134.1687 91.5299 140.4912 87.8276 143.2992C84.1252 146.1072 78.5572 143.5452 67.4309 138.4222L64.5454 137.0977C61.3844 135.638 59.8039 134.913 58.1267 134.913C56.4496 134.913 54.8691 135.638 51.7081 137.0977L48.8274 138.4222C37.6962 143.5452 32.1282 146.1072 28.4307 143.3042C24.7236 140.4912 25.3374 134.1687 26.5602 121.5199L26.8792 118.2525C27.2272 114.6565 27.4012 112.8585 26.8792 111.1959C26.3669 109.5284 25.2117 108.1799 22.9111 105.4925L20.8134 103.0372C12.7079 93.5639 8.6576 88.8224 10.0689 84.2742C11.4802 79.726 17.4301 78.3775 29.3201 75.6902L32.3941 74.9942C35.7726 74.2305 37.4594 73.8487 38.8176 72.8192C40.1757 71.7897 41.0409 70.2285 42.7809 67.1062L44.3662 64.2642Z'
+
+const starWaveDown =
+  'M44.3662 64.2642C50.4901 53.2829 53.5496 47.7922 58.1267 47.7922C62.7039 47.7922 65.7634 53.2829 71.8872 64.2642L73.4726 67.1062C75.2126 70.2285 76.0826 71.7897 77.4359 72.8192C78.7892 73.8487 80.4809 74.2305 83.8642 74.9942L86.9382 75.6902C98.8282 78.3824 106.2686 84.744 107.6846 89.2922C109.0956 93.8355 103.5456 93.559 95.4401 103.0372L93.3424 105.4877C91.0417 108.1799 89.8866 109.5284 89.3694 111.191C88.8522 112.8585 89.0262 114.6565 89.3742 118.2477L89.6932 121.5199C90.9161 134.1687 91.5299 140.4912 87.8276 143.2992C84.1252 146.1072 78.5572 143.5452 67.4309 138.4222L64.5454 137.0977C61.3844 135.638 59.8039 134.913 58.1267 134.913C56.4496 134.913 54.8691 135.638 51.7081 137.0977L48.8274 138.4222C37.6962 143.5452 32.1282 146.1072 28.4307 143.3042C24.7236 140.4912 25.3374 134.1687 26.5602 121.5199L26.8792 118.2525C27.2272 114.6565 27.4012 112.8585 26.8792 111.1959C26.3669 109.5284 25.2117 108.1799 22.9111 105.4925L20.8134 103.0372C12.7079 93.5639 8.6576 88.8224 10.0689 84.2742C11.4802 79.726 17.4301 78.3775 29.3201 75.6902L32.3941 74.9942C35.7726 74.2305 37.4594 73.8487 38.8176 72.8192C40.1757 71.7897 41.0409 70.2285 42.7809 67.1062L44.3662 64.2642Z'
+
+const starSide =
+  'M64,46C72,54 78,60 84,66C94,72 100,80 106,92C100,102 94,108 90,118C86,128 78,138 64,144C50,138 42,128 38,118C34,108 28,102 18,88C18,76 24,66 34,58C44,50 54,46 64,46Z'
+
+export function GitHubMascot({
+  isHovered: _isHovered = false,
+  onLand,
+  runFromRef,
+}: {
+  isHovered?: boolean
+  onLand?: () => void
+  runFromRef?: React.RefObject<HTMLElement | null>
+}) {
+  const gradientId = useId()
   const leftEyeRef = useRef<SVGGElement>(null)
   const rightEyeRef = useRef<SVGGElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [isDark, setIsDark] = useState(false)
+  const [scope, animate] = useAnimate()
   const [isBlinking, setIsBlinking] = useState(false)
+  const isWalkingRef = useRef(false)
+
+  const onLandRef = useRef(onLand)
+  useEffect(() => {
+    onLandRef.current = onLand
+  })
 
   useEffect(() => {
-    const checkDark = () => {
-      setIsDark(document.documentElement.classList.contains('dark'))
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    let isPlaying = true
+    const timers: ReturnType<typeof setTimeout>[] = []
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        const id = setTimeout(resolve, ms)
+        timers.push(id)
+      })
+
+    const playSequence = async () => {
+      const startEl = runFromRef?.current
+      const selfEl = scope.current as HTMLElement | null
+      let journeyed = false
+      if (startEl && selfEl) {
+        const startRect = startEl.getBoundingClientRect()
+        const selfRect = selfEl.getBoundingClientRect()
+        const sideGap = 8
+        const dx =
+          startRect.left - sideGap - selfRect.width / 2 - (selfRect.left + selfRect.width / 2)
+        const dy = startRect.bottom - selfRect.bottom
+        if (dx < -120) {
+          journeyed = true
+          await animate('.gh-traveler', { x: dx, y: dy }, { duration: 0 })
+          await wait(3000)
+          if (!isPlaying) return
+
+          const walkSpeedMultiplier = 0.6
+          const buttonRect = (selfEl.parentElement as HTMLElement | null)?.getBoundingClientRect()
+          const besideGap = 2
+          const walkEnd = buttonRect
+            ? -(buttonRect.width / 2 + selfRect.width / 2 + besideGap)
+            : -49
+          const walkDist = Math.abs(walkEnd - dx)
+          const walkDur = Math.min(3, Math.max(1.4, walkDist / 170)) / walkSpeedMultiplier
+          const strideDur = 0.66 / walkSpeedMultiplier
+          const strides = Math.max(2, Math.round(walkDur / strideDur))
+          const stride = {
+            y: [0, 2, -3, -1, 0, 2, -3, -1, 0],
+            scaleY: [0.98, 0.95, 1.03, 1, 0.98, 0.95, 1.03, 1, 0.98],
+            scaleX: [1.02, 1.05, 0.97, 1, 1.02, 1.05, 0.97, 1, 1.02],
+          }
+          const strideTimes = [0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1]
+          const strideOpts = { duration: strideDur, repeat: strides - 1 }
+          isWalkingRef.current = true
+          await Promise.all([
+            animate('.gh-traveler', { x: walkEnd }, { duration: walkDur, ease: 'linear' }),
+            animate('.gh-coin', stride, { ...strideOpts, times: strideTimes, ease: 'easeInOut' }),
+            animate('.gh-front-view', { opacity: 0 }, { duration: 0.25, ease: 'easeOut' }),
+            animate('.gh-side-view', { opacity: 1 }, { duration: 0.25, ease: 'easeOut' }),
+            animate(
+              '.gh-foot-l',
+              { x: [-3, 0, 3, 0, -3], y: [0, -2.5, 0, 0, 0] },
+              { ...strideOpts, times: [0, 0.25, 0.5, 0.75, 1], ease: 'easeInOut' },
+            ),
+            animate(
+              '.gh-foot-r',
+              { x: [3, 0, -3, 0, 3], y: [0, 0, 0, -2.5, 0] },
+              { ...strideOpts, times: [0, 0.25, 0.5, 0.75, 1], ease: 'easeInOut' },
+            ),
+          ])
+          await Promise.all([
+            animate(
+              '.gh-coin',
+              { rotate: 0, scaleX: 1, scaleY: 1, y: 0 },
+              { duration: 0.12, ease: 'easeOut' },
+            ),
+            animate('.gh-foot-l', { x: 0, y: 0 }, { duration: 0.12, ease: 'easeOut' }),
+            animate('.gh-foot-r', { x: 0, y: 0 }, { duration: 0.12, ease: 'easeOut' }),
+          ])
+          if (!isPlaying) return
+
+          await Promise.all([
+            animate('.gh-traveler', { x: 0, y: 0 }, { duration: 0.38, ease: 'easeInOut' }),
+            animate(
+              '.gh-coin',
+              { y: [0, -18, 2], scaleY: [1, 1.05, 0.9] },
+              { duration: 0.38, times: [0, 0.55, 1], ease: 'easeOut' },
+            ),
+            animate('.gh-side-view', { opacity: 0 }, { duration: 0.3, ease: 'easeOut' }),
+            animate('.gh-front-view', { opacity: 1 }, { duration: 0.3, ease: 'easeIn' }),
+          ])
+          onLandRef.current?.()
+          await animate(
+            '.gh-coin',
+            { y: 0, scaleY: 1 },
+            { type: 'spring', stiffness: 400, damping: 25 },
+          )
+          isWalkingRef.current = false
+          if (!isPlaying) return
+          await wait(600)
+        }
+      }
+      if (!journeyed) await wait(1200)
+
+      while (isPlaying) {
+        setIsBlinking(true)
+        await animate('.gh-coin', { y: 3, scaleY: 0.92 }, { duration: 0.15, ease: 'easeOut' })
+        if (!isPlaying) return
+
+        setIsBlinking(false)
+        await animate('.gh-coin', { y: -8, scaleY: 1.04 }, { duration: 0.3, ease: 'easeOut' })
+        if (!isPlaying) return
+
+        setIsBlinking(true)
+        await animate('.gh-coin', { y: 2, scaleY: 0.9 }, { duration: 0.2, ease: 'easeIn' })
+        if (!isPlaying) return
+        onLandRef.current?.()
+
+        setIsBlinking(false)
+        await animate(
+          '.gh-coin',
+          { y: 0, scaleY: 1 },
+          { type: 'spring', stiffness: 400, damping: 25 },
+        )
+        if (!isPlaying) return
+
+        await wait(150)
+        if (!isPlaying) return
+
+        const waveCurve = [0.32, 0.72, 0, 1] as const
+        const waveDur = 0.18
+        await animate('.gh-wave-path', { d: starWaveUp }, { duration: waveDur, ease: waveCurve })
+        if (!isPlaying) return
+        await animate('.gh-wave-path', { d: starWaveDown }, { duration: waveDur, ease: waveCurve })
+        if (!isPlaying) return
+        await animate('.gh-wave-path', { d: starWaveUp }, { duration: waveDur, ease: waveCurve })
+        if (!isPlaying) return
+        await animate('.gh-wave-path', { d: starWaveDown }, { duration: waveDur, ease: waveCurve })
+        if (!isPlaying) return
+        await animate('.gh-wave-path', { d: starRest }, { duration: waveDur, ease: waveCurve })
+        if (!isPlaying) return
+
+        await wait(2600)
+      }
     }
-    checkDark()
-    const observer = new MutationObserver(checkDark)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    return () => observer.disconnect()
-  }, [])
+
+    playSequence()
+
+    return () => {
+      isPlaying = false
+      isWalkingRef.current = false
+      timers.forEach(clearTimeout)
+    }
+  }, [animate])
 
   useEffect(() => {
     const scheduleBlink = () => {
@@ -34,13 +200,14 @@ export function GitHubMascot({ isHovered = false }: { isHovered?: boolean }) {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
+      if (isWalkingRef.current) return
       const moveEye = (eye: SVGGElement | null, cx: number, cy: number) => {
         if (!eye) return
         const svg = eye.closest('svg')
         if (!svg) return
         const rect = svg.getBoundingClientRect()
-        const eyeCenterX = rect.left + (cx / 128) * rect.width
-        const eyeCenterY = rect.top + (cy / 128) * rect.height
+        const eyeCenterX = rect.left + (cx / 120) * rect.width
+        const eyeCenterY = rect.top + ((cy - 35) / 120) * rect.height
         const dx = e.clientX - eyeCenterX
         const dy = e.clientY - eyeCenterY
         const dist = Math.sqrt(dx * dx + dy * dy)
@@ -49,139 +216,107 @@ export function GitHubMascot({ isHovered = false }: { isHovered?: boolean }) {
         const moveY = dist > 0 ? (dy / dist) * Math.min(maxMove, dist * 0.05) : 0
         eye.style.transform = `translate(${moveX}px, ${moveY}px)`
       }
-      moveEye(leftEyeRef.current, 48, 62)
-      moveEye(rightEyeRef.current, 76, 62)
+      moveEye(leftEyeRef.current, 40, 92)
+      moveEye(rightEyeRef.current, 76, 92)
     }
 
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  const starFill = isDark ? 'url(#darkStarGradient)' : 'url(#lightStarGradient)'
-  const starOutline = isDark ? '#1E293B' : '#040000'
-  const starOutlineOpacity = isDark ? 0.6 : 1
-  const eyeFill = isDark ? '#8BC3F0' : '#7AA7C7'
-
   return (
-    <div
-      ref={containerRef}
-      className="absolute -top-8 left-1/2 -translate-x-1/2 z-0 pointer-events-none"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" className="w-12 h-12">
-        <defs>
-          <clipPath id="peek-clip">
-            <rect
-              x="0"
-              y="0"
-              width="128"
-              height={isHovered ? '128' : '85'}
-              style={{ transition: 'height 0.3s ease-out' }}
-            />
-          </clipPath>
-          <linearGradient id="lightStarGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#F8FAFC" />
-            <stop offset="50%" stopColor="#F1F5F9" />
-            <stop offset="100%" stopColor="#E2E8F0" />
-          </linearGradient>
-          <linearGradient id="darkStarGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#F8FAFC" />
-            <stop offset="50%" stopColor="#F1F5F9" />
-            <stop offset="100%" stopColor="#E2E8F0" />
-          </linearGradient>
-          <filter id="darkGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
-            <feFlood floodColor="#7AA7C7" floodOpacity="0.15" result="color" />
-            <feComposite in="color" in2="blur" operator="in" result="glow" />
-            <feMerge>
-              <feMergeNode in="glow" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-          <filter id="ambientShadow" x="-10%" y="-10%" width="120%" height="130%">
-            <feDropShadow dx="0" dy="2" stdDeviation="4" floodColor="#000000" floodOpacity="0.1" />
-          </filter>
-        </defs>
-        <g clipPath="url(#peek-clip)" filter={isDark ? 'url(#darkGlow)' : undefined}>
-          <path
-            fill={isDark ? '#1E293B' : '#040000'}
-            d="m126.2 49.7c-1.7-5.6-8.7-7.2-16.9-8.4l-15.2-1.8c-5.7-0.8-6.5-1.1-8.2-4.4-8.2-16.7-12.3-24.6-15-27.7-2.1-2.3-4.2-3.5-6.8-3.5s-4.9 1.1-7 3.1c-2.8 2.7-4.9 7.1-15 27.5-1.7 3.3-2.1 3.7-6.7 4.3l-15.3 1.9c-9.5 1.3-16.9 2.6-18.3 8.6-1.4 5.9 3.4 11.4 7.9 16.2 3.3 3.5 6.9 7.1 10.1 10.3l3.5 3.5c2.3 2.4 2.1 3.5 1.7 7.4l-0.3 2.1c-0.5 3.1-1 6.3-1.6 9.6-1.9 10.5-3.5 20.3 1.4 24.1 1.4 1 3.2 1.5 5.4 1.5 4.8 0 9-1.9 18.2-6.7l6.4-3.2c3.5-1.8 6.6-3.7 9.1-3.7h0.2c2.6 0 5 1.1 8.6 2.8l6.6 3.2c8.7 4.1 14.5 7.5 19.6 7.6 1.9 0 3.8-0.3 5-1.2 5-3.1 3.7-11 2.2-19.5l-2.2-13c-1.3-7.7-1.3-8.3 0.8-10.8 1.6-1.7 3.6-3.7 5.8-6 3.2-3.2 6.8-6.8 9.7-9.9 3.7-4 8-8.6 6.3-13.9z"
-          />
-          <path
-            fill={starFill}
-            d="m63.9 7c-4.3 0.2-6.5 4.4-8.6 8.1l-10.6 21.3c-1.8 3.5-3.7 4.3-6.4 4.9-13.9 2.4-31.3 2.4-33.9 8.4-2.1 5.3 4.8 11.8 7.8 15l11.7 11.9c3.7 3.7 4.6 5.2 3.9 10.5l-2.4 13.4c-1.9 10.5-2.6 17.3 0.5 19.6 4 2.8 9.9 0.4 17.5-3.4l12-6.2c3.2-1.6 5.6-3.2 8.5-3.2 3 0 5.4 0.9 8.7 2.5l12.1 5.9c5.8 2.7 10.2 5.3 14 5.3 4.2 0 5.4-2.6 5.2-7.9-0.1-2.3-2.1-14.1-3.5-22.6-1.3-7.9-1.4-9.4 2.3-13.4l11.8-11.8c3-3.2 10-9.5 9.9-13.9 0-7.4-21.2-7.8-33.3-9.8-4.1-0.7-6.1-1.7-8.1-5.6l-10.1-20.3c-2.1-3.6-4.5-8.7-9-8.7z"
-          />
-          <path
-            fill="#E5E2DD"
-            opacity="0.9"
-            d="m61.7 9c-2.5 1.6-4.1 5-7.2 11.4l-7.8 15.6c-2.6 5.2-4.4 5.9-7.7 6.5l-15.3 1.8c-9.2 1.2-16 2.1-16.9 3.9 3.6-1.8 11.4-2.4 17-3.1l15.3-1.8c3.6-0.6 5.7-1.4 7.3-3.3 1.8-2.1 2.7-4.5 5.6-10.5 2.6-5.5 6.1-14.6 9.7-20.5z"
-          />
-          <path
-            fill="#D1D0CC"
-            opacity="0.6"
-            d="m6 53.7c0.6 4.3 5.5 8.4 10.6 13.5l9.2 8.6c3.9 4.1 4.9 6.4 2.6 16.2-1.1 5.2-3 12.9-3.3 19.9 1.3-8.9 3.9-18 4.9-25.1 1-7.3-2.1-9.7-5.9-13.3l-8.9-8.8c-3.8-3.8-8.6-8.3-9.2-11z"
-          />
-          <path
-            fill="#E5E2DD"
-            opacity="0.9"
-            d="m84.1 41.9c-2.7-2-3.4-4-5.2-7.8l-8.2-18.4v0.1c4.4 12.3 6.2 19.9 8.9 23.1 1.4 1.7 3.1 2.8 4.5 3z"
-          />
-          <path
-            fill="#D1D0CC"
-            opacity="0.6"
-            d="m119.5 48.8c-4.2-2.3-10.5-2.5-27.4-4.8-3.2-0.3-5.5-0.7-7.5-2-1.2-0.2-2.6-0.7-3.6-1.2 2.1 1.7 5 2.1 8.4 2.5 17.6 2 28 2.7 30.1 5.5z"
-          />
-          <path
-            fill="#E5E2DD"
-            opacity="0.9"
-            d="m39.5 43.2c-12.1 2.4-31.3 3.4-32.6 6.7-0.8 2.9 1.2 1.5 5.3 0.4 5.7-1.8 13.7-2.9 27-5.4 1.9-0.4 4.8-1 6.4-3.5-1.4 1.1-3.9 1.6-6.1 1.8z"
-          />
-          <path
-            fill="#AFAFAF"
-            opacity="0.7"
-            d="m121.9 52.4c-0.2 1.5-1.4 2.2-4.3 4.1-4.2 4.2-12.9 11.1-18.1 16.5-4.5 4.5-5.7 7.4-4.1 15.2 2.1 9.5 4.7 18.7 4.3 25.4 2.3-1.4 2.3-4.6 2.6-4.3l-3.4-18.6c-1.4-8.6-0.3-11.2 3.4-15.2l10.7-10.1c4.2-4.1 9-7.8 8.9-13z"
-          />
-          <path
-            fill="#AFAFAF"
-            opacity="0.7"
-            d="m97 117.3c-4.5 0.4-14.6-5-24.1-10.2-4.3-2.2-6.6-3.4-10.7-3.4-3.5 0-6.1 1.3-9 2.8-4.5 2.4-15.2 8.2-18.7 9.9-8.3 3.3-9.5-0.6-9.4-4.6-0.6 3.9 0.3 7.7 4.5 7.9 3.6 0.2 7-1.5 11.6-3.8l12-6c3.2-1.5 6-3.5 10.2-3.7 3.3-0.1 6.4 1.1 10 2.8l10.6 5c5.1 2.1 10.5 5.4 14.1 5.5 3.8 0.2 4.8-2.6 4.3-6-2 0.4-3.5 3.5-5.4 3.8z"
-          />
-          <g
-            ref={leftEyeRef}
-            style={{
-              transition: 'transform 0.1s ease-out',
-              transformOrigin: '48px 62px',
-              transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
-            }}
-          >
+    <div ref={scope} className="absolute -top-8 left-1/2 -translate-x-1/2 z-0 pointer-events-none">
+      <div className="gh-traveler">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 35 120 120"
+          fill="none"
+          className="gh-coin w-12 h-12"
+          style={{ transformOrigin: '50% 90%' }}
+        >
+          <defs>
+            <linearGradient
+              id={gradientId}
+              x1="58.1267"
+              y1="47.7922"
+              x2="58.1267"
+              y2="144.458"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stopColor="var(--mascot-stop-1)" />
+              <stop offset="0.35" stopColor="var(--mascot-stop-2)" />
+              <stop offset="0.60" stopColor="var(--mascot-stop-3)" />
+              <stop offset="0.80" stopColor="var(--mascot-stop-4)" />
+              <stop offset="0.95" stopColor="var(--mascot-stop-5)" />
+              <stop offset="1" stopColor="var(--mascot-stop-6)" />
+            </linearGradient>
+          </defs>
+          <g className="gh-front-view" style={{ opacity: 1 }}>
             <path
-              fill={eyeFill}
-              d="m48.5 53.3c-3.5 0.7-5.4 6.7-5.3 15.8 0.2 4.4 0.9 12.9 5.2 13.9 4.3 0.7 6.5-4.3 6.6-13.5 0.1-9.1-2-16.8-6.5-16.2zm0.1 12.5c-1.3-0.3-2.2-2.1-2.2-4.8-0.1-3.5 1.3-5.1 2.5-4.9 1.7 0.1 2.5 2.4 2.4 5-0.1 2.8-1.1 4.8-2.7 4.7z"
+              d={starRest}
+              fill={`url(#${gradientId})`}
+              style={{ mixBlendMode: 'darken' }}
+              className="gh-wave-path"
             />
+            <g transform="translate(116.2534 0) scale(-1 1)">
+              <path
+                d={starRest}
+                fill={`url(#${gradientId})`}
+                style={{ mixBlendMode: 'darken' }}
+                className="gh-wave-path"
+              />
+            </g>
+            <g
+              ref={leftEyeRef}
+              style={{
+                transition: 'transform 0.1s ease-out',
+                transformOrigin: '40px 92px',
+                transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
+              }}
+            >
+              <circle cx="40" cy="92" r="5" fill="var(--color-bg)" />
+            </g>
+            <g
+              ref={rightEyeRef}
+              style={{
+                transition: 'transform 0.1s ease-out',
+                transformOrigin: '76px 92px',
+                transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
+              }}
+            >
+              <circle cx="76" cy="92" r="5" fill="var(--color-bg)" />
+            </g>
           </g>
-          <g
-            ref={rightEyeRef}
-            style={{
-              transition: 'transform 0.1s ease-out',
-              transformOrigin: '76px 62px',
-              transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
-            }}
-          >
-            <path
-              fill={eyeFill}
-              d="m75.9 53.5c-3.5 1.2-5 6.6-5.1 14.5 0.1 6 1 11.7 3.2 13.8 1.7 1.7 4.2 1.7 5.7 0.1 1.9-2 3-7 3-14.3-0.1-7.7-1.7-15.2-6.8-14.1zm0.4 12.5c-1.4-0.1-2.3-2.5-2.2-5.4 0.2-3.6 1.9-4.8 3-4.4 1.5 0.4 2.1 2.9 1.9 5.6-0.1 2.5-1.4 4.1-2.7 4.2z"
-            />
+          <g className="gh-side-view" style={{ opacity: 0 }}>
+            <path d={starSide} fill={`url(#${gradientId})`} style={{ mixBlendMode: 'darken' }} />
+            <g
+              style={{
+                transition: 'transform 0.1s ease-out',
+                transformOrigin: '84px 84px',
+                transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
+              }}
+            >
+              <circle cx="84" cy="84" r="5" fill="var(--color-bg)" />
+            </g>
           </g>
-          {isDark && (
-            <path
-              fill="none"
-              stroke="#7AA7C7"
-              strokeWidth="1.5"
-              strokeOpacity="0.2"
-              d="M64 120 C40 118, 20 110, 10 100"
-            />
-          )}
-        </g>
-      </svg>
+          <ellipse
+            className="gh-foot-l"
+            cx="31"
+            cy="144"
+            rx="6"
+            ry="3.2"
+            fill="var(--mascot-stop-1)"
+          />
+          <ellipse
+            className="gh-foot-r"
+            cx="85.5"
+            cy="144"
+            rx="6"
+            ry="3.2"
+            fill="var(--mascot-stop-1)"
+          />
+        </svg>
+      </div>
     </div>
   )
 }

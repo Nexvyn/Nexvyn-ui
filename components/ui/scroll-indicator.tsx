@@ -91,10 +91,14 @@ export function ScrollIndicator({
               i / (totalTicks - 1) <= activeIndex / Math.max(filteredSections.length - 1, 1)
 
             return (
-              <div key={i} className="absolute end-0 flex items-center" style={{ top: `${y}px` }}>
+              <div
+                key={i}
+                className="absolute inset-e-0 flex items-center"
+                style={{ top: `${y}px` }}
+              >
                 <div
                   className={cn(
-                    'h-px transition-all duration-150',
+                    'h-px transition-colors duration-150 ease',
                     isMajor ? 'w-3' : 'w-1.5',
                     isPast
                       ? 'bg-(--color-fg)'
@@ -115,7 +119,7 @@ export function ScrollIndicator({
               <div key={section.id}>
                 <div
                   className={cn(
-                    'absolute end-0 h-px transition-all duration-200',
+                    'absolute inset-e-0 h-px transition-colors duration-200 ease',
                     section.level === 2 ? 'w-4' : 'w-3',
                     isActive ? 'bg-(--color-accent)' : 'bg-(--color-fg)/60',
                   )}
@@ -125,7 +129,9 @@ export function ScrollIndicator({
                 <div
                   className={cn(
                     'absolute flex items-center',
-                    reduceMotion ? '' : 'transition-all duration-200',
+                    reduceMotion
+                      ? ''
+                      : 'transition-[opacity,transform] duration-200 ease-(--motion-ease-out)',
                     isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2',
                   )}
                   style={{
@@ -153,11 +159,11 @@ export function ScrollIndicator({
             )
           })}
 
-          <motion.div className="absolute end-0 z-20" style={{ top: smoothY }}>
+          <motion.div className="absolute inset-e-0 z-20" style={{ top: smoothY }}>
             <div className="h-px w-4 bg-(--color-accent)" />
             <div
               className={cn(
-                'absolute top-0 -start-8 -translate-y-1/2 transition-opacity duration-200',
+                'absolute top-0 -inset-s-8 -translate-y-1/2 transition-opacity duration-200',
                 isHovered ? 'opacity-0' : 'opacity-100',
               )}
             >

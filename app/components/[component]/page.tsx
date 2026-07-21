@@ -13,13 +13,13 @@ import { useScreenSize } from '@/hooks/use-screen-size'
 import { COMPONENTS } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import {
-  BounceSidebarPreview,
-  ColorPickerPreview,
-  GooDropdownPreview,
-  PasswordInputPreview,
-  RatioSliderPreview,
-  ScrollIndicatorPreview,
-  TableOfContentsPreview,
+  BounceSidebarDemo,
+  ColorPickerDemo,
+  GooDropdownDemo,
+  PasswordInputDemo,
+  RatioSliderDemo,
+  ScrollIndicatorDemo,
+  TableOfContentsDemo,
 } from '@/components/ui/previews'
 
 function DemoFrame({
@@ -109,43 +109,45 @@ function ScrollFadeDemo() {
 export function ComponentDemo({ id }: { id: string }) {
   switch (id) {
     case 'bounce-sidebar':
-      return <BounceSidebarPreview />
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <BounceSidebarDemo />
+        </DemoFrame>
+      )
     case 'color-picker':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
-          <ColorPickerPreview />
+          <ColorPickerDemo />
         </DemoFrame>
       )
     case 'goo-dropdown':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
-          <GooDropdownPreview />
+          <GooDropdownDemo />
         </DemoFrame>
       )
     case 'password-input':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
-          <PasswordInputPreview />
+          <PasswordInputDemo />
         </DemoFrame>
       )
     case 'ratio-slider':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
-          <RatioSliderPreview />
+          <RatioSliderDemo />
         </DemoFrame>
       )
     case 'scroll-indicator':
-      return <ScrollIndicatorPreview />
-    case 'table-of-contents':
-      return <TableOfContentsPreview />
-    case 'button':
       return (
-        <DemoFrame className="flex flex-wrap items-center justify-center gap-3 p-4">
-          <Button>Default</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="destructive">Destructive</Button>
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ScrollIndicatorDemo />
+        </DemoFrame>
+      )
+    case 'table-of-contents':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <TableOfContentsDemo />
         </DemoFrame>
       )
     case 'theme-toggle':

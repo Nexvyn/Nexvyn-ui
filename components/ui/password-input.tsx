@@ -72,16 +72,20 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     useEffect(() => {
       if (prefersReducedMotion) return
       let timer: ReturnType<typeof setTimeout>
+      let blinkTimer: ReturnType<typeof setTimeout>
       const schedule = () => {
         const next = 2000 + Math.random() * 4000
         timer = setTimeout(() => {
           setBlinking(true)
-          setTimeout(() => setBlinking(false), 120)
+          blinkTimer = setTimeout(() => setBlinking(false), 120)
           schedule()
         }, next)
       }
       schedule()
-      return () => clearTimeout(timer)
+      return () => {
+        clearTimeout(timer)
+        clearTimeout(blinkTimer)
+      }
     }, [prefersReducedMotion])
 
     const closed = blinking || visible
@@ -106,7 +110,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             id={id}
             type={visible ? 'text' : 'password'}
             className={cn(
-              'h-11 w-full rounded-xl ps-3.5 pe-12 py-2.5 text-sm outline-none',
+              'h-11 w-full rounded-lg ps-3.5 pe-12 py-2.5 text-sm outline-none',
               'border border-(--color-border)',
               'focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-1 focus-visible:ring-offset-(--color-bg)',
               'transition-[border-color,box-shadow] duration-150',
@@ -126,7 +130,8 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             aria-pressed={visible}
             data-state={visible ? 'visible' : 'hidden'}
             className={cn(
-              'absolute end-3 top-1/2 -translate-y-1/2 cursor-pointer text-(--color-muted)',
+              'absolute inset-e-3 top-1/2 -translate-y-1/2 cursor-pointer text-(--color-muted)',
+              "before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:size-11",
               'transition-[color,transform] duration-150',
               'hover:text-(--color-fg) active:scale-90',
               'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-(--color-accent) focus-visible:rounded-sm',
