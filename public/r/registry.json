@@ -281,6 +281,29 @@
       ]
     },
     {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "A checkbox with drawn check animation, indeterminate state, and hidden native input for forms.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
       "name": "icon-bar",
       "type": "registry:ui",
       "title": "Icon Bar",
