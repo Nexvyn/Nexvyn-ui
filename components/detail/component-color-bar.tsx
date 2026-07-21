@@ -78,7 +78,7 @@ export default function ComponentColorBar() {
 
   const [activeMenu, setActiveMenu] = useState<'bg' | 'fg' | 'ac' | 'round' | null>(null)
   const [prevTheme, setPrevTheme] = useState(theme)
- if (theme !== prevTheme) {
+  if (theme !== prevTheme) {
     setPrevTheme(theme)
     const isDark = theme === 'dark'
     const defaultBg = isDark ? '#0a0a0a' : '#ffffff'

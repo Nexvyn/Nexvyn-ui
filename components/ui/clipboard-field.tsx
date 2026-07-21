@@ -132,8 +132,7 @@ export const ClipboardField = forwardRef<HTMLButtonElement, ClipboardFieldProps>
         onCopy?.()
         if (resetTimer.current) clearTimeout(resetTimer.current)
         resetTimer.current = setTimeout(() => setCopied(false), resetDelay)
-      } catch {
-      }
+      } catch {}
     }, [disabled, value, onCopy, resetDelay])
 
     return (

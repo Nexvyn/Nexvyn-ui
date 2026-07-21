@@ -17,6 +17,7 @@ import { activeComponent, installCommand, PANEL_INFO } from '@/lib/components-re
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
+import { NewStarIcon } from '@/components/layout/new-star'
 import { MailIcon, XIcon } from './icons'
 import DependencyPill from './dependency-pill'
 import PropsTable from './props-table'
@@ -27,6 +28,7 @@ import { InstallCommandBox } from './install-command-box'
 import { FeedbackModal } from './feedback-modal'
 import { useScreenSize } from '@/hooks/use-screen-size'
 import { usePreviewControl } from './preview-controls'
+import { useSidebar } from '@/components/detail/sidebar-provider'
 
 function CopyButton({
   value,
@@ -128,6 +130,8 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
   const command = item ? installCommand(item) : null
   const screenSize = useScreenSize()
   const isMobile = screenSize.lessThan('md')
+  const { showSidebar } = useSidebar()
+  const hideToolbar = isMobile && showSidebar
 
   const [codeOpen, setCodeOpen] = useState(false)
   const [feedbackOpen, setFeedbackOpen] = useState(false)
@@ -137,7 +141,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
     'preview',
   )
   const [prevOpen, setPrevOpen] = useState(open)
- if (open !== prevOpen) {
+  if (open !== prevOpen) {
     setPrevOpen(open)
     if (!open) setCodeOpen(false)
   }
@@ -175,9 +179,13 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
         initial={false}
         animate={{
           right: isMobile ? 12 : open ? INFO_SPACE + 12 : 12,
+          opacity: hideToolbar ? 0 : 1,
+          scale: hideToolbar ? 0.95 : 1,
         }}
         transition={{ type: 'spring', stiffness: 280, damping: 32 }}
-        className="detail-elevated-pill pointer-events-auto absolute top-3 z-50 flex items-center gap-0.5 rounded-2xl p-1"
+        aria-hidden={hideToolbar}
+        className="detail-elevated-pill absolute top-3 z-50 flex items-center gap-0.5 rounded-2xl p-1"
+        style={{ pointerEvents: hideToolbar ? 'none' : 'auto' }}
       >
         <Tooltip content={open ? 'Close description (F)' : 'Open description (F)'} side="bottom">
           <button
@@ -304,8 +312,10 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
           </nav>
 
           <div className="flex flex-col gap-1 text-left">
-            <h1 className="text-3xl font-semibold tracking-tight text-(--color-fg)">
+            <h1 className="flex items-center gap-2 text-3xl font-semibold tracking-tight text-(--color-fg)">
+              {item?.isNew && <NewStarIcon className="size-5 shrink-0 text-(--color-new)" />}
               {item?.name ?? 'Component'}
+              {item?.isNew && <span className="text-sm font-medium">New</span>}
             </h1>
             <p className="text-base leading-relaxed text-(--color-muted) text-pretty mt-2">
               {item?.description ?? 'This component is not available yet.'}
@@ -385,8 +395,8 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               <p className="text-sm leading-relaxed" style={{ color: 'var(--color-muted)' }}>
                 All components here are original implementations, built from scratch with no copied
                 code, assets, or content. We study UI/UX patterns we admire and craft our own
-                versions, often with added features. If your work inspired something here and isn&apos;t
-                credited, or a credit is incomplete, please{' '}
+                versions, often with added features. If your work inspired something here and
+                isn&apos;t credited, or a credit is incomplete, please{' '}
                 <a
                   href="https://github.com/Nexvyn/Nexvyn-ui/issues/new"
                   target="_blank"

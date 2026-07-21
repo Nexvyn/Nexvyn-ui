@@ -67,7 +67,7 @@ export function SelectBlueprint() {
       >
         Select…
       </text>
-      
+
       <path
         d={`M${BP.x + BP.w - BP.triggerPadX - 8} ${BP.y + BP.triggerH / 2 - 3} l4 4 4-4`}
         strokeWidth={1.5}
@@ -136,7 +136,13 @@ export function SelectBlueprint() {
         />
         <Selection x={BP.x} y={BP.y} w={BP.w} h={BP.triggerH} />
         <DimH x1={BP.x} x2={BP.x + BP.w} y={BP.y - 8} label={`${BP.w}`} />
-        <DimV x={BP.x - 12} y1={BP.y} y2={BP.y + BP.triggerH} label={`${BP.triggerH}`} labelXOffset={-6} />
+        <DimV
+          x={BP.x - 12}
+          y1={BP.y}
+          y2={BP.y + BP.triggerH}
+          label={`${BP.triggerH}`}
+          labelXOffset={-6}
+        />
         <DimV
           x={BP.x - 12}
           y1={BP.y + BP.triggerH}
@@ -147,7 +153,7 @@ export function SelectBlueprint() {
         <DimLabel x={BP.x} y={BP.y - 4} anchor="start">
           {`r${BP.triggerRx}`}
         </DimLabel>
-        
+
         <PadGuide
           x={BP.x + BP.triggerPadX}
           y={BP.y + BP.triggerPadY}
@@ -161,7 +167,7 @@ export function SelectBlueprint() {
           boxRx={BP.triggerRx}
           clipOffset={0.8}
         />
-        
+
         <DimLabel x={BP.x + 7} y={BP.y + BP.triggerH - 4} anchor="middle">
           {`${BP.triggerPadX}`}
         </DimLabel>
@@ -237,7 +243,7 @@ function TriggerShape() {
       >
         Select…
       </text>
-      
+
       <path
         d={`M${AN.x + AN.w - AN.triggerPadX - 8} ${AN.y + AN.triggerH / 2 - 3} l4 4 4-4`}
         stroke="currentColor"
@@ -335,14 +341,21 @@ function AnnotationsLayer() {
       <Selection x={AN.x} y={AN.y} w={AN.w} h={AN.triggerH} />
       <Selection x={AN.x} y={AN_PANEL_Y} w={AN.w} h={AN_PANEL_H} />
       <DimH x1={AN.x} x2={AN.x + AN.w} y={AN.y - 14} label={`${AN.w}`} />
-      <DimV x={AN.x + AN.w + 14} y1={AN.y} y2={AN.y + AN.triggerH} label={`${AN.triggerH}`} labelXOffset={5} labelAnchor="start" />
+      <DimV
+        x={AN.x + AN.w + 14}
+        y1={AN.y}
+        y2={AN.y + AN.triggerH}
+        label={`${AN.triggerH}`}
+        labelXOffset={5}
+        labelAnchor="start"
+      />
       <DimLabel x={AN.x} y={AN.y - 4} anchor="start">
         {`r${AN.triggerRx}`}
       </DimLabel>
       <DimLabel x={AN.x} y={AN_PANEL_Y - 4} anchor="start">
         {`r${AN.triggerRx}`}
       </DimLabel>
-      
+
       <PadGuide
         x={AN.x + AN.triggerPadX}
         y={AN.y + AN.triggerPadY}
@@ -356,7 +369,7 @@ function AnnotationsLayer() {
         boxRx={AN.triggerRx}
         clipOffset={0.8}
       />
-      
+
       <DimLabel x={AN.x + 7} y={AN.y + AN.triggerH - 4} anchor="middle">
         {`${AN.triggerPadX}`}
       </DimLabel>
@@ -434,7 +447,12 @@ function TagsLayer() {
         height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="trigger" label="Trigger" isAccent className="items-center justify-start" />
+        <AnatomyTag
+          part="trigger"
+          label="Trigger"
+          isAccent
+          className="items-center justify-start"
+        />
       </foreignObject>
       <foreignObject
         x={tagX}

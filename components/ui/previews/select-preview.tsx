@@ -1,7 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select'
 
 export function SelectPreview() {
   const [value, setValue] = useState('')

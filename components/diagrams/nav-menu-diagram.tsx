@@ -45,7 +45,12 @@ const BP = {
   itemPadX: 8,
   navW: 160,
 } as const
-const BP_ITEM_Y = [0, BP.itemH + BP.itemGap, 2 * (BP.itemH + BP.itemGap), 3 * (BP.itemH + BP.itemGap)]
+const BP_ITEM_Y = [
+  0,
+  BP.itemH + BP.itemGap,
+  2 * (BP.itemH + BP.itemGap),
+  3 * (BP.itemH + BP.itemGap),
+]
 const BP_NAV_H = BP_ITEM_Y[3] + BP.itemH
 const BP_X = 30
 
@@ -105,7 +110,7 @@ export function NavMenuBlueprint() {
         <Selection x={BP_X} y={BP_Y} w={BP.navW} h={BP_NAV_H} />
         <DimH x1={BP_X} x2={BP_X + BP.navW} y={BP_Y - 12} label={`${BP.navW}`} />
         <DimV x={BP_X - 12} y1={BP_Y} y2={BP_Y + BP_NAV_H} label={`${BP_NAV_H}`} />
-        
+
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
@@ -113,12 +118,7 @@ export function NavMenuBlueprint() {
           opacity={theme.guide.structOpacity}
         >
           <line x1={BP_X} y1={BP_Y + 8} x2={BP_X + NM.inset} y2={BP_Y + 8} />
-          <line
-            x1={BP_X + BP.navW - NM.inset}
-            y1={BP_Y + 8}
-            x2={BP_X + BP.navW}
-            y2={BP_Y + 8}
-          />
+          <line x1={BP_X + BP.navW - NM.inset} y1={BP_Y + 8} x2={BP_X + BP.navW} y2={BP_Y + 8} />
         </g>
         <DimLabel x={BP_X + NM.inset / 2} y={BP_Y + 8 - 3} anchor="middle">
           {`${NM.inset}`}
@@ -157,7 +157,7 @@ function NavShape() {
         className={spotlight.className}
         style={spotlight.style}
       />
-      
+
       <g className="pointer-events-none">
         <g
           stroke="var(--bp-accent, var(--color-accent))"
@@ -305,8 +305,20 @@ function OverlayLines() {
   return (
     <g strokeWidth="1" className="pointer-events-none">
       <OverlayLine id="nav" x1={navMidX} y1={navTop} x2={navMidX} y2={navTop - 12} />
-      <OverlayLine id="active" x1={itemRight - NM.inset} y1={activeMidY} x2={itemRight + 26} y2={activeMidY} />
-      <OverlayLine id="hover" x1={itemRight - NM.inset} y1={hoverMidY} x2={itemRight + 26} y2={hoverMidY} />
+      <OverlayLine
+        id="active"
+        x1={itemRight - NM.inset}
+        y1={activeMidY}
+        x2={itemRight + 26}
+        y2={activeMidY}
+      />
+      <OverlayLine
+        id="hover"
+        x1={itemRight - NM.inset}
+        y1={hoverMidY}
+        x2={itemRight + 26}
+        y2={hoverMidY}
+      />
       <OverlayLine id="item" x1={itemRight} y1={itemMidY} x2={itemRight + 26} y2={itemMidY} />
       <OverlayLine id="dot" x1={dotX} y1={dotY} x2={dotX + 20} y2={dotY + 22} />
     </g>
@@ -334,13 +346,36 @@ function Tags() {
       >
         <AnatomyTag part="nav" label="NavMenu" className="items-end justify-center" />
       </foreignObject>
-      <foreignObject x={tagX} y={activeMidY - 12} width={130} height={24} className="pointer-events-none overflow-visible">
-        <AnatomyTag part="active" label="Active Route" className="items-center justify-start" isAccent />
+      <foreignObject
+        x={tagX}
+        y={activeMidY - 12}
+        width={130}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
+        <AnatomyTag
+          part="active"
+          label="Active Route"
+          className="items-center justify-start"
+          isAccent
+        />
       </foreignObject>
-      <foreignObject x={tagX} y={hoverMidY - 12} width={130} height={24} className="pointer-events-none overflow-visible">
+      <foreignObject
+        x={tagX}
+        y={hoverMidY - 12}
+        width={130}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
         <AnatomyTag part="hover" label="Hover Highlight" className="items-center justify-start" />
       </foreignObject>
-      <foreignObject x={tagX} y={itemMidY - 12} width={110} height={24} className="pointer-events-none overflow-visible">
+      <foreignObject
+        x={tagX}
+        y={itemMidY - 12}
+        width={110}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
         <AnatomyTag part="item" label="NavMenuItem" className="items-center justify-start" />
       </foreignObject>
       <foreignObject

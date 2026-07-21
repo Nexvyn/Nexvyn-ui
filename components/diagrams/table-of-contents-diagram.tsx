@@ -151,7 +151,7 @@ export function TableOfContentsWireframe() {
         <DimLabel x={BP_TRIGGER.x} y={BP_TRIGGER.y - 4} anchor="start">
           r4
         </DimLabel>
-        
+
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
@@ -165,7 +165,11 @@ export function TableOfContentsWireframe() {
             y2={BP_TRIGGER.y}
           />
         </g>
-        <DimLabel x={BP_TRIGGER.x + 46} y={(BP_PANEL.y + BP_PANEL.h + BP_TRIGGER.y) / 2 + 2.5} anchor="start">
+        <DimLabel
+          x={BP_TRIGGER.x + 46}
+          y={(BP_PANEL.y + BP_PANEL.h + BP_TRIGGER.y) / 2 + 2.5}
+          anchor="start"
+        >
           {`${BP_GAP}`}
         </DimLabel>
       </g>

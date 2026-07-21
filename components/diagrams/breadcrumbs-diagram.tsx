@@ -84,7 +84,7 @@ export function BreadcrumbsBlueprint() {
             </text>
             {i < BREAD.items.length - 1 &&
               (() => {
-               const cx = itemX(i) + w + BREAD.gap + BREAD.sepW / 2
+                const cx = itemX(i) + w + BREAD.gap + BREAD.sepW / 2
                 const cy = BP.y + BREAD.itemH / 2 + 1
                 return (
                   <path
@@ -193,7 +193,15 @@ function AnatomySeparator({ i }: { i: number }) {
       className={`cursor-pointer ${spotlight.className}`}
       style={{ pointerEvents: 'all', ...spotlight.style }}
     >
-      <rect x={x} y={AN.y} width={AN.sepW} height={AN.itemH} fill="currentColor" fillOpacity={isHovered ? 0.08 : 0} rx={2} />
+      <rect
+        x={x}
+        y={AN.y}
+        width={AN.sepW}
+        height={AN.itemH}
+        fill="currentColor"
+        fillOpacity={isHovered ? 0.08 : 0}
+        rx={2}
+      />
       <path
         d={`M${cx - 1.5} ${cy - 3.5}l3 3.5-3 3.5`}
         fill="none"
@@ -268,7 +276,13 @@ function AnatomyLines() {
   return (
     <g strokeWidth="1" className="pointer-events-none">
       <OverlayLine id="link" x1={linkX} y1={AN.y} x2={linkX} y2={AN.y - 8} />
-      <OverlayLine id="separator" x1={sepX} y1={AN.y + AN.itemH} x2={sepX} y2={AN.y + AN.itemH + 8} />
+      <OverlayLine
+        id="separator"
+        x1={sepX}
+        y1={AN.y + AN.itemH}
+        x2={sepX}
+        y2={AN.y + AN.itemH + 8}
+      />
       <OverlayLine id="current" x1={currentX} y1={AN.y} x2={currentX} y2={AN.y - 8} />
     </g>
   )
@@ -305,7 +319,12 @@ function AnatomyTags() {
         height={24}
         className="overflow-visible pointer-events-none"
       >
-        <AnatomyTag part="current" label="Current page" isAccent className="items-end justify-center" />
+        <AnatomyTag
+          part="current"
+          label="Current page"
+          isAccent
+          className="items-end justify-center"
+        />
       </foreignObject>
     </>
   )

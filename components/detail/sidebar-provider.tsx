@@ -28,7 +28,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
     setShowSidebar((open) => !open)
   }, [])
 
- if (pathname !== prevPathname) {
+  if (pathname !== prevPathname) {
     setPrevPathname(pathname)
     setShowSidebar(false)
   }

@@ -237,7 +237,7 @@ function AnnotationsLayer() {
         label={`${AN.listH}`}
         labelXOffset={-6}
       />
-      
+
       <g
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={blueprintTheme.guide.strokeWidth}

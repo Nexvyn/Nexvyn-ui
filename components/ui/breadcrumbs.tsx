@@ -12,30 +12,26 @@ export interface BreadcrumbItem {
   title?: string
 }
 
-const breadcrumbVariants = cva(
-  'flex items-center',
-  {
-    variants: {
-      variant: {
-        default: '',
-        muted: '',
-      },
-      size: {
-        sm: 'text-[11px] gap-1',
-        md: 'text-sm gap-1.5',
-        lg: 'text-base gap-2',
-      },
+const breadcrumbVariants = cva('flex items-center', {
+  variants: {
+    variant: {
+      default: '',
+      muted: '',
     },
-    defaultVariants: {
-      variant: 'default',
-      size: 'md',
+    size: {
+      sm: 'text-[11px] gap-1',
+      md: 'text-sm gap-1.5',
+      lg: 'text-base gap-2',
     },
   },
-)
+  defaultVariants: {
+    variant: 'default',
+    size: 'md',
+  },
+})
 
 export interface BreadcrumbsProps
-  extends Omit<HTMLAttributes<HTMLElement>, 'color'>,
-    VariantProps<typeof breadcrumbVariants> {
+  extends Omit<HTMLAttributes<HTMLElement>, 'color'>, VariantProps<typeof breadcrumbVariants> {
   items: BreadcrumbItem[]
   maxItems?: number
   separator?: ReactNode
@@ -115,16 +111,26 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
         <span
           className={cn(
             breadcrumbVariants({ variant, size }),
-            isLast ? 'font-medium text-(--color-fg)' : 'text-(--color-muted) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none hover:text-(--color-fg)',
+            isLast
+              ? 'font-medium text-(--color-fg)'
+              : 'text-(--color-muted) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none hover:text-(--color-fg)',
           )}
         >
-          {item.icon && <span className="shrink-0 [&_svg]:size-3.5 me-1.5" aria-hidden="true">{item.icon}</span>}
+          {item.icon && (
+            <span className="shrink-0 [&_svg]:size-3.5 me-1.5" aria-hidden="true">
+              {item.icon}
+            </span>
+          )}
           {item.label}
         </span>
       )
 
       if (isLast) {
-        return <span aria-current="page" title={item.title}>{content}</span>
+        return (
+          <span aria-current="page" title={item.title}>
+            {content}
+          </span>
+        )
       }
 
       return (
@@ -141,7 +147,12 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
 
     return (
       <>
-        {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}
+        {jsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        )}
         <nav ref={ref} aria-label={ariaLabel} className={className} {...props}>
           <ol className={cn('flex flex-wrap items-center', listClassName)}>
             {visibleItems.map((item, i) => {
@@ -159,7 +170,13 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
                       )}
                       onMouseEnter={() => playHoverSound()}
                     >
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
                         <circle cx="3" cy="8" r="1.5" />
                         <circle cx="8" cy="8" r="1.5" />
                         <circle cx="13" cy="8" r="1.5" />
@@ -167,11 +184,33 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
                     </button>
                   </li>,
                 )
-                elements.push(<li key="sep-ellipsis" role="presentation" aria-hidden="true" className="flex items-center">{sep}</li>)
+                elements.push(
+                  <li
+                    key="sep-ellipsis"
+                    role="presentation"
+                    aria-hidden="true"
+                    className="flex items-center"
+                  >
+                    {sep}
+                  </li>,
+                )
               }
-              elements.push(<li key={`item-${i}`} className="flex items-center">{renderItem(item)}</li>)
+              elements.push(
+                <li key={`item-${i}`} className="flex items-center">
+                  {renderItem(item)}
+                </li>,
+              )
               if (i < visibleItems.length - 1) {
-                elements.push(<li key={`sep-${i}`} role="presentation" aria-hidden="true" className="flex items-center">{sep}</li>)
+                elements.push(
+                  <li
+                    key={`sep-${i}`}
+                    role="presentation"
+                    aria-hidden="true"
+                    className="flex items-center"
+                  >
+                    {sep}
+                  </li>,
+                )
               }
               return elements
             })}

@@ -20,7 +20,7 @@ import { WeightShiftText } from '@/components/ui/weight-shift-text'
 interface IconBarContextValue {
   value: string | null
   setValue: (v: string | null) => void
-  
+
   rovingIndex: number
   setRovingIndex: (i: number) => void
 }
@@ -191,7 +191,6 @@ export const IconBarItem = forwardRef<HTMLButtonElement, IconBarItemProps>(
 
     return (
       <>
-        
         <span
           ref={measureRef}
           aria-hidden="true"
@@ -228,7 +227,6 @@ export const IconBarItem = forwardRef<HTMLButtonElement, IconBarItemProps>(
           }}
           {...props}
         >
-          
           <span
             className="relative z-10 flex size-9 shrink-0 items-center justify-center"
             aria-hidden="true"
@@ -236,7 +234,6 @@ export const IconBarItem = forwardRef<HTMLButtonElement, IconBarItemProps>(
             {icon}
           </span>
 
-          
           <span
             className="overflow-hidden"
             style={{
@@ -256,7 +253,6 @@ export const IconBarItem = forwardRef<HTMLButtonElement, IconBarItemProps>(
             </span>
           </span>
 
-          
           {isSelected && (
             <span
               className="absolute top-1.5 end-1.5 size-1 rounded-full bg-(--color-accent)"

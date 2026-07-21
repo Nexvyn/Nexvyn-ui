@@ -13,7 +13,6 @@ export interface WeightShiftTextProps extends Omit<HTMLAttributes<HTMLSpanElemen
   duration?: string
 }
 
- 
 export const WeightShiftText = forwardRef<HTMLSpanElement, WeightShiftTextProps>(
   (
     {

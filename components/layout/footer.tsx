@@ -5,7 +5,7 @@ import { Button } from '@/components/layout/button'
 export function Footer() {
   return (
     <footer
-      className="max-w-6xl mx-auto w-full px-4 sm:px-6 md:px-12 py-4 flex items-center justify-between text-sm"
+      className="max-w-6xl mx-auto w-full px-4 sm:px-6 md:px-12 py-4 flex items-baseline justify-between text-sm"
       style={{ color: 'var(--color-muted)' }}
     >
       <span>© {new Date().getFullYear()}</span>
@@ -20,7 +20,7 @@ export function Footer() {
         </span>
       </span>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 self-center">
         <Button
           variant="ghost"
           className="hit-area-44 h-9 w-9 p-0 rounded-2xl squircle-corners transition-colors"
