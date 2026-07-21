@@ -37,6 +37,9 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'password-input-blueprint': dynamic(() =>
     import('@/components/diagrams/password-input-diagram').then((m) => m.PasswordInputWireframe),
   ),
+  'radio-group-blueprint': dynamic(() =>
+    import('@/components/diagrams/radio-group-diagram').then((m) => m.RadioGroupBlueprint),
+  ),
   'ratio-slider-blueprint': dynamic(() =>
     import('@/components/diagrams/ratio-slider-diagram').then((m) => m.RatioSliderWireframe),
   ),
@@ -47,6 +50,9 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   ),
   'select-blueprint': dynamic(() =>
     import('@/components/diagrams/select-diagram').then((m) => m.SelectBlueprint),
+  ),
+  'switch-blueprint': dynamic(() =>
+    import('@/components/diagrams/switch-diagram').then((m) => m.SwitchBlueprint),
   ),
   'table-of-contents-blueprint': dynamic(() =>
     import('@/components/diagrams/table-of-contents-diagram').then(

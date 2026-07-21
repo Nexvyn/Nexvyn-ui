@@ -14,9 +14,11 @@ const SOURCE_MAP: Record<string, string[]> = {
   'icon-bar': ['components', 'ui', 'icon-bar.tsx'],
   'nav-menu': ['components', 'ui', 'nav-menu.tsx'],
   'password-input': ['components', 'ui', 'password-input.tsx'],
+  'radio-group': ['components', 'ui', 'radio-group.tsx'],
   'ratio-slider': ['components', 'ui', 'ratio-slider.tsx'],
   'scroll-indicator': ['components', 'ui', 'scroll-indicator.tsx'],
   select: ['components', 'ui', 'select.tsx'],
+  switch: ['components', 'ui', 'switch.tsx'],
   'table-of-contents': ['components', 'ui', 'table-of-contents.tsx'],
 }
 
