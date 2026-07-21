@@ -1,5 +1,7 @@
+import { badgeMetadata } from '@/components/ui/Doc/badge-metadata'
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
 import { colorPickerMetadata } from '@/components/ui/Doc/color-picker-metadata'
+import { faderMetadata } from '@/components/ui/Doc/fader-metadata'
 import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
 import { passwordInputMetadata } from '@/components/ui/Doc/password-input-metadata'
 import { ratioSliderMetadata } from '@/components/ui/Doc/ratio-slider-metadata'
@@ -42,8 +44,10 @@ export type ComponentCollection = {
 }
 
 export const COMPONENTS: ComponentItem[] = [
+  badgeMetadata,
   bounceSidebarMetadata,
   colorPickerMetadata,
+  faderMetadata,
   gooDropdownMetadata,
   passwordInputMetadata,
   ratioSliderMetadata,

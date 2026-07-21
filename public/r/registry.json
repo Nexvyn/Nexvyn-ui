@@ -4,6 +4,50 @@
   "homepage": "https://ui.nexvyn.dev",
   "items": [
     {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "A compact status label with solid, muted, and dot variants for tagging content inline.",
+      "dependencies": [
+        "class-variance-authority",
+        "@radix-ui/react-slot"
+      ],
+      "files": [
+        {
+          "path": "components/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "fader",
+      "type": "registry:ui",
+      "title": "Fader",
+      "description": "A mixing-console-style parameter fader where the control IS the display, with continuous and detent value grammars, elastic overdrag, and spring-animated settle.",
+      "dependencies": [
+        "@base-ui/react",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/fader/fader.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/fader/geometry.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/fader/use-fader.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/fader/index.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "bounce-sidebar",
       "type": "registry:ui",
       "title": "Bounce Sidebar",
