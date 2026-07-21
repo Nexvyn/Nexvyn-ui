@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { X, Check, AlertCircle } from 'lucide-react'
 
@@ -8,10 +9,19 @@ type FeedbackModalProps = {
   componentName?: string
 }
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
 export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalProps) {
   const [text, setText] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLElement | null>(null)
+  const successTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -26,7 +36,7 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
       })
       if (res.ok) {
         setStatus('success')
-        setTimeout(() => {
+        successTimer.current = setTimeout(() => {
           onClose()
           setStatus('idle')
           setText('')
@@ -48,17 +58,63 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
     }
   }, [isOpen])
 
+  useEffect(
+    () => () => {
+      if (successTimer.current) clearTimeout(successTimer.current)
+    },
+    [],
+  )
+
   useEffect(() => {
+    if (!isOpen) return
+
+    triggerRef.current = document.activeElement as HTMLElement | null
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const focusFirst = () => {
+      const first = dialogRef.current?.querySelector<HTMLElement>(FOCUSABLE_SELECTOR)
+      first?.focus()
+    }
+    focusFirst()
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === 'Escape') {
         onClose()
+        return
+      }
+      if (e.key !== 'Tab' || !dialogRef.current) return
+
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+      )
+      if (focusable.length === 0) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      const active = document.activeElement
+
+      if (e.shiftKey && active === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault()
+        first.focus()
       }
     }
     window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', handleKeyDown)
+      triggerRef.current?.focus()
+    }
   }, [isOpen, onClose])
 
-  return (
+  if (!mounted) return null
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
@@ -66,22 +122,31 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-100 bg-black/60 backdrop-blur-sm"
             onClick={onClose}
           />
           <motion.div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="feedback-modal-title"
             initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ type: 'spring', stiffness: 350, damping: 30 }}
-            className="fixed left-1/2 top-1/2 z-[100] w-[90%] max-w-90 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-(--color-border-strong) bg-(--color-bg) p-6 shadow-2xl select-none"
+            className="fixed left-1/2 top-1/2 z-100 w-[90%] max-w-90 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-(--color-border-strong) bg-(--color-bg) p-6 shadow-2xl select-none"
           >
             {status === 'success' && (
               <div className="flex flex-col items-center text-center py-6 px-2">
                 <div className="h-16 w-16 bg-(--color-success) rounded-full flex items-center justify-center text-(--color-bg) mb-5 shadow-lg">
                   <Check className="h-8 w-8 stroke-[2.5]" />
                 </div>
-                <h3 className="text-xl font-semibold text-(--color-fg) mb-1.5">Thanks!</h3>
+                <h3
+                  id="feedback-modal-title"
+                  className="text-xl font-semibold text-(--color-fg) mb-1.5"
+                >
+                  Thanks!
+                </h3>
                 <p className="text-xs sm:text-sm text-(--color-muted) leading-relaxed">
                   Your feedback helps us build something better.
                 </p>
@@ -93,11 +158,14 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
                 <div className="h-16 w-16 bg-(--color-error)/10 text-(--color-error) rounded-full flex items-center justify-center mb-5">
                   <AlertCircle className="h-8 w-8" />
                 </div>
-                <h3 className="text-xl font-semibold text-(--color-fg) mb-1.5">
+                <h3
+                  id="feedback-modal-title"
+                  className="text-xl font-semibold text-(--color-fg) mb-1.5"
+                >
                   Something went wrong
                 </h3>
                 <p className="text-xs sm:text-sm text-(--color-muted) leading-relaxed mb-6">
-                  We couldn't send your feedback. Please try again.
+                  We couldn&apos;t send your feedback. Please try again.
                 </p>
                 <button
                   type="button"
@@ -112,7 +180,12 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
             {status === 'idle' && (
               <form onSubmit={handleSubmit} className="flex flex-col gap-1.5">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-[17px] font-semibold text-(--color-fg)">Help us improve</h3>
+                  <h3
+                    id="feedback-modal-title"
+                    className="text-[17px] font-semibold text-(--color-fg)"
+                  >
+                    Help us improve
+                  </h3>
                   <button
                     type="button"
                     onClick={onClose}
@@ -136,7 +209,6 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
                   }}
                   placeholder="Share an idea or report a bug"
                   className="w-full min-h-30 bg-transparent text-(--color-fg) placeholder:text-(--color-muted) border-0 outline-none resize-none text-[14.5px] leading-relaxed py-1"
-                  autoFocus
                 />
 
                 <div className="flex items-center gap-3 mt-4">
@@ -160,6 +232,7 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
           </motion.div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   )
 }

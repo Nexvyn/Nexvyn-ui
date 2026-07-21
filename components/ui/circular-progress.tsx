@@ -9,7 +9,11 @@ interface CircularProgressProps extends ComponentPropsWithoutRef<'svg'> {
   strokeWidth?: number
   trackClassName?: string
   progressClassName?: string
+  showValue?: boolean
+  valueClassName?: string
 }
+
+const MIN_LABEL_SIZE = 32
 
 export const CircularProgress = forwardRef<SVGSVGElement, CircularProgressProps>(
   function CircularProgress(
@@ -20,6 +24,8 @@ export const CircularProgress = forwardRef<SVGSVGElement, CircularProgressProps>
       className,
       trackClassName,
       progressClassName,
+      showValue = false,
+      valueClassName,
       ...props
     },
     ref,
@@ -28,6 +34,7 @@ export const CircularProgress = forwardRef<SVGSVGElement, CircularProgressProps>
     const circumference = radius * 2 * Math.PI
     const safeProgress = Math.max(0, Math.min(100, progress))
     const offset = circumference - (safeProgress / 100) * circumference
+    const showLabel = showValue && size >= MIN_LABEL_SIZE
 
     return (
       <svg
@@ -52,7 +59,7 @@ export const CircularProgress = forwardRef<SVGSVGElement, CircularProgressProps>
         />
         <circle
           className={cn(
-            'text-(--color-accent) transition-all duration-500 ease-out',
+            'text-(--color-accent) transition-[stroke-dashoffset] duration-500 ease-out',
             progressClassName,
           )}
           strokeWidth={strokeWidth}
@@ -69,6 +76,19 @@ export const CircularProgress = forwardRef<SVGSVGElement, CircularProgressProps>
             filter: 'drop-shadow(0 0 2px currentColor)',
           }}
         />
+        {showLabel && (
+          <text
+            x={size / 2}
+            y={size / 2}
+            transform={`rotate(90, ${size / 2}, ${size / 2})`}
+            textAnchor="middle"
+            dominantBaseline="central"
+            className={cn('select-none fill-foreground font-medium tabular-nums', valueClassName)}
+            style={{ fontSize: size * 0.28 }}
+          >
+            {Math.round(safeProgress)}
+          </text>
+        )}
       </svg>
     )
   },

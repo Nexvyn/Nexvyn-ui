@@ -47,7 +47,7 @@ export function calculateSliderValueFromPoint(
   halfSweep: number,
   position: SliderPosition,
 ): number {
-  let angle = Math.atan2(dy, dx) * (180 / Math.PI)
+  const angle = Math.atan2(dy, dx) * (180 / Math.PI)
 
   let normalizedAngle = angle - centerAngle
   while (normalizedAngle > 180) normalizedAngle -= 360
