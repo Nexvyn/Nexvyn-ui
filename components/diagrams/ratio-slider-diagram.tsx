@@ -339,7 +339,12 @@ function TagsLayer() {
         height={20}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="track" label="Slider.Track" className="items-start justify-center" isAccent />
+        <AnatomyTag
+          part="track"
+          label="Slider.Track"
+          className="items-start justify-center"
+          isAccent
+        />
       </foreignObject>
       <foreignObject
         x={188}

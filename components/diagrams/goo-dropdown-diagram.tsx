@@ -193,7 +193,15 @@ function GooBridgeShape() {
   )
 }
 
-function ItemShape({ theme, index, label }: { theme: BlueprintTheme; index: number; label: string }) {
+function ItemShape({
+  theme,
+  index,
+  label,
+}: {
+  theme: BlueprintTheme
+  index: number
+  label: string
+}) {
   const { hovered, setHovered } = useAnatomy()
   const partId = `item-${index}`
   const spotlight = useSpotlight(partId)
@@ -273,7 +281,12 @@ function TagsLayer() {
         height={20}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="trigger" label="Trigger.Button" className="items-start justify-center" isAccent />
+        <AnatomyTag
+          part="trigger"
+          label="Trigger.Button"
+          className="items-start justify-center"
+          isAccent
+        />
       </foreignObject>
       <foreignObject
         x={170}

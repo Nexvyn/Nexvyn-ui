@@ -89,11 +89,23 @@ export function GitHubMascot({
             animate('.gh-coin', stride, { ...strideOpts, times: strideTimes, ease: 'easeInOut' }),
             animate('.gh-front-view', { opacity: 0 }, { duration: 0.25, ease: 'easeOut' }),
             animate('.gh-side-view', { opacity: 1 }, { duration: 0.25, ease: 'easeOut' }),
-            animate('.gh-foot-l', { x: [-3, 0, 3, 0, -3], y: [0, -2.5, 0, 0, 0] }, { ...strideOpts, times: [0, 0.25, 0.5, 0.75, 1], ease: 'easeInOut' }),
-            animate('.gh-foot-r', { x: [3, 0, -3, 0, 3], y: [0, 0, 0, -2.5, 0] }, { ...strideOpts, times: [0, 0.25, 0.5, 0.75, 1], ease: 'easeInOut' }),
+            animate(
+              '.gh-foot-l',
+              { x: [-3, 0, 3, 0, -3], y: [0, -2.5, 0, 0, 0] },
+              { ...strideOpts, times: [0, 0.25, 0.5, 0.75, 1], ease: 'easeInOut' },
+            ),
+            animate(
+              '.gh-foot-r',
+              { x: [3, 0, -3, 0, 3], y: [0, 0, 0, -2.5, 0] },
+              { ...strideOpts, times: [0, 0.25, 0.5, 0.75, 1], ease: 'easeInOut' },
+            ),
           ])
           await Promise.all([
-            animate('.gh-coin', { rotate: 0, scaleX: 1, scaleY: 1, y: 0 }, { duration: 0.12, ease: 'easeOut' }),
+            animate(
+              '.gh-coin',
+              { rotate: 0, scaleX: 1, scaleY: 1, y: 0 },
+              { duration: 0.12, ease: 'easeOut' },
+            ),
             animate('.gh-foot-l', { x: 0, y: 0 }, { duration: 0.12, ease: 'easeOut' }),
             animate('.gh-foot-r', { x: 0, y: 0 }, { duration: 0.12, ease: 'easeOut' }),
           ])
@@ -101,12 +113,20 @@ export function GitHubMascot({
 
           await Promise.all([
             animate('.gh-traveler', { x: 0, y: 0 }, { duration: 0.38, ease: 'easeInOut' }),
-            animate('.gh-coin', { y: [0, -18, 2], scaleY: [1, 1.05, 0.9] }, { duration: 0.38, times: [0, 0.55, 1], ease: 'easeOut' }),
+            animate(
+              '.gh-coin',
+              { y: [0, -18, 2], scaleY: [1, 1.05, 0.9] },
+              { duration: 0.38, times: [0, 0.55, 1], ease: 'easeOut' },
+            ),
             animate('.gh-side-view', { opacity: 0 }, { duration: 0.3, ease: 'easeOut' }),
             animate('.gh-front-view', { opacity: 1 }, { duration: 0.3, ease: 'easeIn' }),
           ])
           onLandRef.current?.()
-          await animate('.gh-coin', { y: 0, scaleY: 1 }, { type: 'spring', stiffness: 400, damping: 25 })
+          await animate(
+            '.gh-coin',
+            { y: 0, scaleY: 1 },
+            { type: 'spring', stiffness: 400, damping: 25 },
+          )
           isWalkingRef.current = false
           if (!isPlaying) return
           await wait(600)
@@ -129,7 +149,11 @@ export function GitHubMascot({
         onLandRef.current?.()
 
         setIsBlinking(false)
-        await animate('.gh-coin', { y: 0, scaleY: 1 }, { type: 'spring', stiffness: 400, damping: 25 })
+        await animate(
+          '.gh-coin',
+          { y: 0, scaleY: 1 },
+          { type: 'spring', stiffness: 400, damping: 25 },
+        )
         if (!isPlaying) return
 
         await wait(150)
@@ -228,25 +252,69 @@ export function GitHubMascot({
             </linearGradient>
           </defs>
           <g className="gh-front-view" style={{ opacity: 1 }}>
-            <path d={starRest} fill={`url(#${gradientId})`} style={{ mixBlendMode: 'darken' }} className="gh-wave-path" />
+            <path
+              d={starRest}
+              fill={`url(#${gradientId})`}
+              style={{ mixBlendMode: 'darken' }}
+              className="gh-wave-path"
+            />
             <g transform="translate(116.2534 0) scale(-1 1)">
-              <path d={starRest} fill={`url(#${gradientId})`} style={{ mixBlendMode: 'darken' }} className="gh-wave-path" />
+              <path
+                d={starRest}
+                fill={`url(#${gradientId})`}
+                style={{ mixBlendMode: 'darken' }}
+                className="gh-wave-path"
+              />
             </g>
-            <g ref={leftEyeRef} style={{ transition: 'transform 0.1s ease-out', transformOrigin: '40px 92px', transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)' }}>
+            <g
+              ref={leftEyeRef}
+              style={{
+                transition: 'transform 0.1s ease-out',
+                transformOrigin: '40px 92px',
+                transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
+              }}
+            >
               <circle cx="40" cy="92" r="5" fill="var(--color-bg)" />
             </g>
-            <g ref={rightEyeRef} style={{ transition: 'transform 0.1s ease-out', transformOrigin: '76px 92px', transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)' }}>
+            <g
+              ref={rightEyeRef}
+              style={{
+                transition: 'transform 0.1s ease-out',
+                transformOrigin: '76px 92px',
+                transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
+              }}
+            >
               <circle cx="76" cy="92" r="5" fill="var(--color-bg)" />
             </g>
           </g>
           <g className="gh-side-view" style={{ opacity: 0 }}>
             <path d={starSide} fill={`url(#${gradientId})`} style={{ mixBlendMode: 'darken' }} />
-            <g style={{ transition: 'transform 0.1s ease-out', transformOrigin: '84px 84px', transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)' }}>
+            <g
+              style={{
+                transition: 'transform 0.1s ease-out',
+                transformOrigin: '84px 84px',
+                transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
+              }}
+            >
               <circle cx="84" cy="84" r="5" fill="var(--color-bg)" />
             </g>
           </g>
-          <ellipse className="gh-foot-l" cx="31" cy="144" rx="6" ry="3.2" fill="var(--mascot-stop-1)" />
-          <ellipse className="gh-foot-r" cx="85.5" cy="144" rx="6" ry="3.2" fill="var(--mascot-stop-1)" />
+          <ellipse
+            className="gh-foot-l"
+            cx="31"
+            cy="144"
+            rx="6"
+            ry="3.2"
+            fill="var(--mascot-stop-1)"
+          />
+          <ellipse
+            className="gh-foot-r"
+            cx="85.5"
+            cy="144"
+            rx="6"
+            ry="3.2"
+            fill="var(--mascot-stop-1)"
+          />
         </svg>
       </div>
     </div>
