@@ -1,15 +1,13 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { useAnimate } from 'motion/react'
 import NumberFlow from '@number-flow/react'
 
 export function StarsCount() {
   const [stars, setStars] = useState(1)
   const [isHovered, setIsHovered] = useState(false)
-  const [isBlinking, setIsBlinking] = useState(false)
-  const leftEyeRef = useRef<SVGGElement>(null)
-  const rightEyeRef = useRef<SVGGElement>(null)
-  const containerRef = useRef<HTMLSpanElement>(null)
+  const [scope, animate] = useAnimate()
   const blinkTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
@@ -23,70 +21,71 @@ export function StarsCount() {
       .catch(() => {})
   }, [])
 
+  const starRest =
+    'M44.3662 64.2642C50.49 53.2829 53.5495 47.7922 58.1267 47.7922C62.7038 47.7922 65.7633 53.2829 71.8872 64.2642L73.4725 67.1062C75.2125 70.2285 76.0825 71.7897 77.4358 72.8192C78.7892 73.8487 80.4808 74.2305 83.8642 74.9942L86.9382 75.6902C98.8282 78.3824 104.768 79.726 106.185 84.2742C107.596 88.8175 103.546 93.559 95.44 103.037L93.3423 105.488C91.0417 108.18 89.8865 109.528 89.3694 111.191C88.8522 112.859 89.0262 114.657 89.3742 118.248L89.6932 121.52C90.916 134.169 91.5298 140.491 87.8275 143.299C84.1252 146.107 78.5572 143.545 67.4308 138.422L64.5453 137.098C61.3843 135.638 59.8038 134.913 58.1267 134.913C56.4495 134.913 54.869 135.638 51.708 137.098L48.8273 138.422C37.6962 143.545 32.1282 146.107 28.4307 143.304C24.7235 140.491 25.3373 134.169 26.5602 121.52L26.8792 118.253C27.2272 114.657 27.4012 112.859 26.8792 111.196C26.3668 109.528 25.2117 108.18 22.911 105.493L20.8133 103.037C12.7078 93.5639 8.65751 88.8224 10.0688 84.2742C11.4802 79.726 17.43 78.3775 29.32 75.6902L32.394 74.9942C35.7725 74.2305 37.4593 73.8487 38.8175 72.8192C40.1757 71.7897 41.0408 70.2285 42.7808 67.1062L44.3662 64.2642Z'
+
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const moveEye = (eye: SVGGElement | null, cx: number, cy: number) => {
-        if (!eye) return
-        const svg = eye.closest('svg')
-        if (!svg) return
-        const rect = svg.getBoundingClientRect()
-        const eyeCenterX = rect.left + (cx / 128) * rect.width
-        const eyeCenterY = rect.top + (cy / 128) * rect.height
-        const dx = e.clientX - eyeCenterX
-        const dy = e.clientY - eyeCenterY
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        const maxMove = 2
-        const moveX = dist > 0 ? (dx / dist) * Math.min(maxMove, dist * 0.05) : 0
-        const moveY = dist > 0 ? (dy / dist) * Math.min(maxMove, dist * 0.05) : 0
-        eye.style.transform = `translate(${moveX}px, ${moveY}px)`
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    let isPlaying = true
+    const timers: ReturnType<typeof setTimeout>[] = []
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        const id = setTimeout(resolve, ms)
+        timers.push(id)
+      })
+
+    const playBounceSequence = async () => {
+      await wait(1500)
+      while (isPlaying) {
+        await animate('.mascot-coin', { y: -8 }, { type: 'spring', stiffness: 500, damping: 20, mass: 0.6 })
+        if (!isPlaying) return
+        await animate('.mascot-coin', { y: 0 }, { type: 'spring', stiffness: 400, damping: 25 })
+        if (!isPlaying) return
+        const randomWait = Math.random() * 5000 + 3000
+        await wait(randomWait)
       }
-      moveEye(leftEyeRef.current, 48, 62)
-      moveEye(rightEyeRef.current, 76, 62)
     }
 
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
-
-  useEffect(() => {
-    let closeTimer: ReturnType<typeof setTimeout>
-    const scheduleBlink = () => {
-      const delay = 2000 + Math.random() * 1000
-      return setTimeout(() => {
-        setIsBlinking(true)
-        closeTimer = setTimeout(() => setIsBlinking(false), 150)
-        blinkTimer.current = scheduleBlink()
-      }, delay)
+    const playBlinkSequence = async () => {
+      await wait(2000)
+      while (isPlaying) {
+        await animate('.mascot-eye', { scaleY: 0.1 }, { duration: 0.05 })
+        if (!isPlaying) return
+        await animate('.mascot-eye', { scaleY: 1 }, { duration: 0.05 })
+        if (!isPlaying) return
+        const randomWait = Math.random() * 4000 + 2000
+        await wait(randomWait)
+      }
     }
-    const blinkTimer = { current: scheduleBlink() as ReturnType<typeof setTimeout> }
+
+    playBounceSequence()
+    playBlinkSequence()
+
     return () => {
-      clearTimeout(blinkTimer.current)
-      clearTimeout(closeTimer)
+      isPlaying = false
+      timers.forEach(clearTimeout)
     }
-  }, [])
-
-  useEffect(
-    () => () => {
-      if (blinkTimeout.current) clearTimeout(blinkTimeout.current)
-    },
-    [],
-  )
+  }, [animate])
 
   const handleMouseEnter = () => {
     setIsHovered(true)
-    setIsBlinking(true)
-    blinkTimeout.current = setTimeout(() => setIsBlinking(false), 150)
+    if (blinkTimeout.current) clearTimeout(blinkTimeout.current)
+    animate('.mascot-eye', { scaleY: 0.1 }, { duration: 0.05 })
+    blinkTimeout.current = setTimeout(() => {
+      animate('.mascot-eye', { scaleY: 1 }, { duration: 0.05 })
+    }, 150)
   }
 
   const handleMouseLeave = () => {
     setIsHovered(false)
     if (blinkTimeout.current) clearTimeout(blinkTimeout.current)
-    setIsBlinking(false)
+    animate('.mascot-eye', { scaleY: 1 }, { duration: 0.05 })
   }
 
   return (
     <span
-      ref={containerRef}
+      ref={scope}
       className="inline-flex items-center gap-1.5 cursor-pointer select-none"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -95,107 +94,32 @@ export function StarsCount() {
         transform: isHovered ? 'translateY(-1px) scale(1.02)' : 'none',
       }}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 128 128"
-        className="inline-block align-middle"
-        style={{ width: 24, height: 24 }}
-      >
-        <defs>
-          <linearGradient id="starGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#7AA6C6" />
-            <stop offset="35%" stopColor="#AFC7DC" />
-            <stop offset="60%" stopColor="#D8E6F1" />
-            <stop offset="80%" stopColor="#EEF4FA" />
-            <stop offset="95%" stopColor="#FFFFFF" />
-          </linearGradient>
-        </defs>
-        <path
-          fill="var(--color-fg)"
-          d="m126.2 49.7c-1.7-5.6-8.7-7.2-16.9-8.4l-15.2-1.8c-5.7-0.8-6.5-1.1-8.2-4.4-8.2-16.7-12.3-24.6-15-27.7-2.1-2.3-4.2-3.5-6.8-3.5s-4.9 1.1-7 3.1c-2.8 2.7-4.9 7.1-15 27.5-1.7 3.3-2.1 3.7-6.7 4.3l-15.3 1.9c-9.5 1.3-16.9 2.6-18.3 8.6-1.4 5.9 3.4 11.4 7.9 16.2 3.3 3.5 6.9 7.1 10.1 10.3l3.5 3.5c2.3 2.4 2.1 3.5 1.7 7.4l-0.3 2.1c-0.5 3.1-1 6.3-1.6 9.6-1.9 10.5-3.5 20.3 1.4 24.1 1.4 1 3.2 1.5 5.4 1.5 4.8 0 9-1.9 18.2-6.7l6.4-3.2c3.5-1.8 6.6-3.7 9.1-3.7h0.2c2.6 0 5 1.1 8.6 2.8l6.6 3.2c8.7 4.1 14.5 7.5 19.6 7.6 1.9 0 3.8-0.3 5-1.2 5-3.1 3.7-11 2.2-19.5l-2.2-13c-1.3-7.7-1.3-8.3 0.8-10.8 1.6-1.7 3.6-3.7 5.8-6 3.2-3.2 6.8-6.8 9.7-9.9 3.7-4 8-8.6 6.3-13.9z"
-        />
-        <path
-          fill="url(#starGrad)"
-          d="m63.9 7c-4.3 0.2-6.5 4.4-8.6 8.1l-10.6 21.3c-1.8 3.5-3.7 4.3-6.4 4.9-13.9 2.4-31.3 2.4-33.9 8.4-2.1 5.3 4.8 11.8 7.8 15l11.7 11.9c3.7 3.7 4.6 5.2 3.9 10.5l-2.4 13.4c-1.9 10.5-2.6 17.3 0.5 19.6 4 2.8 9.9 0.4 17.5-3.4l12-6.2c3.2-1.6 5.6-3.2 8.5-3.2 3 0 5.4 0.9 8.7 2.5l12.1 5.9c5.8 2.7 10.2 5.3 14 5.3 4.2 0 5.4-2.6 5.2-7.9-0.1-2.3-2.1-14.1-3.5-22.6-1.3-7.9-1.4-9.4 2.3-13.4l11.8-11.8c3-3.2 10-9.5 9.9-13.9 0-7.4-21.2-7.8-33.3-9.8-4.1-0.7-6.1-1.7-8.1-5.6l-10.1-20.3c-2.1-3.6-4.5-8.7-9-8.7z"
-        />
-        <path
-          fill="#FFFFFF"
-          opacity="0.9"
-          d="m61.7 9c-2.5 1.6-4.1 5-7.2 11.4l-7.8 15.6c-2.6 5.2-4.4 5.9-7.7 6.5l-15.3 1.8c-9.2 1.2-16 2.1-16.9 3.9 3.6-1.8 11.4-2.4 17-3.1l15.3-1.8c3.6-0.6 5.7-1.4 7.3-3.3 1.8-2.1 2.7-4.5 5.6-10.5 2.6-5.5 6.1-14.6 9.7-20.5z"
-        />
-        <path
-          fill="#AFC7DC"
-          opacity="0.6"
-          d="m6 53.7c0.6 4.3 5.5 8.4 10.6 13.5l9.2 8.6c3.9 4.1 4.9 6.4 2.6 16.2-1.1 5.2-3 12.9-3.3 19.9 1.3-8.9 3.9-18 4.9-25.1 1-7.3-2.1-9.7-5.9-13.3l-8.9-8.8c-3.8-3.8-8.6-8.3-9.2-11z"
-        />
-        <path
-          fill="#FFFFFF"
-          opacity="0.9"
-          d="m84.1 41.9c-2.7-2-3.4-4-5.2-7.8l-8.2-18.4v0.1c4.4 12.3 6.2 19.9 8.9 23.1 1.4 1.7 3.1 2.8 4.5 3z"
-        />
-        <path
-          fill="#AFC7DC"
-          opacity="0.6"
-          d="m119.5 48.8c-4.2-2.3-10.5-2.5-27.4-4.8-3.2-0.3-5.5-0.7-7.5-2-1.2-0.2-2.6-0.7-3.6-1.2 2.1 1.7 5 2.1 8.4 2.5 17.6 2 28 2.7 30.1 5.5z"
-        />
-        <path
-          fill="#FFFFFF"
-          opacity="0.9"
-          d="m39.5 43.2c-12.1 2.4-31.3 3.4-32.6 6.7-0.8 2.9 1.2 1.5 5.3 0.4 5.7-1.8 13.7-2.9 27-5.4 1.9-0.4 4.8-1 6.4-3.5-1.4 1.1-3.9 1.6-6.1 1.8z"
-        />
-        <path
-          fill="#D8E6F1"
-          opacity="0.7"
-          d="m121.9 52.4c-0.2 1.5-1.4 2.2-4.3 4.1-4.2 4.2-12.9 11.1-18.1 16.5-4.5 4.5-5.7 7.4-4.1 15.2 2.1 9.5 4.7 18.7 4.3 25.4 2.3-1.4 2.3-4.6 2.6-4.3l-3.4-18.6c-1.4-8.6-0.3-11.2 3.4-15.2l10.7-10.1c4.2-4.1 9-7.8 8.9-13z"
-        />
-        <path
-          fill="#D8E6F1"
-          opacity="0.7"
-          d="m97 117.3c-4.5 0.4-14.6-5-24.1-10.2-4.3-2.2-6.6-3.4-10.7-3.4-3.5 0-6.1 1.3-9 2.8-4.5 2.4-15.2 8.2-18.7 9.9-8.3 3.3-9.5-0.6-9.4-4.6-0.6 3.9 0.3 7.7 4.5 7.9 3.6 0.2 7-1.5 11.6-3.8l12-6c3.2-1.5 6-3.5 10.2-3.7 3.3-0.1 6.4 1.1 10 2.8l10.6 5c5.1 2.1 10.5 5.4 14.1 5.5 3.8 0.2 4.8-2.6 4.3-6-2 0.4-3.5 3.5-5.4 3.8z"
-        />
-        <g
-          ref={leftEyeRef}
-          style={{
-            transition: 'transform 0.1s ease-out',
-            transformOrigin: '48px 62px',
-            transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
-          }}
-        >
-          <path
-            fill="#FFFFFF"
-            d="m48.5 53.3c-3.5 0.7-5.4 6.7-5.3 15.8 0.2 4.4 0.9 12.9 5.2 13.9 4.3 0.7 6.5-4.3 6.6-13.5 0.1-9.1-2-16.8-6.5-16.2z"
-          />
-          <path
-            fill="#000000"
-            d="m48.6 65.8c-1.3-0.3-2.2-2.1-2.2-4.8-0.1-3.5 1.3-5.1 2.5-4.9 1.7 0.1 2.5 2.4 2.4 5-0.1 2.8-1.1 4.8-2.7 4.7z"
-          />
-        </g>
-        <g
-          ref={rightEyeRef}
-          style={{
-            transition: 'transform 0.1s ease-out',
-            transformOrigin: '76px 62px',
-            transform: isBlinking ? 'scaleY(0.1)' : 'scaleY(1)',
-          }}
-        >
-          <path
-            fill="#FFFFFF"
-            d="m75.9 53.5c-3.5 1.2-5 6.6-5.1 14.5 0.1 6 1 11.7 3.2 13.8 1.7 1.7 4.2 1.7 5.7 0.1 1.9-2 3-7 3-14.3-0.1-7.7-1.7-15.2-6.8-14.1z"
-          />
-          <path
-            fill="#000000"
-            d="m76.3 66c-1.4-0.1-2.3-2.5-2.2-5.4 0.2-3.6 1.9-4.8 3-4.4 1.5 0.4 2.1 2.9 1.9 5.6-0.1 2.5-1.4 4.1-2.7 4.2z"
-          />
-        </g>
-      </svg>
+      <style>{`
+        .mascot-coin { position: absolute; inset: 0; width: 100%; height: 100%; transform-style: preserve-3d; transform-origin: center calc(50% + 20px); }
+        .mascot-face { position: absolute; inset: 0; width: 100%; height: 100%; backface-visibility: hidden; }
+        .mascot-face-back { transform: rotateY(180deg) translateZ(1px); }
+        .mascot-eye { transform-origin: center; transform-box: fill-box; }
+        @media (prefers-reduced-motion: reduce) {
+          .mascot-eye, .mascot-coin { animation: none !important; transform: none !important; }
+        }
+      `}</style>
+      <span className="relative inline-block" style={{ width: 24, height: 24, perspective: '1000px' }}>
+        <div className="mascot-coin">
+          <svg aria-hidden="true" viewBox="0 35 120 120" fill="none" className="mascot-face">
+            <path d={starRest} fill="currentColor" className="mascot-wave-path" />
+            <circle cx="40" cy="92" r="5" fill="var(--color-bg)" className="mascot-eye" />
+            <circle cx="76" cy="92" r="5" fill="var(--color-bg)" className="mascot-eye" />
+          </svg>
+          <svg aria-hidden="true" viewBox="0 35 120 120" fill="none" className="mascot-face mascot-face-back">
+            <path d={starRest} fill="currentColor" />
+          </svg>
+        </div>
+      </span>
       <NumberFlow
         value={stars}
         format={{ notation: 'compact', maximumFractionDigits: 1 }}
         className="tabular-nums text-sm"
-        style={{
-          fontWeight: 500,
-          letterSpacing: '-0.02em',
-        }}
+        style={{ fontWeight: 500, letterSpacing: '-0.02em' }}
         transformTiming={{ duration: 600, easing: 'ease-out' }}
         spinTiming={{ duration: 500, easing: 'ease-out' }}
         opacityTiming={{ duration: 400, easing: 'ease-out' }}

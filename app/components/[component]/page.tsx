@@ -21,6 +21,7 @@ import {
   ColorPickerDemo,
   FaderDemo,
   GooDropdownDemo,
+  NavMenuDemo,
   PasswordInputDemo,
   RatioSliderDemo,
   ScrollIndicatorDemo,
@@ -136,6 +137,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <DropdownMenuDemo />
+        </DemoFrame>
+      )
+    case 'nav-menu':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <NavMenuDemo />
         </DemoFrame>
       )
     case 'bounce-sidebar':
