@@ -57,6 +57,9 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'switch-blueprint': dynamic(() =>
     import('@/components/diagrams/switch-diagram').then((m) => m.SwitchBlueprint),
   ),
+  'table-blueprint': dynamic(() =>
+    import('@/components/diagrams/table-diagram').then((m) => m.TableBlueprint),
+  ),
   'table-of-contents-blueprint': dynamic(() =>
     import('@/components/diagrams/table-of-contents-diagram').then(
       (m) => m.TableOfContentsWireframe,

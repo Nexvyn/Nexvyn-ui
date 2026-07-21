@@ -31,6 +31,7 @@ import {
   ScrollIndicatorDemo,
   SelectDemo,
   SwitchDemo,
+  TableDemo,
   TableOfContentsDemo,
 } from '@/components/ui/previews'
 
@@ -220,6 +221,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <SwitchDemo />
+        </DemoFrame>
+      )
+    case 'table':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <TableDemo />
         </DemoFrame>
       )
     case 'select':
