@@ -507,6 +507,23 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "tabs-subtle",
+      "type": "registry:ui",
+      "title": "Tabs Subtle",
+      "description": "A pill-style tab list where the selected indicator springs between tabs, built on the WAI-ARIA tabs pattern with full roving-focus keyboard support.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/tabs-subtle.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        }
+      ]
     }
   ]
 }

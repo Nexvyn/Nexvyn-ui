@@ -38,6 +38,7 @@ import {
   SwitchDemo,
   TableDemo,
   TableOfContentsDemo,
+  TabsSubtleDemo,
 } from '@/components/ui/previews'
 
 function DemoFrame({
@@ -274,6 +275,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <TableOfContentsDemo />
+        </DemoFrame>
+      )
+    case 'tabs-subtle':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <TabsSubtleDemo />
         </DemoFrame>
       )
     case 'theme-toggle':

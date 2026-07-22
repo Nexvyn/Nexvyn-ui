@@ -123,6 +123,7 @@ const ANATOMY_COMPONENTS = [
   'switch',
   'table',
   'table-of-contents',
+  'tabs-subtle',
 ]
 
 export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
