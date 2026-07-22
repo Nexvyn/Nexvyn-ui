@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { ComponentCard } from '@/components/showcase/component-card'
 import { AnimatedTitle } from '@/components/showcase/animated-title'
+import { AnatomyLicenseNotice } from '@/components/detail/anatomy-license-notice'
 import { COMPONENTS, COLLECTIONS } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 
@@ -120,6 +121,10 @@ export default function ComponentsPage() {
             ))}
           </div>
         )}
+
+        <div className="mt-6 flex justify-end">
+          <AnatomyLicenseNotice className="h-10 w-10 rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2)" />
+        </div>
       </main>
 
       <Footer />
