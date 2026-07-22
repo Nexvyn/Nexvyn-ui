@@ -524,6 +524,27 @@
           "type": "registry:lib"
         }
       ]
+    },
+    {
+      "name": "input-copy",
+      "type": "registry:ui",
+      "title": "Input Copy",
+      "description": "A copy-to-clipboard field that shows a monospace value with an icon or button trigger, animating a checkmark on copy.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/input-copy.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
     }
   ]
 }
