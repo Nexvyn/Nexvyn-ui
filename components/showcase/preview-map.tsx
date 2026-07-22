@@ -89,4 +89,7 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'input-message-blueprint': dynamic(() =>
     import('@/components/diagrams/input-message-diagram').then((m) => m.InputMessageBlueprint),
   ),
+  'bars-theme-blueprint': dynamic(() =>
+    import('@/components/diagrams/bars-theme-diagram').then((m) => m.BarsThemeBlueprint),
+  ),
 }

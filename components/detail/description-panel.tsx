@@ -96,6 +96,7 @@ import { Tooltip } from './tooltip'
 
 const ANATOMY_COMPONENTS = [
   'badge',
+  'bars-theme',
   'breadcrumbs',
   'bounce-sidebar',
   'button',
