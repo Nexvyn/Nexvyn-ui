@@ -28,6 +28,9 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'combobox-blueprint': dynamic(() =>
     import('@/components/diagrams/combobox-diagram').then((m) => m.ComboboxBlueprint),
   ),
+  'context-menu-blueprint': dynamic(() =>
+    import('@/components/diagrams/context-menu-diagram').then((m) => m.ContextMenuBlueprint),
+  ),
   'clipboard-field-blueprint': dynamic(() =>
     import('@/components/diagrams/clipboard-field-diagram').then((m) => m.ClipboardFieldBlueprint),
   ),

@@ -18,6 +18,7 @@ import {
   BreadcrumbsDemo,
   CheckboxDemo,
   ComboboxDemo,
+  ContextMenuDemo,
   ClipboardFieldDemo,
   DropdownMenuDemo,
   ColorPickerDemo,
@@ -145,6 +146,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <ComboboxDemo />
+        </DemoFrame>
+      )
+    case 'context-menu':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ContextMenuDemo />
         </DemoFrame>
       )
     case 'clipboard-field':

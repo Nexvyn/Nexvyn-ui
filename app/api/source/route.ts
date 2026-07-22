@@ -7,6 +7,7 @@ const SOURCE_MAP: Record<string, string[]> = {
   breadcrumbs: ['components', 'ui', 'breadcrumbs.tsx'],
   checkbox: ['components', 'ui', 'checkbox.tsx'],
   combobox: ['components', 'ui', 'combobox.tsx'],
+  'context-menu': ['components', 'ui', 'context-menu.tsx'],
   'clipboard-field': ['components', 'ui', 'clipboard-field.tsx'],
   fader: ['components', 'ui', 'fader', 'fader.tsx'],
   'color-picker': ['components', 'ui', 'color-picker-standalone.tsx'],
