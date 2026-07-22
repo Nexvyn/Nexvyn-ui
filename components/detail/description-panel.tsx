@@ -111,6 +111,7 @@ const ANATOMY_COMPONENTS = [
   'icon-bar',
   'id-reel',
   'input',
+  'input-copy',
   'mobile-drawer',
   'morph-nav',
   'nav-menu',
