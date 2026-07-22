@@ -263,6 +263,19 @@
       ]
     },
     {
+      "name": "morph-nav",
+      "type": "registry:ui",
+      "title": "Morph Nav",
+      "description": "A floating action button that morphs through states with SVG path-morphing trigger icon.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/morph-nav.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "context-menu",
       "type": "registry:ui",
       "title": "Context Menu",

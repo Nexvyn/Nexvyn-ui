@@ -19,6 +19,7 @@ import {
   CheckboxDemo,
   ComboboxDemo,
   ContextMenuDemo,
+  MorphNavDemo,
   ClipboardFieldDemo,
   DropdownMenuDemo,
   ColorPickerDemo,
@@ -152,6 +153,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <ContextMenuDemo />
+        </DemoFrame>
+      )
+    case 'morph-nav':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <MorphNavDemo />
         </DemoFrame>
       )
     case 'clipboard-field':
