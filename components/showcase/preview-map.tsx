@@ -86,4 +86,7 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'input-copy-blueprint': dynamic(() =>
     import('@/components/diagrams/input-copy-diagram').then((m) => m.InputCopyWireframe),
   ),
+  'input-message-blueprint': dynamic(() =>
+    import('@/components/diagrams/input-message-diagram').then((m) => m.InputMessageBlueprint),
+  ),
 }

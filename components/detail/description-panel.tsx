@@ -112,6 +112,7 @@ const ANATOMY_COMPONENTS = [
   'id-reel',
   'input',
   'input-copy',
+  'input-message',
   'mobile-drawer',
   'morph-nav',
   'nav-menu',

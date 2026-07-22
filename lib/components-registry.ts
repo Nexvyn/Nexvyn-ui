@@ -16,6 +16,7 @@ import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
 import { idReelMetadata } from '@/components/ui/Doc/id-reel-metadata'
 import { inputMetadata } from '@/components/ui/Doc/input-metadata'
 import { inputCopyMetadata } from '@/components/ui/Doc/input-copy-metadata'
+import { inputMessageMetadata } from '@/components/ui/Doc/input-message-metadata'
 import { passwordInputMetadata } from '@/components/ui/Doc/password-input-metadata'
 import { radioGroupMetadata } from '@/components/ui/Doc/radio-group-metadata'
 import { ratioSliderMetadata } from '@/components/ui/Doc/ratio-slider-metadata'
@@ -80,6 +81,7 @@ export const COMPONENTS: ComponentItem[] = [
   idReelMetadata,
   inputMetadata,
   inputCopyMetadata,
+  inputMessageMetadata,
   navMenuMetadata,
   passwordInputMetadata,
   radioGroupMetadata,

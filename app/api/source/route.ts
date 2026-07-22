@@ -29,6 +29,7 @@ const SOURCE_MAP: Record<string, string[]> = {
   'table-of-contents': ['components', 'ui', 'table-of-contents.tsx'],
   'tabs-subtle': ['components', 'ui', 'tabs-subtle.tsx'],
   'input-copy': ['components', 'ui', 'input-copy.tsx'],
+  'input-message': ['components', 'ui', 'input-message.tsx'],
 }
 
 export async function GET(request: Request) {
