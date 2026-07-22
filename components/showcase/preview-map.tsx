@@ -80,4 +80,7 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
       (m) => m.TableOfContentsWireframe,
     ),
   ),
+  'tabs-subtle-blueprint': dynamic(() =>
+    import('@/components/diagrams/tabs-subtle-diagram').then((m) => m.TabsSubtleBlueprint),
+  ),
 }

@@ -23,6 +23,7 @@ import { selectMetadata } from '@/components/ui/Doc/select-metadata'
 import { switchMetadata } from '@/components/ui/Doc/switch-metadata'
 import { tableMetadata } from '@/components/ui/Doc/table-metadata'
 import { tableOfContentsMetadata } from '@/components/ui/Doc/table-of-contents-metadata'
+import { tabsSubtleMetadata } from '@/components/ui/Doc/tabs-subtle-metadata'
 
 export type ComponentItem = {
   id: string
@@ -86,6 +87,7 @@ export const COMPONENTS: ComponentItem[] = [
   switchMetadata,
   tableMetadata,
   tableOfContentsMetadata,
+  tabsSubtleMetadata,
 ]
 
 export const BASIC_COMPONENTS: ComponentItem[] = COMPONENTS.filter((c) => c.basic)

@@ -379,7 +379,7 @@ function NavItem({
     <Link
       ref={itemRef}
       href={getComponentHref(item.id)}
-      className="group sidebar-nav-item relative flex h-px cursor-pointer items-center gap-3 after:absolute after:left-0 after:top-1/2 after:size-full after:-translate-y-1/2 after:p-3.5"
+      className="group sidebar-nav-item relative flex h-px cursor-pointer items-center gap-3"
       onMouseEnter={() => {
         playHoverSound()
         lineWidth.set(55)
