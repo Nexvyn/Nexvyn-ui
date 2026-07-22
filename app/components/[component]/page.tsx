@@ -20,6 +20,7 @@ import {
   ComboboxDemo,
   ContextMenuDemo,
   MorphNavDemo,
+  MobileDrawerDemo,
   ClipboardFieldDemo,
   DropdownMenuDemo,
   ColorPickerDemo,
@@ -159,6 +160,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <MorphNavDemo />
+        </DemoFrame>
+      )
+    case 'mobile-drawer':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <MobileDrawerDemo />
         </DemoFrame>
       )
     case 'clipboard-field':

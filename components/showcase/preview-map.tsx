@@ -34,6 +34,9 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'morph-nav-blueprint': dynamic(() =>
     import('@/components/diagrams/morph-nav-diagram').then((m) => m.MorphNavBlueprint),
   ),
+  'mobile-drawer-blueprint': dynamic(() =>
+    import('@/components/diagrams/mobile-drawer-diagram').then((m) => m.MobileDrawerBlueprint),
+  ),
   'clipboard-field-blueprint': dynamic(() =>
     import('@/components/diagrams/clipboard-field-diagram').then((m) => m.ClipboardFieldBlueprint),
   ),

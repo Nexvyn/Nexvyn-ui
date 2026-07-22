@@ -263,6 +263,23 @@
       ]
     },
     {
+      "name": "mobile-drawer",
+      "type": "registry:ui",
+      "title": "Mobile Drawer",
+      "description": "A bottom-sheet drawer with swipe-to-dismiss, focus trap, and scroll lock.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/mobile-drawer.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-focus-trap.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
       "name": "morph-nav",
       "type": "registry:ui",
       "title": "Morph Nav",

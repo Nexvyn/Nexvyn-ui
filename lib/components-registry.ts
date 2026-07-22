@@ -5,6 +5,7 @@ import { checkboxMetadata } from '@/components/ui/Doc/checkbox-metadata'
 import { comboboxMetadata } from '@/components/ui/Doc/combobox-metadata'
 import { contextMenuMetadata } from '@/components/ui/Doc/context-menu-metadata'
 import { morphNavMetadata } from '@/components/ui/Doc/morph-nav-metadata'
+import { mobileDrawerMetadata } from '@/components/ui/Doc/mobile-drawer-metadata'
 import { clipboardFieldMetadata } from '@/components/ui/Doc/clipboard-field-metadata'
 import { colorPickerMetadata } from '@/components/ui/Doc/color-picker-metadata'
 import { faderMetadata } from '@/components/ui/Doc/fader-metadata'
@@ -67,6 +68,7 @@ export const COMPONENTS: ComponentItem[] = [
   comboboxMetadata,
   contextMenuMetadata,
   morphNavMetadata,
+  mobileDrawerMetadata,
   clipboardFieldMetadata,
   colorPickerMetadata,
   dropdownMenuMetadata,

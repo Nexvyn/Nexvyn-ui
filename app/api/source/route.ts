@@ -9,6 +9,7 @@ const SOURCE_MAP: Record<string, string[]> = {
   combobox: ['components', 'ui', 'combobox.tsx'],
   'context-menu': ['components', 'ui', 'context-menu.tsx'],
   'morph-nav': ['components', 'ui', 'morph-nav.tsx'],
+  'mobile-drawer': ['components', 'ui', 'mobile-drawer.tsx'],
   'clipboard-field': ['components', 'ui', 'clipboard-field.tsx'],
   fader: ['components', 'ui', 'fader', 'fader.tsx'],
   'color-picker': ['components', 'ui', 'color-picker-standalone.tsx'],
