@@ -17,12 +17,14 @@ import {
   BounceSidebarDemo,
   BreadcrumbsDemo,
   CheckboxDemo,
+  ComboboxDemo,
   ClipboardFieldDemo,
   DropdownMenuDemo,
   ColorPickerDemo,
   FaderDemo,
   GooDropdownDemo,
   IconBarDemo,
+  IdReelDemo,
   InputDemo,
   NavMenuDemo,
   PasswordInputDemo,
@@ -139,6 +141,12 @@ export function ComponentDemo({ id }: { id: string }) {
           <CheckboxDemo />
         </DemoFrame>
       )
+    case 'combobox':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ComboboxDemo />
+        </DemoFrame>
+      )
     case 'clipboard-field':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
@@ -161,6 +169,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <IconBarDemo />
+        </DemoFrame>
+      )
+    case 'id-reel':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <IdReelDemo />
         </DemoFrame>
       )
     case 'input':
