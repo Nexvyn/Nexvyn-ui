@@ -41,6 +41,7 @@ import {
   TabsSubtleDemo,
   InputCopyDemo,
   InputMessageDemo,
+  BarsThemeDemo,
 } from '@/components/ui/previews'
 
 function DemoFrame({
@@ -295,6 +296,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex h-full min-h-72 w-full items-stretch justify-center">
           <InputMessageDemo />
+        </DemoFrame>
+      )
+    case 'bars-theme':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <BarsThemeDemo />
         </DemoFrame>
       )
     case 'theme-toggle':

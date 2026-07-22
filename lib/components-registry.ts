@@ -1,4 +1,5 @@
 import { badgeMetadata } from '@/components/ui/Doc/badge-metadata'
+import { barsThemeMetadata } from '@/components/ui/Doc/bars-theme-metadata'
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
 import { breadcrumbsMetadata } from '@/components/ui/Doc/breadcrumbs-metadata'
 import { checkboxMetadata } from '@/components/ui/Doc/checkbox-metadata'
@@ -65,6 +66,7 @@ export type ComponentCollection = {
 
 export const COMPONENTS: ComponentItem[] = [
   badgeMetadata,
+  barsThemeMetadata,
   bounceSidebarMetadata,
   breadcrumbsMetadata,
   checkboxMetadata,
