@@ -16,11 +16,17 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'icon-bar-blueprint': dynamic(() =>
     import('@/components/diagrams/icon-bar-diagram').then((m) => m.IconBarBlueprint),
   ),
+  'id-reel-blueprint': dynamic(() =>
+    import('@/components/diagrams/id-reel-diagram').then((m) => m.IdReelBlueprint),
+  ),
   'input-blueprint': dynamic(() =>
     import('@/components/diagrams/input-diagram').then((m) => m.InputWireframe),
   ),
   'checkbox-blueprint': dynamic(() =>
     import('@/components/diagrams/checkbox-diagram').then((m) => m.CheckboxBlueprint),
+  ),
+  'combobox-blueprint': dynamic(() =>
+    import('@/components/diagrams/combobox-diagram').then((m) => m.ComboboxBlueprint),
   ),
   'clipboard-field-blueprint': dynamic(() =>
     import('@/components/diagrams/clipboard-field-diagram').then((m) => m.ClipboardFieldBlueprint),

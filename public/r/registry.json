@@ -281,6 +281,25 @@
       ]
     },
     {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "A filterable select with live search, proximity highlight, and native select mirror for forms.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/combobox.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
       "name": "checkbox",
       "type": "registry:ui",
       "title": "Checkbox",
@@ -322,6 +341,25 @@
         },
         {
           "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "id-reel",
+      "type": "registry:ui",
+      "title": "Id Reel",
+      "description": "An id pill with an odometer run-up on its digits, middle-truncation for long values, and an optional GitHub-style pull-request status badge.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/id-reel.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
           "type": "registry:lib"
         }
       ]

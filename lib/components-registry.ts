@@ -2,6 +2,7 @@ import { badgeMetadata } from '@/components/ui/Doc/badge-metadata'
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
 import { breadcrumbsMetadata } from '@/components/ui/Doc/breadcrumbs-metadata'
 import { checkboxMetadata } from '@/components/ui/Doc/checkbox-metadata'
+import { comboboxMetadata } from '@/components/ui/Doc/combobox-metadata'
 import { clipboardFieldMetadata } from '@/components/ui/Doc/clipboard-field-metadata'
 import { colorPickerMetadata } from '@/components/ui/Doc/color-picker-metadata'
 import { faderMetadata } from '@/components/ui/Doc/fader-metadata'
@@ -9,6 +10,7 @@ import { dropdownMenuMetadata } from '@/components/ui/Doc/dropdown-menu-metadata
 import { navMenuMetadata } from '@/components/ui/Doc/nav-menu-metadata'
 import { iconBarMetadata } from '@/components/ui/Doc/icon-bar-metadata'
 import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
+import { idReelMetadata } from '@/components/ui/Doc/id-reel-metadata'
 import { inputMetadata } from '@/components/ui/Doc/input-metadata'
 import { passwordInputMetadata } from '@/components/ui/Doc/password-input-metadata'
 import { radioGroupMetadata } from '@/components/ui/Doc/radio-group-metadata'
@@ -60,12 +62,14 @@ export const COMPONENTS: ComponentItem[] = [
   bounceSidebarMetadata,
   breadcrumbsMetadata,
   checkboxMetadata,
+  comboboxMetadata,
   clipboardFieldMetadata,
   colorPickerMetadata,
   dropdownMenuMetadata,
   faderMetadata,
   gooDropdownMetadata,
   iconBarMetadata,
+  idReelMetadata,
   inputMetadata,
   navMenuMetadata,
   passwordInputMetadata,

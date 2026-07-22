@@ -109,6 +109,7 @@ const ANATOMY_COMPONENTS = [
   'fader',
   'goo-dropdown',
   'icon-bar',
+  'id-reel',
   'input',
   'mobile-drawer',
   'morph-nav',
@@ -120,6 +121,7 @@ const ANATOMY_COMPONENTS = [
   'select',
   'selection-toolbar',
   'switch',
+  'table',
   'table-of-contents',
 ]
 
