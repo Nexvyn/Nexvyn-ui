@@ -545,6 +545,23 @@
           "type": "registry:lib"
         }
       ]
+    },
+    {
+      "name": "input-message",
+      "type": "registry:ui",
+      "title": "Input Message",
+      "description": "An auto-growing chat composer with drag-and-drop file attachments, image/PDF preview tiles, and Enter-to-send.",
+      "dependencies": ["motion", "pdfjs-dist"],
+      "files": [
+        {
+          "path": "components/ui/input-message.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        }
+      ]
     }
   ]
 }
