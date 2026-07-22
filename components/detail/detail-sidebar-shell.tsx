@@ -8,12 +8,21 @@ import { activeComponent } from '@/lib/components-registry'
 import ComponentColorBar from './component-color-bar'
 import { InstallCommandBox } from './install-command-box'
 import { DescriptionPanel } from './description-panel'
-import { PreviewControlProvider } from './preview-controls'
+import { PreviewControlProvider, usePreviewControl } from './preview-controls'
 import { Tooltip } from './tooltip'
+import { AnatomyLicenseNotice } from './anatomy-license-notice'
 import { SoundToggle } from '@/components/layout/sound-toggle'
 import { useScreenSize } from '@/hooks/use-screen-size'
 
 const INFO_SPACE = 576
+
+function AnatomyLicenseToggle({ itemId }: { itemId: string }) {
+  const [view] = usePreviewControl(`${itemId}-view`, 'preview')
+  if (view !== 'anatomy') return null
+  return (
+    <AnatomyLicenseNotice className="shrink-0 h-10 w-10 rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2) backdrop-blur-sm" />
+  )
+}
 
 export default function DetailSidebarShell({ children }: { children: React.ReactNode }) {
   const [infoOpen, setInfoOpen] = useState(false)
@@ -55,6 +64,7 @@ export default function DetailSidebarShell({ children }: { children: React.React
                 <Tooltip content="Toggle sound (M)" side="top">
                   <SoundToggle className="shrink-0 h-10 w-10 rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2) backdrop-blur-sm" />
                 </Tooltip>
+                <AnatomyLicenseToggle itemId={item.id} />
               </div>
             )}
           </div>
