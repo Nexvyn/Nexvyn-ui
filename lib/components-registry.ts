@@ -4,6 +4,7 @@ import { breadcrumbsMetadata } from '@/components/ui/Doc/breadcrumbs-metadata'
 import { checkboxMetadata } from '@/components/ui/Doc/checkbox-metadata'
 import { comboboxMetadata } from '@/components/ui/Doc/combobox-metadata'
 import { contextMenuMetadata } from '@/components/ui/Doc/context-menu-metadata'
+import { morphNavMetadata } from '@/components/ui/Doc/morph-nav-metadata'
 import { clipboardFieldMetadata } from '@/components/ui/Doc/clipboard-field-metadata'
 import { colorPickerMetadata } from '@/components/ui/Doc/color-picker-metadata'
 import { faderMetadata } from '@/components/ui/Doc/fader-metadata'
@@ -65,6 +66,7 @@ export const COMPONENTS: ComponentItem[] = [
   checkboxMetadata,
   comboboxMetadata,
   contextMenuMetadata,
+  morphNavMetadata,
   clipboardFieldMetadata,
   colorPickerMetadata,
   dropdownMenuMetadata,
@@ -147,6 +149,7 @@ export const PANEL_INFO = {
     'Free for personal and commercial use',
     'No attribution required',
     'Cannot be resold as a standalone product',
+    'Anatomy/blueprint diagrams are licensed separately (CC BY-NC 4.0) and are not for commercial use',
   ],
 }
 

@@ -31,6 +31,9 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'context-menu-blueprint': dynamic(() =>
     import('@/components/diagrams/context-menu-diagram').then((m) => m.ContextMenuBlueprint),
   ),
+  'morph-nav-blueprint': dynamic(() =>
+    import('@/components/diagrams/morph-nav-diagram').then((m) => m.MorphNavBlueprint),
+  ),
   'clipboard-field-blueprint': dynamic(() =>
     import('@/components/diagrams/clipboard-field-diagram').then((m) => m.ClipboardFieldBlueprint),
   ),
