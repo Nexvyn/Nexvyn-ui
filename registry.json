@@ -263,6 +263,23 @@
       ]
     },
     {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context Menu",
+      "description": "A right-click menu with proximity highlight and keyboard navigation.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/context-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
