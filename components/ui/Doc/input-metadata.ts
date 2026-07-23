@@ -5,6 +5,7 @@ export const inputMetadata: ComponentItem = {
   name: 'Input',
   collection: 'inputs',
   previewType: 'default',
+  isNew: true,
   basic: true,
   description: 'The text field foundation with adornments, size variants, and animated focus ring.',
   registry: 'input',

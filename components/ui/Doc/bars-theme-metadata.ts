@@ -5,6 +5,7 @@ export const barsThemeMetadata: ComponentItem = {
   name: 'Bars Theme',
   collection: 'effects',
   previewType: 'default',
+  isNew: true,
   description:
     'A traveling-wave bars visualization with 5 vertical bars sharing a sine-wave frequency, evenly phase-shifted left to right so the wave appears to travel across. Volume scales bar heights with a diamond-shaped idle boost.',
   registry: 'bars-theme',

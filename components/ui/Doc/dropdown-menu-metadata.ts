@@ -6,6 +6,7 @@ export const dropdownMenuMetadata: ComponentItem = {
   collection: 'menus',
   basic: true,
   previewType: 'default',
+  isNew: true,
   description:
     'A popover action menu with a proximity-driven morphing highlight. The muted hover highlight springs between items as the pointer moves, giving the menu a fluid, alive feel.',
   registry: 'dropdown-menu',

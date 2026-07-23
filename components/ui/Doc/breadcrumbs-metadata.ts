@@ -6,6 +6,7 @@ export const breadcrumbsMetadata: ComponentItem = {
   collection: 'navigation',
   basic: true,
   previewType: 'default',
+  isNew: true,
   description:
     'A horizontal trail of links that auto-collapses into an ellipsis button when the trail exceeds maxItems.',
   registry: 'breadcrumbs',

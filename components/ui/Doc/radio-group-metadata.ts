@@ -5,6 +5,7 @@ export const radioGroupMetadata: ComponentItem = {
   name: 'Radio Group',
   collection: 'inputs',
   previewType: 'default',
+  isNew: true,
   basic: true,
   description: 'A radio group with roving tabindex and a dot morph selection indicator.',
   registry: 'radio-group',
