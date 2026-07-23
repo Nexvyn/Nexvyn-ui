@@ -95,4 +95,7 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'glow-orb-blueprint': dynamic(() =>
     import('@/components/diagrams/glow-orb-diagram').then((m) => m.GlowOrbBlueprint),
   ),
+  'fluid-orb-blueprint': dynamic(() =>
+    import('@/components/diagrams/fluid-orb-diagram').then((m) => m.FluidOrbBlueprint),
+  ),
 }
