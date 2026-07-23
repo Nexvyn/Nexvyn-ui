@@ -5,12 +5,13 @@ export const fluidOrbMetadata: ComponentItem = {
   name: 'Fluid Orb',
   collection: 'effects',
   previewType: 'default',
+  isNew: true,
   description:
-    'A WebGL-rendered fluid orb with real-time GLSL shaders, 3D sphere normals, fBm noise, glass specular highlights, and a pulsing dark core. Reacts to audio input.',
+    'A WebGL fluid orb in muted/neutral design tokens (follows light and dark theme). Sphere normals, fBm noise, glass highlights, and a pulsing core driven by audio level.',
   registry: 'fluid-orb',
   dependencies: [],
   interaction:
-    'The orb pulses automatically with a simulated speaking cadence. Pass an audioLevel (0-1) to drive it with real microphone amplitude.',
+    'The orb pulses automatically with a simulated speaking cadence. Pass an audioLevel (0-1) to drive it with real microphone amplitude. Switch neutral tones in the preview (foreground / muted / subtle).',
   credits: 'Inspired by OpenAI ChatGPT Advanced Voice Mode orb',
   props: [
     {
@@ -21,7 +22,8 @@ export const fluidOrbMetadata: ComponentItem = {
     {
       name: 'color',
       type: 'string',
-      description: 'Base hex color for the orb. Defaults to OpenAI signature off-white (#E8EDF3).',
+      description:
+        'Optional hex override. When omitted, uses --color-muted so the orb stays neutral and theme-aware.',
     },
     {
       name: 'audioLevel',
@@ -38,6 +40,6 @@ export const fluidOrbMetadata: ComponentItem = {
   usage: `import { FluidOrb } from "@/components/ui/fluid-orb"
 
 export function Demo() {
-  return <FluidOrb size={300} color="#E8EDF3" />
+  return <FluidOrb size={300} />
 }`,
 }

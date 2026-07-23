@@ -5,7 +5,8 @@ export const comboboxMetadata: ComponentItem = {
   name: 'Combobox',
   collection: 'menus',
   previewType: 'default',
-  basic: true,
+  isNew: true,
+
   description:
     'A filterable select with live search, proximity highlight riding the filter, clearable input, and native <select> mirror for forms.',
   registry: 'combobox',
