@@ -3,6 +3,7 @@ import { barsThemeMetadata } from '@/components/ui/Doc/bars-theme-metadata'
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
 import { breadcrumbsMetadata } from '@/components/ui/Doc/breadcrumbs-metadata'
 import { checkboxMetadata } from '@/components/ui/Doc/checkbox-metadata'
+import { glowOrbMetadata } from '@/components/ui/Doc/glow-orb-metadata'
 import { comboboxMetadata } from '@/components/ui/Doc/combobox-metadata'
 import { contextMenuMetadata } from '@/components/ui/Doc/context-menu-metadata'
 import { morphNavMetadata } from '@/components/ui/Doc/morph-nav-metadata'
@@ -70,6 +71,7 @@ export const COMPONENTS: ComponentItem[] = [
   bounceSidebarMetadata,
   breadcrumbsMetadata,
   checkboxMetadata,
+  glowOrbMetadata,
   comboboxMetadata,
   contextMenuMetadata,
   morphNavMetadata,
