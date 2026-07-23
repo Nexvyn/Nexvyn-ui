@@ -1,11 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion } from 'motion/react'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { activeComponent } from '@/lib/components-registry'
-import ComponentColorBar from './component-color-bar'
 import { InstallCommandBox } from './install-command-box'
 import { DescriptionPanel } from './description-panel'
 import { PreviewControlProvider, usePreviewControl } from './preview-controls'
@@ -21,6 +19,42 @@ function AnatomyLicenseToggle({ itemId }: { itemId: string }) {
   if (view !== 'anatomy') return null
   return (
     <AnatomyLicenseNotice className="shrink-0 h-10 w-10 rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2) backdrop-blur-sm" />
+  )
+}
+
+function PreviewBottomBar({
+  registry,
+  itemId,
+}: {
+  registry: string
+  itemId: string
+}) {
+  const [view] = usePreviewControl(`${itemId}-view`, 'preview')
+  const isAnatomy = view === 'anatomy'
+
+  return (
+    <div className="absolute bottom-5 left-1/2 z-10 flex w-full max-w-[calc(100%-2.5rem)] -translate-x-1/2 items-center gap-2 pointer-events-auto sm:max-w-sm md:max-w-md">
+      {!isAnatomy && (
+        <div className="min-w-0 flex-1 rounded-xl backdrop-blur-sm">
+          <InstallCommandBox registry={registry} />
+        </div>
+      )}
+      {isAnatomy ? (
+        <div className="ms-auto flex items-center gap-2">
+          <Tooltip content="Toggle sound (M)" side="top">
+            <SoundToggle className="h-10 w-10 shrink-0 rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2) backdrop-blur-sm" />
+          </Tooltip>
+          <AnatomyLicenseToggle itemId={itemId} />
+        </div>
+      ) : (
+        <>
+          <Tooltip content="Toggle sound (M)" side="top">
+            <SoundToggle className="h-10 w-10 shrink-0 rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2) backdrop-blur-sm" />
+          </Tooltip>
+          <AnatomyLicenseToggle itemId={itemId} />
+        </>
+      )}
+    </div>
   )
 }
 
@@ -57,15 +91,7 @@ export default function DetailSidebarShell({ children }: { children: React.React
           >
             {children}
             {item?.registry && !infoOpen && (
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 max-w-[calc(100%-2.5rem)] sm:max-w-sm md:max-w-md w-full pointer-events-auto">
-                <div className="min-w-0 flex-1 backdrop-blur-sm rounded-xl">
-                  <InstallCommandBox registry={item.registry} />
-                </div>
-                <Tooltip content="Toggle sound (M)" side="top">
-                  <SoundToggle className="shrink-0 h-10 w-10 rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2) backdrop-blur-sm" />
-                </Tooltip>
-                <AnatomyLicenseToggle itemId={item.id} />
-              </div>
+              <PreviewBottomBar registry={item.registry} itemId={item.id} />
             )}
           </div>
         </motion.div>

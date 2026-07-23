@@ -24,7 +24,14 @@ const PM_LABELS: Record<PackageManager, string> = {
   bun: 'bun',
 }
 
-export function InstallCommandBox({ registry }: { registry?: string }) {
+export function InstallCommandBox({
+  registry,
+  getCommand,
+}: {
+  registry?: string
+  /** Override the default `shadcn add` command (e.g. MCP init). */
+  getCommand?: (pm: PackageManager) => string
+}) {
   const [pm, setPm] = useState<PackageManager>('npm')
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -39,9 +46,14 @@ export function InstallCommandBox({ registry }: { registry?: string }) {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  if (!registry) return null
+  if (!registry && !getCommand) return null
 
-  const command = COMMANDS[pm](registry)
+  const command = getCommand
+    ? getCommand(pm)
+    : registry
+      ? COMMANDS[pm](registry)
+      : ''
+  if (!command) return null
   const pms: PackageManager[] = ['npm', 'pnpm', 'yarn', 'bun']
 
   return (
