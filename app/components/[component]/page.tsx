@@ -43,6 +43,7 @@ import {
   InputMessageDemo,
   BarsThemeDemo,
   GlowOrbDemo,
+  FluidOrbDemo,
 } from '@/components/ui/previews'
 
 function DemoFrame({
@@ -309,6 +310,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <GlowOrbDemo />
+        </DemoFrame>
+      )
+    case 'fluid-orb':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <FluidOrbDemo />
         </DemoFrame>
       )
     case 'theme-toggle':

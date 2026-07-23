@@ -109,6 +109,7 @@ const ANATOMY_COMPONENTS = [
   'context-menu',
   'dropdown-menu',
   'fader',
+  'fluid-orb',
   'goo-dropdown',
   'icon-bar',
   'id-reel',

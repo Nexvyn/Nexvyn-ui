@@ -604,6 +604,19 @@
           "type": "registry:lib"
         }
       ]
+    },
+    {
+      "name": "fluid-orb",
+      "type": "registry:ui",
+      "title": "Fluid Orb",
+      "description": "A WebGL-rendered fluid orb with real-time GLSL shaders, 3D sphere normals, fBm noise, glass specular highlights, and a pulsing dark core. Reacts to audio input.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/fluid-orb.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

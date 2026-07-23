@@ -11,6 +11,7 @@ import { mobileDrawerMetadata } from '@/components/ui/Doc/mobile-drawer-metadata
 import { clipboardFieldMetadata } from '@/components/ui/Doc/clipboard-field-metadata'
 import { colorPickerMetadata } from '@/components/ui/Doc/color-picker-metadata'
 import { faderMetadata } from '@/components/ui/Doc/fader-metadata'
+import { fluidOrbMetadata } from '@/components/ui/Doc/fluid-orb-metadata'
 import { dropdownMenuMetadata } from '@/components/ui/Doc/dropdown-menu-metadata'
 import { navMenuMetadata } from '@/components/ui/Doc/nav-menu-metadata'
 import { iconBarMetadata } from '@/components/ui/Doc/icon-bar-metadata'
@@ -80,6 +81,7 @@ export const COMPONENTS: ComponentItem[] = [
   colorPickerMetadata,
   dropdownMenuMetadata,
   faderMetadata,
+  fluidOrbMetadata,
   gooDropdownMetadata,
   iconBarMetadata,
   idReelMetadata,
