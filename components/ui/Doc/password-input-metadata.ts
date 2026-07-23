@@ -5,6 +5,7 @@ export const passwordInputMetadata: ComponentItem = {
   name: 'Password Input',
   collection: 'inputs',
   previewType: 'default',
+  isNew: true,
   basic: true,
   description:
     'A password input with an animated eye toggle. The eye follows your cursor and blinks periodically, creating a playful yet functional reveal control.',

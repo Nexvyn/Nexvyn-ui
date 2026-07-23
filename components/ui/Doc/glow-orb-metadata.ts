@@ -5,6 +5,7 @@ export const glowOrbMetadata: ComponentItem = {
   name: 'Glow Orb',
   collection: 'effects',
   previewType: 'default',
+  isNew: true,
   description:
     'A WebGL fbm-noise glow orb with state-driven colors, volume-responsive scale and glow, idle and connecting pulse animations, and a settle-back transition.',
   registry: 'glow-orb',

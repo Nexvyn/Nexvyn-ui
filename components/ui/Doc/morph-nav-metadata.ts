@@ -5,6 +5,7 @@ export const morphNavMetadata: ComponentItem = {
   name: 'Morph Nav',
   collection: 'navigation',
   previewType: 'default',
+  isNew: true,
   description:
     'A floating action button that morphs through states (closed/main/sub) with SVG path-morphing trigger icon and directional panel slides.',
   registry: 'morph-nav',
