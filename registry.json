@@ -583,6 +583,27 @@
           "type": "registry:lib"
         }
       ]
+    },
+    {
+      "name": "glow-orb",
+      "type": "registry:ui",
+      "title": "Glow Orb",
+      "description": "A WebGL fbm-noise glow orb with state-driven colors, volume-responsive scale and glow, idle and connecting pulse animations, and a settle-back transition.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/glow-orb.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-css-color-rgb.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/resolve-css-color.ts",
+          "type": "registry:lib"
+        }
+      ]
     }
   ]
 }

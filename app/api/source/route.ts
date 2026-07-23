@@ -31,6 +31,7 @@ const SOURCE_MAP: Record<string, string[]> = {
   'input-copy': ['components', 'ui', 'input-copy.tsx'],
   'input-message': ['components', 'ui', 'input-message.tsx'],
   'bars-theme': ['components', 'ui', 'bars-theme.tsx'],
+  'glow-orb': ['components', 'ui', 'glow-orb.tsx'],
 }
 
 export async function GET(request: Request) {

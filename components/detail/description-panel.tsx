@@ -101,6 +101,7 @@ const ANATOMY_COMPONENTS = [
   'bounce-sidebar',
   'button',
   'checkbox',
+  'glow-orb',
   'clipboard-field',
   'color-picker',
   'combobox',
