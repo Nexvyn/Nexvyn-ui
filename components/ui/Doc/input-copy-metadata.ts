@@ -5,7 +5,7 @@ export const inputCopyMetadata: ComponentItem = {
   name: 'Input Copy',
   collection: 'inputs',
   previewType: 'default',
-  basic: true,
+  isNew: true,
   description:
     'A copy-to-clipboard field that shows a monospace value with an icon or button trigger, animating a checkmark on copy.',
   registry: 'input-copy',

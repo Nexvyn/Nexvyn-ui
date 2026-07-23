@@ -4,7 +4,7 @@ export const navMenuMetadata: ComponentItem = {
   id: 'nav-menu',
   name: 'Nav Menu',
   collection: 'navigation',
-  basic: true,
+
   previewType: 'default',
   isNew: true,
   description:
