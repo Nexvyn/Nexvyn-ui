@@ -281,6 +281,59 @@
       ]
     },
     {
+      "name": "mobile-drawer",
+      "type": "registry:ui",
+      "title": "Mobile Drawer",
+      "description": "A bottom-sheet drawer with swipe-to-dismiss, focus trap, and scroll lock.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/mobile-drawer.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-focus-trap.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "morph-nav",
+      "type": "registry:ui",
+      "title": "Morph Nav",
+      "description": "A floating action button that morphs through states with SVG path-morphing trigger icon.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/morph-nav.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context Menu",
+      "description": "A right-click menu with proximity highlight and keyboard navigation.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/context-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
@@ -493,6 +546,137 @@
         {
           "path": "components/ui/table.tsx",
           "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tabs-subtle",
+      "type": "registry:ui",
+      "title": "Tabs Subtle",
+      "description": "A pill-style tab list where the selected indicator springs between tabs, built on the WAI-ARIA tabs pattern with full roving-focus keyboard support.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/tabs-subtle.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "input-copy",
+      "type": "registry:ui",
+      "title": "Input Copy",
+      "description": "A copy-to-clipboard field that shows a monospace value with an icon or button trigger, animating a checkmark on copy.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/input-copy.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "input-message",
+      "type": "registry:ui",
+      "title": "Input Message",
+      "description": "An auto-growing chat composer with drag-and-drop file attachments, image/PDF preview tiles, and Enter-to-send.",
+      "dependencies": [
+        "motion",
+        "pdfjs-dist"
+      ],
+      "files": [
+        {
+          "path": "components/ui/input-message.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "bars-theme",
+      "type": "registry:ui",
+      "title": "Bars Theme",
+      "description": "A traveling-wave bars visualization with 5 vertical bars sharing a sine-wave frequency, evenly phase-shifted left to right so the wave appears to travel across. Volume scales bar heights with a diamond-shaped idle boost.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/bars-theme.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-css-color-rgb.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/resolve-css-color.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "glow-orb",
+      "type": "registry:ui",
+      "title": "Glow Orb",
+      "description": "A WebGL fbm-noise glow orb with state-driven colors, volume-responsive scale and glow, idle and connecting pulse animations, and a settle-back transition.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/glow-orb.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-css-color-rgb.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/resolve-css-color.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "fluid-orb",
+      "type": "registry:ui",
+      "title": "Fluid Orb",
+      "description": "A WebGL fluid orb in muted/neutral design tokens with sphere normals, fBm noise, and audio-reactive pulse.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/fluid-orb.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-css-color-rgb.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/resolve-css-color.ts",
+          "type": "registry:lib"
         }
       ]
     }
