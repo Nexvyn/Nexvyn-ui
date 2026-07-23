@@ -116,7 +116,8 @@ function compileShader(gl: WebGLRenderingContext, type: number, src: string): We
   gl.shaderSource(shader, src)
   gl.compileShader(shader)
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    console.error(gl.getShaderInfoLog(shader))
+    const log = gl.getShaderInfoLog(shader)
+    if (log) console.error('[glow-orb] shader compile failed:', log)
     gl.deleteShader(shader)
     return null
   }
@@ -157,7 +158,8 @@ function FluidOrb({ size, colorRgb, speed }: FluidOrbProps) {
     gl.attachShader(program, frag)
     gl.linkProgram(program)
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      console.error(gl.getProgramInfoLog(program))
+      const log = gl.getProgramInfoLog(program)
+      if (log) console.error('[glow-orb] program link failed:', log)
       return
     }
     gl.useProgram(program)
