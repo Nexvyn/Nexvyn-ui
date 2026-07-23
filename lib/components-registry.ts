@@ -66,7 +66,46 @@ export type ComponentCollection = {
   components: ComponentItem[]
 }
 
-export const COMPONENTS: ComponentItem[] = [
+/**
+ * Display order for the catalog:
+ * 1. Released showcase components (stable, not basic, not isNew)
+ * 2. Latest / new showcase components (isNew)
+ * 3. Basic components last
+ *
+ * Within each tier, sorted alphabetically by id so "Sort by Id" is stable.
+ */
+function catalogTier(item: ComponentItem): number {
+  if (item.basic) return 2
+  if (item.isNew) return 1
+  return 0
+}
+
+/** Always use a fixed locale so server/client sort order cannot diverge. */
+function cmpId(a: string, b: string): number {
+  return a < b ? -1 : a > b ? 1 : 0
+}
+
+export function compareComponentsByCatalog(a: ComponentItem, b: ComponentItem): number {
+  const tier = catalogTier(a) - catalogTier(b)
+  if (tier !== 0) return tier
+  return cmpId(a.id, b.id)
+}
+
+export function compareComponentsById(a: ComponentItem, b: ComponentItem): number {
+  const tier = catalogTier(a) - catalogTier(b)
+  if (tier !== 0) return tier
+  return cmpId(a.id, b.id)
+}
+
+export function compareComponentsByCollection(a: ComponentItem, b: ComponentItem): number {
+  const tier = catalogTier(a) - catalogTier(b)
+  if (tier !== 0) return tier
+  const byCollection = cmpId(a.collection, b.collection)
+  if (byCollection !== 0) return byCollection
+  return cmpId(a.id, b.id)
+}
+
+const COMPONENTS_UNSORTED: ComponentItem[] = [
   badgeMetadata,
   barsThemeMetadata,
   bounceSidebarMetadata,
@@ -100,7 +139,13 @@ export const COMPONENTS: ComponentItem[] = [
   tabsSubtleMetadata,
 ]
 
+/** Canonical ordered list used by grid, sidebar, and numbering. */
+export const COMPONENTS: ComponentItem[] = [...COMPONENTS_UNSORTED].sort(compareComponentsByCatalog)
+
 export const BASIC_COMPONENTS: ComponentItem[] = COMPONENTS.filter((c) => c.basic)
+
+/** Non-basic components only (released + latest). */
+export const NORMAL_COMPONENTS: ComponentItem[] = COMPONENTS.filter((c) => !c.basic)
 
 export const COLLECTIONS: ComponentCollection[] = [
   {
@@ -114,9 +159,19 @@ export const COLLECTIONS: ComponentCollection[] = [
     components: COMPONENTS.filter((c) => c.collection === 'inputs' && !c.basic),
   },
   {
+    id: 'menus',
+    name: 'Menus',
+    components: COMPONENTS.filter((c) => c.collection === 'menus' && !c.basic),
+  },
+  {
     id: 'navigation',
     name: 'Navigation',
     components: COMPONENTS.filter((c) => c.collection === 'navigation' && !c.basic),
+  },
+  {
+    id: 'overlays',
+    name: 'Overlays',
+    components: COMPONENTS.filter((c) => c.collection === 'overlays' && !c.basic),
   },
   {
     id: 'preloaders',
