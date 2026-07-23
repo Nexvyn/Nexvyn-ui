@@ -12,10 +12,11 @@ import { Tooltip } from './tooltip'
 import {
   BASIC_COMPONENTS,
   COLLECTIONS,
-  COMPONENTS,
+  NORMAL_COMPONENTS,
+  compareComponentsByCollection,
+  compareComponentsById,
   formatComponentLabel,
   getComponentHref,
-  getComponentNumber,
   type ComponentItem,
 } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
@@ -267,7 +268,7 @@ function NavSectionHeader({
       >
         {isNew && <NewStarIcon />}
         {title}
-        {isNew && <span className="text-[10px] font-medium">New</span>}
+        {isNew && <span className="text-[10px] font-medium text-(--color-new)">New</span>}
       </span>
     </Link>
   )
@@ -439,7 +440,9 @@ function NavItem({
       >
         {item.isNew && <NewStarIcon />}
         {typeof number === 'number' ? formatComponentLabel(number, item.name) : item.name}
-        {item.isNew && <span className="text-[10px] font-medium">New</span>}
+        {item.isNew && (
+          <span className="text-[10px] font-medium text-(--color-new)">New</span>
+        )}
       </span>
     </Link>
   )
@@ -458,11 +461,14 @@ function SidebarNav() {
   const pointerY = useMotionValue(0)
   const previewOpacity = useSpring(0, { stiffness: 400, damping: 30 })
 
-  const sortedById = useMemo(
+  const normalSorted = useMemo(
     () =>
-      COMPONENTS.filter((c) => !c.basic).sort(
-        (a, b) => getComponentNumber(a.id) - getComponentNumber(b.id),
-      ),
+      [...NORMAL_COMPONENTS].sort(sortById ? compareComponentsById : compareComponentsByCollection),
+    [sortById],
+  )
+
+  const basicSorted = useMemo(
+    () => [...BASIC_COMPONENTS].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)),
     [],
   )
 
@@ -479,6 +485,17 @@ function SidebarNav() {
   const isIllustrationPage = pathname === '/illustration'
   const isChangelogPage = pathname === '/changelog'
   const isDesignPage = pathname === '/design'
+
+  const hoverHandlers = (item: ComponentItem) => ({
+    onHover: () => {
+      setHoveredItem(item)
+      previewOpacity.set(1)
+    },
+    onLeave: () => {
+      setHoveredItem(null)
+      previewOpacity.set(0)
+    },
+  })
 
   return (
     <>
@@ -534,10 +551,10 @@ function SidebarNav() {
             {sortById ? (
               <>
                 <NavSectionHeader title="All Components" active />
-                <Separator growFrom={hoveredItem?.id === sortedById[0]?.id ? 'end' : undefined} />
-                {sortedById.map((item, index) => {
+                <Separator growFrom={hoveredItem?.id === normalSorted[0]?.id ? 'end' : undefined} />
+                {normalSorted.map((item, index) => {
                   const isActive = activeId === item.id
-                  const nextItem = sortedById[index + 1]
+                  const nextItem = normalSorted[index + 1]
                   return (
                     <Fragment key={item.id}>
                       <NavItem
@@ -545,16 +562,9 @@ function SidebarNav() {
                         isActive={isActive}
                         itemRef={isActive ? activeRef : undefined}
                         number={index}
-                        onHover={() => {
-                          setHoveredItem(item)
-                          previewOpacity.set(1)
-                        }}
-                        onLeave={() => {
-                          setHoveredItem(null)
-                          previewOpacity.set(0)
-                        }}
+                        {...hoverHandlers(item)}
                       />
-                      {index !== sortedById.length - 1 && (
+                      {index !== normalSorted.length - 1 && (
                         <Separator
                           growFrom={
                             hoveredItem?.id === item.id
@@ -589,14 +599,7 @@ function SidebarNav() {
                             isActive={isActive}
                             itemRef={isActive ? activeRef : undefined}
                             number={index}
-                            onHover={() => {
-                              setHoveredItem(item)
-                              previewOpacity.set(1)
-                            }}
-                            onLeave={() => {
-                              setHoveredItem(null)
-                              previewOpacity.set(0)
-                            }}
+                            {...hoverHandlers(item)}
                           />
                           {index !== collection.components.length - 1 && (
                             <Separator
@@ -618,32 +621,23 @@ function SidebarNav() {
               )
             )}
 
-            {BASIC_COMPONENTS.length > 0 && (
+            {basicSorted.length > 0 && (
               <>
                 <Separator count={4} />
                 <NavSectionHeader title="Basic" active />
-                <Separator
-                  growFrom={hoveredItem?.id === BASIC_COMPONENTS[0]?.id ? 'end' : undefined}
-                />
-                {BASIC_COMPONENTS.map((item, index) => {
+                <Separator growFrom={hoveredItem?.id === basicSorted[0]?.id ? 'end' : undefined} />
+                {basicSorted.map((item, index) => {
                   const isActive = activeId === item.id
-                  const nextItem = BASIC_COMPONENTS[index + 1]
+                  const nextItem = basicSorted[index + 1]
                   return (
                     <Fragment key={item.id}>
                       <NavItem
                         item={item}
                         isActive={isActive}
                         itemRef={isActive ? activeRef : undefined}
-                        onHover={() => {
-                          setHoveredItem(item)
-                          previewOpacity.set(1)
-                        }}
-                        onLeave={() => {
-                          setHoveredItem(null)
-                          previewOpacity.set(0)
-                        }}
+                        {...hoverHandlers(item)}
                       />
-                      {index !== BASIC_COMPONENTS.length - 1 && (
+                      {index !== basicSorted.length - 1 && (
                         <Separator
                           growFrom={
                             hoveredItem?.id === item.id

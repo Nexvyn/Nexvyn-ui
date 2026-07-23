@@ -7,13 +7,13 @@ import { ComponentPreview } from './component-preview'
 import { NewStarIcon } from '@/components/layout/new-star'
 
 const CARD_CLASS =
-  'group relative block rounded-2xl bg-[#F7F7F7] dark:bg-card p-5 outline-none transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out) hover:bg-muted/60 dark:hover:bg-muted/40 active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'
+  'group relative block rounded-2xl bg-(--color-surface) p-4 outline-none transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out) hover:bg-(--color-surface-2) active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:p-5'
 
 export function ComponentCard({ item }: { item: ComponentItem }) {
   return (
-    <Link href={getComponentHref(item.id)} className={CARD_CLASS}>
-      <div className="flex min-h-48 items-center justify-center pointer-events-none">
-        <div className="scale-125">
+    <Link href={getComponentHref(item.id)} className={CARD_CLASS} prefetch={false}>
+      <div className="pointer-events-none flex min-h-40 items-center justify-center overflow-hidden sm:min-h-48">
+        <div className="max-w-full scale-100 sm:scale-110 md:scale-125">
           <ComponentPreview item={item} />
         </div>
       </div>
@@ -23,7 +23,7 @@ export function ComponentCard({ item }: { item: ComponentItem }) {
           {item.name}
         </span>
         {item.isNew && (
-          <span className="shrink-0 font-mono text-[10px] font-medium text-foreground/80">
+          <span className="shrink-0 font-mono text-[10px] font-medium text-(--color-new)">
             New
           </span>
         )}

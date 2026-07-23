@@ -1,6 +1,6 @@
 'use client'
 
-import { useSyncExternalStore, useCallback, useEffect } from 'react'
+import { useSyncExternalStore, useCallback, useEffect, useState } from 'react'
 import { motion, useMotionValue, useTransform } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { Button } from './button'
@@ -36,8 +36,12 @@ export function ThemeToggle({
   showShortcut?: boolean
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
 }) {
+ const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
-  const dark = theme === 'dark'
+  const dark = mounted && theme === 'dark'
 
   const toggle = useCallback(() => {
     document.documentElement.classList.add('no-transitions')
