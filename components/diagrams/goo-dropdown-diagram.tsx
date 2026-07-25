@@ -62,7 +62,7 @@ export function GooDropdownWireframe() {
         height={BP_PANEL.h}
         rx={BP_PANEL.rx}
         strokeWidth={theme.wireframe.strokeWidth}
-        className={`${BP_MORPH} fill-transparent stroke-current opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-card group-focus-visible:fill-card group-hover:stroke-border group-focus-visible:stroke-border`}
+        className={`${BP_MORPH} fill-transparent stroke-current opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-card group-focus-visible:fill-card group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
       />
       {BP_ITEM_CYS.map((cy, i) => (
         <text

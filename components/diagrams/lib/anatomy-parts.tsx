@@ -91,12 +91,12 @@ export function AnatomyTag({
         onFocus={() => setHovered(part)}
         onBlur={() => setHovered(null)}
         style={{ pointerEvents: 'all' }}
-        className={`cursor-pointer rounded border px-2 py-0.5 text-[10px] font-medium leading-tight whitespace-nowrap outline-none transition-all duration-200 ease-out focus-visible:ring-2 focus-visible:ring-ring shadow-sm ${
+        className={`cursor-pointer rounded border px-2 py-0.5 text-[10px] font-medium leading-tight whitespace-nowrap outline-none transition-all duration-200 ease-out focus-visible:ring-2 focus-visible:ring-(--color-accent) shadow-sm ${
           isHovered
-            ? 'border-foreground bg-foreground text-background'
+            ? 'border-(--color-fg) bg-(--color-fg) text-(--color-bg)'
             : isAccent
-              ? 'border-foreground/40 bg-background text-foreground'
-              : 'border-border bg-background text-foreground/80'
+              ? 'border-(--color-fg)/40 bg-(--color-bg) text-(--color-fg)'
+              : 'border-(--color-border) bg-(--color-bg) text-(--color-fg)/80'
         }`}
       >
         {label}
@@ -126,7 +126,7 @@ export function OverlayLine({
       y1={y1}
       x2={x2}
       y2={y2}
-      className={`${hovered === id ? 'stroke-foreground' : 'stroke-border'} ${spotlight.className}`}
+      className={`${hovered === id ? 'stroke-(--color-fg)' : 'stroke-(--color-border)'} ${spotlight.className}`}
       style={spotlight.style}
     />
   )
@@ -144,7 +144,7 @@ export function AnatomyDefs() {
         height="4"
         patternTransform="rotate(45)"
       >
-        <rect width="4" height="4" className="fill-background" />
+        <rect width="4" height="4" className="fill-(--color-bg)" />
         <line
           x1="0"
           y1="0"
@@ -182,7 +182,7 @@ export function AnatomyFrame({
           fill="none"
           overflow="visible"
           className={cn(
-            'block mx-auto h-auto w-full max-w-full overflow-visible font-mono text-xs text-foreground/80',
+            'block mx-auto h-auto w-full max-w-full overflow-visible font-mono text-xs text-(--color-fg)/80',
             maxWidthClassName,
           )}
         >

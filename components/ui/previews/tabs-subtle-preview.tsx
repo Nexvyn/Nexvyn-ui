@@ -12,13 +12,13 @@ export function TabsSubtlePreview() {
         <TabsSubtleItem value="overview" label="Overview" />
         <TabsSubtleItem value="activity" label="Activity" />
         <TabsSubtleItem value="settings" label="Settings" />
-        <TabsSubtlePanel value="overview" className="text-sm text-muted-foreground">
+        <TabsSubtlePanel value="overview" className="text-sm text-(--color-muted)">
           Overview content
         </TabsSubtlePanel>
-        <TabsSubtlePanel value="activity" className="text-sm text-muted-foreground">
+        <TabsSubtlePanel value="activity" className="text-sm text-(--color-muted)">
           Activity content
         </TabsSubtlePanel>
-        <TabsSubtlePanel value="settings" className="text-sm text-muted-foreground">
+        <TabsSubtlePanel value="settings" className="text-sm text-(--color-muted)">
           Settings content
         </TabsSubtlePanel>
       </TabsSubtle>

@@ -84,7 +84,7 @@ export function SelectBlueprint() {
         height={BP_PANEL_H}
         rx={BP.triggerRx}
         strokeWidth={theme.wireframe.strokeWidth}
-        className={`${BP_MORPH} fill-transparent stroke-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-popover group-focus-visible:fill-popover group-hover:stroke-border group-focus-visible:stroke-border`}
+        className={`${BP_MORPH} fill-transparent stroke-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-popover group-focus-visible:fill-popover group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
       />
       <rect
         x={BP.x + BP.panelPad}

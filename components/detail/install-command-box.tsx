@@ -48,11 +48,7 @@ export function InstallCommandBox({
 
   if (!registry && !getCommand) return null
 
-  const command = getCommand
-    ? getCommand(pm)
-    : registry
-      ? COMMANDS[pm](registry)
-      : ''
+  const command = getCommand ? getCommand(pm) : registry ? COMMANDS[pm](registry) : ''
   if (!command) return null
   const pms: PackageManager[] = ['npm', 'pnpm', 'yarn', 'bun']
 
@@ -93,7 +89,7 @@ export function InstallCommandBox({
                 exit={{ opacity: 0, y: 4, scale: 0.95 }}
                 transition={{ duration: 0.15, ease: 'easeOut' }}
                 style={{ bottom: 'calc(100% + 16px)', left: '-6px' }}
-                className="absolute w-18 bg-(--color-surface-2) border-0 rounded-[12px] shadow-xl p-1 z-50 flex flex-col font-mono text-sm"
+                className="absolute w-18 bg-(--color-bg) border border-(--color-border) rounded-[12px] shadow-xl p-1 z-50 flex flex-col font-mono text-sm"
                 role="listbox"
               >
                 {pms.map((option) => (
@@ -107,7 +103,7 @@ export function InstallCommandBox({
                       setIsOpen(false)
                     }}
                     className={cn(
-                      'w-full text-left px-2 py-1 text-[11px] sm:text-[14px] transition-colors cursor-pointer rounded-[6px] hover:bg-black/[0.06] dark:hover:bg-white/[0.06]',
+                      'w-full text-left px-2 py-1 text-[11px] sm:text-[14px] transition-colors cursor-pointer rounded-[6px] hover:bg-(--color-surface-2)',
                       pm === option
                         ? 'text-(--color-fg) font-semibold'
                         : 'text-(--color-muted) hover:text-(--color-fg)',

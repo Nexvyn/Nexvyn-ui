@@ -56,7 +56,7 @@ export function FluidOrbPreview() {
           )
         })}
       </div>
-      <p className="text-xs text-muted-foreground">{TONES.find((t) => t.id === tone)?.label}</p>
+      <p className="text-xs text-(--color-muted)">{TONES.find((t) => t.id === tone)?.label}</p>
     </div>
   )
 }

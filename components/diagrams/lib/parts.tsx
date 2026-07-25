@@ -17,23 +17,23 @@ function morphSurface(hoverFill: string, hoverStroke: string) {
 }
 
 export const BP_FILL_SOLID = morphSurface(
-  'group-hover:fill-foreground group-focus-visible:fill-foreground',
+  'group-hover:fill-(--color-fg) group-focus-visible:fill-(--color-fg)',
   'group-hover:stroke-transparent group-focus-visible:stroke-transparent',
 )
 
 export const BP_FILL_PANEL = morphSurface(
-  'group-hover:fill-muted group-focus-visible:fill-muted',
-  'group-hover:stroke-border group-focus-visible:stroke-border',
+  'group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2)',
+  'group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)',
 )
 
 export const BP_FILL_MUTED = morphSurface(
-  'group-hover:fill-muted group-focus-visible:fill-muted',
+  'group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2)',
   'group-hover:stroke-transparent group-focus-visible:stroke-transparent',
 )
 
 export const BP_TEXT_HOLLOW = `${BP_MORPH} fill-transparent stroke-current group-hover:fill-current group-focus-visible:fill-current group-hover:stroke-transparent group-focus-visible:stroke-transparent`
 
-export const BP_TEXT_ON_SOLID = `${BP_MORPH} fill-transparent stroke-current group-hover:fill-background group-focus-visible:fill-background group-hover:stroke-transparent group-focus-visible:stroke-transparent`
+export const BP_TEXT_ON_SOLID = `${BP_MORPH} fill-transparent stroke-current group-hover:fill-(--color-bg) group-focus-visible:fill-(--color-bg) group-hover:stroke-transparent group-focus-visible:stroke-transparent`
 
 export const BP_TEXT_ON_PANEL = BP_TEXT_HOLLOW
 
@@ -89,7 +89,7 @@ export function Blueprint({ children, className }: { children: ReactNode; classN
       width={220}
       height={140}
       fill="none"
-      className={`text-foreground/80 ${className ?? ''}`}
+      className={`text-(--color-fg)/80 ${className ?? ''}`}
     >
       {children}
     </svg>
@@ -303,7 +303,7 @@ export function Selection({ x, y, w, h }: { x: number; y: number; w: number; h: 
           y={cy - s / 2}
           width={s}
           height={s}
-          fill="var(--background)"
+          fill="var(--color-bg)"
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.selection.handleStrokeWidth}
           opacity={theme.selection.handleOpacity}

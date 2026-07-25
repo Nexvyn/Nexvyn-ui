@@ -45,7 +45,7 @@ const HEADERS = ['Name', 'Role', 'Status']
 const ROW_1 = ['Ada', 'Eng', 'Active']
 const ROW_2 = ['Alan', 'Res', 'Active']
 
-const BODY_FILL = `${BP_MORPH} fill-transparent group-hover:fill-muted group-focus-visible:fill-muted`
+const BODY_FILL = `${BP_MORPH} fill-transparent group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2)`
 
 const BP_X = (220 - TABLE_W) / 2
 const BP_Y = (140 - TABLE_H) / 2
@@ -61,7 +61,14 @@ export function TableBlueprint() {
     <Blueprint>
       <g transform={`translate(${BP_X}, ${BP_Y})`}>
         {[row1Y, row2Y].map((y) => (
-          <rect key={y} x={0} y={y - BP_Y} width={TABLE_W} height={TABLE.rowH} className={BODY_FILL} />
+          <rect
+            key={y}
+            x={0}
+            y={y - BP_Y}
+            width={TABLE_W}
+            height={TABLE.rowH}
+            className={BODY_FILL}
+          />
         ))}
         {HEADERS.map((label, i) => (
           <text
@@ -319,7 +326,13 @@ function OverlayLines() {
     <g strokeWidth="1" className="pointer-events-none">
       <OverlayLine id="header" x1={headerMidX} y1={TY} x2={headerMidX} y2={TY - 40} />
       <OverlayLine id="row" x1={rowRightX} y1={rowMidY} x2={rowRightX + 36} y2={rowMidY} />
-      <OverlayLine id="divider" x1={dividerLeftX} y1={dividerY} x2={dividerLeftX - 36} y2={dividerY} />
+      <OverlayLine
+        id="divider"
+        x1={dividerLeftX}
+        y1={dividerY}
+        x2={dividerLeftX - 36}
+        y2={dividerY}
+      />
       <OverlayLine id="cell" x1={cellMidX} y1={cellBottomY} x2={cellMidX} y2={cellBottomY + 36} />
     </g>
   )

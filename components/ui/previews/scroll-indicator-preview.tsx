@@ -83,7 +83,7 @@ export function ScrollIndicatorPreview() {
     <div className="flex flex-col h-full w-full">
       {/* Mobile disclaimer */}
       <div className="md:hidden shrink-0 bg-(--color-surface) border-b border-(--color-border) px-3 py-1.5 text-center">
-        <p className="text-[10px] font-sans text-foreground/50">
+        <p className="text-[10px] font-sans text-(--color-fg)/50">
           For best experience, open in browser on a wider screen
         </p>
       </div>
@@ -105,7 +105,7 @@ export function ScrollIndicatorPreview() {
               />
               <span
                 className={`text-[10px] uppercase tracking-wider transition-colors ${
-                  active === index ? 'text-(--color-accent)' : 'text-foreground/40'
+                  active === index ? 'text-(--color-accent)' : 'text-(--color-fg)/40'
                 }`}
               >
                 {section.title}
@@ -139,10 +139,10 @@ export function ScrollIndicatorPreview() {
                 }}
                 className="mb-6 md:mb-8 last:mb-0 min-h-20 md:min-h-30 flex flex-col justify-start"
               >
-                <h2 className="border-b pb-1 md:pb-1.5 tracking-tight text-lg md:text-2xl text-foreground border-(--color-border)">
+                <h2 className="border-b pb-1 md:pb-1.5 tracking-tight text-lg md:text-2xl text-(--color-fg) border-(--color-border)">
                   {section.title}
                 </h2>
-                <p className="mt-1 md:mt-2 font-sans text-sm md:text-base leading-relaxed text-foreground/55">
+                <p className="mt-1 md:mt-2 font-sans text-sm md:text-base leading-relaxed text-(--color-fg)/55">
                   {section.text}
                 </p>
               </section>

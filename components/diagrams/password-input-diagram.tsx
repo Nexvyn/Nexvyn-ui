@@ -61,7 +61,7 @@ export function PasswordInputWireframe() {
           cx={x}
           cy={BP_FIELD.y + BP_FIELD.h / 2}
           r={2.5}
-          className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-foreground group-focus-visible:fill-foreground group-hover:stroke-transparent group-focus-visible:stroke-transparent`}
+          className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-(--color-fg) group-focus-visible:fill-(--color-fg) group-hover:stroke-transparent group-focus-visible:stroke-transparent`}
           strokeWidth={1}
           opacity={theme.wireframe.strokeOpacity}
         />

@@ -61,7 +61,7 @@ export function TableOfContentsWireframe() {
         rx={BP_TRIGGER.rx}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-muted group-focus-visible:fill-muted group-hover:stroke-border group-focus-visible:stroke-border`}
+        className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2) group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
       />
       <text
         x={BP_TRIGGER.x + 24}

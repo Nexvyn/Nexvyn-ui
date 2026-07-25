@@ -47,7 +47,7 @@ export function ColorPickerWireframe() {
           cy={p.cy}
           r={BP_PETAL_R}
           strokeWidth={theme.wireframe.strokeWidth}
-          className={`${BP_MORPH} fill-transparent stroke-current opacity-40 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-muted group-focus-visible:fill-muted group-hover:stroke-border group-focus-visible:stroke-border`}
+          className={`${BP_MORPH} fill-transparent stroke-current opacity-40 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2) group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
           style={{
             transitionDelay: `calc(${i} * 30ms)`,
           }}

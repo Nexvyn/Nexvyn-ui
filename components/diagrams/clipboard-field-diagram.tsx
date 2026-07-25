@@ -60,7 +60,7 @@ export function ClipboardFieldBlueprint() {
         y={midY + 4}
         fontSize={FIELD.font}
         fontFamily="var(--font-mono)"
-        className={`${BP_MORPH} fill-muted-foreground opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        className={`${BP_MORPH} fill-(--color-muted) opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
       >
         $
       </text>
@@ -69,7 +69,7 @@ export function ClipboardFieldBlueprint() {
         y={midY + 4}
         fontSize={FIELD.font}
         fontFamily="var(--font-mono)"
-        className={`${BP_MORPH} fill-muted-foreground opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        className={`${BP_MORPH} fill-(--color-muted) opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
       >
         npx shadcn@latest add …
       </text>
@@ -79,7 +79,7 @@ export function ClipboardFieldBlueprint() {
         strokeLinecap="round"
         strokeLinejoin="round"
         fill="none"
-        className={`${BP_MORPH} opacity-55 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:stroke-foreground group-focus-visible:stroke-foreground`}
+        className={`${BP_MORPH} opacity-55 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:stroke-(--color-fg) group-focus-visible:stroke-(--color-fg)`}
       >
         <rect x={iconX + 3.5} y={iconY + 3.5} width={8} height={8} rx={1.4} />
         <path
@@ -144,7 +144,7 @@ function FieldShape() {
       width={AN.w}
       height={AN.h}
       rx={AN.r}
-      className={`fill-(--color-surface-2) stroke-border ${spotlight.className}`}
+      className={`fill-(--color-surface-2) stroke-(--color-border) ${spotlight.className}`}
       style={spotlight.style}
       strokeWidth={1}
     />
@@ -159,7 +159,7 @@ function PromptShape() {
       y={AN.y + 25}
       fontSize={13}
       fontFamily="var(--font-mono)"
-      className={`fill-muted-foreground ${spotlight.className}`}
+      className={`fill-(--color-muted) ${spotlight.className}`}
       style={spotlight.style}
     >
       $
@@ -175,7 +175,7 @@ function CommandShape() {
       y={AN.y + 25}
       fontSize={13}
       fontFamily="var(--font-mono)"
-      className={`fill-muted-foreground ${spotlight.className}`}
+      className={`fill-(--color-muted) ${spotlight.className}`}
       style={spotlight.style}
     >
       npx shadcn@latest add …
