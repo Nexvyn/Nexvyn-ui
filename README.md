@@ -47,14 +47,23 @@ Dependencies resolve automatically. Motion animations require the `motion` packa
 ## Scripts
 
 ```bash
-npm run dev           # Start dev server
-npm run build         # Production build
-npm run build:registry # Generate registry JSON files from source
-npm run format        # Format code with Prettier
-npm run format:check  # Check formatting without writing
-npm run lint          # Run ESLint
+bun run dev           # Start dev server
+bun run build         # Production build
+bun run build:registry # Generate registry JSON files from source
+bun run format        # Format code with Prettier
+bun run format:check  # Check formatting without writing
+bun run lint          # Run ESLint
 ```
 
 ## License
 
-MIT © Nexvyn
+MIT © Nexvyn — all installable components (`components/ui/**`) and everything
+else in this repository, including what ships through the shadcn registry.
+
+**Exception:** the wireframe/anatomy diagram source in `components/diagrams/**`
+and its shared drawing primitives (`components/diagrams/lib/parts.tsx`,
+`components/diagrams/lib/anatomy-parts.tsx`) are licensed separately under
+CC BY-NC 4.0 — see [`components/diagrams/LICENSE`](components/diagrams/LICENSE).
+These files are documentation-site assets only; they are never included in
+any component's registry files and are not shipped to consumers who install
+a component via the CLI.

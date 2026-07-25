@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { useMounted } from '@/hooks/use-mounted'
 
 type TooltipSide = 'top' | 'right' | 'bottom' | 'left'
 
@@ -25,21 +26,19 @@ function Tooltip({
   className,
 }: TooltipProps) {
   const [open, setOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
+  const mounted = useMounted()
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(null)
   const [computedSide, setComputedSide] = useState<TooltipSide>(side)
+  const [prevSide, setPrevSide] = useState(side)
 
   const triggerRef = useRef<HTMLDivElement>(null)
   const tooltipRef = useRef<HTMLDivElement | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
+  if (side !== prevSide) {
+    setPrevSide(side)
     setComputedSide(side)
-  }, [side])
+  }
 
   const show = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)

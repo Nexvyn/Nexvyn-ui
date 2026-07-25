@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import {
   motion,
   stagger,
@@ -11,6 +11,7 @@ import {
   type Variants,
 } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { playHoverSound, playClickSound, playBounceSound } from '@/lib/sound'
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const
 
@@ -64,7 +65,6 @@ export function BounceSidebar({
     let cancelled = false
     const dpr = window.devicePixelRatio || 1
     const computedSize = Math.round(6 * dpr) / dpr
-    setDotSize(computedSize)
 
     const initialIndex = activeIndex
     const snap = () => {
@@ -75,10 +75,13 @@ export function BounceSidebar({
       dotY.set(toY)
       prevY.current = toY
     }
-    const raf = requestAnimationFrame(snap)
-    document.fonts?.ready.then(snap)
+
     const ro = new ResizeObserver(snap)
     itemRefs.current.forEach((el) => el && ro.observe(el))
+    setDotSize(computedSize)
+
+    const raf = requestAnimationFrame(snap)
+    document.fonts?.ready.then(snap)
     return () => {
       cancelled = true
       cancelAnimationFrame(raf)
@@ -101,14 +104,8 @@ export function BounceSidebar({
     const delta = toY - fromY
     prevY.current = toY
     if (delta === 0) return
-
-    if (reduceMotion) {
-      dotX.set(0)
-      dotY.set(toY)
-      return
-    }
-
     const distance = Math.abs(delta)
+    playBounceSound()
 
     const yDuration = 0.45
     const yTransition: Transition = { duration: yDuration, ease: EASE_OUT }
@@ -124,13 +121,52 @@ export function BounceSidebar({
     })
   }, [activeIndex, animate, dotX, dotY, dotSize, reduceMotion])
 
-  const select = (index: number) => {
-    if (value === undefined) setInternalValue(index)
-    onChange?.(index)
-  }
+  const select = useCallback(
+    (index: number) => {
+      playBounceSound()
+      if (value === undefined) setInternalValue(index)
+      onChange?.(index)
+    },
+    [value, onChange],
+  )
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLUListElement>) => {
+      const count = items.length
+      if (count === 0) return
+
+      let next = activeIndex
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        next = (activeIndex + 1) % count
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        next = (activeIndex - 1 + count) % count
+      } else if (e.key === 'Home') {
+        e.preventDefault()
+        next = 0
+      } else if (e.key === 'End') {
+        e.preventDefault()
+        next = count - 1
+      }
+
+      if (next !== activeIndex) {
+        select(next)
+        const buttons = itemRefs.current.map((el) => el?.querySelector('button'))
+        buttons[next]?.focus()
+      }
+    },
+    [activeIndex, items.length, select],
+  )
 
   return (
-    <ul className={cn('relative flex flex-col gap-1 ps-6', className)}>
+    <ul
+      role="listbox"
+      aria-label="Navigation"
+      onKeyDown={handleKeyDown}
+      className={cn('relative flex flex-col gap-1 ps-6', className)}
+    >
       <motion.span
         ref={scope}
         aria-hidden
@@ -152,9 +188,14 @@ export function BounceSidebar({
             ref={(el) => {
               itemRefs.current[index] = el
             }}
+            role="option"
+            aria-selected={isActive}
           >
             <motion.button
               type="button"
+              tabIndex={isActive ? 0 : -1}
+              onMouseEnter={() => playHoverSound()}
+              onPointerDown={() => select(index)}
               onClick={() => select(index)}
               aria-current={isActive ? 'true' : undefined}
               whileTap={reduceMotion ? undefined : { scale: 0.97 }}

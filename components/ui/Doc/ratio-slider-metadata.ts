@@ -10,7 +10,7 @@ export const ratioSliderMetadata: ComponentItem = {
   registry: 'ratio-slider',
   dependencies: [{ name: 'motion' }],
   interaction:
-    'Drag the divider or use arrow keys to adjust the ratio. Labels collapse on narrow widths.',
+    'Hover for micro-clicks; drag the divider or press track for real-time tick sounds. Use arrow keys to adjust the ratio.',
   props: [
     {
       name: 'value',

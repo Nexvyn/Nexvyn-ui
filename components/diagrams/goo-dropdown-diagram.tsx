@@ -1,24 +1,31 @@
 'use client'
 
+// SPDX-License-Identifier: CC-BY-NC-4.0
+// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
+// This file is NOT covered by the repository's root MIT LICENSE.
+
 import {
   type BlueprintTheme,
   Blueprint,
   BP_FILL_MUTED,
   BP_HIDE_ON_MORPH,
-  BP_TEXT_ON_PANEL,
+  BP_MORPH,
+  BP_TEXT_SOFT,
   blueprintTheme,
   DimH,
   DimLabel,
   DimV,
+  PadGuide,
   Selection,
-} from '@/components/showcase/parts'
+} from '@/components/diagrams/lib/parts'
 import {
   AnatomyFrame,
   AnatomyTag,
   OverlayLine,
   useAnatomy,
   useSpotlight,
-} from '@/components/showcase/anatomy-parts'
+} from '@/components/diagrams/lib/anatomy-parts'
 
 const BP_TRIGGER = { x: 82, y: 6, w: 78, h: 34, rx: 12 } as const
 const BP_PANEL = { x: 60, y: 50, w: 100, h: 84, rx: 20 } as const
@@ -42,18 +49,38 @@ export function GooDropdownWireframe() {
         x={BP_TRIGGER.x + BP_TRIGGER.w / 2}
         y={BP_TRIGGER.y + 22}
         textAnchor="middle"
-        fontSize={13}
-        fontWeight={500}
+        fontSize={15}
         fontFamily="var(--font-sans)"
-        strokeWidth={theme.wireframe.textStrokeWidth}
-        strokeOpacity={theme.wireframe.textOpacity}
-        className={BP_TEXT_ON_PANEL}
+        className={BP_TEXT_SOFT}
       >
         Share
       </text>
+      <rect
+        x={BP_PANEL.x}
+        y={BP_PANEL.y}
+        width={BP_PANEL.w}
+        height={BP_PANEL.h}
+        rx={BP_PANEL.rx}
+        strokeWidth={theme.wireframe.strokeWidth}
+        className={`${BP_MORPH} fill-transparent stroke-current opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-card group-focus-visible:fill-card group-hover:stroke-border group-focus-visible:stroke-border`}
+      />
+      {BP_ITEM_CYS.map((cy, i) => (
+        <text
+          key={cy}
+          x={BP_PANEL.x + 14}
+          y={cy + 4}
+          fontSize={11}
+          fontFamily="var(--font-sans)"
+          className={`${BP_MORPH} fill-transparent stroke-current opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-current group-focus-visible:fill-current group-hover:stroke-transparent group-focus-visible:stroke-transparent`}
+          strokeWidth={0.8}
+        >
+          {['Copy link', 'Embed', 'Share…'][i]}
+        </text>
+      ))}
+
       <g className={BP_HIDE_ON_MORPH}>
         <path
-          d={`M${BP_TRIGGER.x + 18} ${BP_TRIGGER.y + BP_TRIGGER.h} q6 6 12 0`}
+          d={`M${BP_TRIGGER.x + BP_TRIGGER.w / 2 - 6} ${BP_TRIGGER.y + BP_TRIGGER.h} q6 8 12 0`}
           fill="none"
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
@@ -72,11 +99,6 @@ export function GooDropdownWireframe() {
           strokeDasharray="3 3"
           opacity={theme.guide.structOpacity}
         />
-        <g fill="currentColor" opacity={theme.guide.structOpacity}>
-          {BP_ITEM_CYS.map((cy, i) => (
-            <rect key={cy} x={BP_PANEL.x + 12} y={cy - 2} width={44 - i * 8} height={4} rx={2} />
-          ))}
-        </g>
       </g>
       <g className={BP_HIDE_ON_MORPH}>
         <Selection x={BP_TRIGGER.x} y={BP_TRIGGER.y} w={BP_TRIGGER.w} h={BP_TRIGGER.h} />
@@ -87,8 +109,31 @@ export function GooDropdownWireframe() {
         >
           {`${BP_TRIGGER.w}x${BP_TRIGGER.h} r${BP_TRIGGER.rx}`}
         </DimLabel>
+        <PadGuide
+          x={BP_PANEL.x + 6}
+          y={BP_PANEL.y + 6}
+          w={BP_PANEL.w - 12}
+          h={BP_PANEL.h - 12}
+          offset={0.8}
+          boxX={BP_PANEL.x}
+          boxY={BP_PANEL.y}
+          boxW={BP_PANEL.w}
+          boxH={BP_PANEL.h}
+          boxRx={BP_PANEL.rx}
+          clipOffset={0.8}
+        />
+        <DimLabel x={BP_PANEL.x + 3} y={BP_PANEL.y - 4} anchor="middle">
+          6
+        </DimLabel>
+        <DimV
+          x={BP_TRIGGER.x - 12}
+          y1={BP_TRIGGER.y + BP_TRIGGER.h}
+          y2={BP_PANEL.y}
+          label={`${BP_PANEL.y - (BP_TRIGGER.y + BP_TRIGGER.h)}`}
+          labelXOffset={-6}
+        />
         <DimLabel x={BP_PANEL.x + BP_PANEL.w + 6} y={BP_ITEM_CYS[1] + 3} anchor="start">
-          goo
+          goo gap
         </DimLabel>
       </g>
     </Blueprint>
@@ -107,7 +152,7 @@ function TriggerShape({ theme }: { theme: BlueprintTheme }) {
       y={10}
       width={78}
       height={34}
-      rx={8}
+      rx={12}
       stroke="currentColor"
       strokeWidth={hovered === 'trigger' ? 2 : theme.wireframe.strokeWidth}
       fill={hovered === 'trigger' ? 'currentColor' : 'transparent'}
@@ -135,8 +180,7 @@ function TriggerTextShape() {
         x={49}
         y={31}
         textAnchor="middle"
-        fontSize={12}
-        fontWeight={500}
+        fontSize={15}
         fontFamily="var(--font-sans)"
         className={`fill-current ${spotlight.className}`}
       >
@@ -156,7 +200,7 @@ function PanelShape({ theme }: { theme: BlueprintTheme }) {
       y={52}
       width={78}
       height={96}
-      rx={10}
+      rx={20}
       stroke="currentColor"
       strokeWidth={hovered === 'panel' ? 2 : theme.wireframe.strokeWidth}
       fill={hovered === 'panel' ? 'currentColor' : 'transparent'}
@@ -218,7 +262,7 @@ function ItemShape({
         y={58 + index * 30}
         width={66}
         height={24}
-        rx={6}
+        rx={14}
         stroke="currentColor"
         strokeWidth={hovered === partId ? 1 : theme.wireframe.strokeWidth}
         fill={hovered === partId ? 'currentColor' : 'transparent'}
@@ -251,6 +295,33 @@ function AnnotationsLayer() {
       }}
       className={`transition-all duration-200 ease-out ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
     >
+      <g
+        stroke="var(--bp-accent, var(--color-accent))"
+        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeDasharray="2 2"
+        opacity={blueprintTheme.guide.structOpacity}
+      >
+        <line x1={49} y1={44} x2={49} y2={52} />
+      </g>
+      <PadGuide
+        x={16}
+        y={58}
+        w={66}
+        h={84}
+        offset={0.8}
+        boxX={10}
+        boxY={52}
+        boxW={78}
+        boxH={96}
+        boxRx={20}
+        clipOffset={0.8}
+      />
+      <DimLabel x={57} y={51} anchor="start">
+        8
+      </DimLabel>
+      <DimLabel x={16} y={135} anchor="middle">
+        6
+      </DimLabel>
       <Selection x={10} y={10} w={78} h={34} />
       <Selection x={10} y={52} w={78} h={96} />
       <DimH x1={10} x2={88} y={5} label="78" />
@@ -275,10 +346,10 @@ function TagsLayer() {
   return (
     <>
       <foreignObject
-        x={70}
-        y={165}
-        width={100}
-        height={20}
+        x={54}
+        y={168}
+        width={120}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
         <AnatomyTag
@@ -289,28 +360,28 @@ function TagsLayer() {
         />
       </foreignObject>
       <foreignObject
-        x={170}
-        y={110}
-        width={100}
-        height={20}
+        x={175}
+        y={108}
+        width={120}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
         <AnatomyTag part="panel" label="Dropdown.Panel" className="items-center justify-start" />
       </foreignObject>
       <foreignObject
-        x={170}
-        y={35}
-        width={100}
-        height={20}
+        x={175}
+        y={32}
+        width={110}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
         <AnatomyTag part="goo" label="Goo Bridge" className="items-center justify-start" />
       </foreignObject>
       <foreignObject
-        x={170}
-        y={90}
-        width={100}
-        height={20}
+        x={175}
+        y={86}
+        width={110}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
         <AnatomyTag part="item-1" label="Menu Item" className="items-center justify-start" />
@@ -321,7 +392,7 @@ function TagsLayer() {
 
 export function GooDropdownBreakdown() {
   return (
-    <AnatomyFrame viewBox="60 15 220 180" maxWidthClassName="max-w-lg">
+    <AnatomyFrame viewBox="-91 -8 400 214" maxWidthClassName="max-w-[480px]">
       <g transform="translate(60, 20)">
         <TriggerShape theme={blueprintTheme} />
         <TriggerTextShape />

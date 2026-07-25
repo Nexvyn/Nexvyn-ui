@@ -24,7 +24,14 @@ const PM_LABELS: Record<PackageManager, string> = {
   bun: 'bun',
 }
 
-export function InstallCommandBox({ registry }: { registry?: string }) {
+export function InstallCommandBox({
+  registry,
+  getCommand,
+}: {
+  registry?: string
+  /** Override the default `shadcn add` command (e.g. MCP init). */
+  getCommand?: (pm: PackageManager) => string
+}) {
   const [pm, setPm] = useState<PackageManager>('npm')
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -39,13 +46,18 @@ export function InstallCommandBox({ registry }: { registry?: string }) {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  if (!registry) return null
+  if (!registry && !getCommand) return null
 
-  const command = COMMANDS[pm](registry)
+  const command = getCommand
+    ? getCommand(pm)
+    : registry
+      ? COMMANDS[pm](registry)
+      : ''
+  if (!command) return null
   const pms: PackageManager[] = ['npm', 'pnpm', 'yarn', 'bun']
 
   return (
-    <div className="relative flex items-center justify-between rounded-xl px-4 py-2 border-0 bg-(--color-surface-2) font-mono select-all w-full transition-[border-color,box-shadow] duration-200">
+    <div className="relative flex items-center justify-between rounded-xl px-4 py-2 border border-(--color-border) bg-(--color-surface-2) font-mono select-all w-full transition-[border-color,box-shadow] duration-200 focus-within:border-(--color-accent) focus-within:ring-1 focus-within:ring-(--color-accent)/20">
       <div className="flex items-center gap-2 flex-1 min-w-0">
         <div ref={dropdownRef} className="relative shrink-0 flex items-center">
           <button
@@ -118,9 +130,9 @@ export function InstallCommandBox({ registry }: { registry?: string }) {
             {pm === 'pnpm' ? 'pnpm dlx ' : ''}
             {pm === 'yarn' ? 'yarn dlx ' : ''}
             {pm === 'bun' ? 'bunx ' : ''}
-            shadcn@latest add{' '}
+            shadcn@latest add
           </span>
-          <span className="text-(--color-accent) font-normal">
+          <span className="text-(--color-accent) font-normal ms-1">
             {REGISTRY_URL}/r/{registry}.json
           </span>
         </div>

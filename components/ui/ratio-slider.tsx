@@ -11,6 +11,7 @@ import {
 } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { springs } from '@/lib/motion-tokens'
+import { playHoverSound, playClickSound, playTickSound } from '@/lib/sound'
 
 export interface RatioSliderProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -117,9 +118,14 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
     const leftWidth = useTransform(leftPercent, (p) => `calc(${p}% - 9px)`)
     const rightWidth = useTransform(leftPercent, (p) => `calc(${100 - p}% - 9px)`)
 
+    const lastValueRef = useRef(leftRatio)
     const commit = useCallback(
       (next: number) => {
         const clamped = clamp(Math.round(next / step) * step, min, max)
+        if (clamped !== lastValueRef.current) {
+          lastValueRef.current = clamped
+          playTickSound()
+        }
         if (!isControlled) setInternal(clamped)
         onChange?.(clamped)
       },
@@ -166,6 +172,7 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
       (e: React.PointerEvent) => {
         if (disabled) return
         e.preventDefault()
+        playClickSound()
         isDragging.current = true
         setDraggingState(true)
         const percent = percentFromPosition(e.clientX)
@@ -233,6 +240,7 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
+        onMouseEnter={() => playHoverSound()}
         onKeyDown={onKeyDown}
         {...rest}
       >

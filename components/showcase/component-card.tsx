@@ -3,31 +3,31 @@
 import Link from 'next/link'
 import type { ComponentItem } from '@/lib/components-registry'
 import { getComponentHref } from '@/lib/components-registry'
-
 import { ComponentPreview } from './component-preview'
+import { NewStarIcon } from '@/components/layout/new-star'
 
 const CARD_CLASS =
-  'rounded-2xl bg-[#F7F7F7] dark:bg-card p-5 outline-none transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out) hover:bg-foreground/2 focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none'
+  'group relative block rounded-2xl bg-(--color-surface) p-4 outline-none transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out) hover:bg-(--color-surface-2) active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:p-5'
 
 export function ComponentCard({ item }: { item: ComponentItem }) {
-  const body = (
-    <>
-      <div className="flex min-h-48 items-center justify-center">
-        <div className="scale-125 backface-hidden transform-[translateZ(0)]">
+  return (
+    <Link href={getComponentHref(item.id)} className={CARD_CLASS} prefetch={false}>
+      <div className="pointer-events-none flex min-h-40 items-center justify-center overflow-hidden sm:min-h-48">
+        <div className="max-w-full scale-100 sm:scale-110 md:scale-125">
           <ComponentPreview item={item} />
         </div>
       </div>
-      <div className="mt-3">
+      <div className="mt-3 flex min-w-0 items-center gap-1.5">
+        {item.isNew && <NewStarIcon />}
         <span className="block min-w-0 truncate font-mono text-xs text-foreground/80">
           {item.name}
         </span>
+        {item.isNew && (
+          <span className="shrink-0 font-mono text-[10px] font-medium text-(--color-new)">
+            New
+          </span>
+        )}
       </div>
-    </>
-  )
-
-  return (
-    <Link href={getComponentHref(item.id)} className={`group block ${CARD_CLASS}`}>
-      {body}
     </Link>
   )
 }

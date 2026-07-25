@@ -13,6 +13,27 @@
         {
           "path": "components/ui/badge.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "clipboard-field",
+      "type": "registry:ui",
+      "title": "Clipboard Field",
+      "description": "A one-click install/copy field that morphs between the command and a success label using CSS grid fr tracks — JS only copies and toggles state.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/ui/clipboard-field.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -38,6 +59,10 @@
         {
           "path": "components/ui/fader/index.ts",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -51,6 +76,10 @@
         {
           "path": "components/ui/bounce-sidebar.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -120,6 +149,10 @@
         {
           "path": "components/ui/blossom picker/renderers/ArcSliderRenderer.ts",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -133,6 +166,10 @@
         {
           "path": "components/ui/goo-dropdown.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -146,6 +183,10 @@
         {
           "path": "components/ui/password-input.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -159,6 +200,10 @@
         {
           "path": "components/ui/ratio-slider.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -172,6 +217,10 @@
         {
           "path": "components/ui/scroll-indicator.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -189,6 +238,391 @@
         {
           "path": "components/ui/circular-progress.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumbs",
+      "type": "registry:ui",
+      "title": "Breadcrumbs",
+      "description": "A horizontal trail of links that auto-collapses into an ellipsis button when the trail exceeds maxItems.",
+      "dependencies": ["class-variance-authority"],
+      "files": [
+        {
+          "path": "components/ui/breadcrumbs.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "mobile-drawer",
+      "type": "registry:ui",
+      "title": "Mobile Drawer",
+      "description": "A bottom-sheet drawer with swipe-to-dismiss, focus trap, and scroll lock.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/mobile-drawer.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-focus-trap.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "morph-nav",
+      "type": "registry:ui",
+      "title": "Morph Nav",
+      "description": "A floating action button that morphs through states with SVG path-morphing trigger icon.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/morph-nav.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context Menu",
+      "description": "A right-click menu with proximity highlight and keyboard navigation.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/context-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "A filterable select with live search, proximity highlight, and native select mirror for forms.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/combobox.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "A checkbox with drawn check animation, indeterminate state, and hidden native input for forms.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "icon-bar",
+      "type": "registry:ui",
+      "title": "Icon Bar",
+      "description": "A horizontal toolbar of icon buttons with bloom-open label reveal on hover/selection, accent dot indicator, and roving tabindex.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/icon-bar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/weight-shift-text.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "id-reel",
+      "type": "registry:ui",
+      "title": "Id Reel",
+      "description": "An id pill with an odometer run-up on its digits, middle-truncation for long values, and an optional GitHub-style pull-request status badge.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/id-reel.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "The text field foundation with adornments, size variants, and animated focus ring.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "nav-menu",
+      "type": "registry:ui",
+      "title": "Nav Menu",
+      "description": "A vertical navigation list with two-layer proximity highlight (active route + hover), weight-shift labels, and status dots for new/updated items.",
+      "dependencies": ["motion", "@radix-ui/react-slot"],
+      "files": [
+        {
+          "path": "components/ui/nav-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/weight-shift-text.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "A popover action menu with a proximity-driven morphing highlight. The muted hover highlight springs between items as the pointer moves, giving the menu a fluid, alive feel.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "A form select with a two-layer proximity highlight (selected accent tint + muted hover), drawn check animation, and a trigger label morph on selection change.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/select.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "Radio Group",
+      "description": "A radio group with roving tabindex and a dot morph selection indicator.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/radio-group.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "A toggle switch with thumb travel animation and hidden checkbox for forms.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "A composable data table with semantic markup and a per-row hover highlight that dims into the active row.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tabs-subtle",
+      "type": "registry:ui",
+      "title": "Tabs Subtle",
+      "description": "A pill-style tab list where the selected indicator springs between tabs, built on the WAI-ARIA tabs pattern with full roving-focus keyboard support.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/tabs-subtle.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "input-copy",
+      "type": "registry:ui",
+      "title": "Input Copy",
+      "description": "A copy-to-clipboard field that shows a monospace value with an icon or button trigger, animating a checkmark on copy.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/input-copy.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "input-message",
+      "type": "registry:ui",
+      "title": "Input Message",
+      "description": "An auto-growing chat composer with drag-and-drop file attachments, image/PDF preview tiles, and Enter-to-send.",
+      "dependencies": ["motion", "pdfjs-dist"],
+      "files": [
+        {
+          "path": "components/ui/input-message.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "bars-theme",
+      "type": "registry:ui",
+      "title": "Bars Theme",
+      "description": "A traveling-wave bars visualization with 5 vertical bars sharing a sine-wave frequency, evenly phase-shifted left to right so the wave appears to travel across. Volume scales bar heights with a diamond-shaped idle boost.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/bars-theme.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-css-color-rgb.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/resolve-css-color.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "glow-orb",
+      "type": "registry:ui",
+      "title": "Glow Orb",
+      "description": "A WebGL fbm-noise glow orb with state-driven colors, volume-responsive scale and glow, idle and connecting pulse animations, and a settle-back transition.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/glow-orb.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-css-color-rgb.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/resolve-css-color.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "fluid-orb",
+      "type": "registry:ui",
+      "title": "Fluid Orb",
+      "description": "A WebGL fluid orb in muted/neutral design tokens with sphere normals, fBm noise, and audio-reactive pulse.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/fluid-orb.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-css-color-rgb.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/resolve-css-color.ts",
+          "type": "registry:lib"
         }
       ]
     }

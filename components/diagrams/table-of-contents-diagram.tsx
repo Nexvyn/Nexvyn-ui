@@ -1,28 +1,35 @@
 'use client'
 
+// SPDX-License-Identifier: CC-BY-NC-4.0
+// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
+// This file is NOT covered by the repository's root MIT LICENSE.
+
 import {
   type BlueprintTheme,
   Blueprint,
   BP_HIDE_ON_MORPH,
   BP_MORPH,
-  BP_TEXT_ON_PANEL,
+  BP_TEXT_SOFT,
   blueprintTheme,
   DimH,
   DimLabel,
   DimV,
+  PadGuide,
   Selection,
-} from '@/components/showcase/parts'
+} from '@/components/diagrams/lib/parts'
 import {
   AnatomyFrame,
   AnatomyTag,
   OverlayLine,
   useAnatomy,
   useSpotlight,
-} from '@/components/showcase/anatomy-parts'
+} from '@/components/diagrams/lib/anatomy-parts'
 
-const BP_TRIGGER = { x: 20, y: 94, w: 180, h: 36, rx: 8 } as const
 const BP_PANEL = { x: 20, y: 10, w: 180, h: 74, rx: 8 } as const
-const BP_RING = { cx: 162, cy: 112, r: 6 } as const
+const BP_GAP = 12
+const BP_TRIGGER = { x: 20, y: BP_PANEL.y + BP_PANEL.h + BP_GAP, w: 180, h: 36, rx: 4 } as const
+const BP_RING = { cx: 162, cy: BP_TRIGGER.y + BP_TRIGGER.h / 2, r: 6 } as const
 
 export function TableOfContentsWireframe() {
   const theme = blueprintTheme
@@ -54,19 +61,15 @@ export function TableOfContentsWireframe() {
         rx={BP_TRIGGER.rx}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        stroke="currentColor"
-        fill="none"
-        className={BP_MORPH}
+        className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-muted group-focus-visible:fill-muted group-hover:stroke-border group-focus-visible:stroke-border`}
       />
       <text
-        x={BP_TRIGGER.x + 12}
+        x={BP_TRIGGER.x + 24}
         y={BP_TRIGGER.y + 22}
         fontSize={11}
         fontWeight={600}
         fontFamily="var(--font-sans)"
-        strokeWidth={theme.wireframe.textStrokeWidth}
-        strokeOpacity={theme.wireframe.textOpacity}
-        className={BP_TEXT_ON_PANEL}
+        className={BP_TEXT_SOFT}
       >
         Getting Started
       </text>
@@ -115,8 +118,59 @@ export function TableOfContentsWireframe() {
           y={BP_TRIGGER.y + BP_TRIGGER.h + 14}
           label={`${BP_TRIGGER.w}`}
         />
+        <DimV
+          x={BP_TRIGGER.x - 12}
+          y1={BP_TRIGGER.y}
+          y2={BP_TRIGGER.y + BP_TRIGGER.h}
+          label={`${BP_TRIGGER.h}`}
+          labelXOffset={-6}
+        />
+        <PadGuide
+          x={BP_TRIGGER.x + 24}
+          y={BP_TRIGGER.y}
+          w={BP_TRIGGER.w - 48}
+          h={BP_TRIGGER.h}
+          offset={0.8}
+          boxX={BP_TRIGGER.x}
+          boxY={BP_TRIGGER.y}
+          boxW={BP_TRIGGER.w}
+          boxH={BP_TRIGGER.h}
+          boxRx={BP_TRIGGER.rx}
+          clipOffset={0.8}
+        />
+        <DimLabel x={BP_TRIGGER.x + 12} y={BP_TRIGGER.y + BP_TRIGGER.h / 2 + 2} anchor="middle">
+          24
+        </DimLabel>
+        <DimLabel
+          x={BP_TRIGGER.x + BP_TRIGGER.w - 12}
+          y={BP_TRIGGER.y + BP_TRIGGER.h / 2 + 2}
+          anchor="middle"
+        >
+          24
+        </DimLabel>
         <DimLabel x={BP_TRIGGER.x} y={BP_TRIGGER.y - 4} anchor="start">
-          rounded-md
+          r4
+        </DimLabel>
+
+        <g
+          stroke="var(--bp-accent, var(--color-accent))"
+          strokeWidth={theme.guide.strokeWidth}
+          strokeDasharray="2 2"
+          opacity={theme.guide.structOpacity}
+        >
+          <line
+            x1={BP_TRIGGER.x + 40}
+            y1={BP_PANEL.y + BP_PANEL.h}
+            x2={BP_TRIGGER.x + 40}
+            y2={BP_TRIGGER.y}
+          />
+        </g>
+        <DimLabel
+          x={BP_TRIGGER.x + 46}
+          y={(BP_PANEL.y + BP_PANEL.h + BP_TRIGGER.y) / 2 + 2.5}
+          anchor="start"
+        >
+          {`${BP_GAP}`}
         </DimLabel>
       </g>
     </Blueprint>
@@ -177,7 +231,7 @@ function ItemShape({
         y={20 + index * 38}
         width={204}
         height={32}
-        rx={6}
+        rx={4}
         fill="currentColor"
         fillOpacity={hovered === partId ? 0.1 : isActive ? 0.08 : 0}
         className={spotlight.className}
@@ -206,7 +260,7 @@ function TriggerShape({ theme }: { theme: BlueprintTheme }) {
       y={170}
       width={220}
       height={48}
-      rx={10}
+      rx={4}
       stroke="currentColor"
       strokeWidth={hovered === 'trigger' ? 2 : theme.wireframe.strokeWidth}
       fill={hovered === 'trigger' ? 'currentColor' : 'transparent'}
@@ -230,9 +284,9 @@ function TitleShape() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      <rect x={14} y={186} width={140} height={24} fill="transparent" />
+      <rect x={34} y={186} width={120} height={24} fill="transparent" />
       <text
-        x={24}
+        x={34}
         y={198}
         fontSize={12}
         fontWeight={600}
@@ -257,26 +311,29 @@ function ProgressShape() {
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
       <rect x={176} y={182} width={24} height={24} fill="transparent" />
-      <circle
-        cx={188}
-        cy={194}
-        r={8}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={hovered === 'progress' ? 2 : 1.5}
-        opacity={0.2}
-      />
-      <circle
-        cx={188}
-        cy={194}
-        r={8}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={hovered === 'progress' ? 2 : 1.5}
-        strokeDasharray={`${8 * 2 * Math.PI * 0.6} ${8 * 2 * Math.PI}`}
-        strokeLinecap="round"
-        className={spotlight.className}
-      />
+      <g transform="rotate(-90 188 194)">
+        <circle
+          cx={188}
+          cy={194}
+          r={8}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={hovered === 'progress' ? 2 : 1.5}
+          opacity={0.15}
+        />
+        <circle
+          cx={188}
+          cy={194}
+          r={8}
+          fill="none"
+          stroke="var(--color-accent)"
+          strokeWidth={hovered === 'progress' ? 2 : 1.5}
+          strokeDasharray={`${8 * 2 * Math.PI * 0.6} ${8 * 2 * Math.PI}`}
+          strokeLinecap="round"
+          style={{ filter: 'drop-shadow(0 0 2px var(--color-accent))' }}
+          className={spotlight.className}
+        />
+      </g>
     </g>
   )
 }
@@ -293,11 +350,45 @@ function AnnotationsLayer() {
       }}
       className={`transition-all duration-200 ease-out ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
     >
+      <g
+        stroke="var(--bp-accent, var(--color-accent))"
+        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeDasharray="2 2"
+        opacity={blueprintTheme.guide.structOpacity}
+      >
+        <line x1={140} y1={52} x2={140} y2={58} />
+        <line x1={10} y1={30} x2={18} y2={30} />
+      </g>
+      <DimLabel x={148} y={57} anchor="start">
+        6
+      </DimLabel>
+      <DimLabel x={14} y={25} anchor="middle">
+        8
+      </DimLabel>
+      <PadGuide
+        x={10 + 24}
+        y={170}
+        w={220 - 48}
+        h={48}
+        offset={0.8}
+        boxX={10}
+        boxY={170}
+        boxW={220}
+        boxH={48}
+        boxRx={4}
+        clipOffset={0.8}
+      />
       <Selection x={10} y={170} w={220} h={48} />
       <DimH x1={10} x2={230} y={160} label="220" />
       <DimV x={245} y1={170} y2={218} label="48" labelXOffset={5} labelAnchor="start" />
+      <DimLabel x={10 + 12} y={170 + 24 + 2} anchor="middle">
+        24
+      </DimLabel>
+      <DimLabel x={230 - 12} y={170 + 24 + 2} anchor="middle">
+        24
+      </DimLabel>
       <DimLabel x={10} y={166} anchor="start">
-        rounded-md
+        r4
       </DimLabel>
     </g>
   )
@@ -316,7 +407,7 @@ function InteractionZone() {
       rx={8}
       strokeWidth={1}
       strokeDasharray={hovered === 'interaction' ? 'none' : '2 2'}
-      className={`cursor-pointer stroke-accent ${hovered === 'interaction' ? 'fill-accent' : 'fill-transparent'} ${spotlight.className}`}
+      className={`cursor-pointer stroke-(--color-fg) ${hovered === 'interaction' ? 'fill-(--color-fg)' : 'fill-transparent'} ${spotlight.className}`}
       style={{
         pointerEvents: 'all',
         fillOpacity: hovered === 'interaction' ? 0.1 : 0,
@@ -331,10 +422,10 @@ function InteractionZone() {
 function LinesLayer() {
   return (
     <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="panel" x1={70} y1={100} x2={20} y2={100} />
-      <OverlayLine id="item-1" x1={290} y1={104} x2={340} y2={104} />
-      <OverlayLine id="title" x1={84} y1={238} x2={84} y2={250} />
-      <OverlayLine id="progress" x1={248} y1={238} x2={248} y2={275} />
+      <OverlayLine id="panel" x1={70} y1={100} x2={10} y2={100} />
+      <OverlayLine id="item-1" x1={282} y1={94} x2={340} y2={104} />
+      <OverlayLine id="title" x1={94} y1={230} x2={94} y2={250} />
+      <OverlayLine id="progress" x1={248} y1={222} x2={248} y2={275} />
       <OverlayLine id="trigger" x1={180} y1={238} x2={180} y2={300} />
     </g>
   )
@@ -344,59 +435,51 @@ function TagsLayer() {
   return (
     <>
       <foreignObject
-        x={-80}
-        y={90}
-        width={90}
-        height={20}
+        x={-130}
+        y={88}
+        width={140}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag
-          part="panel"
-          label="TableOfContents.Panel"
-          className="items-center justify-end"
-        />
+        <AnatomyTag part="panel" label="Panel" className="items-center justify-end" />
       </foreignObject>
       <foreignObject
         x={340}
-        y={94}
-        width={130}
-        height={20}
+        y={92}
+        width={140}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag
-          part="item-1"
-          label="TableOfContents.Item"
-          className="items-center justify-start"
-        />
+        <AnatomyTag part="item-1" label="TOC Item" className="items-center justify-start" />
       </foreignObject>
       <foreignObject
-        x={34}
-        y={250}
-        width={100}
-        height={20}
+        x={40}
+        y={252}
+        width={120}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
         <AnatomyTag part="title" label="Active Title" className="items-start justify-center" />
       </foreignObject>
       <foreignObject
-        x={198}
-        y={275}
-        width={100}
-        height={20}
+        x={190}
+        y={278}
+        width={120}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
         <AnatomyTag part="progress" label="Progress Ring" className="items-start justify-center" />
       </foreignObject>
       <foreignObject
-        x={130}
-        y={300}
-        width={100}
-        height={20}
+        x={120}
+        y={304}
+        width={140}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
         <AnatomyTag
           part="trigger"
-          label="TableOfContents.Trigger"
+          label="TOC Trigger"
           className="items-start justify-center"
           isAccent
         />
@@ -407,7 +490,7 @@ function TagsLayer() {
 
 export function TableOfContentsBreakdown() {
   return (
-    <AnatomyFrame viewBox="-90 20 570 310" maxWidthClassName="max-w-2xl">
+    <AnatomyFrame viewBox="-146 -76 642 420" maxWidthClassName="max-w-[770px]">
       <g transform="translate(60, 20)">
         <PanelShape theme={blueprintTheme} />
         {AN_ITEMS.map((item, index) => (

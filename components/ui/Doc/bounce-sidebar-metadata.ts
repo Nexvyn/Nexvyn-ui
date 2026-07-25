@@ -9,7 +9,8 @@ export const bounceSidebarMetadata: ComponentItem = {
     'A vertical nav whose active marker springs and bounces between items. Pass your own items and dot color; controlled or uncontrolled.',
   registry: 'bounce-sidebar',
   dependencies: [{ name: 'motion' }],
-  interaction: 'Click any item to spring the bouncing marker over to it.',
+  interaction:
+    'Hover items for micro-clicks; click any item to spring the bouncing marker over with a signature ball bounce audio effect.',
   props: [
     {
       name: 'items',

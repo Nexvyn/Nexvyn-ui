@@ -8,27 +8,39 @@ import { ComponentPreview } from '@/components/showcase/component-preview'
 import { useSidebar } from '@/components/detail/sidebar-provider'
 
 import { useClickOutside } from '@/hooks/use-click-outside'
-import { useScreenSize } from '@/hooks/use-screen-size'
 import { Tooltip } from './tooltip'
 import {
+  BASIC_COMPONENTS,
   COLLECTIONS,
-  COMPONENTS,
+  NORMAL_COMPONENTS,
+  compareComponentsByCollection,
+  compareComponentsById,
   formatComponentLabel,
   getComponentHref,
-  getComponentNumber,
   type ComponentItem,
 } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
+import { playHoverSound, playClickSound } from '@/lib/sound'
+import { NewStarIcon } from '@/components/layout/new-star'
 
 const SIDEBAR_EASE = [0.23, 0.88, 0.26, 0.92] as const
 const LINE_SPRING = { stiffness: 250, damping: 30 }
 
-function Separator({ count = 2 }: { count?: number }) {
+function Separator({ count = 2, growFrom }: { count?: number; growFrom?: 'start' | 'end' }) {
   return (
     <>
-      {Array.from({ length: count }).map((_, i) => (
-        <span key={i} className="block h-px w-8 bg-foreground/20" />
-      ))}
+      {Array.from({ length: count }).map((_, i) => {
+        const distance = growFrom === 'end' ? count - 1 - i : i
+        const decay = Math.max(0, 1 - distance / Math.max(count - 1, 1))
+        const scale = growFrom ? 1 + 2 * decay : 1
+        return (
+          <span
+            key={i}
+            className="block h-px w-8 origin-center bg-foreground/20 transition-transform duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none"
+            style={{ transform: `scaleY(${scale})` }}
+          />
+        )
+      })}
     </>
   )
 }
@@ -200,6 +212,7 @@ function NavSectionHeader({
       href={href ?? '/components'}
       className="group relative flex h-px cursor-pointer items-center gap-3 after:absolute after:left-0 after:top-1/2 after:size-full after:-translate-y-1/2 after:p-3.5"
       onMouseEnter={() => {
+        playHoverSound()
         lineWidth.set(55)
         setIsHovered(true)
         startWave()
@@ -249,12 +262,13 @@ function NavSectionHeader({
       </svg>
       <span
         className={cn(
-          'text-foreground whitespace-nowrap transition-[color,opacity] duration-150 ease group-hover:text-(--color-accent) group-hover:opacity-100',
+          'text-foreground inline-flex items-center gap-1 whitespace-nowrap transition-[color,opacity] duration-150 ease group-hover:text-(--color-accent) group-hover:opacity-100',
           active ? 'text-(--color-accent) opacity-100' : 'opacity-60',
         )}
       >
+        {isNew && <NewStarIcon />}
         {title}
-        {isNew && <sup className="text-[10px]"> New</sup>}
+        {isNew && <span className="text-[10px] font-medium text-(--color-new)">New</span>}
       </span>
     </Link>
   )
@@ -266,12 +280,14 @@ function NavItem({
   itemRef,
   onHover,
   onLeave,
+  number,
 }: {
   item: ComponentItem
   isActive: boolean
   itemRef?: RefObject<HTMLAnchorElement | null>
   onHover: () => void
   onLeave: () => void
+  number?: number
 }) {
   const lineWidth = useSpring(isActive ? 55 : 32, LINE_SPRING)
   const [widthValue, setWidthValue] = useState(isActive ? 55 : 32)
@@ -364,8 +380,9 @@ function NavItem({
     <Link
       ref={itemRef}
       href={getComponentHref(item.id)}
-      className="group sidebar-nav-item relative flex h-px cursor-pointer items-center gap-3 after:absolute after:left-0 after:top-1/2 after:size-full after:-translate-y-1/2 after:p-3.5"
+      className="group sidebar-nav-item relative flex h-px cursor-pointer items-center gap-3"
       onMouseEnter={() => {
+        playHoverSound()
         lineWidth.set(55)
         setIsHovered(true)
         onHover()
@@ -417,12 +434,15 @@ function NavItem({
       </svg>
       <span
         className={cn(
-          'text-foreground whitespace-nowrap transition-[color,opacity] duration-150 ease group-hover:text-(--color-accent) group-hover:opacity-100',
+          'text-foreground inline-flex items-center gap-1 whitespace-nowrap transition-[color,opacity] duration-150 ease group-hover:text-(--color-accent) group-hover:opacity-100',
           isActive ? 'text-(--color-accent) opacity-100' : 'opacity-40',
         )}
       >
-        {formatComponentLabel(item)}
-        {item.isNew && <sup className="text-[10px]"> New</sup>}
+        {item.isNew && <NewStarIcon />}
+        {typeof number === 'number' ? formatComponentLabel(number, item.name) : item.name}
+        {item.isNew && (
+          <span className="text-[10px] font-medium text-(--color-new)">New</span>
+        )}
       </span>
     </Link>
   )
@@ -441,8 +461,14 @@ function SidebarNav() {
   const pointerY = useMotionValue(0)
   const previewOpacity = useSpring(0, { stiffness: 400, damping: 30 })
 
-  const sortedById = useMemo(
-    () => [...COMPONENTS].sort((a, b) => getComponentNumber(a.id) - getComponentNumber(b.id)),
+  const normalSorted = useMemo(
+    () =>
+      [...NORMAL_COMPONENTS].sort(sortById ? compareComponentsById : compareComponentsByCollection),
+    [sortById],
+  )
+
+  const basicSorted = useMemo(
+    () => [...BASIC_COMPONENTS].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)),
     [],
   )
 
@@ -457,6 +483,19 @@ function SidebarNav() {
 
   const isMcpPage = pathname === '/mcp'
   const isIllustrationPage = pathname === '/illustration'
+  const isChangelogPage = pathname === '/changelog'
+  const isDesignPage = pathname === '/design'
+
+  const hoverHandlers = (item: ComponentItem) => ({
+    onHover: () => {
+      setHoveredItem(item)
+      previewOpacity.set(1)
+    },
+    onLeave: () => {
+      setHoveredItem(null)
+      previewOpacity.set(0)
+    },
+  })
 
   return (
     <>
@@ -477,95 +516,149 @@ function SidebarNav() {
         )}
       </AnimatePresence>
 
-      <div
-        ref={scrollRef}
-        className="bg-background scrollbar-hide no-scrollbar relative h-full w-full overflow-y-auto overflow-x-clip rounded-3xl pl-1 font-sans text-[15px] tracking-tight"
-        onPointerMove={(event) => {
-          const rect = event.currentTarget.getBoundingClientRect()
-          pointerX.set(event.clientX - rect.left + 14)
-          pointerY.set(event.clientY - rect.top + 14)
-        }}
-      >
-        <div className="relative flex w-full flex-col gap-2 pb-[15vh] pt-[32vh]">
-          <div className="mb-10 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={() => setSortById((value) => !value)}
-              className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2 transition-colors"
-            >
-              Sorted by {sortById ? 'Id' : 'Collection'}
-              <SortArrowIcon />
-            </button>
-          </div>
+      <div className="bg-background relative h-full w-full overflow-hidden rounded-3xl">
+        <div
+          ref={scrollRef}
+          className="scrollbar-hide no-scrollbar mt-16 h-[calc(100%-4rem)] w-full overflow-y-auto overflow-x-clip pl-1 font-sans text-[15px] tracking-tight"
+          onPointerMove={(event) => {
+            const rect = event.currentTarget.getBoundingClientRect()
+            pointerX.set(event.clientX - rect.left + 14)
+            pointerY.set(event.clientY - rect.top + 14)
+          }}
+        >
+          <div className="relative flex w-full flex-col gap-2 pb-[15vh] pt-[32vh]">
+            <div className="bg-background sticky top-0 z-10 mb-10 flex items-center justify-between py-2">
+              <button
+                type="button"
+                onClick={() => setSortById((value) => !value)}
+                className="text-foreground/80 hover:text-foreground flex items-center justify-center gap-2 transition-colors"
+              >
+                Sorted by {sortById ? 'Id' : 'Collection'}
+                <SortArrowIcon />
+              </button>
+            </div>
 
-          <NavSectionHeader title="MCP" active={isMcpPage} href="/mcp" isNew />
-          <Separator />
-          <NavSectionHeader
-            title="Illustration"
-            active={isIllustrationPage}
-            href="/illustration"
-            isNew
-          />
-          <Separator count={4} />
+            <NavSectionHeader title="MCP" active={isMcpPage} href="/mcp" isNew />
+            <Separator />
+            <NavSectionHeader
+              title="Illustration"
+              active={isIllustrationPage}
+              href="/illustration"
+              isNew
+            />
+            <Separator count={4} />
 
-          {sortById ? (
-            <>
-              <NavSectionHeader title="All Components" active />
-              <Separator />
-              {sortedById.map((item, index) => {
-                const isActive = activeId === item.id
-                return (
-                  <Fragment key={item.id}>
-                    <NavItem
-                      item={item}
-                      isActive={isActive}
-                      itemRef={isActive ? activeRef : undefined}
-                      onHover={() => {
-                        setHoveredItem(item)
-                        previewOpacity.set(1)
-                      }}
-                      onLeave={() => {
-                        setHoveredItem(null)
-                        previewOpacity.set(0)
-                      }}
-                    />
-                    {index !== sortedById.length - 1 && <Separator />}
-                  </Fragment>
-                )
-              })}
-            </>
-          ) : (
-            COLLECTIONS.filter((c) => c.components.length > 0).map(
-              (collection, collectionIndex, filteredArray) => (
-                <Fragment key={collection.id}>
-                  <NavSectionHeader title={collection.name} active />
-                  <Separator />
-                  {collection.components.map((item, index) => {
-                    const isActive = activeId === item.id
-                    return (
-                      <Fragment key={item.id}>
-                        <NavItem
-                          item={item}
-                          isActive={isActive}
-                          itemRef={isActive ? activeRef : undefined}
-                          onHover={() => {
-                            setHoveredItem(item)
-                            previewOpacity.set(1)
-                          }}
-                          onLeave={() => {
-                            setHoveredItem(null)
-                            previewOpacity.set(0)
-                          }}
+            {sortById ? (
+              <>
+                <NavSectionHeader title="All Components" active />
+                <Separator growFrom={hoveredItem?.id === normalSorted[0]?.id ? 'end' : undefined} />
+                {normalSorted.map((item, index) => {
+                  const isActive = activeId === item.id
+                  const nextItem = normalSorted[index + 1]
+                  return (
+                    <Fragment key={item.id}>
+                      <NavItem
+                        item={item}
+                        isActive={isActive}
+                        itemRef={isActive ? activeRef : undefined}
+                        number={index}
+                        {...hoverHandlers(item)}
+                      />
+                      {index !== normalSorted.length - 1 && (
+                        <Separator
+                          growFrom={
+                            hoveredItem?.id === item.id
+                              ? 'start'
+                              : hoveredItem?.id === nextItem?.id
+                                ? 'end'
+                                : undefined
+                          }
                         />
-                        {index !== collection.components.length - 1 && <Separator />}
-                      </Fragment>
-                    )
-                  })}
-                  {collectionIndex !== filteredArray.length - 1 && <Separator count={6} />}
-                </Fragment>
-              ),
-            )
-          )}
+                      )}
+                    </Fragment>
+                  )
+                })}
+              </>
+            ) : (
+              COLLECTIONS.filter((c) => c.components.length > 0).map(
+                (collection, collectionIndex, filteredArray) => (
+                  <Fragment key={collection.id}>
+                    <NavSectionHeader title={collection.name} active />
+                    <Separator
+                      growFrom={
+                        hoveredItem?.id === collection.components[0]?.id ? 'end' : undefined
+                      }
+                    />
+                    {collection.components.map((item, index) => {
+                      const isActive = activeId === item.id
+                      const nextItem = collection.components[index + 1]
+                      return (
+                        <Fragment key={item.id}>
+                          <NavItem
+                            item={item}
+                            isActive={isActive}
+                            itemRef={isActive ? activeRef : undefined}
+                            number={index}
+                            {...hoverHandlers(item)}
+                          />
+                          {index !== collection.components.length - 1 && (
+                            <Separator
+                              growFrom={
+                                hoveredItem?.id === item.id
+                                  ? 'start'
+                                  : hoveredItem?.id === nextItem?.id
+                                    ? 'end'
+                                    : undefined
+                              }
+                            />
+                          )}
+                        </Fragment>
+                      )
+                    })}
+                    {collectionIndex !== filteredArray.length - 1 && <Separator count={6} />}
+                  </Fragment>
+                ),
+              )
+            )}
+
+            {basicSorted.length > 0 && (
+              <>
+                <Separator count={4} />
+                <NavSectionHeader title="Basic" active />
+                <Separator growFrom={hoveredItem?.id === basicSorted[0]?.id ? 'end' : undefined} />
+                {basicSorted.map((item, index) => {
+                  const isActive = activeId === item.id
+                  const nextItem = basicSorted[index + 1]
+                  return (
+                    <Fragment key={item.id}>
+                      <NavItem
+                        item={item}
+                        isActive={isActive}
+                        itemRef={isActive ? activeRef : undefined}
+                        {...hoverHandlers(item)}
+                      />
+                      {index !== basicSorted.length - 1 && (
+                        <Separator
+                          growFrom={
+                            hoveredItem?.id === item.id
+                              ? 'start'
+                              : hoveredItem?.id === nextItem?.id
+                                ? 'end'
+                                : undefined
+                          }
+                        />
+                      )}
+                    </Fragment>
+                  )
+                })}
+              </>
+            )}
+
+            <Separator count={4} />
+            <NavSectionHeader title="Changelog" active={isChangelogPage} href="/changelog" />
+            <Separator />
+            <NavSectionHeader title="Design" active={isDesignPage} href="/design" />
+          </div>
         </div>
       </div>
     </>
@@ -577,14 +670,13 @@ export function Sidebar() {
   const shouldShowSidebar =
     (pathname.startsWith('/components/') && pathname !== '/components') ||
     pathname === '/mcp' ||
-    pathname === '/illustration'
+    pathname === '/illustration' ||
+    pathname === '/changelog' ||
+    pathname === '/design'
   const { showSidebar, toggleSidebar, setShowSidebar } = useSidebar()
-  const screenSize = useScreenSize()
   const containerRef = useClickOutside<HTMLDivElement>(() => {
     if (showSidebar) setShowSidebar(false)
   })
-
-  const isExpanded = showSidebar || screenSize.lessThan('md')
 
   if (!shouldShowSidebar) return null
 
@@ -603,28 +695,25 @@ export function Sidebar() {
         )}
       </AnimatePresence>
 
-      <motion.div
-        className="detail-elevated-pill pointer-events-auto fixed left-5 top-5 z-21 flex items-center gap-2 rounded-2xl p-2 shadow-none"
-        animate={{
-          x: isExpanded && !screenSize.lessThan('md') ? 10 : 0,
-          y: isExpanded && !screenSize.lessThan('md') ? -10 : 0,
-        }}
-        transition={{ duration: 0.35, ease: SIDEBAR_EASE }}
-      >
+      <div className="detail-elevated-pill pointer-events-auto fixed left-5 top-4 z-21 flex items-center gap-2 rounded-2xl p-2 shadow-none">
         <Tooltip content="Toggle sidebar (Cmd+B)" side="bottom">
           <button
             type="button"
-            className="detail-toolbar-btn cursor-pointer rounded-xl p-2.5"
+            className="detail-toolbar-btn cursor-pointer rounded-xl p-2"
             style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
-            onClick={toggleSidebar}
+            onMouseEnter={() => playHoverSound()}
+            onClick={() => {
+              playClickSound()
+              toggleSidebar()
+            }}
             aria-label="Toggle sidebar"
           >
-            <SidebarToggleIcon showSidebar={showSidebar} />
+            <SidebarToggleIcon showSidebar={showSidebar} className="h-5 w-5" />
           </button>
         </Tooltip>
         <Link
           href="/components"
-          className="text-lg sm:text-xl md:text-2xl font-normal no-underline hover:opacity-80 transition-opacity px-1"
+          className="hidden text-lg font-normal no-underline hover:opacity-80 transition-opacity px-1 sm:inline-block sm:text-xl md:text-2xl"
           style={{
             fontFamily: 'var(--font-handwriting), cursive',
             color: 'var(--color-accent)',
@@ -632,7 +721,7 @@ export function Sidebar() {
         >
           Nexvyn/Ui (...)
         </Link>
-      </motion.div>
+      </div>
 
       <motion.aside
         initial={false}

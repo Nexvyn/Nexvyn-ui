@@ -77,26 +77,18 @@ export default function ComponentColorBar() {
   const [radius, setRadius] = useState<string | null>(null)
 
   const [activeMenu, setActiveMenu] = useState<'bg' | 'fg' | 'ac' | 'round' | null>(null)
-
-  useEffect(() => {
+  const [prevTheme, setPrevTheme] = useState(theme)
+  if (theme !== prevTheme) {
+    setPrevTheme(theme)
     const isDark = theme === 'dark'
     const defaultBg = isDark ? '#0a0a0a' : '#ffffff'
+    const prevDefaultBg = isDark ? '#ffffff' : '#0a0a0a'
+    setBg((current) => (current === defaultBg || current === prevDefaultBg ? null : current))
+
     const defaultFg = isDark ? '#fafafa' : '#0a0a0a'
-
-    setBg((current) => {
-      if (current === defaultBg) return null
-      const prevDefaultBg = isDark ? '#ffffff' : '#0a0a0a'
-      if (current === prevDefaultBg) return null
-      return current
-    })
-
-    setFg((current) => {
-      if (current === defaultFg) return null
-      const prevDefaultFg = isDark ? '#0a0a0a' : '#fafafa'
-      if (current === prevDefaultFg) return null
-      return current
-    })
-  }, [theme])
+    const prevDefaultFg = isDark ? '#0a0a0a' : '#fafafa'
+    setFg((current) => (current === defaultFg || current === prevDefaultFg ? null : current))
+  }
 
   useEffect(() => {
     const isDark = theme === 'dark'

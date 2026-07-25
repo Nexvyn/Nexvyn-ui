@@ -9,6 +9,7 @@ import { BLOOM_EASING, ARC_GRADIENT_STEPS } from '../constants'
 import { createSVGElement, setStyles, setAttributes } from '../dom-helpers'
 import type { SliderPosition } from '../types'
 import { sliderValueToLightness, hslToString, getVisualSaturation } from '../utils'
+import { playHoverSound, playClickSound } from '@/lib/sound'
 
 let arcIdCounter = 0
 
@@ -120,12 +121,15 @@ export class ArcSliderRenderer {
       'aria-valuenow': String(this.currentValue),
     })
     this.handle.classList.add('bcp-slider-handle')
+    this.handle.addEventListener('mouseenter', () => playHoverSound())
     this.handle.addEventListener('mousedown', (e) => {
       e.preventDefault()
+      playClickSound()
       this.startDrag()
     })
     this.handle.addEventListener('touchstart', (e) => {
       e.preventDefault()
+      playClickSound()
       this.startDrag()
     })
     this.el.appendChild(this.handle)

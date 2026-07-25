@@ -1,0 +1,37 @@
+Wireframe & Anatomy Diagram Assets — Nexvyn UI
+Copyright (c) 2026 Nexvyn UI
+
+The files in this directory, and the two shared drawing-primitive files
+they depend on — components/showcase/parts.tsx and
+components/showcase/anatomy-parts.tsx — are licensed separately from the
+rest of this repository.
+
+License: Creative Commons Attribution-NonCommercial 4.0 International
+(CC BY-NC 4.0)
+
+Full legal text:       https://creativecommons.org/licenses/by-nc/4.0/legalcode
+Human-readable summary: https://creativecommons.org/licenses/by-nc/4.0/
+
+You are free to:
+  - Share  — copy and redistribute the material in any medium or format
+  - Adapt  — remix, transform, and build upon the material
+
+Under the following terms:
+  - Attribution   — You must give appropriate credit to Nexvyn UI, provide
+    a link to this license, and indicate if changes were made.
+  - NonCommercial — You may not use the material for commercial purposes.
+
+No additional restrictions — you may not apply legal terms or
+technological measures that legally restrict others from doing anything
+the license permits.
+
+Scope: these terms apply ONLY to the wireframe/anatomy diagram source
+files in this directory (components/diagrams/*.tsx) and the two shared
+primitive files named above. They do NOT apply to anything else in this
+repository — every installable UI component (components/ui/**) and all
+other source remains under the MIT License at the repository root
+(see /LICENSE) and is fully open for commercial use, including via the
+shadcn registry (`npx shadcn add @nexvyn/<component>`).
+
+For commercial licensing of these diagram assets, contact the maintainer
+listed in the repository's README.

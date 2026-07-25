@@ -10,7 +10,7 @@ export const gooDropdownMetadata: ComponentItem = {
   registry: 'goo-dropdown',
   dependencies: [{ name: 'motion' }],
   interaction:
-    'Click the trigger button to expand the dropdown. Click outside or press Escape to close.',
+    'Hover trigger for micro-clicks; click to toggle the gooey menu with tactile click audio. Hover items to navigate.',
   props: [
     {
       name: 'trigger',

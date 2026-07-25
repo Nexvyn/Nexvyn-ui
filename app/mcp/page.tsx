@@ -43,9 +43,25 @@ export default function MCPPage() {
               Installation
             </h2>
             <p className="mt-1 md:mt-2 font-sans text-sm md:text-base leading-relaxed text-(--color-muted) mb-4">
-              Enable MCP in your project environment.
+              Install the shadcn MCP server, then restart your AI client. Swap{' '}
+              <code className="text-(--color-fg)">cursor</code> for{' '}
+              <code className="text-(--color-fg)">claude</code>,{' '}
+              <code className="text-(--color-fg)">vscode</code>, or{' '}
+              <code className="text-(--color-fg)">opencode</code> as needed.
             </p>
-            <InstallCommandBox registry="mcp" />
+            <InstallCommandBox
+              getCommand={(pm) => {
+                const run =
+                  pm === 'npm'
+                    ? 'npx'
+                    : pm === 'pnpm'
+                      ? 'pnpm dlx'
+                      : pm === 'yarn'
+                        ? 'yarn dlx'
+                        : 'bunx'
+                return `${run} shadcn@latest mcp init --client cursor`
+              }}
+            />
           </section>
 
           <section className="mb-8">
@@ -62,14 +78,14 @@ export default function MCPPage() {
                   <span className="text-(--color-fg)">{'{'}</span>
                   {'\n'}
                   <span className="text-(--color-fg)"> </span>
-                  <span className="text-(--color-accent)">"registries"</span>
+                  <span className="text-(--color-accent)">&quot;registries&quot;</span>
                   <span className="text-(--color-fg)">: {'{'}</span>
                   {'\n'}
                   <span className="text-(--color-fg)"> </span>
-                  <span className="text-(--color-accent)">"@nexvyn"</span>
+                  <span className="text-(--color-accent)">&quot;@nexvyn&quot;</span>
                   <span className="text-(--color-fg)">: </span>
                   <span className="text-(--color-muted)">
-                    "https://ui.nexvyn.dev/r/{'{name}'}.json"
+                    &quot;https://ui.nexvyn.dev/r/{'{name}'}.json&quot;
                   </span>
                   {'\n'}
                   <span className="text-(--color-fg)"> {'}'}</span>
