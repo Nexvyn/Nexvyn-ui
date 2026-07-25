@@ -50,7 +50,7 @@ export function FluidOrbBlueprint() {
         filter={`url(#${blurId})`}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity * 0.6}
-        className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-muted group-hover:stroke-transparent group-focus-visible:fill-muted group-focus-visible:stroke-transparent`}
+        className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-(--color-surface-2) group-hover:stroke-transparent group-focus-visible:fill-(--color-surface-2) group-focus-visible:stroke-transparent`}
       />
       <circle
         cx={BP_CX}
@@ -170,7 +170,13 @@ function OverlayLines() {
   const orbBottomY = AN_CY + AN_R
   return (
     <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="glow" x1={glowRightX} y1={glowRightY} x2={glowRightX + 34} y2={glowRightY - 20} />
+      <OverlayLine
+        id="glow"
+        x1={glowRightX}
+        y1={glowRightY}
+        x2={glowRightX + 34}
+        y2={glowRightY - 20}
+      />
       <OverlayLine id="orb" x1={orbBottomX} y1={orbBottomY} x2={orbBottomX} y2={orbBottomY + 34} />
       <OverlayLine id="wrapper" x1={topX} y1={topY} x2={topX} y2={topY - 34} />
     </g>

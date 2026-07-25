@@ -65,7 +65,7 @@ export function RatioSliderWireframe() {
         fontSize={9}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={`${BP_MORPH} fill-current opacity-35 group-hover:fill-background group-hover:opacity-100 group-focus-visible:fill-background group-focus-visible:opacity-100`}
+        className={`${BP_MORPH} fill-current opacity-35 group-hover:fill-(--color-bg) group-hover:opacity-100 group-focus-visible:fill-(--color-bg) group-focus-visible:opacity-100`}
       >
         RICH <tspan fontWeight={700}>60%</tspan>
       </text>
@@ -211,7 +211,7 @@ function LeftBarShape() {
         fontSize={12}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={`fill-background pointer-events-none ${spotlight.className}`}
+        className={`fill-(--color-bg) pointer-events-none ${spotlight.className}`}
       >
         RICH <tspan fontWeight={700}>60%</tspan>
       </text>

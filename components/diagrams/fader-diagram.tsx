@@ -63,7 +63,7 @@ export function FaderBlueprint() {
         rx={BP_TRACK.rx}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-muted group-focus-visible:fill-muted group-hover:stroke-border group-focus-visible:stroke-border`}
+        className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2) group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
       />
       <rect
         x={BP_TRACK.x}
@@ -83,7 +83,7 @@ export function FaderBlueprint() {
           height={BP_BAR.h}
           rx={2}
           strokeWidth={theme.wireframe.strokeWidth}
-          className={`${BP_MORPH} fill-transparent stroke-current opacity-60 group-hover:fill-muted-foreground group-focus-visible:fill-muted-foreground group-hover:stroke-transparent group-focus-visible:stroke-transparent group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:scale-y-125 group-focus-visible:scale-y-125 motion-reduce:transform-none`}
+          className={`${BP_MORPH} fill-transparent stroke-current opacity-60 group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2) group-hover:stroke-transparent group-focus-visible:stroke-transparent group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:scale-y-125 group-focus-visible:scale-y-125 motion-reduce:transform-none`}
           style={{ transformOrigin: `${BP_TRACK.x + BP_FILL_IDLE}px ${midY}px` }}
         />
       </g>
@@ -213,7 +213,7 @@ function AnatomyFill() {
       stroke="currentColor"
       strokeWidth={1}
       fill={hovered === 'fill' ? 'currentColor' : 'url(#bp-anatomy-hatch)'}
-      className={`cursor-pointer ${hovered === 'fill' ? 'text-foreground' : ''} ${spotlight.className}`}
+      className={`cursor-pointer ${hovered === 'fill' ? 'text-(--color-fg)' : ''} ${spotlight.className}`}
       style={{ ...spotlight.style, pointerEvents: 'all' }}
       onMouseEnter={() => setHovered('fill')}
       onMouseLeave={() => setHovered(null)}
@@ -244,7 +244,7 @@ function AnatomyThumb() {
         stroke="currentColor"
         strokeWidth={hovered === 'thumb' ? 1.25 : blueprintTheme.wireframe.strokeWidth}
         fill={hovered === 'thumb' ? 'currentColor' : 'transparent'}
-        className={`${hovered === 'thumb' ? 'text-foreground' : ''} ${spotlight.className}`}
+        className={`${hovered === 'thumb' ? 'text-(--color-fg)' : ''} ${spotlight.className}`}
       />
     </g>
   )
@@ -265,7 +265,7 @@ function AnatomyTexts() {
         fontWeight={500}
         fontFamily="var(--font-sans)"
         style={{ pointerEvents: 'none', ...fillSpot.style }}
-        className={`${hovered === 'fill' ? 'fill-background' : 'fill-current'} ${fillSpot.className}`}
+        className={`${hovered === 'fill' ? 'fill-(--color-bg)' : 'fill-current'} ${fillSpot.className}`}
       >
         Volume
       </text>
@@ -277,7 +277,7 @@ function AnatomyTexts() {
         fontWeight={500}
         fontFamily="var(--font-sans)"
         style={{ pointerEvents: 'none', ...trackSpot.style }}
-        className={`${hovered === 'track' ? 'fill-foreground' : 'fill-current'} tabular-nums ${trackSpot.className}`}
+        className={`${hovered === 'track' ? 'fill-(--color-fg)' : 'fill-current'} tabular-nums ${trackSpot.className}`}
       >
         50%
       </text>

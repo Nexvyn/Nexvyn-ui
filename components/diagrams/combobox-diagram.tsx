@@ -82,10 +82,15 @@ export function ComboboxBlueprint() {
         Search city…
       </text>
 
-      <g
-        className={`${BP_MORPH} opacity-0 group-hover:opacity-70 group-focus-visible:opacity-70`}
-      >
-        <circle cx={clearCx} cy={clearCy} r={BP.clearR} fill="none" stroke="currentColor" strokeWidth={1} />
+      <g className={`${BP_MORPH} opacity-0 group-hover:opacity-70 group-focus-visible:opacity-70`}>
+        <circle
+          cx={clearCx}
+          cy={clearCy}
+          r={BP.clearR}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1}
+        />
         <path
           d={`M${clearCx - 3} ${clearCy - 3}l6 6M${clearCx + 3} ${clearCy - 3}l-6 6`}
           stroke="currentColor"
@@ -101,7 +106,7 @@ export function ComboboxBlueprint() {
         height={BP_PANEL_H}
         rx={BP.inputRx}
         strokeWidth={theme.wireframe.strokeWidth}
-        className={`${BP_MORPH} fill-transparent stroke-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-popover group-focus-visible:fill-popover group-hover:stroke-border group-focus-visible:stroke-border`}
+        className={`${BP_MORPH} fill-transparent stroke-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-popover group-focus-visible:fill-popover group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
       />
       <rect
         x={BP.x + BP.panelPad}
@@ -312,15 +317,7 @@ function PanelShape() {
   )
 }
 
-function OptionShape({
-  index,
-  label,
-  desc,
-}: {
-  index: number
-  label: string
-  desc?: string
-}) {
+function OptionShape({ index, label, desc }: { index: number; label: string; desc?: string }) {
   const { hovered, setHovered } = useAnatomy()
   const partId = index === AN_ACTIVE_INDEX ? 'option' : `option-${index}`
   const spotlight = useSpotlight(partId)
@@ -463,7 +460,13 @@ function LinesLayer() {
 
   return (
     <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="input" x1={rightEdge} y1={AN.y + AN.inputH / 2} x2={tagX} y2={AN.y + AN.inputH / 2} />
+      <OverlayLine
+        id="input"
+        x1={rightEdge}
+        y1={AN.y + AN.inputH / 2}
+        x2={tagX}
+        y2={AN.y + AN.inputH / 2}
+      />
       <OverlayLine
         id="panel"
         x1={rightEdge}

@@ -51,8 +51,8 @@ const BP_Y = (140 - CONTAINER_H) / 2
 
 const PILL_MORPH_CLASS =
   `${BP_MORPH} transition-transform duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) ` +
-  'fill-transparent stroke-current group-hover:fill-background group-hover:stroke-transparent ' +
-  'group-focus-visible:fill-background group-focus-visible:stroke-transparent ' +
+  'fill-transparent stroke-current group-hover:fill-(--color-bg) group-hover:stroke-transparent ' +
+  'group-focus-visible:fill-(--color-bg) group-focus-visible:stroke-transparent ' +
   'group-hover:translate-x-[62px] group-focus-visible:translate-x-[62px] ' +
   'motion-reduce:transition-none motion-reduce:transform-none'
 
@@ -69,7 +69,7 @@ export function TabsSubtleBlueprint() {
           rx={TABS.radiusContainer}
           strokeWidth={theme.wireframe.strokeWidth}
           strokeOpacity={theme.wireframe.strokeOpacity}
-          className="fill-muted stroke-current"
+          className="fill-(--color-surface-2) stroke-current"
         />
         <rect
           x={ITEM_X[0]}
@@ -231,7 +231,7 @@ function PillShape() {
         fontSize={10}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className="fill-background"
+        className="fill-(--color-bg)"
       >
         {LABELS[0]}
       </text>
@@ -333,7 +333,11 @@ function AnnotationsLayer() {
           y2={TABS.pad + TABS.itemH + 4.5}
         />
       </g>
-      <DimLabel x={ITEM_X[0] + TABS.itemW + TABS.gap / 2} y={TABS.pad + TABS.itemH + 18} anchor="middle">
+      <DimLabel
+        x={ITEM_X[0] + TABS.itemW + TABS.gap / 2}
+        y={TABS.pad + TABS.itemH + 18}
+        anchor="middle"
+      >
         {`${TABS.gap}`}
       </DimLabel>
     </g>
@@ -370,7 +374,12 @@ function Tags() {
         height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="container" label="Container" className="items-end justify-center" isAccent />
+        <AnatomyTag
+          part="container"
+          label="Container"
+          className="items-end justify-center"
+          isAccent
+        />
       </foreignObject>
       <foreignObject
         x={pillMidX - 45}

@@ -132,14 +132,14 @@ export function BounceSidebarPreview() {
     <div className="flex flex-col h-full w-full">
       {/* Mobile disclaimer */}
       <div className="md:hidden shrink-0 bg-(--color-surface) border-b border-(--color-border) px-3 py-1.5 text-center">
-        <p className="text-[10px] font-sans text-foreground/50">
+        <p className="text-[10px] font-sans text-(--color-fg)/50">
           For best experience, open in browser on a wider screen
         </p>
       </div>
 
       {/* Mobile: sidebar on top as horizontal strip */}
       <div className="md:hidden shrink-0 border-b border-(--color-border) ps-4 pe-2 py-2">
-        <p className="mb-1.5 text-[10px] font-sans uppercase tracking-wider text-foreground/45">
+        <p className="mb-1.5 text-[10px] font-sans uppercase tracking-wider text-(--color-fg)/45">
           Library Guide
         </p>
         <div className="flex gap-1 overflow-x-auto no-scrollbar">
@@ -151,7 +151,7 @@ export function BounceSidebarPreview() {
               className={`shrink-0 px-2 py-1 rounded-md text-[11px] font-medium transition-colors ${
                 active === index
                   ? 'bg-(--color-accent) text-(--color-bg)'
-                  : 'text-foreground/55 hover:text-foreground hover:bg-(--color-surface)'
+                  : 'text-(--color-fg)/55 hover:text-(--color-fg) hover:bg-(--color-surface)'
               }`}
             >
               {section.title}
@@ -163,7 +163,7 @@ export function BounceSidebarPreview() {
       <div className="flex flex-col md:flex-row gap-0 md:gap-4 text-left w-full min-h-0 flex-1 max-w-4xl mx-auto">
         {/* Desktop: vertical sidebar on left */}
         <aside className="hidden md:block w-40 shrink-0 h-full ps-4 pe-2">
-          <p className="mb-3 ps-2 text-sm font-sans uppercase tracking-wider text-foreground/45">
+          <p className="mb-3 ps-2 text-sm font-sans uppercase tracking-wider text-(--color-fg)/45">
             Library Guide
           </p>
           <BounceSidebar
@@ -196,13 +196,13 @@ export function BounceSidebarPreview() {
                 }}
                 className="mb-6 md:mb-8 last:mb-0 min-h-20 md:min-h-30 flex flex-col justify-start"
               >
-                <h2 className="border-b pb-1 md:pb-1.5 tracking-tight text-lg md:text-2xl text-foreground border-(--color-border)">
+                <h2 className="border-b pb-1 md:pb-1.5 tracking-tight text-lg md:text-2xl text-(--color-fg) border-(--color-border)">
                   {section.title}
                 </h2>
                 {section.blocks.map((block, blockIndex) => (
                   <p
                     key={blockIndex}
-                    className="mt-1 md:mt-2 font-sans text-sm md:text-base leading-relaxed text-foreground/55"
+                    className="mt-1 md:mt-2 font-sans text-sm md:text-base leading-relaxed text-(--color-fg)/55"
                   >
                     {block.text}
                   </p>

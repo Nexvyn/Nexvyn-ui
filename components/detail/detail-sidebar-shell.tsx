@@ -22,38 +22,16 @@ function AnatomyLicenseToggle({ itemId }: { itemId: string }) {
   )
 }
 
-function PreviewBottomBar({
-  registry,
-  itemId,
-}: {
-  registry: string
-  itemId: string
-}) {
-  const [view] = usePreviewControl(`${itemId}-view`, 'preview')
-  const isAnatomy = view === 'anatomy'
-
+function PreviewBottomBar({ registry, itemId }: { registry: string; itemId: string }) {
   return (
     <div className="absolute bottom-5 left-1/2 z-10 flex w-full max-w-[calc(100%-2.5rem)] -translate-x-1/2 items-center gap-2 pointer-events-auto sm:max-w-sm md:max-w-md">
-      {!isAnatomy && (
-        <div className="min-w-0 flex-1 rounded-xl backdrop-blur-sm">
-          <InstallCommandBox registry={registry} />
-        </div>
-      )}
-      {isAnatomy ? (
-        <div className="ms-auto flex items-center gap-2">
-          <Tooltip content="Toggle sound (M)" side="top">
-            <SoundToggle className="h-10 w-10 shrink-0 rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2) backdrop-blur-sm" />
-          </Tooltip>
-          <AnatomyLicenseToggle itemId={itemId} />
-        </div>
-      ) : (
-        <>
-          <Tooltip content="Toggle sound (M)" side="top">
-            <SoundToggle className="h-10 w-10 shrink-0 rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2) backdrop-blur-sm" />
-          </Tooltip>
-          <AnatomyLicenseToggle itemId={itemId} />
-        </>
-      )}
+      <div className="min-w-0 flex-1 rounded-xl backdrop-blur-sm">
+        <InstallCommandBox registry={registry} />
+      </div>
+      <Tooltip content="Toggle sound (M)" side="top">
+        <SoundToggle className="h-10 w-10 shrink-0 rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2) backdrop-blur-sm" />
+      </Tooltip>
+      <AnatomyLicenseToggle itemId={itemId} />
     </div>
   )
 }

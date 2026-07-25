@@ -209,7 +209,7 @@ function ValueText() {
       y={cy + 4}
       fontSize={13}
       fontFamily="var(--font-sans)"
-      className="fill-muted-foreground opacity-70"
+      className="fill-(--color-muted) opacity-70"
     >
       you@example.com
     </text>
