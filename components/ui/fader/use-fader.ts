@@ -12,6 +12,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useElasticOverdrag } from '@/hooks/use-elastic-overdrag'
 import { springs } from '@/lib/motion-tokens'
 import { barCenterFor, fillEdgePx } from './geometry'
+import { playTickSound } from '@/lib/sound'
 
 const DISCRETE_LIMIT = 12
 const DODGE_ZONE = 6
@@ -101,7 +102,9 @@ export function useFader(options: UseFaderOptions) {
     return ((v - min) / (max - min)) * 100
   }
   const percent = toPercent(value)
-  percentRef.current = percent
+  useEffect(() => {
+    percentRef.current = percent
+  }, [percent])
 
   const stepRatio = (max - min) / step
   const fullSteps = Math.floor(stepRatio + 1e-9)
@@ -207,12 +210,10 @@ export function useFader(options: UseFaderOptions) {
     updateDodge()
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: keyed on the inputs that change rendered text geometry; measureZones reads refs and motion values only
   useLayoutEffect(() => {
     measureZones()
   }, [formatted.length, label, unit, remeasureKey])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only; the observer callback reads refs and motion values, never render values
   useEffect(() => {
     const control = controlRef.current
     if (!control) return
@@ -251,6 +252,9 @@ export function useFader(options: UseFaderOptions) {
 
   function handleValueChange(next: number | number[], details: BaseSlider.Root.ChangeEventDetails) {
     const raw = Array.isArray(next) ? next[0] : next
+    if (raw !== value) {
+      playTickSound()
+    }
     if (details.reason === 'keyboard') {
       stopSettle()
       if (sortedPoints) {

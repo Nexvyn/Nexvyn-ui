@@ -1,5 +1,5 @@
 .detail-page {
-  --detail-code-bg: var(--color-bg);
+  --detail-code-bg: var(--color-surface-2);
   --detail-code-fg: var(--color-fg);
   --detail-code-muted: var(--color-muted);
   --detail-code-border: var(--color-border);
@@ -13,7 +13,7 @@
 }
 
 .dark .detail-page {
-  --detail-code-bg: var(--color-bg);
+  --detail-code-bg: var(--color-surface-2);
   --detail-code-fg: var(--color-fg);
   --detail-code-muted: var(--color-muted);
   --detail-code-border: var(--color-border);
@@ -277,4 +277,15 @@
 .sidebar-nav-item {
   position: relative;
   overflow: visible !important;
+}
+
+.sidebar-nav-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translateY(-50%);
+  padding: 0.875rem;
 }

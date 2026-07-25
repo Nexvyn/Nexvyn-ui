@@ -4,14 +4,13 @@ export const tableOfContentsMetadata: ComponentItem = {
   id: 'table-of-contents',
   name: 'Table of Contents',
   collection: 'navigation',
-  isNew: true,
   previewType: 'default',
   description:
     'A fixed bottom-left floating block that tracks scroll position, shows the active section via IntersectionObserver, and expands into a navigable section list.',
   registry: 'table-of-contents',
   dependencies: [{ name: 'motion' }],
   interaction:
-    'Scroll down to reveal the pill. Click to expand the section list. Click a section to smooth-scroll to it.',
+    'Hover for micro-clicks; click the pill to expand section list with click audio. Click any section to smooth-scroll.',
   props: [
     {
       name: 'sections',

@@ -5,11 +5,14 @@ export const passwordInputMetadata: ComponentItem = {
   name: 'Password Input',
   collection: 'inputs',
   previewType: 'default',
+  isNew: true,
+  basic: true,
   description:
     'A password input with an animated eye toggle. The eye follows your cursor and blinks periodically, creating a playful yet functional reveal control.',
   registry: 'password-input',
   dependencies: [{ name: 'motion' }],
-  interaction: 'Click the eye icon to toggle password visibility. The pupil tracks your cursor.',
+  interaction:
+    'Hover eye button for micro-clicks; click to toggle visibility with click audio feedback. The pupil tracks your cursor.',
   props: [
     {
       name: 'label',

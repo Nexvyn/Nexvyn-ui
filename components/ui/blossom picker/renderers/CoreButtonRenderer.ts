@@ -1,5 +1,6 @@
 import { BLOOM_EASING } from '../constants'
 import { createElement, setStyles } from '../dom-helpers'
+import { playHoverSound, playClickSound } from '@/lib/sound'
 
 export class CoreButtonRenderer {
   public el: HTMLButtonElement
@@ -14,7 +15,11 @@ export class CoreButtonRenderer {
       tabIndex: '0',
     })
     this.el.className = 'bcp-core'
-    this.el.addEventListener('click', () => this.onClick())
+    this.el.addEventListener('mouseenter', () => playHoverSound())
+    this.el.addEventListener('click', () => {
+      playClickSound()
+      this.onClick()
+    })
 
     setStyles(this.el, {
       width: `${coreSize}px`,

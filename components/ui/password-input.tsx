@@ -3,6 +3,7 @@
 import { forwardRef, useEffect, useId, useRef, useState, type InputHTMLAttributes } from 'react'
 import { motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { playHoverSound, playClickSound } from '@/lib/sound'
 
 const EYE_OPEN_TOP = 'M1 12 C1 12 5 4 12 4 C19 4 23 12 23 12'
 const EYE_CLOSED_TOP = 'M1 12 C1 12 5 12 12 12 C19 12 23 12 23 12'
@@ -125,7 +126,11 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           />
           <button
             type="button"
-            onClick={() => setVisible((v) => !v)}
+            onMouseEnter={() => playHoverSound()}
+            onClick={() => {
+              playClickSound()
+              setVisible((v) => !v)
+            }}
             aria-label={visible ? hideLabel : showLabel}
             aria-pressed={visible}
             data-state={visible ? 'visible' : 'hidden'}

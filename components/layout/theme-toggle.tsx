@@ -1,6 +1,6 @@
 'use client'
 
-import { useSyncExternalStore, useCallback, useEffect } from 'react'
+import { useSyncExternalStore, useCallback, useEffect, useState } from 'react'
 import { motion, useMotionValue, useTransform } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { Button } from './button'
@@ -36,8 +36,12 @@ export function ThemeToggle({
   showShortcut?: boolean
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
 }) {
+ const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
-  const dark = theme === 'dark'
+  const dark = mounted && theme === 'dark'
 
   const toggle = useCallback(() => {
     document.documentElement.classList.add('no-transitions')
@@ -70,7 +74,10 @@ export function ThemeToggle({
   return (
     <Button
       onClick={toggle}
-      className={cn('h-9 px-3 gap-1.5 group rounded-2xl squircle-corners hit-area-44', className)}
+      className={cn(
+        'h-9 px-3 gap-1.5 group rounded-2xl squircle-corners hit-area-44 hover:bg-(--color-surface-2) hover:text-(--color-fg)',
+        className,
+      )}
       style={{ color: 'var(--color-fg)' }}
       variant={variant}
       size="sm"

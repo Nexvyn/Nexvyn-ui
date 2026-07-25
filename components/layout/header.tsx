@@ -46,8 +46,9 @@ export function Header() {
         <Link
           ref={logoRef}
           href="/"
-          className="text-xl sm:text-2xl no-underline outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) rounded-md inline-block relative z-20"
+          className="relative z-20 inline-block rounded-md text-xl no-underline outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) sm:text-2xl"
           style={{ fontFamily: 'var(--font-handwriting), cursive', color: 'var(--color-accent)' }}
+          suppressHydrationWarning
         >
           Nexvyn/Ui (...)
         </Link>
@@ -69,7 +70,7 @@ export function Header() {
           <Button
             variant="ghost"
             size="sm"
-            className="gh-btn gap-1.5 relative z-10 rounded-2xl squircle-corners bg-(--color-fg) text-(--color-bg) hover:bg-(--color-fg) hover:text-(--color-bg)"
+            className="gh-btn relative z-10 gap-1.5 rounded-2xl squircle-corners bg-(--color-fg) text-(--color-bg) hover:bg-(--color-fg) hover:text-(--color-bg)"
             asChild
           >
             <a
@@ -77,6 +78,7 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
+              suppressHydrationWarning
             >
               <div className="relative w-4 h-4 flex items-center justify-center">
                 <AnimatePresence mode="popLayout" initial={false}>

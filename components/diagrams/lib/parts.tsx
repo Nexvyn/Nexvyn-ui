@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: CC-BY-NC-4.0
+// Shared drawing primitives for components/diagrams/* — licensed separately
+// from the rest of this repository under CC BY-NC 4.0.
+// See components/diagrams/LICENSE. NOT covered by the root MIT LICENSE.
+
 import { type ReactNode, useId } from 'react'
 const MONO = 'var(--font-mono)'
 
@@ -17,7 +22,7 @@ export const BP_FILL_SOLID = morphSurface(
 )
 
 export const BP_FILL_PANEL = morphSurface(
-  'group-hover:fill-background group-focus-visible:fill-background',
+  'group-hover:fill-muted group-focus-visible:fill-muted',
   'group-hover:stroke-border group-focus-visible:stroke-border',
 )
 
@@ -26,17 +31,13 @@ export const BP_FILL_MUTED = morphSurface(
   'group-hover:stroke-transparent group-focus-visible:stroke-transparent',
 )
 
-export const BP_TEXT_ON_SOLID = morphSurface(
-  'group-hover:fill-background group-focus-visible:fill-background',
-  'group-hover:stroke-transparent group-focus-visible:stroke-transparent',
-)
+export const BP_TEXT_HOLLOW = `${BP_MORPH} fill-transparent stroke-current group-hover:fill-current group-focus-visible:fill-current group-hover:stroke-transparent group-focus-visible:stroke-transparent`
 
-export const BP_TEXT_ON_PANEL = morphSurface(
-  'group-hover:fill-current group-focus-visible:fill-current',
-  'group-hover:stroke-transparent group-focus-visible:stroke-transparent',
-)
+export const BP_TEXT_ON_SOLID = `${BP_MORPH} fill-transparent stroke-current group-hover:fill-background group-focus-visible:fill-background group-hover:stroke-transparent group-focus-visible:stroke-transparent`
 
-export const BP_TEXT_SOFT = `${BP_MORPH} opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100`
+export const BP_TEXT_ON_PANEL = BP_TEXT_HOLLOW
+
+export const BP_TEXT_SOFT = `${BP_MORPH} fill-current opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`
 
 export type BlueprintTheme = {
   wireframe: {

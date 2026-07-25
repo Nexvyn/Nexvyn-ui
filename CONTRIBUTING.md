@@ -7,7 +7,7 @@ Thanks for your interest in contributing. This guide covers everything you need 
 ## Prerequisites
 
 - Node.js 18+
-- npm, yarn, pnpm, or bun
+  -bun
 
 ---
 
@@ -75,7 +75,7 @@ Add an entry to `registry.json` for shadcn CLI installation:
 }
 ```
 
-Then run `npm run build:registry` to generate the `public/r/my-component.json` file automatically.
+Then run `bun run build:registry` to generate the `public/r/my-component.json` file automatically.
 
 ### 7. Add to source map
 
@@ -93,14 +93,14 @@ Set the `collection` field in metadata to one of: `'navigation'`, `'inputs'`, `'
 
 ### 9. Test locally
 
-Run `npm run dev` and navigate to `/components/my-component` to verify it works.
+Run `bun run dev` and navigate to `/components/my-component` to verify it works.
 
 ### 10. Format and lint
 
 ```bash
-npm run format       # Format code with Prettier
-npm run lint         # Run ESLint
-npm run build        # Verify production build
+bun run format       # Format code with Prettier
+bun run lint         # Run ESLint
+bun run build        # Verify production build
 ```
 
 ---
@@ -113,7 +113,7 @@ npm run build        # Verify production build
 - Use design tokens (`var(--color-*)`) instead of hardcoded colors
 - No comments in component files
 - Add `"use client"` directive for client components
-- Run `npm run format` before committing
+- Run `bun run format` before committing
 - Respect `prefers-reduced-motion` for accessibility
 
 ---

@@ -5,7 +5,6 @@ export const faderMetadata: ComponentItem = {
   name: 'Fader',
   collection: 'inputs',
   previewType: 'default',
-  isNew: true,
   description:
     'A mixing-console-style parameter fader where the control IS the display — label and value live inside the track, the fill edge is the reading, and a thin bar rides the edge as the grab signifier. Supports continuous and detent (snappy) value grammars, elastic overdrag, and spring-animated settle.',
   registry: 'fader',

@@ -11,6 +11,7 @@ import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/utils'
+import { playHoverSound, playClickSound } from '@/lib/sound'
 
 const badgeVariants = cva('inline-flex items-center squircle font-medium whitespace-nowrap', {
   variants: {
@@ -108,7 +109,11 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
       <span
         ref={ref}
         className={rootClassName}
-        onClick={onClick}
+        onMouseEnter={() => isClickable && playHoverSound()}
+        onClick={(e) => {
+          if (isClickable) playClickSound()
+          onClick?.(e)
+        }}
         onKeyDown={isClickable || onKeyDown ? handleKeyDown : undefined}
         {...(isClickable ? { role: 'button', tabIndex: 0 } : {})}
         {...props}
@@ -152,7 +157,9 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
               'relative -me-0.5 inline-flex shrink-0 items-center justify-center rounded-full text-current/70 transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none hover:text-current focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-(--color-accent)',
               dismissSizeFor(size),
             )}
+            onMouseEnter={() => playHoverSound()}
             onClick={(e) => {
+              playClickSound()
               e.stopPropagation()
               onDismiss(e)
             }}

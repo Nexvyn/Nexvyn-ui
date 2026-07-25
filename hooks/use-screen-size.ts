@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useSyncExternalStore } from 'react'
 
 const breakpoints = {
   sm: 640,
@@ -10,15 +10,21 @@ const breakpoints = {
   '2xl': 1536,
 }
 
-export function useScreenSize() {
-  const [width, setWidth] = useState(0)
+function subscribe(callback: () => void) {
+  window.addEventListener('resize', callback)
+  return () => window.removeEventListener('resize', callback)
+}
 
-  useEffect(() => {
-    setWidth(window.innerWidth)
-    const handler = () => setWidth(window.innerWidth)
-    window.addEventListener('resize', handler)
-    return () => window.removeEventListener('resize', handler)
-  }, [])
+function getSnapshot() {
+  return window.innerWidth
+}
+
+function getServerSnapshot() {
+  return 0
+}
+
+export function useScreenSize() {
+  const width = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
   return {
     width,

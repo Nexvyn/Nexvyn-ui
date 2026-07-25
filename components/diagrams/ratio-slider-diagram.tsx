@@ -1,281 +1,403 @@
 'use client'
 
+// SPDX-License-Identifier: CC-BY-NC-4.0
+// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
+// This file is NOT covered by the repository's root MIT LICENSE.
+
 import {
-  type BlueprintTheme,
   Blueprint,
   BP_FILL_MUTED,
   BP_FILL_SOLID,
   BP_HIDE_ON_MORPH,
   BP_MORPH,
-  BP_TEXT_ON_PANEL,
   blueprintTheme,
   DimH,
   DimLabel,
   DimV,
   Selection,
-} from '@/components/showcase/parts'
+} from '@/components/diagrams/lib/parts'
 import {
   AnatomyFrame,
   AnatomyTag,
   OverlayLine,
   useAnatomy,
   useSpotlight,
-} from '@/components/showcase/anatomy-parts'
+} from '@/components/diagrams/lib/anatomy-parts'
 
-const BP_W = 140
-const BP_X0 = 40
-const BP_BAR = { y: 78, h: 32, rx: 8 } as const
-const BP_GAP = 8
-const BP_DIVIDER = { w: 6, h: 26, rx: 3 } as const
-const BP_LEFT_W = Math.round(BP_W * 0.6) - 9
-const BP_DIV_X = BP_X0 + BP_LEFT_W + BP_GAP
-const BP_RIGHT_X = BP_DIV_X + BP_DIVIDER.w + BP_GAP
-const BP_RIGHT_W = BP_X0 + BP_W - BP_RIGHT_X
-const BP_LABEL_Y = 49
+const BP = {
+  x: 24,
+  y: 58,
+  w: 172,
+  h: 36,
+  rx: 6,
+  gap: 8,
+  divW: 6,
+  divH: 28,
+  leftPct: 0.6,
+} as const
+
+const BP_LEFT_W = Math.round((BP.w - BP.gap - BP.divW) * BP.leftPct)
+const BP_RIGHT_W = BP.w - BP.gap - BP.divW - BP_LEFT_W
+const BP_DIV_X = BP.x + BP_LEFT_W + BP.gap / 2
+const BP_RIGHT_X = BP.x + BP_LEFT_W + BP.gap + BP.divW
 
 export function RatioSliderWireframe() {
   const theme = blueprintTheme
+  const midY = BP.y + BP.h / 2
+
   return (
     <Blueprint>
-      <text
-        x={BP_X0 + 12}
-        y={BP_LABEL_Y}
-        textAnchor="start"
-        fontSize={10}
-        fontWeight={500}
-        fontFamily="var(--font-sans)"
-        strokeWidth={theme.wireframe.textStrokeWidth}
-        strokeOpacity={theme.wireframe.textOpacity}
-        className={BP_TEXT_ON_PANEL}
-      >
-        RICH 60%
-      </text>
-      <text
-        x={BP_X0 + BP_W - 12}
-        y={BP_LABEL_Y}
-        textAnchor="end"
-        fontSize={10}
-        fontWeight={500}
-        fontFamily="var(--font-sans)"
-        strokeWidth={theme.wireframe.textStrokeWidth}
-        strokeOpacity={theme.wireframe.textOpacity}
-        className={BP_TEXT_ON_PANEL}
-      >
-        40% LIGHT
-      </text>
       <rect
-        x={BP_X0}
-        y={BP_BAR.y}
+        x={BP.x}
+        y={BP.y}
         width={BP_LEFT_W}
-        height={BP_BAR.h}
-        rx={BP_BAR.rx}
+        height={BP.h}
+        rx={BP.rx}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
         className={BP_FILL_SOLID}
       />
-      <rect
-        x={BP_DIV_X}
-        y={BP_BAR.y + (BP_BAR.h - BP_DIVIDER.h) / 2}
-        width={BP_DIVIDER.w}
-        height={BP_DIVIDER.h}
-        rx={BP_DIVIDER.rx}
-        stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={theme.wireframe.strokeWidth}
-        strokeOpacity={theme.wireframe.strokeOpacity}
-        className={`${BP_MORPH} fill-transparent group-hover:fill-accent group-focus-visible:fill-accent`}
-      />
+
+      <text
+        x={BP.x + 12}
+        y={midY + 4}
+        fontSize={9}
+        fontWeight={500}
+        fontFamily="var(--font-sans)"
+        className={`${BP_MORPH} fill-current opacity-35 group-hover:fill-background group-hover:opacity-100 group-focus-visible:fill-background group-focus-visible:opacity-100`}
+      >
+        RICH <tspan fontWeight={700}>60%</tspan>
+      </text>
+      <g
+        style={{ transformOrigin: `${BP_DIV_X + BP.divW / 2}px ${midY}px` }}
+        className="transition-transform duration-(--motion-dur-fast) ease-(--motion-ease-out) group-hover:scale-y-[1.15] group-focus-visible:scale-y-[1.15] motion-reduce:transition-none motion-reduce:transform-none"
+      >
+        <rect
+          x={BP_DIV_X}
+          y={midY - BP.divH / 2}
+          width={BP.divW}
+          height={BP.divH}
+          rx={3}
+          stroke="var(--color-fg)"
+          strokeWidth={1.5}
+          className={`${BP_MORPH} fill-transparent group-hover:fill-(--color-accent) group-focus-visible:fill-(--color-accent)`}
+        />
+      </g>
       <rect
         x={BP_RIGHT_X}
-        y={BP_BAR.y}
+        y={BP.y}
         width={BP_RIGHT_W}
-        height={BP_BAR.h}
-        rx={BP_BAR.rx}
+        height={BP.h}
+        rx={BP.rx}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
         className={`${BP_FILL_MUTED} stroke-current`}
       />
+      <text
+        x={BP_RIGHT_X + BP_RIGHT_W - 12}
+        y={midY + 4}
+        textAnchor="end"
+        fontSize={9}
+        fontWeight={500}
+        fontFamily="var(--font-sans)"
+        className={`${BP_MORPH} fill-current opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
+      >
+        <tspan fontWeight={700}>40%</tspan> LIGHT
+      </text>
+
       <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_X0} y={BP_BAR.y} w={BP_W} h={BP_BAR.h} />
-        <DimH x1={BP_X0} x2={BP_X0 + BP_W} y={BP_BAR.y + BP_BAR.h + 14} label={`${BP_W}`} />
-        <DimV
-          x={BP_X0 - 12}
-          y1={BP_BAR.y}
-          y2={BP_BAR.y + BP_BAR.h}
-          label={`${BP_BAR.h}`}
-          labelXOffset={-6}
-        />
-        <DimLabel x={BP_DIV_X + BP_DIVIDER.w / 2} y={BP_BAR.y - 6}>
-          {`${BP_DIVIDER.w}`}
+        <Selection x={BP.x} y={BP.y} w={BP.w} h={BP.h} />
+        <DimH x1={BP.x} x2={BP.x + BP.w} y={BP.y + BP.h + 14} label={`${BP.w}`} />
+        <DimV x={BP.x - 12} y1={BP.y} y2={BP.y + BP.h} label={`${BP.h}`} labelXOffset={-6} />
+        <DimLabel x={BP_DIV_X + BP.divW / 2} y={BP.y - 6}>
+          {`${BP.divW}`}
         </DimLabel>
-        <DimLabel x={BP_X0} y={BP_BAR.y - 6} anchor="start">
-          {`r${BP_BAR.rx}`}
+        <DimLabel x={BP.x} y={BP.y - 6} anchor="start">
+          {`r${BP.rx}`}
+        </DimLabel>
+        <g
+          stroke="var(--bp-accent, var(--color-accent))"
+          strokeWidth={theme.guide.strokeWidth}
+          strokeDasharray="2 2"
+          opacity={theme.guide.structOpacity}
+        >
+          <line
+            x1={BP.x + BP_LEFT_W}
+            y1={BP.y + BP.h + 16}
+            x2={BP.x + BP_LEFT_W}
+            y2={BP.y + BP.h + 21}
+          />
+          <line x1={BP_RIGHT_X} y1={BP.y + BP.h + 16} x2={BP_RIGHT_X} y2={BP.y + BP.h + 21} />
+          <line
+            x1={BP.x + BP_LEFT_W}
+            y1={BP.y + BP.h + 18.5}
+            x2={BP_RIGHT_X}
+            y2={BP.y + BP.h + 18.5}
+          />
+        </g>
+        <DimLabel x={BP.x + BP_LEFT_W + BP.gap / 2} y={BP.y + BP.h + 30} anchor="middle">
+          gap 8
+        </DimLabel>
+
+        <g
+          stroke="var(--bp-accent, var(--color-accent))"
+          strokeWidth={theme.guide.strokeWidth}
+          strokeDasharray="2 2"
+          opacity={theme.guide.structOpacity}
+        >
+          <line x1={BP.x} y1={BP.y + 8} x2={BP.x + 12} y2={BP.y + 8} />
+          <line
+            x1={BP_RIGHT_X + BP_RIGHT_W - 12}
+            y1={BP.y + 8}
+            x2={BP_RIGHT_X + BP_RIGHT_W}
+            y2={BP.y + 8}
+          />
+        </g>
+        <DimLabel x={BP.x + 6} y={BP.y + 8 - 3} anchor="middle">
+          12
+        </DimLabel>
+        <DimLabel x={BP_RIGHT_X + BP_RIGHT_W - 6} y={BP.y + 8 - 3} anchor="middle">
+          12
         </DimLabel>
       </g>
     </Blueprint>
   )
 }
 
-function TrackShape({ theme }: { theme: BlueprintTheme }) {
+const AN = {
+  x: 80,
+  y: 70,
+  w: 280,
+  h: 48,
+  rx: 6,
+  gap: 8,
+  divW: 6,
+  divH: 38,
+  leftPct: 0.6,
+} as const
+
+const AN_LEFT_W = Math.round((AN.w - AN.gap - AN.divW) * AN.leftPct)
+const AN_RIGHT_W = AN.w - AN.gap - AN.divW - AN_LEFT_W
+const AN_DIV_X = AN.x + AN_LEFT_W + AN.gap / 2
+const AN_RIGHT_X = AN.x + AN_LEFT_W + AN.gap + AN.divW
+const AN_MID_Y = AN.y + AN.h / 2
+
+function LeftBarShape() {
   const { hovered, setHovered } = useAnatomy()
-  const spotlight = useSpotlight('track')
+  const spotlight = useSpotlight(['left-bar', 'left-label'])
+  const active = hovered === 'left-bar' || hovered === 'left-label'
 
   return (
-    <rect
-      x={10}
-      y={36}
-      width={280}
-      height={40}
-      rx={20}
-      stroke="currentColor"
-      strokeWidth={hovered === 'track' ? 2 : theme.wireframe.strokeWidth}
-      fill={hovered === 'track' ? 'currentColor' : 'transparent'}
-      fillOpacity={hovered === 'track' ? 0.05 : 0}
-      className={`cursor-pointer ${spotlight.className}`}
-      style={{ ...spotlight.style, pointerEvents: 'all' }}
-      onMouseEnter={() => setHovered('track')}
+    <g
+      onMouseEnter={() => setHovered('left-bar')}
       onMouseLeave={() => setHovered(null)}
-    />
+      className="cursor-pointer"
+      style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
+    >
+      <rect
+        x={AN.x}
+        y={AN.y}
+        width={AN_LEFT_W}
+        height={AN.h}
+        rx={AN.rx}
+        fill="currentColor"
+        fillOpacity={active ? 0.95 : 0.88}
+        className={spotlight.className}
+      />
+      <text
+        x={AN.x + 12}
+        y={AN_MID_Y + 4}
+        fontSize={12}
+        fontWeight={500}
+        fontFamily="var(--font-sans)"
+        className={`fill-background pointer-events-none ${spotlight.className}`}
+      >
+        RICH <tspan fontWeight={700}>60%</tspan>
+      </text>
+    </g>
   )
 }
 
-function LeftFillShape() {
+function RightBarShape() {
   const { hovered, setHovered } = useAnatomy()
-  const spotlight = useSpotlight('left-fill')
+  const spotlight = useSpotlight(['right-bar', 'right-label'])
+  const active = hovered === 'right-bar' || hovered === 'right-label'
 
   return (
-    <rect
-      x={10}
-      y={36}
-      width={168}
-      height={40}
-      rx={20}
-      stroke="none"
-      fill="currentColor"
-      fillOpacity={hovered === 'left-fill' ? 0.4 : 0.25}
-      className={`cursor-pointer ${spotlight.className}`}
-      style={{ ...spotlight.style, pointerEvents: 'all' }}
-      onMouseEnter={() => setHovered('left-fill')}
+    <g
+      onMouseEnter={() => setHovered('right-bar')}
       onMouseLeave={() => setHovered(null)}
-    />
-  )
-}
-
-function RightFillShape() {
-  const { hovered, setHovered } = useAnatomy()
-  const spotlight = useSpotlight('right-fill')
-
-  return (
-    <rect
-      x={178}
-      y={36}
-      width={112}
-      height={40}
-      rx={20}
-      stroke="none"
-      fill="currentColor"
-      fillOpacity={hovered === 'right-fill' ? 0.15 : 0.08}
-      className={`cursor-pointer ${spotlight.className}`}
-      style={{ ...spotlight.style, pointerEvents: 'all' }}
-      onMouseEnter={() => setHovered('right-fill')}
-      onMouseLeave={() => setHovered(null)}
-    />
+      className="cursor-pointer"
+      style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
+    >
+      <rect
+        x={AN_RIGHT_X}
+        y={AN.y}
+        width={AN_RIGHT_W}
+        height={AN.h}
+        rx={AN.rx}
+        fill="currentColor"
+        fillOpacity={active ? 0.35 : 0.22}
+        className={spotlight.className}
+      />
+      <text
+        x={AN_RIGHT_X + AN_RIGHT_W - 12}
+        y={AN_MID_Y + 4}
+        textAnchor="end"
+        fontSize={12}
+        fontWeight={500}
+        fontFamily="var(--font-sans)"
+        className={`fill-current pointer-events-none ${spotlight.className}`}
+      >
+        <tspan fontWeight={700}>40%</tspan> LIGHT
+      </text>
+    </g>
   )
 }
 
 function DividerShape() {
   const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('divider')
+  const scale = hovered === 'divider' ? 1.15 : 1
 
   return (
     <g
       onMouseEnter={() => setHovered('divider')}
       onMouseLeave={() => setHovered(null)}
       className="cursor-pointer"
-      style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
+      style={{
+        pointerEvents: 'all',
+        filter: spotlight.style.filter,
+        transformOrigin: `${AN_DIV_X + AN.divW / 2}px ${AN_MID_Y}px`,
+        transform: `scaleY(${scale})`,
+        transition: 'transform 150ms ease-out',
+      }}
     >
-      <rect x={168} y={32} width={20} height={48} fill="transparent" />
-      <line
-        x1={178}
-        y1={42}
-        x2={178}
-        y2={70}
-        stroke="currentColor"
-        strokeWidth={hovered === 'divider' ? 2 : 1.5}
+      <rect
+        x={AN_DIV_X - 10}
+        y={AN.y - 4}
+        width={AN.divW + 20}
+        height={AN.h + 8}
+        fill="transparent"
+      />
+      <rect
+        x={AN_DIV_X}
+        y={AN_MID_Y - AN.divH / 2}
+        width={AN.divW}
+        height={AN.divH}
+        rx={3}
+        fill="var(--color-accent)"
+        stroke="var(--color-fg)"
+        strokeWidth={1.5}
         className={spotlight.className}
       />
     </g>
   )
 }
 
-function LeftLabelShape() {
-  const { setHovered } = useAnatomy()
-  const spotlight = useSpotlight('left-label')
+function GapShape() {
+  const { hovered, setHovered } = useAnatomy()
+  const spotlight = useSpotlight('gap')
+  const fillOpacity = hovered === 'gap' ? 0.22 : 0.12
 
   return (
     <g
-      onMouseEnter={() => setHovered('left-label')}
+      onMouseEnter={() => setHovered('gap')}
       onMouseLeave={() => setHovered(null)}
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      <rect x={10} y={0} width={90} height={20} fill="transparent" />
-      <text
-        x={14}
-        y={15}
-        textAnchor="start"
-        fontSize={11}
-        fontWeight={500}
-        fontFamily="var(--font-sans)"
-        className={`fill-current ${spotlight.className}`}
-      >
-        RICH
-      </text>
-    </g>
-  )
-}
-
-function RightLabelShape() {
-  const { setHovered } = useAnatomy()
-  const spotlight = useSpotlight('right-label')
-
-  return (
-    <g
-      onMouseEnter={() => setHovered('right-label')}
-      onMouseLeave={() => setHovered(null)}
-      className="cursor-pointer"
-      style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
-    >
-      <rect x={200} y={0} width={90} height={20} fill="transparent" />
-      <text
-        x={286}
-        y={15}
-        textAnchor="end"
-        fontSize={11}
-        fontWeight={500}
-        fontFamily="var(--font-sans)"
-        className={`fill-current opacity-60 ${spotlight.className}`}
-      >
-        LIGHT
-      </text>
+      <rect
+        x={AN.x + AN_LEFT_W}
+        y={AN.y}
+        width={AN.gap / 2 + 1}
+        height={AN.h}
+        fill="currentColor"
+        fillOpacity={fillOpacity}
+        className={spotlight.className}
+      />
+      <rect
+        x={AN_DIV_X + AN.divW}
+        y={AN.y}
+        width={AN.gap / 2 + 1}
+        height={AN.h}
+        fill="currentColor"
+        fillOpacity={fillOpacity}
+        className={spotlight.className}
+      />
     </g>
   )
 }
 
 function AnnotationsLayer() {
   const { hovered } = useAnatomy()
-  const isOthersHovered = hovered !== null
+  const dimmed = hovered !== null
 
   return (
     <g
       style={{
         pointerEvents: 'none',
-        filter: isOthersHovered ? 'url(#spotlight-blur)' : 'none',
+        filter: dimmed ? 'url(#spotlight-blur)' : 'none',
       }}
-      className={`transition-all duration-200 ease-out ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={10} y={36} w={280} h={40} />
-      <DimH x1={10} x2={290} y={26} label="280" />
-      <DimV x={305} y1={36} y2={76} label="40" labelXOffset={5} labelAnchor="start" />
+      <Selection x={AN.x} y={AN.y} w={AN.w} h={AN.h} />
+      <DimH x1={AN.x} x2={AN.x + AN.w} y={AN.y - 14} label={`${AN.w}`} />
+      <DimV
+        x={AN.x + AN.w + 14}
+        y1={AN.y}
+        y2={AN.y + AN.h}
+        label={`${AN.h}`}
+        labelXOffset={5}
+        labelAnchor="start"
+      />
+      <DimLabel x={AN.x} y={AN.y - 4} anchor="start">
+        {`r${AN.rx}`}
+      </DimLabel>
+
+      <g
+        stroke="var(--bp-accent, var(--color-accent))"
+        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeDasharray="2 2"
+        opacity={blueprintTheme.guide.structOpacity}
+      >
+        <line
+          x1={AN.x + AN_LEFT_W}
+          y1={AN.y + AN.h + 4}
+          x2={AN.x + AN_LEFT_W}
+          y2={AN.y + AN.h + 10}
+        />
+        <line x1={AN_RIGHT_X} y1={AN.y + AN.h + 4} x2={AN_RIGHT_X} y2={AN.y + AN.h + 10} />
+        <line x1={AN.x + AN_LEFT_W} y1={AN.y + AN.h + 7} x2={AN_RIGHT_X} y2={AN.y + AN.h + 7} />
+      </g>
+      <DimLabel x={AN.x + AN_LEFT_W + AN.gap / 2} y={AN.y + AN.h + 20} anchor="middle">
+        gap 8
+      </DimLabel>
+      <DimLabel x={AN_DIV_X + AN.divW / 2} y={AN.y - 12} anchor="middle">
+        handle 6
+      </DimLabel>
+
+      <g
+        stroke="var(--bp-accent, var(--color-accent))"
+        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeDasharray="2 2"
+        opacity={blueprintTheme.guide.structOpacity}
+      >
+        <line x1={AN.x} y1={AN.y + 12} x2={AN.x + 12} y2={AN.y + 12} />
+        <line
+          x1={AN_RIGHT_X + AN_RIGHT_W - 12}
+          y1={AN.y + 12}
+          x2={AN_RIGHT_X + AN_RIGHT_W}
+          y2={AN.y + 12}
+        />
+      </g>
+      <DimLabel x={AN.x + 6} y={AN.y + 12 - 4} anchor="middle">
+        12
+      </DimLabel>
+      <DimLabel x={AN_RIGHT_X + AN_RIGHT_W - 6} y={AN.y + 12 - 4} anchor="middle">
+        12
+      </DimLabel>
     </g>
   )
 }
@@ -283,12 +405,29 @@ function AnnotationsLayer() {
 function LinesLayer() {
   return (
     <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="left-label" x1={74} y1={30} x2={74} y2={10} />
-      <OverlayLine id="right-label" x1={346} y1={30} x2={346} y2={10} />
-      <OverlayLine id="left-fill" x1={70} y1={86} x2={20} y2={86} />
-      <OverlayLine id="right-fill" x1={350} y1={86} x2={400} y2={86} />
-      <OverlayLine id="track" x1={210} y1={106} x2={210} y2={130} />
-      <OverlayLine id="divider" x1={238} y1={100} x2={238} y2={160} />
+      <OverlayLine id="left-bar" x1={40} y1={AN_MID_Y} x2={AN.x} y2={AN_MID_Y} />
+      <OverlayLine
+        id="divider"
+        x1={AN_DIV_X + AN.divW / 2}
+        y1={AN.y + AN.h + 36}
+        x2={AN_DIV_X + AN.divW / 2}
+        y2={AN_MID_Y + AN.divH / 2}
+      />
+      <OverlayLine
+        id="right-bar"
+        x1={AN.x + AN.w + 50}
+        y1={AN_MID_Y}
+        x2={AN.x + AN.w}
+        y2={AN_MID_Y}
+      />
+      <OverlayLine id="left-label" x1={AN.x + 50} y1={AN.y - 28} x2={AN.x + 50} y2={AN.y + 8} />
+      <OverlayLine
+        id="right-label"
+        x1={AN_RIGHT_X + AN_RIGHT_W - 40}
+        y1={AN.y - 28}
+        x2={AN_RIGHT_X + AN_RIGHT_W - 40}
+        y2={AN.y + 8}
+      />
     </g>
   )
 }
@@ -297,63 +436,59 @@ function TagsLayer() {
   return (
     <>
       <foreignObject
-        x={24}
-        y={-14}
-        width={100}
-        height={20}
+        x={AN.x}
+        y={AN.y - 50}
+        width={110}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="left-label" label="Left Label" className="items-end justify-center" />
+        <AnatomyTag part="left-label" label="In-bar label" className="items-end justify-center" />
       </foreignObject>
       <foreignObject
-        x={296}
-        y={-14}
-        width={100}
-        height={20}
+        x={AN_RIGHT_X + AN_RIGHT_W - 110}
+        y={AN.y - 50}
+        width={110}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="right-label" label="Right Label" className="items-end justify-center" />
+        <AnatomyTag part="right-label" label="In-bar label" className="items-end justify-center" />
       </foreignObject>
       <foreignObject
-        x={-80}
-        y={76}
-        width={90}
-        height={20}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="left-fill" label="Left Fill" className="items-center justify-end" />
-      </foreignObject>
-      <foreignObject
-        x={400}
-        y={76}
-        width={100}
-        height={20}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="right-fill" label="Right Fill" className="items-center justify-start" />
-      </foreignObject>
-      <foreignObject
-        x={160}
-        y={130}
-        width={100}
-        height={20}
+        x={4}
+        y={AN_MID_Y - 12}
+        width={70}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
         <AnatomyTag
-          part="track"
-          label="Slider.Track"
-          className="items-start justify-center"
+          part="left-bar"
+          label="Left bar"
           isAccent
+          className="items-center justify-end"
         />
       </foreignObject>
       <foreignObject
-        x={188}
-        y={160}
-        width={100}
-        height={20}
+        x={AN.x + AN.w + 48}
+        y={AN_MID_Y - 12}
+        width={80}
+        height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="divider" label="Divider" className="items-start justify-center" />
+        <AnatomyTag part="right-bar" label="Right bar" className="items-center justify-start" />
+      </foreignObject>
+      <foreignObject
+        x={AN_DIV_X + AN.divW / 2 - 44}
+        y={AN.y + AN.h + 36}
+        width={100}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
+        <AnatomyTag
+          part="divider"
+          label="Divider"
+          isAccent
+          className="items-start justify-center"
+        />
       </foreignObject>
     </>
   )
@@ -361,17 +496,12 @@ function TagsLayer() {
 
 export function RatioSliderBreakdown() {
   return (
-    <AnatomyFrame viewBox="-90 -24 600 214" maxWidthClassName="max-w-xl">
-      <g transform="translate(60, 30)">
-        <TrackShape theme={blueprintTheme} />
-        <LeftFillShape />
-        <RightFillShape />
-        <DividerShape />
-        <LeftLabelShape />
-        <RightLabelShape />
-        <AnnotationsLayer />
-      </g>
-
+    <AnatomyFrame viewBox="-64 -6 568 200" maxWidthClassName="max-w-[682px]">
+      <LeftBarShape />
+      <RightBarShape />
+      <GapShape />
+      <DividerShape />
+      <AnnotationsLayer />
       <LinesLayer />
       <TagsLayer />
     </AnatomyFrame>

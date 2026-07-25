@@ -10,7 +10,7 @@ export const colorPickerMetadata: ComponentItem = {
   registry: 'color-picker',
   dependencies: [{ name: 'motion' }],
   interaction:
-    'Click the core button to expand/collapse. Click a petal or dot to select its color. Drag the arc slider to adjust lightness. Use the variant prop to switch between blossom, blossom-arc, and ring modes.',
+    'Click the center flower core button to expand/collapse with tactile click audio. Hover petals for micro-clicks and click petals or dots to select colors. Drag the arc slider for real-time audio ticks.',
   credits: 'Original implementation inspired by blossom color picker patterns.',
   props: [
     {

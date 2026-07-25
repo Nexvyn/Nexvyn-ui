@@ -62,7 +62,9 @@ export function GitHubMascot({
         const dy = startRect.bottom - selfRect.bottom
         if (dx < -120) {
           journeyed = true
-          await animate('.gh-traveler', { x: dx, y: dy }, { duration: 0 })
+          // Starts near the logo text, behind it in z-order — softened with a
+          // slight blur so the overlap reads as depth rather than a hard clip.
+          await animate('.gh-traveler', { x: dx, y: dy, filter: 'blur(0.5px)' }, { duration: 0 })
           await wait(3000)
           if (!isPlaying) return
 
@@ -85,7 +87,14 @@ export function GitHubMascot({
           const strideOpts = { duration: strideDur, repeat: strides - 1 }
           isWalkingRef.current = true
           await Promise.all([
-            animate('.gh-traveler', { x: walkEnd }, { duration: walkDur, ease: 'linear' }),
+            animate(
+              '.gh-traveler',
+              { x: walkEnd, filter: 'blur(0px)' },
+              {
+                x: { duration: walkDur, ease: 'linear' },
+                filter: { duration: Math.min(0.4, walkDur * 0.3), ease: 'easeOut' },
+              },
+            ),
             animate('.gh-coin', stride, { ...strideOpts, times: strideTimes, ease: 'easeInOut' }),
             animate('.gh-front-view', { opacity: 0 }, { duration: 0.25, ease: 'easeOut' }),
             animate('.gh-side-view', { opacity: 1 }, { duration: 0.25, ease: 'easeOut' }),
@@ -225,7 +234,10 @@ export function GitHubMascot({
   }, [])
 
   return (
-    <div ref={scope} className="absolute -top-8 left-1/2 -translate-x-1/2 z-0 pointer-events-none">
+    <div
+      ref={scope}
+      className="absolute -top-4 left-1/2 -translate-x-1/2 z-0 pointer-events-none sm:-top-6 md:-top-8"
+    >
       <div className="gh-traveler">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -305,7 +317,7 @@ export function GitHubMascot({
             cy="144"
             rx="6"
             ry="3.2"
-            fill="var(--mascot-stop-1)"
+            fill="var(--mascot-foot)"
           />
           <ellipse
             className="gh-foot-r"
@@ -313,7 +325,7 @@ export function GitHubMascot({
             cy="144"
             rx="6"
             ry="3.2"
-            fill="var(--mascot-stop-1)"
+            fill="var(--mascot-foot)"
           />
         </svg>
       </div>

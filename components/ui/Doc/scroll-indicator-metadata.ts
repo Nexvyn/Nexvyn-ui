@@ -10,7 +10,7 @@ export const scrollIndicatorMetadata: ComponentItem = {
   registry: 'scroll-indicator',
   dependencies: [{ name: 'motion' }],
   interaction:
-    'Scroll the content to see the indicator move. Hover to reveal section labels. Click a label to jump to that section.',
+    'Scroll content to see indicator move. Hover for micro-clicks and to reveal section labels. Click any label for click audio and smooth section jumping.',
   props: [
     {
       name: 'sections',

@@ -1,45 +1,50 @@
 'use client'
 
+// SPDX-License-Identifier: CC-BY-NC-4.0
+// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
+// This file is NOT covered by the repository's root MIT LICENSE.
+
 import {
-  type BlueprintTheme,
   Blueprint,
   BP_FILL_PANEL,
   BP_HIDE_ON_MORPH,
   BP_MORPH,
+  BP_TEXT_SOFT,
   blueprintTheme,
   DimH,
   DimLabel,
   DimV,
   PadGuide,
   Selection,
-} from '@/components/showcase/parts'
+} from '@/components/diagrams/lib/parts'
 import {
   AnatomyFrame,
   AnatomyTag,
   OverlayLine,
   useAnatomy,
   useSpotlight,
-} from '@/components/showcase/anatomy-parts'
+} from '@/components/diagrams/lib/anatomy-parts'
 
-const BP_FIELD = { x: 30, y: 62, w: 160, h: 44, rx: 12 } as const
-const BP_LABEL = { x: 30, y: 41, w: 38, h: 5, rx: 2.5 } as const
-const BP_DOT_XS = [46, 58, 70, 82] as const
-const BP_DOT_CY = 84
-const BP_EYE = { cx: 168, cy: 84 } as const
+const BP_FIELD = { x: 30, y: 52, w: 160, h: 44, rx: 6 } as const
+const BP_DOT_XS = [46, 58, 70, 82, 94, 106] as const
+const BP_EYE = { cx: 168, cy: 74 } as const
 
 export function PasswordInputWireframe() {
   const theme = blueprintTheme
   return (
     <Blueprint>
-      <rect
-        x={BP_LABEL.x}
-        y={BP_LABEL.y}
-        width={BP_LABEL.w}
-        height={BP_LABEL.h}
-        rx={BP_LABEL.rx}
-        fill="currentColor"
-        opacity={theme.guide.structOpacity}
-      />
+      <text
+        x={BP_FIELD.x}
+        y={BP_FIELD.y - 12}
+        fontSize={14}
+        fontWeight={500}
+        fontFamily="var(--font-sans)"
+        className={BP_TEXT_SOFT}
+      >
+        Password
+      </text>
+
       <rect
         x={BP_FIELD.x}
         y={BP_FIELD.y}
@@ -54,261 +59,177 @@ export function PasswordInputWireframe() {
         <circle
           key={x}
           cx={x}
-          cy={BP_DOT_CY}
-          r={3}
-          fill="currentColor"
+          cy={BP_FIELD.y + BP_FIELD.h / 2}
+          r={2.5}
+          className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-foreground group-focus-visible:fill-foreground group-hover:stroke-transparent group-focus-visible:stroke-transparent`}
+          strokeWidth={1}
           opacity={theme.wireframe.strokeOpacity}
-          className={`${BP_MORPH} group-hover:fill-foreground group-focus-visible:fill-foreground`}
         />
       ))}
       <g
         fill="none"
         stroke="currentColor"
-        strokeWidth={theme.wireframe.strokeWidth}
-        opacity={theme.wireframe.strokeOpacity}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={`${BP_MORPH} opacity-55 group-hover:opacity-100 group-focus-visible:opacity-100`}
       >
-        <path d={`M${BP_EYE.cx - 8} ${BP_EYE.cy} q8 -8 16 0 q-8 8 -16 0 Z`} />
-        <circle cx={BP_EYE.cx} cy={BP_EYE.cy} r={2.5} />
+        <path d={`M${BP_EYE.cx - 9} ${BP_EYE.cy} q9 -8 18 0 q-9 8 -18 0`} />
+        <circle cx={BP_EYE.cx} cy={BP_EYE.cy} r={2.5} className="fill-current stroke-none" />
       </g>
+
       <g className={BP_HIDE_ON_MORPH}>
         <Selection x={BP_FIELD.x} y={BP_FIELD.y} w={BP_FIELD.w} h={BP_FIELD.h} />
+        <PadGuide
+          x={BP_FIELD.x + 14}
+          y={BP_FIELD.y + 10}
+          w={BP_FIELD.w - 14 - 48}
+          h={BP_FIELD.h - 20}
+          offset={0.8}
+          boxX={BP_FIELD.x}
+          boxY={BP_FIELD.y}
+          boxW={BP_FIELD.w}
+          boxH={BP_FIELD.h}
+          boxRx={BP_FIELD.rx}
+          clipOffset={0.8}
+        />
+        <circle
+          cx={BP_EYE.cx}
+          cy={BP_EYE.cy}
+          r={11}
+          fill="none"
+          stroke="var(--bp-accent, var(--color-accent))"
+          strokeWidth={theme.guide.strokeWidth}
+          strokeDasharray="2 2"
+          opacity={theme.guide.structOpacity}
+        />
         <DimH
           x1={BP_FIELD.x}
           x2={BP_FIELD.x + BP_FIELD.w}
           y={BP_FIELD.y + BP_FIELD.h + 14}
-          label={`${BP_FIELD.w}`}
+          label="160"
         />
         <DimV
           x={BP_FIELD.x - 12}
           y1={BP_FIELD.y}
           y2={BP_FIELD.y + BP_FIELD.h}
-          label={`${BP_FIELD.h}`}
+          label="44"
           labelXOffset={-6}
         />
         <DimLabel x={BP_FIELD.x} y={BP_FIELD.y - 4} anchor="start">
-          {`r${BP_FIELD.rx}`}
-        </DimLabel>
-        <DimLabel x={BP_EYE.cx + 22} y={BP_EYE.cy - 30} anchor="end">
-          eye tracks pointer
+          r6
         </DimLabel>
       </g>
     </Blueprint>
   )
 }
 
-function LabelShape() {
-  const { setHovered } = useAnatomy()
-  const spotlight = useSpotlight('label')
+const AN_FIELD = { x: 40, y: 70, w: 240, h: 44, rx: 6 } as const
 
-  return (
-    <g
-      onMouseEnter={() => setHovered('label')}
-      onMouseLeave={() => setHovered(null)}
-      className="cursor-pointer"
-      style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
-    >
-      <rect x={10} y={10} width={80} height={16} fill="transparent" />
-      <text
-        x={10}
-        y={22}
-        fontSize={12}
-        fontWeight={500}
-        fontFamily="var(--font-sans)"
-        className={`fill-current ${spotlight.className}`}
-      >
-        Password
-      </text>
-    </g>
-  )
-}
-
-function InputShape({ theme }: { theme: BlueprintTheme }) {
+function FieldShape() {
   const { hovered, setHovered } = useAnatomy()
-  const spotlight = useSpotlight('input')
-
+  const spotlight = useSpotlight('field')
   return (
     <rect
-      x={10}
-      y={34}
-      width={240}
-      height={40}
-      rx={12}
+      x={AN_FIELD.x}
+      y={AN_FIELD.y}
+      width={AN_FIELD.w}
+      height={AN_FIELD.h}
+      rx={AN_FIELD.rx}
       stroke="currentColor"
-      strokeWidth={hovered === 'input' ? 2 : theme.wireframe.strokeWidth}
-      fill={hovered === 'input' ? 'currentColor' : 'transparent'}
-      fillOpacity={hovered === 'input' ? 0.05 : 0}
+      strokeWidth={hovered === 'field' ? 2 : 1.25}
+      fill={hovered === 'field' ? 'currentColor' : 'transparent'}
+      fillOpacity={hovered === 'field' ? 0.04 : 0}
       className={`cursor-pointer ${spotlight.className}`}
       style={{ ...spotlight.style, pointerEvents: 'all' }}
-      onMouseEnter={() => setHovered('input')}
+      onMouseEnter={() => setHovered('field')}
       onMouseLeave={() => setHovered(null)}
     />
   )
 }
 
-function ToggleShape() {
-  const { hovered, setHovered } = useAnatomy()
-  const spotlight = useSpotlight('toggle')
-
+function MaskShape() {
+  const { setHovered } = useAnatomy()
+  const spotlight = useSpotlight('mask')
+  const cy = AN_FIELD.y + AN_FIELD.h / 2
   return (
     <g
-      onMouseEnter={() => setHovered('toggle')}
+      onMouseEnter={() => setHovered('mask')}
       onMouseLeave={() => setHovered(null)}
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      <rect x={220} y={42} width={24} height={24} fill="transparent" />
-      <circle
-        cx={232}
-        cy={54}
-        r={6}
-        stroke="currentColor"
-        strokeWidth={hovered === 'toggle' ? 1.5 : 1}
-        fill={hovered === 'toggle' ? 'currentColor' : 'transparent'}
-        fillOpacity={hovered === 'toggle' ? 0.3 : 0}
-        className={spotlight.className}
-      />
-      <circle
-        cx={232}
-        cy={54}
-        r={2}
-        fill="currentColor"
-        className={`${hovered === 'toggle' ? 'opacity-100' : 'opacity-60'} ${spotlight.className}`}
-      />
-    </g>
-  )
-}
-
-function DotsShape() {
-  const { hovered, setHovered } = useAnatomy()
-  const spotlight = useSpotlight('dots')
-  const dotXs = [28, 38, 48, 58]
-
-  return (
-    <g
-      onMouseEnter={() => setHovered('dots')}
-      onMouseLeave={() => setHovered(null)}
-      className="cursor-pointer"
-      style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
-    >
-      <rect x={20} y={48} width={60} height={12} fill="transparent" />
-      {dotXs.map((x) => (
+      {[0, 1, 2, 3, 4, 5].map((i) => (
         <circle
-          key={x}
-          cx={x}
-          cy={54}
-          r={2.5}
-          fill="currentColor"
-          className={`${hovered === 'dots' ? 'opacity-80' : 'opacity-40'} ${spotlight.className}`}
+          key={i}
+          cx={AN_FIELD.x + 20 + i * 14}
+          cy={cy}
+          r={3}
+          className={`fill-current ${spotlight.className}`}
         />
       ))}
     </g>
   )
 }
 
-function AnnotationsLayer() {
-  const { hovered } = useAnatomy()
-  const isOthersHovered = hovered !== null
-
+function EyeShape() {
+  const { setHovered } = useAnatomy()
+  const spotlight = useSpotlight('eye')
+  const cx = AN_FIELD.x + AN_FIELD.w - 24
+  const cy = AN_FIELD.y + AN_FIELD.h / 2
   return (
     <g
-      style={{
-        pointerEvents: 'none',
-        filter: isOthersHovered ? 'url(#spotlight-blur)' : 'none',
-      }}
-      className={`transition-all duration-200 ease-out ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
+      onMouseEnter={() => setHovered('eye')}
+      onMouseLeave={() => setHovered(null)}
+      className="cursor-pointer"
+      style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
     >
-      <PadGuide
-        x={22}
-        y={46}
-        w={216}
-        h={16}
-        offset={0.8}
-        boxX={10}
-        boxY={34}
-        boxW={240}
-        boxH={40}
-        boxRx={12}
-        clipOffset={0.8}
-      />
-      <Selection x={10} y={34} w={240} h={40} />
-      <DimH x1={10} x2={250} y={85} label="240" />
-      <DimV x={265} y1={34} y2={74} label="40" labelXOffset={5} labelAnchor="start" />
+      <rect x={cx - 14} y={cy - 14} width={28} height={28} fill="transparent" />
+      <path d={`M${cx - 10} ${cy} q10 -9 20 0 q-10 9 -20 0`} className={spotlight.className} />
+      <circle cx={cx} cy={cy} r={3} className={`fill-current stroke-none ${spotlight.className}`} />
     </g>
-  )
-}
-
-function LinesLayer() {
-  return (
-    <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="label" x1={85} y1={30} x2={85} y2={10} />
-      <OverlayLine id="input" x1={190} y1={94} x2={190} y2={115} />
-      <OverlayLine id="toggle" x1={292} y1={74} x2={292} y2={115} />
-      <OverlayLine id="dots" x1={103} y1={94} x2={103} y2={115} />
-    </g>
-  )
-}
-
-function TagsLayer() {
-  return (
-    <>
-      <foreignObject
-        x={35}
-        y={0}
-        width={100}
-        height={20}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="label" label="Label" className="items-start justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={140}
-        y={115}
-        width={100}
-        height={20}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="input"
-          label="Input.Field"
-          className="items-start justify-center"
-          isAccent
-        />
-      </foreignObject>
-      <foreignObject
-        x={242}
-        y={115}
-        width={100}
-        height={20}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="toggle" label="Eye Toggle" className="items-start justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={53}
-        y={115}
-        width={100}
-        height={20}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="dots" label="Dots" className="items-start justify-start" />
-      </foreignObject>
-    </>
   )
 }
 
 export function PasswordInputBreakdown() {
   return (
-    <AnatomyFrame viewBox="27 -8 323 151" maxWidthClassName="max-w-lg">
-      <g transform="translate(60, 20)">
-        <LabelShape />
-        <InputShape theme={blueprintTheme} />
-        <DotsShape />
-        <ToggleShape />
-        <AnnotationsLayer />
-      </g>
-
-      <LinesLayer />
-      <TagsLayer />
+    <AnatomyFrame viewBox="-54 2 428 180" maxWidthClassName="max-w-[514px]">
+      <FieldShape />
+      <MaskShape />
+      <EyeShape />
+      <OverlayLine id="field" x1={160} y1={70} x2={160} y2={40} />
+      <OverlayLine id="mask" x1={100} y1={92} x2={50} y2={140} />
+      <OverlayLine id="eye" x1={256} y1={92} x2={300} y2={140} />
+      <foreignObject
+        x={110}
+        y={16}
+        width={100}
+        height={24}
+        className="overflow-visible pointer-events-none"
+      >
+        <AnatomyTag part="field" label="Input" className="items-end justify-center" />
+      </foreignObject>
+      <foreignObject
+        x={8}
+        y={136}
+        width={100}
+        height={24}
+        className="overflow-visible pointer-events-none"
+      >
+        <AnatomyTag part="mask" label="Mask dots" className="items-start justify-center" />
+      </foreignObject>
+      <foreignObject
+        x={260}
+        y={136}
+        width={100}
+        height={24}
+        className="overflow-visible pointer-events-none"
+      >
+        <AnatomyTag part="eye" label="Eye toggle" isAccent className="items-start justify-center" />
+      </foreignObject>
     </AnatomyFrame>
   )
 }

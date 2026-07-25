@@ -106,11 +106,12 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
   useEffect(() => {
     if (!open || !item?.registry) return
     let cancelled = false
+    const request = fetch(`/r/${item.registry}.json`)
     setLoading(true)
     setFiles([])
     setSelectedFileIndex(0)
 
-    fetch(`/r/${item.registry}.json`)
+    request
       .then((res) => {
         if (!res.ok) throw new Error()
         return res.json()
@@ -302,7 +303,7 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
           />
         ) : (
           <pre className="px-4 sm:px-6 md:px-8 text-[13px] font-mono text-(--color-muted)">
-            <code>// No code loaded.</code>
+            <code>{'// No code loaded.'}</code>
           </pre>
         )}
       </div>

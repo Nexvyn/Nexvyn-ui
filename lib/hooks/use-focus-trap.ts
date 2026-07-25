@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, type RefObject } from 'react'
 
-// NOTE: This will be absorbed shared overlay infrastructure.
-// Built here for command-palette; imported by mobile-drawer later.
 export function useFocusTrap(
   containerRef: RefObject<HTMLElement | null>,
   active: boolean,

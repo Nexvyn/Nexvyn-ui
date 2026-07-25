@@ -85,6 +85,7 @@ You are an expert React UI library engineer. Your objective is to build producti
 - **Text over dynamic surfaces**: a label colored for contrast against a bar/fill must switch color when a compact/overflow state repositions it onto the page background. Verify contrast in the state it actually renders.
 - **Verify in BOTH themes**: every color decision gets checked in light and dark mode before shipping. Tokens differ per theme; a value that looks right in one theme routinely vanishes in the other.
 - **Never read the theme during render**: the `.dark` class is applied pre-hydration by the `beforeInteractive` script in `app/layout.tsx`. Components that need the current theme subscribe to it (`useSyncExternalStore` + a MutationObserver on `documentElement`, as `theme-toggle.tsx` does). Reading `document.documentElement.classList` in the render phase breaks SSR and causes hydration mismatches.
+- **Micro-interaction sound goes through the shared `lib/sound.ts`, never a colocated per-component `AudioContext`.** It's already wired as a shared `registry:lib` file — every sound-using component's `registry.json` entry lists both its own `components/ui/<name>.tsx` and `lib/sound.ts`, so `npx shadcn add <name>` copies it into the consumer's `lib/` once, the same way `lib/utils.ts`/`cn()` is already shared across virtually every component. Installing a second sound-using component doesn't duplicate the file — the CLI sees it already exists and skips it. Colocating a private `let audioCtx: AudioContext | null = null` inside each component instead would mean every sound-using component mounted on the same page (which happens routinely — this showcase site renders several together) creates its **own** `AudioContext` and its **own** `pointerdown`/`keydown`/`touchstart` unlock listeners on `window`, and browsers cap concurrent `AudioContext`s per page. Import `playHoverSound` / `playClickSound` / `playTickSound` / `playBounceSound` from `@/lib/sound`; add a new `play*Sound` export there rather than a local implementation if an existing one doesn't fit.
 
 # Forms, Testing, and Documentation
 
@@ -112,7 +113,7 @@ The sections above describe how a component should be _built_. Building it is no
 7. **`components/showcase/component-preview.tsx`** — add to `LIVE_PREVIEW_IDS`, add a `dynamic()` import, add a `case '<name>':` in the `LivePreview` switch (grid/showcase card rendering).
 8. **`app/components/[component]/page.tsx`** — add a `case '<name>':` rendering `<DemoFrame><NamePreview /></DemoFrame>` (the component detail page).
 9. **`app/api/source/route.ts`** — add `'<name>': ['components', 'ui', '<name>.tsx']` to `SOURCE_MAP` (powers "view source").
-10. **`registry.json`** (root, hand-maintained) — add an item entry (`name`, `type`, `title`, `description`, `dependencies`, `files[].path`). Run `npm run build:registry` (also a `prebuild` hook) to auto-generate **`public/r/<name>.json`** and update **`public/r/registry.json`** — do not hand-write these two.
+10. **`registry.json`** (root, hand-maintained) — add an item entry (`name`, `type`, `title`, `description`, `dependencies`, `files[].path`). If the component imports from `@/lib/sound`, also add `{"path": "lib/sound.ts", "type": "registry:lib"}` to its `files[]` (see `bounce-sidebar`/`ratio-slider`/`badge`/`fader` for the pattern — do not colocate a separate sound module, see "Repo-Specific Pitfalls"). Run `npm run build:registry` (also a `prebuild` hook) to auto-generate **`public/r/<name>.json`** and update **`public/r/registry.json`** — do not hand-write these two.
 
 Optional, not required:
 
@@ -160,3 +161,4 @@ Last-mile details that separate "works" from production:
 21. [ ] No CSS property set from both sides of an `asChild`/Slot merge?
 22. [ ] Focus ring appears only for keyboard focus (pointerdown `preventDefault()` on custom widgets)?
 23. [ ] All 10 registry/preview wiring files updated (see "Shipping a New Component in This Repo")?
+24. [ ] Sound (if any) imported from shared `@/lib/sound`, not a colocated `AudioContext`, and `lib/sound.ts` added to the component's `registry.json` `files[]`?

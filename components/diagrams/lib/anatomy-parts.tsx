@@ -1,5 +1,10 @@
 'use client'
 
+// SPDX-License-Identifier: CC-BY-NC-4.0
+// Shared drawing primitives for components/diagrams/* — licensed separately
+// from the rest of this repository under CC BY-NC 4.0.
+// See components/diagrams/LICENSE. NOT covered by the root MIT LICENSE.
+
 import { createContext, useContext, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -28,7 +33,6 @@ export function useSpotlight(
   const isHovered = hovered !== null && ids.includes(hovered)
   const isOthersHovered = hovered !== null && !isHovered
 
-  const defaultOp = options?.defaultOpacity ?? 60
   const opacityClass = options?.isInteraction
     ? isHovered
       ? 'opacity-100'
@@ -39,7 +43,7 @@ export function useSpotlight(
       ? 'opacity-100'
       : isOthersHovered
         ? 'opacity-30'
-        : `opacity-${defaultOp}`
+        : 'opacity-70'
 
   return {
     className: `transition-all duration-200 ease-out ${opacityClass}`,
@@ -87,12 +91,12 @@ export function AnatomyTag({
         onFocus={() => setHovered(part)}
         onBlur={() => setHovered(null)}
         style={{ pointerEvents: 'all' }}
-        className={`cursor-pointer rounded px-1.5 py-0.5 text-[10px] whitespace-nowrap outline-none transition-all duration-200 ease-out focus-visible:ring-2 focus-visible:ring-ring ${
+        className={`cursor-pointer rounded border px-2 py-0.5 text-[10px] font-medium leading-tight whitespace-nowrap outline-none transition-all duration-200 ease-out focus-visible:ring-2 focus-visible:ring-ring shadow-sm ${
           isHovered
-            ? 'border-foreground bg-foreground text-background shadow-sm'
+            ? 'border-foreground bg-foreground text-background'
             : isAccent
-              ? 'border-foreground/30 bg-foreground/20 text-foreground'
-              : 'border-border bg-muted text-muted-foreground'
+              ? 'border-foreground/40 bg-background text-foreground'
+              : 'border-border bg-background text-foreground/80'
         }`}
       >
         {label}
@@ -128,7 +132,7 @@ export function OverlayLine({
   )
 }
 
-export { squirclePillPath } from '@/components/showcase/parts'
+export { squirclePillPath } from '@/components/diagrams/lib/parts'
 
 export function AnatomyDefs() {
   return (
@@ -171,13 +175,14 @@ export function AnatomyFrame({
 
   return (
     <AnatomyContext.Provider value={{ hovered, setHovered }}>
-      <div className="flex w-full items-center justify-center overflow-visible py-10">
+      <div className="flex w-full items-center justify-center overflow-visible py-8 px-2">
         <svg
           aria-hidden="true"
           viewBox={viewBox}
           fill="none"
+          overflow="visible"
           className={cn(
-            'w-full overflow-visible font-mono text-xs text-foreground/80',
+            'block mx-auto h-auto w-full max-w-full overflow-visible font-mono text-xs text-foreground/80',
             maxWidthClassName,
           )}
         >

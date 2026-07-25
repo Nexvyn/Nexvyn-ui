@@ -15,13 +15,35 @@ import { cn } from '@/lib/utils'
 import {
   BadgeDemo,
   BounceSidebarDemo,
+  BreadcrumbsDemo,
+  CheckboxDemo,
+  ComboboxDemo,
+  ContextMenuDemo,
+  MorphNavDemo,
+  MobileDrawerDemo,
+  ClipboardFieldDemo,
+  DropdownMenuDemo,
   ColorPickerDemo,
   FaderDemo,
   GooDropdownDemo,
+  IconBarDemo,
+  IdReelDemo,
+  InputDemo,
+  NavMenuDemo,
   PasswordInputDemo,
+  RadioGroupDemo,
   RatioSliderDemo,
   ScrollIndicatorDemo,
+  SelectDemo,
+  SwitchDemo,
+  TableDemo,
   TableOfContentsDemo,
+  TabsSubtleDemo,
+  InputCopyDemo,
+  InputMessageDemo,
+  BarsThemeDemo,
+  GlowOrbDemo,
+  FluidOrbDemo,
 } from '@/components/ui/previews'
 
 function DemoFrame({
@@ -116,6 +138,78 @@ export function ComponentDemo({ id }: { id: string }) {
           <BadgeDemo />
         </DemoFrame>
       )
+    case 'breadcrumbs':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <BreadcrumbsDemo />
+        </DemoFrame>
+      )
+    case 'checkbox':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <CheckboxDemo />
+        </DemoFrame>
+      )
+    case 'combobox':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ComboboxDemo />
+        </DemoFrame>
+      )
+    case 'context-menu':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ContextMenuDemo />
+        </DemoFrame>
+      )
+    case 'morph-nav':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <MorphNavDemo />
+        </DemoFrame>
+      )
+    case 'mobile-drawer':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <MobileDrawerDemo />
+        </DemoFrame>
+      )
+    case 'clipboard-field':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ClipboardFieldDemo />
+        </DemoFrame>
+      )
+    case 'dropdown-menu':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <DropdownMenuDemo />
+        </DemoFrame>
+      )
+    case 'nav-menu':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <NavMenuDemo />
+        </DemoFrame>
+      )
+    case 'icon-bar':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <IconBarDemo />
+        </DemoFrame>
+      )
+    case 'id-reel':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <IdReelDemo />
+        </DemoFrame>
+      )
+    case 'input':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <InputDemo />
+        </DemoFrame>
+      )
     case 'bounce-sidebar':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
@@ -146,6 +240,12 @@ export function ComponentDemo({ id }: { id: string }) {
           <PasswordInputDemo />
         </DemoFrame>
       )
+    case 'radio-group':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <RadioGroupDemo />
+        </DemoFrame>
+      )
     case 'ratio-slider':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
@@ -158,10 +258,64 @@ export function ComponentDemo({ id }: { id: string }) {
           <ScrollIndicatorDemo />
         </DemoFrame>
       )
+    case 'switch':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <SwitchDemo />
+        </DemoFrame>
+      )
+    case 'table':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <TableDemo />
+        </DemoFrame>
+      )
+    case 'select':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <SelectDemo />
+        </DemoFrame>
+      )
     case 'table-of-contents':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <TableOfContentsDemo />
+        </DemoFrame>
+      )
+    case 'tabs-subtle':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <TabsSubtleDemo />
+        </DemoFrame>
+      )
+    case 'input-copy':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <InputCopyDemo />
+        </DemoFrame>
+      )
+    case 'input-message':
+      return (
+        <DemoFrame className="flex h-full min-h-72 w-full items-stretch justify-center">
+          <InputMessageDemo />
+        </DemoFrame>
+      )
+    case 'bars-theme':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <BarsThemeDemo />
+        </DemoFrame>
+      )
+    case 'glow-orb':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <GlowOrbDemo />
+        </DemoFrame>
+      )
+    case 'fluid-orb':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <FluidOrbDemo />
         </DemoFrame>
       )
     case 'theme-toggle':

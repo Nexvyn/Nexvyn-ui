@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { springs } from '@/lib/motion-tokens'
 import { BAR_BOX, barCenterFor, fillEdgePx } from './geometry'
 import { type UseFaderOptions, useFader } from './use-fader'
+import { playHoverSound, playClickSound, playTickSound } from '@/lib/sound'
 
 const MARK_HIDE_RADIUS = 10
 const MARK_HIDE_FADE = 6
@@ -111,12 +112,18 @@ export function Fader({
   return (
     <BaseSlider.Root
       ref={ref}
+      // eslint-disable-next-line react-hooks/refs
       {...slider.rootProps}
       className={cn('w-full data-disabled:opacity-45', className)}
     >
       <div className="group/fader relative w-full">
         <BaseSlider.Control
           {...slider.controlProps}
+          onMouseEnter={() => playHoverSound()}
+          onPointerDown={(e) => {
+            playClickSound()
+            slider.controlProps?.onPointerDown?.(e)
+          }}
           className={cn(
             'group/control relative block w-full cursor-grab touch-pan-y select-none rounded-md outline-none data-disabled:cursor-default data-dragging:cursor-grabbing has-[&:focus-visible]:ring-2 has-[&:focus-visible]:ring-ring has-[&:focus-visible]:ring-offset-2 has-[&:focus-visible]:ring-offset-background bg-muted',
             sizeStyle.control,
@@ -202,6 +209,7 @@ export function Fader({
             {behavior.label}
           </BaseSlider.Label>
           <BaseSlider.Value
+            // eslint-disable-next-line react-hooks/refs
             ref={slider.valueRef}
             className={cn('text-foreground tabular-nums', sizeStyle.text)}
           >

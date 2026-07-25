@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { X, Check, AlertCircle } from 'lucide-react'
+import { useMounted } from '@/hooks/use-mounted'
 
 type FeedbackModalProps = {
   isOpen: boolean
@@ -19,9 +20,16 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
   const dialogRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLElement | null>(null)
   const successTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const [mounted, setMounted] = useState(false)
+  const mounted = useMounted()
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen)
 
-  useEffect(() => setMounted(true), [])
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen)
+    if (!isOpen) {
+      setText('')
+      setStatus('idle')
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -50,13 +58,6 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
       setSubmitting(false)
     }
   }
-
-  useEffect(() => {
-    if (!isOpen) {
-      setText('')
-      setStatus('idle')
-    }
-  }, [isOpen])
 
   useEffect(
     () => () => {
