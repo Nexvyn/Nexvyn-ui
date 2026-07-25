@@ -1,8 +1,8 @@
+<img src="public/favicon.svg" alt="Nexvyn UI" width="48" height="48" />
+
 # Nexvyn UI
 
 Animated UI components with spring physics and fluid interactions. Built on shadcn/ui and Radix primitives.
-
-Live docs & demos | Browse components
 
 ## Install
 
