@@ -93,12 +93,7 @@ export function BarsThemeBlueprint() {
         listening
       </text>
       <g className={BP_HIDE_ON_MORPH}>
-        <Selection
-          x={BP_LEFT}
-          y={BP_CENTER_Y - BAR.maxH / 2}
-          w={BLOCK_W}
-          h={BAR.maxH}
-        />
+        <Selection x={BP_LEFT} y={BP_CENTER_Y - BAR.maxH / 2} w={BLOCK_W} h={BAR.maxH} />
         <DimH
           x1={BP_XS[2]}
           x2={BP_XS[2] + BAR.w}
@@ -127,12 +122,7 @@ export function BarsThemeBlueprint() {
             y2={BP_CENTER_Y + 4}
           />
           <line x1={BP_XS[2]} y1={BP_CENTER_Y - 4} x2={BP_XS[2]} y2={BP_CENTER_Y + 4} />
-          <line
-            x1={BP_XS[1] + BAR.w}
-            y1={BP_CENTER_Y}
-            x2={BP_XS[2]}
-            y2={BP_CENTER_Y}
-          />
+          <line x1={BP_XS[1] + BAR.w} y1={BP_CENTER_Y} x2={BP_XS[2]} y2={BP_CENTER_Y} />
         </g>
         <DimLabel x={(BP_XS[1] + BAR.w + BP_XS[2]) / 2} y={BP_CENTER_Y - 8} anchor="middle">
           {`${BAR.gap.toFixed(1)}`}
@@ -237,7 +227,12 @@ function AnnotationsLayer() {
         y={TALLEST_TOP - 14}
         label={`${BAR.w.toFixed(1)}`}
       />
-      <DimV x={AN_XS[0] - 12} y1={TALLEST_TOP} y2={TALLEST_BOTTOM} label={`${BAR.maxH.toFixed(0)}`} />
+      <DimV
+        x={AN_XS[0] - 12}
+        y1={TALLEST_TOP}
+        y2={TALLEST_BOTTOM}
+        label={`${BAR.maxH.toFixed(0)}`}
+      />
       <DimLabel x={AN_XS[0]} y={TALLEST_BOTTOM + 14} anchor="start">
         {`r${BAR.r.toFixed(1)} · min ${BAR.minH.toFixed(1)}`}
       </DimLabel>
@@ -266,14 +261,14 @@ function AnnotationsLayer() {
 function OverlayLines() {
   return (
     <g strokeWidth="1" className="pointer-events-none">
+      <OverlayLine id="container" x1={AN_CENTER_X} y1={HIT.y} x2={AN_CENTER_X} y2={HIT.y - 34} />
       <OverlayLine
-        id="container"
-        x1={AN_CENTER_X}
-        y1={HIT.y}
-        x2={AN_CENTER_X}
-        y2={HIT.y - 34}
+        id="bar"
+        x1={TALLEST_MID_X}
+        y1={TALLEST_BOTTOM}
+        x2={TALLEST_MID_X}
+        y2={HIT.y + HIT.h + 34}
       />
-      <OverlayLine id="bar" x1={TALLEST_MID_X} y1={TALLEST_BOTTOM} x2={TALLEST_MID_X} y2={HIT.y + HIT.h + 34} />
     </g>
   )
 }

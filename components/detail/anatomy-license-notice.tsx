@@ -41,10 +41,7 @@ export function AnatomyLicenseNotice({ className }: { className?: string }) {
     if (!trigger) return
     const rect = trigger.getBoundingClientRect()
     const panelW = panelRef.current?.offsetWidth ?? 260
-    const left = Math.min(
-      Math.max(8, rect.right - panelW),
-      window.innerWidth - panelW - 8,
-    )
+    const left = Math.min(Math.max(8, rect.right - panelW), window.innerWidth - panelW - 8)
     setCoords({ top: rect.top - 8, left })
   }, [])
 

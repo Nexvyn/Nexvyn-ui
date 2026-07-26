@@ -132,12 +132,7 @@ export function InputMessageBlueprint() {
           strokeDasharray="2 2"
           opacity={theme.guide.structOpacity}
         >
-          <line
-            x1={leftX + 4}
-            y1={BP_Y + IM.pad + IM.textareaH}
-            x2={leftX + 4}
-            y2={bottomY}
-          />
+          <line x1={leftX + 4} y1={BP_Y + IM.pad + IM.textareaH} x2={leftX + 4} y2={bottomY} />
         </g>
         <DimLabel x={leftX + 8} y={BP_Y + IM.pad + IM.textareaH + IM.rowGap / 2 + 2.5}>
           {`${IM.rowGap}`}
@@ -315,7 +310,11 @@ function AnnotationsLayer() {
       <DimLabel x={CONTAINER.x + IM.pad} y={CONTAINER.y + CONTAINER.h - 2} anchor="start">
         {`${IM.pad}`}
       </DimLabel>
-      <DimLabel x={CONTAINER.x + CONTAINER.w - 30} y={CONTAINER.y + CONTAINER.h + 14} anchor="start">
+      <DimLabel
+        x={CONTAINER.x + CONTAINER.w - 30}
+        y={CONTAINER.y + CONTAINER.h + 14}
+        anchor="start"
+      >
         {`r${CONTAINER.rx}`}
       </DimLabel>
       <g
@@ -324,12 +323,7 @@ function AnnotationsLayer() {
         strokeDasharray="2 2"
         opacity={blueprintTheme.guide.structOpacity}
       >
-        <line
-          x1={TEXTAREA.x + 4}
-          y1={TEXTAREA.y + TEXTAREA.h}
-          x2={TEXTAREA.x + 4}
-          y2={BOTTOM_Y}
-        />
+        <line x1={TEXTAREA.x + 4} y1={TEXTAREA.y + TEXTAREA.h} x2={TEXTAREA.x + 4} y2={BOTTOM_Y} />
       </g>
       <DimLabel x={TEXTAREA.x + 10} y={TEXTAREA.y + TEXTAREA.h + IM.rowGap / 2 + 2.5}>
         {`${IM.rowGap}`}
@@ -354,7 +348,13 @@ function OverlayLines() {
         x2={containerMidX}
         y2={CONTAINER.y - 30}
       />
-      <OverlayLine id="textarea" x1={TEXTAREA.x} y1={textareaMidY} x2={TEXTAREA.x - 38} y2={textareaMidY} />
+      <OverlayLine
+        id="textarea"
+        x1={TEXTAREA.x}
+        y1={textareaMidY}
+        x2={TEXTAREA.x - 38}
+        y2={textareaMidY}
+      />
       <OverlayLine
         id="left-slot"
         x1={leftSlotMidX}
@@ -383,7 +383,12 @@ function Tags() {
         height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="container" label="Container" className="items-end justify-center" isAccent />
+        <AnatomyTag
+          part="container"
+          label="Container"
+          className="items-end justify-center"
+          isAccent
+        />
       </foreignObject>
       <foreignObject
         x={TEXTAREA.x - 38 - 90}
@@ -401,7 +406,11 @@ function Tags() {
         height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="left-slot" label="Left slot (attach)" className="items-start justify-center" />
+        <AnatomyTag
+          part="left-slot"
+          label="Left slot (attach)"
+          className="items-start justify-center"
+        />
       </foreignObject>
       <foreignObject
         x={sendMidX - 60}
@@ -410,7 +419,12 @@ function Tags() {
         height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="send" label="Send button" className="items-start justify-center" isAccent />
+        <AnatomyTag
+          part="send"
+          label="Send button"
+          className="items-start justify-center"
+          isAccent
+        />
       </foreignObject>
     </>
   )

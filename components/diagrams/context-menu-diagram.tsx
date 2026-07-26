@@ -25,8 +25,6 @@ import {
   Selection,
 } from '@/components/diagrams/lib/parts'
 
-
-
 const BP_MORPH_OPACITY =
   'transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) motion-reduce:transition-none'
 
@@ -172,14 +170,17 @@ export function ContextMenuBlueprint() {
           boxRx={BP_PANEL.rx}
           clipOffset={0.8}
         />
-        <DimLabel x={BP_PANEL.x + CM.panelPad - 2} y={BP_PANEL.y + BP_PANEL.h / 2 + 2.5} anchor="end">
+        <DimLabel
+          x={BP_PANEL.x + CM.panelPad - 2}
+          y={BP_PANEL.y + BP_PANEL.h / 2 + 2.5}
+          anchor="end"
+        >
           {`${CM.panelPad}`}
         </DimLabel>
       </g>
     </Blueprint>
   )
 }
-
 
 const AN = {
   panelW: 200,
@@ -390,21 +391,9 @@ function OverlayLines() {
   return (
     <g strokeWidth="1" className="pointer-events-none">
       <OverlayLine id="panel" x1={panelMidX} y1={panelTop} x2={panelMidX} y2={panelTop - 12} />
-      <OverlayLine
-        id="shortcut"
-        x1={rightEdge}
-        y1={item0MidY}
-        x2={rightEdge + 26}
-        y2={item0MidY}
-      />
+      <OverlayLine id="shortcut" x1={rightEdge} y1={item0MidY} x2={rightEdge + 26} y2={item0MidY} />
       <OverlayLine id="item" x1={rightEdge} y1={item1MidY} x2={rightEdge + 26} y2={item1MidY} />
-      <OverlayLine
-        id="separator"
-        x1={rightEdge}
-        y1={sepMidY}
-        x2={rightEdge + 26}
-        y2={sepMidY}
-      />
+      <OverlayLine id="separator" x1={rightEdge} y1={sepMidY} x2={rightEdge + 26} y2={sepMidY} />
       <OverlayLine
         id="destructive"
         x1={rightEdge}

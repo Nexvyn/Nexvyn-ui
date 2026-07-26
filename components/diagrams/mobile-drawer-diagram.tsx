@@ -22,7 +22,6 @@ import {
   Selection,
 } from '@/components/diagrams/lib/parts'
 
-
 const BP = {
   panelX: 14,
   panelW: 192,
@@ -138,7 +137,6 @@ export function MobileDrawerBlueprint() {
     </Blueprint>
   )
 }
-
 
 const MD = {
   overlayW: 300,
@@ -334,11 +332,7 @@ function AnnotationsLayer() {
       <DimLabel x={PANEL_X + MD.contentPadX / 2} y={ITEMS_TOP_Y + 24} anchor="middle">
         {`${MD.contentPadX}`}
       </DimLabel>
-      <DimLabel
-        x={PANEL_X + MD.panelW - MD.contentPadX / 2}
-        y={ITEMS_TOP_Y + 24}
-        anchor="middle"
-      >
+      <DimLabel x={PANEL_X + MD.panelW - MD.contentPadX / 2} y={ITEMS_TOP_Y + 24} anchor="middle">
         {`${MD.contentPadX}`}
       </DimLabel>
       <DimLabel

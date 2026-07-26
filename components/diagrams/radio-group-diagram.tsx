@@ -96,7 +96,7 @@ export function RadioGroupBlueprint() {
         <Selection x={BP_X} y={bpRowY(SELECTED_ROW)} w={TOTAL_W} h={ROW_H} />
         <DimH x1={BP_X} x2={BP_X + RADIO.circle} y={BP_Y - 14} label={`${RADIO.circle}`} />
         <DimV x={BP_X - 12} y1={BP_Y} y2={BP_Y + RADIO.circle} label={`${RADIO.circle}`} />
-        
+
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
@@ -129,7 +129,7 @@ export function RadioGroupBlueprint() {
         >
           {`${RADIO.gap}`}
         </DimLabel>
-        
+
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
@@ -143,18 +143,9 @@ export function RadioGroupBlueprint() {
             y2={bpRowY(0) + RADIO.circle}
           />
           <line x1={BP_X - 6} y1={bpRowY(1)} x2={BP_X - 1} y2={bpRowY(1)} />
-          <line
-            x1={BP_X - 3.5}
-            y1={bpRowY(0) + RADIO.circle}
-            x2={BP_X - 3.5}
-            y2={bpRowY(1)}
-          />
+          <line x1={BP_X - 3.5} y1={bpRowY(0) + RADIO.circle} x2={BP_X - 3.5} y2={bpRowY(1)} />
         </g>
-        <DimLabel
-          x={BP_X - 9}
-          y={(bpRowY(0) + RADIO.circle + bpRowY(1)) / 2 + 2.5}
-          anchor="end"
-        >
+        <DimLabel x={BP_X - 9} y={(bpRowY(0) + RADIO.circle + bpRowY(1)) / 2 + 2.5} anchor="end">
           {`${RADIO.rowGap}`}
         </DimLabel>
       </g>
@@ -236,7 +227,9 @@ function LabelShape({ i }: { i: number }) {
         y={cy + 4}
         fontSize={13}
         fontFamily="var(--font-sans)"
-        className={i === SELECTED_ROW ? `fill-current ${spotlight.className}` : 'fill-current opacity-70'}
+        className={
+          i === SELECTED_ROW ? `fill-current ${spotlight.className}` : 'fill-current opacity-70'
+        }
         style={i === SELECTED_ROW ? spotlight.style : undefined}
       >
         {ROWS[i]}
@@ -258,7 +251,13 @@ function AnnotationsLayer() {
     >
       <Selection x={0} y={selY} w={RADIO.circle} h={RADIO.circle} />
       <DimH x1={0} x2={RADIO.circle} y={selY - 14} label={`${RADIO.circle}`} />
-      <DimV x={-12} y1={selY} y2={selY + RADIO.circle} label={`${RADIO.circle}`} labelXOffset={-6} />
+      <DimV
+        x={-12}
+        y1={selY}
+        y2={selY + RADIO.circle}
+        label={`${RADIO.circle}`}
+        labelXOffset={-6}
+      />
       <g
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={blueprintTheme.guide.strokeWidth}
@@ -275,7 +274,7 @@ function AnnotationsLayer() {
       <DimLabel x={RADIO.circle + RADIO.gap / 2} y={selY + RADIO.r - 6} anchor="middle">
         {`${RADIO.gap}`}
       </DimLabel>
-      
+
       <g
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={blueprintTheme.guide.strokeWidth}

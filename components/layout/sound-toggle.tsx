@@ -79,9 +79,7 @@ function SoundIcon({ muted }: { muted: boolean }) {
           initial={reduceMotion ? false : { opacity: 0, scale: 0.6, rotate: muted ? -25 : 25 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           exit={
-            reduceMotion
-              ? { opacity: 0 }
-              : { opacity: 0, scale: 0.6, rotate: muted ? 25 : -25 }
+            reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.6, rotate: muted ? 25 : -25 }
           }
           transition={reduceMotion ? { duration: 0 } : springs.press}
         >

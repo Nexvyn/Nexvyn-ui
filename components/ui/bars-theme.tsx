@@ -242,7 +242,9 @@ export function BarsTheme({
     const animateStatic = () => {
       updateHoverBoost()
       for (let i = 0; i < BAR_COUNT; i++) {
-        smoothed.current[i] = reduceMotion ? minH : smoothed.current[i] + (minH - smoothed.current[i]) * 0.14
+        smoothed.current[i] = reduceMotion
+          ? minH
+          : smoothed.current[i] + (minH - smoothed.current[i]) * 0.14
       }
       applyBars(smoothed.current)
       rafRef.current = requestAnimationFrame(animateStatic)

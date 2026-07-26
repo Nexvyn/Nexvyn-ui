@@ -140,7 +140,12 @@ export function InputCopyWireframe() {
         <DimLabel x={BP_FIELD.x + BP_FIELD.w - BP_PAD_X / 2} y={midY + 2} anchor="middle">
           8
         </DimLabel>
-        <DimH x1={BP_FIELD.x} x2={BP_FIELD.x + BP_FIELD.w} y={BP_FIELD.y + BP_FIELD.h + 16} label="190" />
+        <DimH
+          x1={BP_FIELD.x}
+          x2={BP_FIELD.x + BP_FIELD.w}
+          y={BP_FIELD.y + BP_FIELD.h + 16}
+          label="190"
+        />
         <DimV
           x={BP_FIELD.x - 12}
           y1={BP_FIELD.y}
