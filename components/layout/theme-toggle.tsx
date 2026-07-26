@@ -36,7 +36,7 @@ export function ThemeToggle({
   showShortcut?: boolean
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
 }) {
- const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false)
   useEffect(() => {
     setMounted(true)
   }, [])

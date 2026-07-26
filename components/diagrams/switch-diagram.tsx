@@ -79,7 +79,7 @@ export function SwitchBlueprint() {
         <Selection x={BP_X} y={BP_Y} w={SWITCH.trackW} h={SWITCH.trackH} />
         <DimH x1={BP_X} x2={BP_X + SWITCH.trackW} y={BP_Y - 14} label={`${SWITCH.trackW}`} />
         <DimV x={BP_X - 12} y1={BP_Y} y2={BP_Y + SWITCH.trackH} label={`${SWITCH.trackH}`} />
-        
+
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
@@ -105,25 +105,28 @@ export function SwitchBlueprint() {
             y2={BP_Y + SWITCH.trackH + 6.5}
           />
         </g>
-        <DimLabel x={(BP_X + SWITCH.thumb / 2 + thumbCx) / 2} y={BP_Y + SWITCH.trackH + 22} anchor="middle">
+        <DimLabel
+          x={(BP_X + SWITCH.thumb / 2 + thumbCx) / 2}
+          y={BP_Y + SWITCH.trackH + 22}
+          anchor="middle"
+        >
           {`${SWITCH.travel}`}
         </DimLabel>
-        <DimLabel x={BP_X + SWITCH.trackW + SWITCH.gap} y={BP_Y + SWITCH.trackH + 22} anchor="start">
+        <DimLabel
+          x={BP_X + SWITCH.trackW + SWITCH.gap}
+          y={BP_Y + SWITCH.trackH + 22}
+          anchor="start"
+        >
           {`r${SWITCH.rx}`}
         </DimLabel>
-        
+
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="2 2"
           opacity={theme.guide.structOpacity}
         >
-          <line
-            x1={BP_X + SWITCH.trackW}
-            y1={BP_Y - 4}
-            x2={BP_X + SWITCH.trackW}
-            y2={BP_Y - 9}
-          />
+          <line x1={BP_X + SWITCH.trackW} y1={BP_Y - 4} x2={BP_X + SWITCH.trackW} y2={BP_Y - 9} />
           <line
             x1={BP_X + SWITCH.trackW + SWITCH.gap}
             y1={BP_Y - 4}
@@ -239,7 +242,7 @@ function AnnotationsLayer() {
       <DimLabel x={0} y={SWITCH.trackH + 14} anchor="start">
         {`r${SWITCH.rx}`}
       </DimLabel>
-      
+
       <g
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={blueprintTheme.guide.strokeWidth}
@@ -251,7 +254,7 @@ function AnnotationsLayer() {
       <DimLabel x={(SWITCH.thumb / 2 + cx) / 2} y={cy - 6} anchor="middle">
         {`${SWITCH.travel}`}
       </DimLabel>
-      
+
       <g
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={blueprintTheme.guide.strokeWidth}
@@ -276,13 +279,7 @@ function OverlayLines() {
   return (
     <g strokeWidth="1" className="pointer-events-none">
       <OverlayLine id="track" x1={trackMidX} y1={trackTop} x2={trackMidX} y2={trackTop - 40} />
-      <OverlayLine
-        id="thumb"
-        x1={thumbCx}
-        y1={thumbBottom}
-        x2={thumbCx}
-        y2={thumbBottom + 36}
-      />
+      <OverlayLine id="thumb" x1={thumbCx} y1={thumbBottom} x2={thumbCx} y2={thumbBottom + 36} />
       <OverlayLine id="label" x1={labelMidX} y1={trackTop} x2={labelMidX} y2={trackTop - 40} />
     </g>
   )

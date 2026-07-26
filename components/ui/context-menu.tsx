@@ -18,7 +18,6 @@ import { cn } from '@/lib/utils'
 import { springs } from '@/lib/motion-tokens'
 import { useProximityHighlight, ProximityHighlight } from '@/lib/hooks/use-proximity-highlight'
 
-
 export interface ContextMenuItem {
   label: string
   icon?: ReactNode
@@ -28,7 +27,6 @@ export interface ContextMenuItem {
   disabled?: boolean
   separatorAfter?: boolean
 }
-
 
 interface ContextMenuContextValue {
   open: boolean
@@ -44,7 +42,6 @@ function useContextMenuCtx(componentName: string) {
   if (!ctx) throw new Error(`${componentName} must be used within ContextMenu`)
   return ctx
 }
-
 
 export interface ContextMenuProps {
   children: ReactNode
@@ -191,7 +188,6 @@ export const ContextMenu = forwardRef<HTMLDivElement, ContextMenuProps>(
   },
 )
 ContextMenu.displayName = 'ContextMenu'
-
 
 interface ContextMenuPanelProps {
   position: { x: number; y: number }
@@ -372,7 +368,6 @@ const ContextMenuPanel = forwardRef<HTMLDivElement, ContextMenuPanelProps>(
 )
 ContextMenuPanel.displayName = 'ContextMenuPanel'
 
-
 function ContextMenuItemComponent({
   item,
   nextIndex,
@@ -433,7 +428,6 @@ function ContextMenuItemComponent({
     </button>
   )
 }
-
 
 export function ContextMenuPreview() {
   return (

@@ -241,9 +241,7 @@ export const RadioItem = forwardRef<HTMLDivElement, RadioItemProps>(
     // item tabIndex 0 simultaneously, breaking Tab navigation into/out of
     // the group.
     const isTabbable =
-      focusedValue !== null
-        ? focusedValue === itemValue
-        : itemValue === (value ?? itemValues[0])
+      focusedValue !== null ? focusedValue === itemValue : itemValue === (value ?? itemValues[0])
 
     return (
       <div ref={ref} className={cn('flex items-center gap-3 min-h-11', className)} {...props}>

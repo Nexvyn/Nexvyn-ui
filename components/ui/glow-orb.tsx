@@ -206,11 +206,7 @@ function FluidOrb({ size, colorRgb, speed }: FluidOrbProps) {
     if (reduce) {
       draw()
       redrawRef.current = () => {
-        curColor = [
-          colorRef.current[0] / 255,
-          colorRef.current[1] / 255,
-          colorRef.current[2] / 255,
-        ]
+        curColor = [colorRef.current[0] / 255, colorRef.current[1] / 255, colorRef.current[2] / 255]
         draw()
       }
     } else {

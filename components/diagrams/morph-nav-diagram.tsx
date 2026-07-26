@@ -26,7 +26,6 @@ import {
   Selection,
 } from '@/components/diagrams/lib/parts'
 
-
 const BP = {
   triggerR: 15,
   triggerCx: 22,
@@ -68,9 +67,19 @@ export function MorphNavBlueprint() {
         strokeLinecap="round"
         className="opacity-0 transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
       >
-        <line x1={BP.triggerCx - 6} y1={BP_TRIGGER_CY - 4} x2={BP.triggerCx + 6} y2={BP_TRIGGER_CY - 4} />
+        <line
+          x1={BP.triggerCx - 6}
+          y1={BP_TRIGGER_CY - 4}
+          x2={BP.triggerCx + 6}
+          y2={BP_TRIGGER_CY - 4}
+        />
         <line x1={BP.triggerCx - 6} y1={BP_TRIGGER_CY} x2={BP.triggerCx + 6} y2={BP_TRIGGER_CY} />
-        <line x1={BP.triggerCx - 6} y1={BP_TRIGGER_CY + 4} x2={BP.triggerCx + 6} y2={BP_TRIGGER_CY + 4} />
+        <line
+          x1={BP.triggerCx - 6}
+          y1={BP_TRIGGER_CY + 4}
+          x2={BP.triggerCx + 6}
+          y2={BP_TRIGGER_CY + 4}
+        />
       </g>
       <g
         stroke="currentColor"
@@ -78,9 +87,19 @@ export function MorphNavBlueprint() {
         strokeLinecap="round"
         className="opacity-70 transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none"
       >
-        <line x1={BP.triggerCx - 6} y1={BP_TRIGGER_CY - 4} x2={BP.triggerCx + 6} y2={BP_TRIGGER_CY - 4} />
+        <line
+          x1={BP.triggerCx - 6}
+          y1={BP_TRIGGER_CY - 4}
+          x2={BP.triggerCx + 6}
+          y2={BP_TRIGGER_CY - 4}
+        />
         <line x1={BP.triggerCx - 6} y1={BP_TRIGGER_CY} x2={BP.triggerCx + 6} y2={BP_TRIGGER_CY} />
-        <line x1={BP.triggerCx - 6} y1={BP_TRIGGER_CY + 4} x2={BP.triggerCx + 6} y2={BP_TRIGGER_CY + 4} />
+        <line
+          x1={BP.triggerCx - 6}
+          y1={BP_TRIGGER_CY + 4}
+          x2={BP.triggerCx + 6}
+          y2={BP_TRIGGER_CY + 4}
+        />
       </g>
 
       <rect
@@ -165,7 +184,6 @@ export function MorphNavBlueprint() {
   )
 }
 
-
 const MN = {
   triggerSize: 44,
   panelW: 192,
@@ -238,7 +256,17 @@ function PanelShape() {
   )
 }
 
-function ItemShape({ y, label, id, hasChildren }: { y: number; label: string; id: string; hasChildren?: boolean }) {
+function ItemShape({
+  y,
+  label,
+  id,
+  hasChildren,
+}: {
+  y: number
+  label: string
+  id: string
+  hasChildren?: boolean
+}) {
   const { setHovered } = useAnatomy()
   const spotlight = useSpotlight(id)
   const x = PANEL_X + MN.itemPadX
@@ -342,7 +370,13 @@ function OverlayLines() {
   const chevronCx = PANEL_X + MN.panelW - MN.panelPad - MN.chevronSize + 2
   return (
     <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="trigger" x1={TRIGGER_CX} y1={triggerTop} x2={TRIGGER_CX} y2={triggerTop - 26} />
+      <OverlayLine
+        id="trigger"
+        x1={TRIGGER_CX}
+        y1={triggerTop}
+        x2={TRIGGER_CX}
+        y2={triggerTop - 26}
+      />
       <OverlayLine
         id="panel"
         x1={PANEL_X + MN.panelW}

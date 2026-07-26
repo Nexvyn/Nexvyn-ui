@@ -11,12 +11,17 @@ import {
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { AnimatePresence, motion, useMotionValue, useReducedMotion, useTransform } from 'motion/react'
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+} from 'motion/react'
 import { cn } from '@/lib/utils'
 import { springs } from '@/lib/motion-tokens'
 import { useFocusTrap } from '@/lib/hooks/use-focus-trap'
 import { useMounted } from '@/hooks/use-mounted'
-
 
 export interface MobileDrawerProps extends HTMLAttributes<HTMLDivElement> {
   open: boolean
@@ -25,7 +30,6 @@ export interface MobileDrawerProps extends HTMLAttributes<HTMLDivElement> {
   triggerRef?: React.RefObject<HTMLElement | null>
   dismissible?: boolean
 }
-
 
 export interface MobileDrawerTitleProps extends HTMLAttributes<HTMLHeadingElement> {
   children: ReactNode
@@ -43,7 +47,6 @@ export const MobileDrawerTitle = forwardRef<HTMLHeadingElement, MobileDrawerTitl
   ),
 )
 MobileDrawerTitle.displayName = 'MobileDrawerTitle'
-
 
 export const MobileDrawer = forwardRef<HTMLDivElement, MobileDrawerProps>(
   (
@@ -154,7 +157,6 @@ export const MobileDrawer = forwardRef<HTMLDivElement, MobileDrawerProps>(
   },
 )
 MobileDrawer.displayName = 'MobileDrawer'
-
 
 export function MobileDrawerPreview() {
   const [open, setOpen] = useState(false)

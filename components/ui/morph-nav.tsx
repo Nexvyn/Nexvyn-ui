@@ -19,7 +19,6 @@ import { cn } from '@/lib/utils'
 import { springs } from '@/lib/motion-tokens'
 import { useProximityHighlight, ProximityHighlight } from '@/lib/hooks/use-proximity-highlight'
 
-
 export interface MorphNavItem {
   id: string
   label: string
@@ -29,9 +28,7 @@ export interface MorphNavItem {
   children?: MorphNavItem[]
 }
 
-
 type MorphNavState = 'closed' | 'main' | 'sub'
-
 
 interface MorphNavContextValue {
   state: MorphNavState
@@ -50,7 +47,6 @@ function useMorphNavCtx(componentName: string) {
   return ctx
 }
 
-
 const PATH_HAMBURGER = 'M3 5h10M3 8h10M3 11h10'
 const PATH_MINUS = 'M3 8h10'
 const PATH_BACK = 'M7 5L3 8l4 3'
@@ -60,7 +56,6 @@ function getTriggerPaths(state: MorphNavState) {
   if (state === 'main') return { top: PATH_MINUS, mid: PATH_MINUS, bot: PATH_MINUS }
   return { top: PATH_BACK, mid: PATH_BACK, bot: PATH_BACK }
 }
-
 
 export interface MorphNavProps {
   children?: ReactNode
@@ -207,7 +202,6 @@ export const MorphNav = forwardRef<HTMLDivElement, MorphNavProps>(
   },
 )
 MorphNav.displayName = 'MorphNav'
-
 
 interface MorphNavPanelProps {
   id: string
@@ -361,7 +355,6 @@ const MorphNavPanel = forwardRef<HTMLDivElement, MorphNavPanelProps>(
 )
 MorphNavPanel.displayName = 'MorphNavPanel'
 
-
 function MorphNavItemComponent({
   item,
   nextIndex,
@@ -435,7 +428,6 @@ function MorphNavItemComponent({
     </button>
   )
 }
-
 
 export function MorphNavPreview() {
   return (

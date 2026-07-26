@@ -19,13 +19,11 @@ import { cn } from '@/lib/utils'
 import { useProximityHighlight, ProximityHighlight } from '@/lib/hooks/use-proximity-highlight'
 import { matchesSearch, buildSearchableText } from '@/lib/search-match'
 
-
 export interface ComboboxOption {
   value: string
   label: string
   description?: string
 }
-
 
 interface ComboboxContextValue {
   value: string
@@ -78,7 +76,6 @@ function useComboboxContentCtx(componentName: string) {
   if (!ctx) throw new Error(`${componentName} must be used within ComboboxContent`)
   return ctx
 }
-
 
 export interface ComboboxProps {
   children: ReactNode
@@ -278,7 +275,6 @@ export const Combobox = forwardRef<HTMLDivElement, ComboboxProps>(
 )
 Combobox.displayName = 'Combobox'
 
-
 export interface ComboboxInputProps extends Omit<HTMLAttributes<HTMLInputElement>, 'children'> {
   placeholder?: string
 }
@@ -393,7 +389,6 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
   },
 )
 ComboboxInput.displayName = 'ComboboxInput'
-
 
 export interface ComboboxContentProps extends HTMLAttributes<HTMLDivElement> {
   align?: 'start' | 'center' | 'end'
@@ -523,7 +518,6 @@ export const ComboboxContent = forwardRef<HTMLDivElement, ComboboxContentProps>(
       setValueRef,
     ])
 
-
     const setRefs = useCallback(
       (el: HTMLDivElement | null) => {
         ;(panelRef as React.MutableRefObject<HTMLDivElement | null>).current = el
@@ -609,7 +603,6 @@ export const ComboboxContent = forwardRef<HTMLDivElement, ComboboxContentProps>(
 )
 ComboboxContent.displayName = 'ComboboxContent'
 
-
 function ComboboxOptionItem({ option, index }: { option: ComboboxOption; index: number }) {
   const { setValue } = useComboboxCtx('ComboboxOptionItem')
   const { activeIndex, setActiveIndex, registerItem } = useComboboxContentCtx('ComboboxOptionItem')
@@ -647,7 +640,6 @@ function ComboboxOptionItem({ option, index }: { option: ComboboxOption; index: 
     </div>
   )
 }
-
 
 export function ComboboxPreview() {
   const [value, setValue] = useState('')
