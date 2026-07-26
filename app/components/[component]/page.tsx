@@ -27,7 +27,6 @@ import {
   FaderDemo,
   GooDropdownDemo,
   IconBarDemo,
-  IdReelDemo,
   InputDemo,
   NavMenuDemo,
   PasswordInputDemo,
@@ -196,12 +195,6 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <IconBarDemo />
-        </DemoFrame>
-      )
-    case 'id-reel':
-      return (
-        <DemoFrame className="flex items-center justify-center p-6">
-          <IdReelDemo />
         </DemoFrame>
       )
     case 'input':

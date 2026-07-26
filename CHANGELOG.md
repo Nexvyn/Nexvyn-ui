@@ -4,6 +4,12 @@ All notable changes to Nexvyn/UI will be documented in this file.
 
 ---
 
+## [Unreleased]
+
+### Removed
+
+- **Id Reel** — Removed from the catalog.
+
 ## [0.1.0] - 2026-07-04
 
 ### Added

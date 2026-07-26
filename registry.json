@@ -369,23 +369,6 @@
       ]
     },
     {
-      "name": "id-reel",
-      "type": "registry:ui",
-      "title": "Id Reel",
-      "description": "An id pill with an odometer run-up on its digits, middle-truncation for long values, and an optional GitHub-style pull-request status badge.",
-      "dependencies": ["motion"],
-      "files": [
-        {
-          "path": "components/ui/id-reel.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "lib/sound.ts",
-          "type": "registry:lib"
-        }
-      ]
-    },
-    {
       "name": "input",
       "type": "registry:ui",
       "title": "Input",

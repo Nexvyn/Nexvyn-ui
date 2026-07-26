@@ -137,15 +137,6 @@
   --mascot-stop-6: #000000;
   --mascot-foot: #7aa6c6;
 
-  --pr-open: #1a7f37;
-  --pr-open-bg: #dafbe1;
-  --pr-draft: #57606a;
-  --pr-draft-bg: #eaeef2;
-  --pr-merged: #8250df;
-  --pr-merged-bg: #f5edff;
-  --pr-closed: #cf222e;
-  --pr-closed-bg: #ffebe9;
-
   --bg: var(--color-bg);
   --surface: var(--color-surface);
   --surface-2: var(--color-surface-2);
@@ -275,15 +266,6 @@ html.dark,
   --mascot-stop-3: #d8e6f1;
   --mascot-stop-4: #afc7dc;
   --mascot-stop-5: #7aa6c6;
-
-  --pr-open: #3fb950;
-  --pr-open-bg: #033a16;
-  --pr-draft: #8b949e;
-  --pr-draft-bg: #21262d;
-  --pr-merged: #a371f7;
-  --pr-merged-bg: #3b1e54;
-  --pr-closed: #f85149;
-  --pr-closed-bg: #490202;
 }
 
 .dark html,

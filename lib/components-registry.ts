@@ -16,7 +16,6 @@ import { dropdownMenuMetadata } from '@/components/ui/Doc/dropdown-menu-metadata
 import { navMenuMetadata } from '@/components/ui/Doc/nav-menu-metadata'
 import { iconBarMetadata } from '@/components/ui/Doc/icon-bar-metadata'
 import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
-import { idReelMetadata } from '@/components/ui/Doc/id-reel-metadata'
 import { inputMetadata } from '@/components/ui/Doc/input-metadata'
 import { inputCopyMetadata } from '@/components/ui/Doc/input-copy-metadata'
 import { inputMessageMetadata } from '@/components/ui/Doc/input-message-metadata'
@@ -123,7 +122,6 @@ const COMPONENTS_UNSORTED: ComponentItem[] = [
   fluidOrbMetadata,
   gooDropdownMetadata,
   iconBarMetadata,
-  idReelMetadata,
   inputMetadata,
   inputCopyMetadata,
   inputMessageMetadata,
