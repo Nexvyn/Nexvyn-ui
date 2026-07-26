@@ -112,7 +112,6 @@ const ANATOMY_COMPONENTS = [
   'fluid-orb',
   'goo-dropdown',
   'icon-bar',
-  'id-reel',
   'input',
   'input-copy',
   'input-message',
