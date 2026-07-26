@@ -12,6 +12,7 @@ import { Tooltip } from './tooltip'
 import {
   BASIC_COMPONENTS,
   COLLECTIONS,
+  ILLUSTRATION_COMPONENTS,
   NORMAL_COMPONENTS,
   compareComponentsByCollection,
   compareComponentsById,
@@ -440,9 +441,7 @@ function NavItem({
       >
         {item.isNew && <NewStarIcon />}
         {typeof number === 'number' ? formatComponentLabel(number, item.name) : item.name}
-        {item.isNew && (
-          <span className="text-[10px] font-medium text-(--color-new)">New</span>
-        )}
+        {item.isNew && <span className="text-[10px] font-medium text-(--color-new)">New</span>}
       </span>
     </Link>
   )
@@ -463,7 +462,9 @@ function SidebarNav() {
 
   const normalSorted = useMemo(
     () =>
-      [...NORMAL_COMPONENTS].sort(sortById ? compareComponentsById : compareComponentsByCollection),
+      NORMAL_COMPONENTS.filter((c) => c.collection !== 'illustration').sort(
+        sortById ? compareComponentsById : compareComponentsByCollection,
+      ),
     [sortById],
   )
 
@@ -482,8 +483,8 @@ function SidebarNav() {
   }, [activeId, sortById])
 
   const isMcpPage = pathname === '/mcp'
-  const isIllustrationPage = pathname === '/illustration'
   const isChangelogPage = pathname === '/changelog'
+  const isStarsPage = pathname === '/stars'
   const isDesignPage = pathname === '/design'
 
   const hoverHandlers = (item: ComponentItem) => ({
@@ -540,12 +541,39 @@ function SidebarNav() {
 
             <NavSectionHeader title="MCP" active={isMcpPage} href="/mcp" isNew />
             <Separator />
-            <NavSectionHeader
-              title="Illustration"
-              active={isIllustrationPage}
-              href="/illustration"
-              isNew
-            />
+            <NavSectionHeader title="Illustration" isNew />
+            {ILLUSTRATION_COMPONENTS.length > 0 && (
+              <>
+                <Separator
+                  growFrom={hoveredItem?.id === ILLUSTRATION_COMPONENTS[0]?.id ? 'end' : undefined}
+                />
+                {ILLUSTRATION_COMPONENTS.map((item, index) => {
+                  const isActive = activeId === item.id
+                  const nextItem = ILLUSTRATION_COMPONENTS[index + 1]
+                  return (
+                    <Fragment key={item.id}>
+                      <NavItem
+                        item={item}
+                        isActive={isActive}
+                        itemRef={isActive ? activeRef : undefined}
+                        {...hoverHandlers(item)}
+                      />
+                      {index !== ILLUSTRATION_COMPONENTS.length - 1 && (
+                        <Separator
+                          growFrom={
+                            hoveredItem?.id === item.id
+                              ? 'start'
+                              : hoveredItem?.id === nextItem?.id
+                                ? 'end'
+                                : undefined
+                          }
+                        />
+                      )}
+                    </Fragment>
+                  )
+                })}
+              </>
+            )}
             <Separator count={4} />
 
             {sortById ? (
@@ -657,6 +685,8 @@ function SidebarNav() {
             <Separator count={4} />
             <NavSectionHeader title="Changelog" active={isChangelogPage} href="/changelog" />
             <Separator />
+            <NavSectionHeader title="Stars" active={isStarsPage} href="/stars" />
+            <Separator />
             <NavSectionHeader title="Design" active={isDesignPage} href="/design" />
           </div>
         </div>
@@ -672,6 +702,7 @@ export function Sidebar() {
     pathname === '/mcp' ||
     pathname === '/illustration' ||
     pathname === '/changelog' ||
+    pathname === '/stars' ||
     pathname === '/design'
   const { showSidebar, toggleSidebar, setShowSidebar } = useSidebar()
   const containerRef = useClickOutside<HTMLDivElement>(() => {

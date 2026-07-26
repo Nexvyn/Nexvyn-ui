@@ -1,6 +1,12 @@
 import dynamic from 'next/dynamic'
 
 export const blueprintPreviews: Record<string, React.ComponentType> = {
+  'phone-mockup-blueprint': dynamic(() =>
+    import('@/components/diagrams/phone-mockup-diagram').then((m) => m.PhoneMockupWireframe),
+  ),
+  'laptop-mockup-blueprint': dynamic(() =>
+    import('@/components/diagrams/laptop-mockup-diagram').then((m) => m.LaptopMockupWireframe),
+  ),
   'badge-blueprint': dynamic(() =>
     import('@/components/diagrams/badge-diagram').then((m) => m.BadgeBlueprint),
   ),

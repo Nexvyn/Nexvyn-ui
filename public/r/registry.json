@@ -639,6 +639,32 @@
       ]
     },
     {
+      "name": "phone-mockup",
+      "type": "registry:ui",
+      "title": "Phone Mockup",
+      "description": "A device-frame illustration with side buttons, dynamic island, and a cropped/scrolled variant for showcasing app screens.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/illustration/phone-mockup.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "laptop-mockup",
+      "type": "registry:ui",
+      "title": "Laptop Mockup",
+      "description": "A laptop device-frame illustration for showcasing app screens.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/illustration/laptop-mockup.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "fluid-orb",
       "type": "registry:ui",
       "title": "Fluid Orb",
