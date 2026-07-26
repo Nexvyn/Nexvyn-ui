@@ -28,6 +28,8 @@ import { switchMetadata } from '@/components/ui/Doc/switch-metadata'
 import { tableMetadata } from '@/components/ui/Doc/table-metadata'
 import { tableOfContentsMetadata } from '@/components/ui/Doc/table-of-contents-metadata'
 import { tabsSubtleMetadata } from '@/components/ui/Doc/tabs-subtle-metadata'
+import { phoneMockupMetadata } from '@/components/ui/Doc/phone-mockup-metadata'
+import { laptopMockupMetadata } from '@/components/ui/Doc/laptop-mockup-metadata'
 
 export type ComponentItem = {
   id: string
@@ -39,6 +41,12 @@ export type ComponentItem = {
   previewType?: 'video' | 'icons' | 'pixels' | 'toggle' | 'default'
   isNew?: boolean
   basic?: boolean
+  /**
+   * Grid card sizing on the /components showcase. Defaults to a standard
+   * single cell. 'lg' spans two rows (tall illustrations, e.g. a phone).
+   * 'xl' spans two rows and two columns (wide + tall illustrations, e.g. a laptop).
+   */
+  size?: 'default' | 'lg' | 'xl'
   description?: string
   registry?: string
   dependencies?: { name: string; icon?: string }[]
@@ -135,6 +143,8 @@ const COMPONENTS_UNSORTED: ComponentItem[] = [
   tableMetadata,
   tableOfContentsMetadata,
   tabsSubtleMetadata,
+  phoneMockupMetadata,
+  laptopMockupMetadata,
 ]
 
 /** Canonical ordered list used by grid, sidebar, and numbering. */
@@ -144,6 +154,15 @@ export const BASIC_COMPONENTS: ComponentItem[] = COMPONENTS.filter((c) => c.basi
 
 /** Non-basic components only (released + latest). */
 export const NORMAL_COMPONENTS: ComponentItem[] = COMPONENTS.filter((c) => !c.basic)
+
+/**
+ * Illustration items (e.g. phone-mockup). Shown on the /components showcase
+ * grid, but kept out of the sidebar's flat/collection nav lists — there they
+ * only ever appear nested under the dedicated "Illustration" link.
+ */
+export const ILLUSTRATION_COMPONENTS: ComponentItem[] = COMPONENTS.filter(
+  (c) => c.collection === 'illustration',
+)
 
 export const COLLECTIONS: ComponentCollection[] = [
   {

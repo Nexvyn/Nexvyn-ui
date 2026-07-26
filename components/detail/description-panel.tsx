@@ -143,6 +143,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
   const [codeOpen, setCodeOpen] = useState(false)
   const [feedbackOpen, setFeedbackOpen] = useState(false)
   const hasAnatomy = item?.id ? ANATOMY_COMPONENTS.includes(item.id) : false
+  const hasCode = item?.registry && item.collection !== 'illustration'
   const [anatomyView, setAnatomyView] = usePreviewControl(
     item?.id ? `${item.id}-view` : 'preview',
     'preview',
@@ -154,6 +155,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
   }
 
   const toggleCode = () => {
+    if (!hasCode) return
     if (codeOpen) {
       setCodeOpen(false)
     } else {
@@ -206,7 +208,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
           </button>
         </Tooltip>
 
-        {item?.registry && (
+        {hasCode && (
           <Tooltip content={codeOpen ? 'Hide code (C)' : 'Get code (C)'} side="bottom">
             <button
               type="button"

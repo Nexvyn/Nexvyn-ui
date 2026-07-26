@@ -18,10 +18,6 @@ import { cn } from '@/lib/utils'
 import { springs } from '@/lib/motion-tokens'
 import { playHoverSound, playClickSound } from '@/lib/sound'
 
-// ---------------------------------------------------------------------------
-// Context
-// ---------------------------------------------------------------------------
-
 interface RadioGroupContextValue {
   value: string | undefined
   setValue: (v: string) => void
@@ -43,10 +39,6 @@ function useRadioGroupCtx(componentName: string) {
   if (!ctx) throw new Error(`${componentName} must be used within RadioGroup`)
   return ctx
 }
-
-// ---------------------------------------------------------------------------
-// RadioGroup
-// ---------------------------------------------------------------------------
 
 export interface RadioGroupProps {
   value?: string
@@ -82,7 +74,6 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
     const groupId = useId()
     const containerRef = useRef<HTMLDivElement>(null)
 
-    // Track registered item values in DOM order for roving tabindex
     const [itemValues, setItemValues] = useState<string[]>([])
     const [focusedValue, setFocusedValue] = useState<string | null>(null)
 
@@ -103,7 +94,6 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       [isControlled, onValueChange],
     )
 
-    // Arrow key navigation (WAI-ARIA radio group pattern)
     const handleKeyDown = useCallback(
       (e: KeyboardEvent<HTMLDivElement>) => {
         const count = itemValues.length
@@ -132,10 +122,6 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
           if (nextValue) {
             setFocusedValue(nextValue)
             setValue(nextValue)
-            // Focus the button for this value directly — indexing into a
-            // `[role="radio"]` querySelectorAll would desync from
-            // itemValues (which excludes disabled items) whenever a
-            // disabled item sits between enabled ones.
             const button = containerRef.current?.querySelector<HTMLElement>(
               `[data-radio-value="${nextValue}"]`,
             )
@@ -197,10 +183,6 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
 )
 RadioGroup.displayName = 'RadioGroup'
 
-// ---------------------------------------------------------------------------
-// RadioItem — traveling dot (the signature)
-// ---------------------------------------------------------------------------
-
 export interface RadioItemProps {
   value: string
   label?: string
@@ -227,19 +209,12 @@ export const RadioItem = forwardRef<HTMLDivElement, RadioItemProps>(
     const isSelected = value === itemValue
     const id = `${groupId}-${itemValue}`
 
-    // Register/unregister with parent for roving tabindex
     useEffect(() => {
       if (disabled) return
       registerItem(itemValue)
       return () => unregisterItem(itemValue)
     }, [itemValue, disabled, registerItem, unregisterItem])
 
-    // Roving tabindex: exactly one item is tabbable at a time — the
-    // currently keyboard-focused item once the user has interacted, else
-    // the selected item, else the first registered (enabled) item. Using a
-    // blanket "nothing focused yet" check here would give every enabled
-    // item tabIndex 0 simultaneously, breaking Tab navigation into/out of
-    // the group.
     const isTabbable =
       focusedValue !== null ? focusedValue === itemValue : itemValue === (value ?? itemValues[0])
 
@@ -286,8 +261,6 @@ export const RadioItem = forwardRef<HTMLDivElement, RadioItemProps>(
           )}
           onPointerDown={(e) => e.preventDefault()}
         >
-          {/* Traveling dot — the signature. Uses layoutId so motion/react
-              animates a single element between positions. */}
           {isSelected && (
             <motion.span
               layoutId={`${groupId}-dot`}
@@ -317,10 +290,6 @@ export const RadioItem = forwardRef<HTMLDivElement, RadioItemProps>(
   },
 )
 RadioItem.displayName = 'RadioItem'
-
-// ---------------------------------------------------------------------------
-// Preview
-// ---------------------------------------------------------------------------
 
 export function RadioGroupPreview() {
   const [value, setValue] = useState('medium')

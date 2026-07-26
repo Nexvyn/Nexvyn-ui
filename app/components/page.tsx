@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { ComponentCard } from '@/components/showcase/component-card'
@@ -12,8 +12,24 @@ import {
   NORMAL_COMPONENTS,
   compareComponentsByCollection,
   compareComponentsById,
+  type ComponentItem,
 } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
+
+function shuffleIllustrationsIn(
+  items: ComponentItem[],
+  slots: Record<string, number>,
+): ComponentItem[] {
+  const base = items.filter((c) => c.collection !== 'illustration')
+  const illustrations = items.filter((c) => c.collection === 'illustration')
+  const result = [...base]
+  for (const item of illustrations) {
+    const fraction = slots[item.id] ?? 0
+    const index = Math.min(result.length, Math.round(fraction * result.length))
+    result.splice(index, 0, item)
+  }
+  return result
+}
 
 function SortIcon({ className, animate }: { className?: string; animate?: boolean }) {
   return (
@@ -47,12 +63,25 @@ export default function ComponentsPage() {
   const [sortByCategory, setSortByCategory] = useState(false)
   const [sortAnimating, setSortAnimating] = useState(false)
 
+  const [illustrationSlots, setIllustrationSlots] = useState<Record<string, number>>({})
+
+  useEffect(() => {
+    const slots: Record<string, number> = {}
+    for (const item of NORMAL_COMPONENTS) {
+      if (item.collection === 'illustration') slots[item.id] = Math.random()
+    }
+    setIllustrationSlots(slots)
+  }, [])
+
   const normalSorted = useMemo(
     () =>
-      [...NORMAL_COMPONENTS].sort(
-        sortByCategory ? compareComponentsByCollection : compareComponentsById,
+      shuffleIllustrationsIn(
+        [...NORMAL_COMPONENTS].sort(
+          sortByCategory ? compareComponentsByCollection : compareComponentsById,
+        ),
+        illustrationSlots,
       ),
-    [sortByCategory],
+    [sortByCategory, illustrationSlots],
   )
 
   const basicSorted = useMemo(
@@ -98,9 +127,7 @@ export default function ComponentsPage() {
               title={sortByCategory ? 'Sort by id' : 'Sort by category'}
             >
               <SortIcon className="size-4.5" animate={sortAnimating} />
-              <span className="hidden sm:inline">
-                {sortByCategory ? 'By category' : 'By id'}
-              </span>
+              <span className="hidden sm:inline">{sortByCategory ? 'By category' : 'By id'}</span>
             </button>
             <span
               className="ml-2 text-xl font-normal tracking-tight tabular-nums opacity-60 sm:text-2xl"
@@ -122,7 +149,7 @@ export default function ComponentsPage() {
                     className="text-lg font-normal tracking-tight"
                   />
                 </div>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-flow-dense grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {items.map((item) => (
                     <ComponentCard key={item.id} item={item} />
                   ))}
@@ -148,7 +175,7 @@ export default function ComponentsPage() {
           </div>
         ) : (
           <div className="space-y-10">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-flow-dense grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {normalSorted.map((item) => (
                 <ComponentCard key={item.id} item={item} />
               ))}

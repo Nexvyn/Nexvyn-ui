@@ -43,6 +43,8 @@ import {
   BarsThemeDemo,
   GlowOrbDemo,
   FluidOrbDemo,
+  PhoneMockupDemo,
+  LaptopMockupDemo,
 } from '@/components/ui/previews'
 
 function DemoFrame({
@@ -333,6 +335,18 @@ export function ComponentDemo({ id }: { id: string }) {
       return <GooeyFilterDemo />
     case 'scroll-fade':
       return <ScrollFadeDemo />
+    case 'phone-mockup':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <PhoneMockupDemo />
+        </DemoFrame>
+      )
+    case 'laptop-mockup':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <LaptopMockupDemo />
+        </DemoFrame>
+      )
     case 'not-found-card':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
