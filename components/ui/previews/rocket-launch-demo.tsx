@@ -22,8 +22,11 @@ export function RocketLaunchDemo() {
   }, [resetNonce])
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
-      <RocketLaunchIllustration ref={ref} showControls={false} onPhaseChange={setPhase} />
-    </div>
+    <RocketLaunchIllustration
+      ref={ref}
+      showControls={false}
+      onPhaseChange={setPhase}
+      className="absolute inset-0 h-auto w-auto max-w-none"
+    />
   )
 }

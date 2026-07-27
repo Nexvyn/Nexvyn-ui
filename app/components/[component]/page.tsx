@@ -350,7 +350,7 @@ export function ComponentDemo({ id }: { id: string }) {
       )
     case 'rocket-launch':
       return (
-        <DemoFrame className="flex items-center justify-center p-6">
+        <DemoFrame>
           <RocketLaunchDemo />
         </DemoFrame>
       )

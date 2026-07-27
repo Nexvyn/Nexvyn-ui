@@ -123,16 +123,17 @@ export const RocketLaunchIllustration = forwardRef<
       data-slot="rocket-launch-illustration"
       data-scope={scope}
       data-phase={phase}
-      className={cn(
-        'rocket-launch-scene relative isolate h-104 w-full max-w-sm overflow-hidden',
-        className,
-      )}
+      className={cn('rocket-launch-scene relative isolate h-104 w-full max-w-sm', className)}
       {...props}
     >
       <style>{`
         [data-scope="${scope}"] {
           --rocket-line: #07207a;
           --rocket-window-glass: #c1eaf7;
+        }
+
+        [data-scope="${scope}"][data-phase='flying'] {
+          overflow: hidden;
         }
 
         [data-scope="${scope}"] .rocket-launch-container {
@@ -230,7 +231,7 @@ export const RocketLaunchIllustration = forwardRef<
 
       <div className="rocket-launch-container">
         <svg
-          className="rocket-launch-svg h-auto w-42.5 sm:w-52.5"
+          className="rocket-launch-svg h-auto w-42.5 overflow-visible sm:w-52.5"
           viewBox="-30 -8 146 230"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
