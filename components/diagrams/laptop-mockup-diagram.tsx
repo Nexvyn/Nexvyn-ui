@@ -54,6 +54,17 @@ export function LaptopMockupWireframe() {
 
   return (
     <Blueprint className="h-auto w-80 sm:w-105 lg:w-95">
+      <defs>
+        <pattern
+          id="bp-hatch-laptop-screen"
+          width="4"
+          height="4"
+          patternTransform="rotate(45)"
+          patternUnits="userSpaceOnUse"
+        >
+          <line x1="0" y1="0" x2="0" y2="4" stroke="currentColor" strokeWidth="0.5" opacity="0.35" />
+        </pattern>
+      </defs>
       <path
         d={topRoundedRectPath(LID.x, LID.y, LID.w, lidH, LID.rx)}
         strokeWidth={theme.wireframe.strokeWidth}
@@ -66,6 +77,11 @@ export function LaptopMockupWireframe() {
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
         className={BP_FILL_SOLID}
+      />
+      <path
+        d={topRoundedRectPath(screenX, screenY, screenW, SCREEN_H, SCREEN_RX)}
+        fill="url(#bp-hatch-laptop-screen)"
+        className={BP_HIDE_ON_MORPH}
       />
 
       <path
@@ -87,7 +103,7 @@ export function LaptopMockupWireframe() {
       <g className={BP_HIDE_ON_MORPH}>
         <Selection x={baseX} y={LID.y} w={baseW} h={lidBottom + BASE_H - LID.y} />
         <DimH x1={LID.x} x2={LID.x + LID.w} y={LID.y - 8} label="280" />
-        <DimV x={baseX - 10} y1={LID.y} y2={lidBottom} label="184" labelXOffset={-6} />
+        <DimV x={baseX - 7} y1={LID.y} y2={lidBottom} label="184" labelXOffset={-6} />
         <DimLabel x={LID.x} y={LID.y - 12} anchor="start">
           r10
         </DimLabel>
