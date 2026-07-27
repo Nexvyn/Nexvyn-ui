@@ -22,12 +22,76 @@ function AnatomyLicenseToggle({ itemId }: { itemId: string }) {
   )
 }
 
+const bottomBarIconButtonClass =
+  'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2) text-(--color-fg) backdrop-blur-sm transition-[opacity,background-color] duration-(--motion-dur-fast) ease-(--motion-ease-out) hover:bg-(--color-surface) disabled:pointer-events-none disabled:opacity-40 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent)'
+
+function RocketLaunchControls({ itemId }: { itemId: string }) {
+  const [phase] = usePreviewControl('rocket-launch-phase', 'idle')
+  const [, setLaunchNonce] = usePreviewControl('rocket-launch-launch-nonce', '')
+  const [, setResetNonce] = usePreviewControl('rocket-launch-reset-nonce', '')
+
+  if (itemId !== 'rocket-launch') return null
+
+  return (
+    <>
+      <Tooltip content="Launch" side="top">
+        <button
+          type="button"
+          aria-label="Launch"
+          disabled={phase !== 'idle'}
+          onClick={() => setLaunchNonce(String(Date.now()))}
+          className={bottomBarIconButtonClass}
+        >
+          <svg
+            aria-hidden="true"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M5 3l14 9-14 9V3z" fill="currentColor" stroke="none" />
+          </svg>
+        </button>
+      </Tooltip>
+      <Tooltip content="Reset" side="top">
+        <button
+          type="button"
+          aria-label="Reset"
+          disabled={phase === 'idle'}
+          onClick={() => setResetNonce(String(Date.now()))}
+          className={bottomBarIconButtonClass}
+        >
+          <svg
+            aria-hidden="true"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M3 12a9 9 0 1 0 3-6.7" />
+            <path d="M3 3v5h5" />
+          </svg>
+        </button>
+      </Tooltip>
+    </>
+  )
+}
+
 function PreviewBottomBar({ registry, itemId }: { registry: string; itemId: string }) {
   return (
     <div className="absolute bottom-5 left-1/2 z-10 flex w-full max-w-[calc(100%-2.5rem)] -translate-x-1/2 items-center gap-2 pointer-events-auto sm:max-w-sm md:max-w-md">
       <div className="min-w-0 flex-1 rounded-xl backdrop-blur-sm">
         <InstallCommandBox registry={registry} />
       </div>
+      <RocketLaunchControls itemId={itemId} />
       <Tooltip content="Toggle sound (M)" side="top">
         <SoundToggle className="h-10 w-10 shrink-0 rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2) backdrop-blur-sm" />
       </Tooltip>

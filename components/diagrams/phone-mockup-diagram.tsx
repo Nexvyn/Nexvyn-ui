@@ -29,7 +29,11 @@ const ISLAND = {
   h: Math.round(20 * SCALE * 10) / 10,
   top: Math.round(9 * SCALE * 10) / 10,
 }
-const HOME = { w: Math.round(0.32 * BP.w * 10) / 10, h: 1, bottom: Math.round(5.5 * SCALE * 10) / 10 }
+const HOME = {
+  w: Math.round(0.32 * BP.w * 10) / 10,
+  h: 1,
+  bottom: Math.round(5.5 * SCALE * 10) / 10,
+}
 
 const SIDE_BUTTONS = [
   { side: 'left', top: 15.5, height: 3.2 },

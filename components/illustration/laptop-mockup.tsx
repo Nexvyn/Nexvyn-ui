@@ -51,10 +51,7 @@ export const LaptopMockupCard = forwardRef<HTMLDivElement, LaptopMockupCardProps
         </div>
 
         <div
-          className={cn(
-            'relative h-2.5 w-[315px] rounded-b-xl md:h-3 md:w-[432px]',
-            frame.base,
-          )}
+          className={cn('relative h-2.5 w-[315px] rounded-b-xl md:h-3 md:w-[432px]', frame.base)}
         >
           <div
             className={cn(

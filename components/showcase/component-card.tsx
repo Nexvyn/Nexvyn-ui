@@ -33,11 +33,7 @@ export function ComponentCard({ item }: { item: ComponentItem }) {
           isDefault && 'min-h-40 sm:min-h-48',
         )}
       >
-        <div
-          className={cn(
-            isDefault && 'max-w-full scale-100 sm:scale-110 md:scale-125',
-          )}
-        >
+        <div className={cn(isDefault && 'max-w-full scale-100 sm:scale-110 md:scale-125')}>
           <ComponentPreview item={item} />
         </div>
       </div>

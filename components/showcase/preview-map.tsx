@@ -7,6 +7,9 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'laptop-mockup-blueprint': dynamic(() =>
     import('@/components/diagrams/laptop-mockup-diagram').then((m) => m.LaptopMockupWireframe),
   ),
+  'rocket-launch-blueprint': dynamic(() =>
+    import('@/components/diagrams/rocket-launch-diagram').then((m) => m.RocketLaunchBlueprint),
+  ),
   'badge-blueprint': dynamic(() =>
     import('@/components/diagrams/badge-diagram').then((m) => m.BadgeBlueprint),
   ),
