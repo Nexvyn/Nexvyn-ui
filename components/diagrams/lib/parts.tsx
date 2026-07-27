@@ -217,7 +217,7 @@ export function PadGuide({
   const clipId = useId()
   const theme = blueprintTheme
 
-  const stroke = 'var(--bp-accent, var(--color-accent))'
+  const stroke = 'var(--color-accent)'
   const strokeDasharray = '2 2'
 
   const ix = x - offset
