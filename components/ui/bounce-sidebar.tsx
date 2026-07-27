@@ -1,6 +1,13 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type KeyboardEvent,
+} from 'react'
 import {
   motion,
   stagger,
@@ -52,7 +59,11 @@ export function BounceSidebar({
   const dotX = useMotionValue(0)
   const dotY = useMotionValue(0)
 
-  const [dotSize, setDotSize] = useState(6)
+  const dotSize = useSyncExternalStore(
+    () => () => {},
+    () => Math.round(6 * (window.devicePixelRatio || 1)) / (window.devicePixelRatio || 1),
+    () => 6,
+  )
 
   const getTargetY = (index: number, size: number): number | null => {
     const el = itemRefs.current[index]
@@ -78,7 +89,6 @@ export function BounceSidebar({
 
     const ro = new ResizeObserver(snap)
     itemRefs.current.forEach((el) => el && ro.observe(el))
-    setDotSize(computedSize)
 
     const raf = requestAnimationFrame(snap)
     document.fonts?.ready.then(snap)

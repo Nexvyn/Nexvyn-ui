@@ -13,6 +13,7 @@ import {
   DimH,
   DimLabel,
   DimV,
+  PadGuide,
   Selection,
 } from '@/components/diagrams/lib/parts'
 import {
@@ -79,8 +80,40 @@ export function BounceSidebarWireframe() {
       <g className={BP_HIDE_ON_MORPH}>
         <Selection x={BP.x} y={BP.y} w={BP.w} h={totalH} />
         <DimH x1={BP.x} x2={BP.x + BP.w} y={BP.y - 10} label={`${BP.w}`} />
+        <PadGuide
+          x={BP.x + 14 + 4}
+          y={rowY(0) + 4}
+          w={BP.w - 18 - 8}
+          h={BP.rowH - 8}
+          offset={0.8}
+          boxX={BP.x + 14}
+          boxY={rowY(0)}
+          boxW={BP.w - 18}
+          boxH={BP.rowH}
+          boxRx={6}
+          clipOffset={0.8}
+        />
+        <DimLabel x={BP.x + 14 + 2} y={rowY(0) + BP.rowH / 2 + 2} anchor="middle">
+          4
+        </DimLabel>
         <DimV x={BP.x - 12} y1={BP.y} y2={BP.y + totalH} label={`${totalH}`} labelXOffset={-6} />
-        <DimLabel x={BP.x + BP.w + 6} y={rowY(0) + BP.rowH / 2 + 3} anchor="start">
+        <g
+          stroke="var(--bp-accent, var(--color-accent))"
+          strokeWidth={theme.guide.strokeWidth}
+          opacity={theme.guide.structOpacity}
+        >
+          <line x1={BP.x} y1={rowY(0) + BP.rowH} x2={BP.x + BP.w + 16} y2={rowY(0) + BP.rowH} />
+          <line x1={BP.x} y1={rowY(1)} x2={BP.x + BP.w + 16} y2={rowY(1)} />
+        </g>
+        <DimV
+          x={BP.x + BP.w + 10}
+          y1={rowY(0) + BP.rowH}
+          y2={rowY(1)}
+          label={`${BP.gap}`}
+          labelXOffset={10}
+          labelAnchor="start"
+        />
+        <DimLabel x={BP.x + BP.w + 24} y={rowY(0) + BP.rowH / 2 + 3} anchor="start">
           {`dot ${BP.dot}`}
         </DimLabel>
         <DimLabel x={BP.x} y={BP.y + totalH + 14} anchor="start">
@@ -226,7 +259,7 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: isOthersHovered ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={AN.listX} y={AN.listY} w={AN.listW} h={AN.listH} />
       <DimH x1={AN.listX} x2={AN.listX + AN.listW} y={AN.listY - 10} label={`${AN.listW}`} />
@@ -254,6 +287,33 @@ function AnnotationsLayer() {
       <DimLabel x={AN.listX + AN.padL / 2} y={AN.listY + AN.listH / 2 + 2} anchor="middle">
         {`${AN.padL}`}
       </DimLabel>
+
+      <g
+        stroke="var(--bp-accent, var(--color-accent))"
+        strokeWidth={blueprintTheme.guide.strokeWidth}
+        opacity={blueprintTheme.guide.structOpacity}
+      >
+        <line
+          x1={AN.listX + AN.padL}
+          y1={itemY(0) + AN.itemH}
+          x2={AN.listX + AN.listW + 16}
+          y2={itemY(0) + AN.itemH}
+        />
+        <line
+          x1={AN.listX + AN.padL}
+          y1={itemY(1)}
+          x2={AN.listX + AN.listW + 16}
+          y2={itemY(1)}
+        />
+      </g>
+      <DimV
+        x={AN.listX + AN.listW + 10}
+        y1={itemY(0) + AN.itemH}
+        y2={itemY(1)}
+        label={`${AN.itemGap}`}
+        labelXOffset={10}
+        labelAnchor="start"
+      />
     </g>
   )
 }
