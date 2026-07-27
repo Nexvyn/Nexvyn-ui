@@ -2,8 +2,25 @@
 
 import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
-import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from 'motion/react'
-import { Fragment, useEffect, useMemo, useRef, useState, type RefObject } from 'react'
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from 'motion/react'
+import {
+  Fragment,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type RefObject,
+} from 'react'
 import { ComponentPreview } from '@/components/showcase/component-preview'
 import { useSidebar } from '@/components/detail/sidebar-provider'
 
@@ -26,22 +43,67 @@ import { NewStarIcon } from '@/components/layout/new-star'
 
 const SIDEBAR_EASE = [0.23, 0.88, 0.26, 0.92] as const
 const LINE_SPRING = { stiffness: 250, damping: 30 }
+const PROXIMITY_SPRING = { stiffness: 400, damping: 30, mass: 0.6 }
+const PROXIMITY_REACH = 4
+const PROXIMITY_WIDTH_BOOST = 16
 
-function Separator({ count = 2, growFrom }: { count?: number; growFrom?: 'start' | 'end' }) {
+const NAV_LINE_BASE = 32
+const NAV_LINE_ACTIVE = 55
+const SEPARATOR_BASE = 24
+
+function smoothstep(t: number): number {
+  return t * t * (3 - 2 * t)
+}
+
+const HoverPositionContext = createContext<{
+  position: MotionValue<number>
+  list: MotionValue<string>
+} | null>(null)
+
+function useProximity(listKey: string, position: number): MotionValue<number> {
+  const ctx = useContext(HoverPositionContext)
+  const fallback = useMotionValue(0)
+
+  const raw = useTransform(() => {
+    if (!ctx) return 0
+    if (ctx.list.get() !== listKey) return 0
+    const hovered = ctx.position.get()
+    if (Number.isNaN(hovered)) return 0
+    const dist = Math.abs(position - hovered)
+    if (dist >= PROXIMITY_REACH) return 0
+    return smoothstep(1 - dist / PROXIMITY_REACH)
+  })
+
+  const spring = useSpring(ctx ? raw : fallback, PROXIMITY_SPRING)
+  return spring
+}
+
+function Separator({
+  count = 2,
+  listKey = '',
+  position = Number.NaN,
+}: {
+  count?: number
+  listKey?: string
+  position?: number
+}) {
+  const prefersReducedMotion = useReducedMotion()
+  const proximity = useProximity(listKey, position)
+
+  const width = useTransform(proximity, (p) =>
+    prefersReducedMotion ? SEPARATOR_BASE : SEPARATOR_BASE + p * PROXIMITY_WIDTH_BOOST,
+  )
+  const backgroundColor = useTransform(proximity, (p) =>
+    prefersReducedMotion || p <= 0.001
+      ? 'var(--color-border)'
+      : `color-mix(in oklab, var(--color-accent) ${Math.round(p * 60)}%, var(--color-border))`,
+  )
+
   return (
     <>
-      {Array.from({ length: count }).map((_, i) => {
-        const distance = growFrom === 'end' ? count - 1 - i : i
-        const decay = Math.max(0, 1 - distance / Math.max(count - 1, 1))
-        const scale = growFrom ? 1 + 2 * decay : 1
-        return (
-          <span
-            key={i}
-            className="block h-px w-8 origin-center bg-foreground/20 transition-transform duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none"
-            style={{ transform: `scaleY(${scale})` }}
-          />
-        )
-      })}
+      {Array.from({ length: count }).map((_, i) => (
+        <motion.span key={i} className="block h-px" style={{ width, backgroundColor }} />
+      ))}
     </>
   )
 }
@@ -130,9 +192,8 @@ function NavSectionHeader({
   href?: string
   isNew?: boolean
 }) {
-  const lineWidth = useSpring(active ? 55 : 32, LINE_SPRING)
-  const [widthValue, setWidthValue] = useState(active ? 55 : 32)
-  const [isHovered, setIsHovered] = useState(false)
+  const lineWidth = useSpring(active ? NAV_LINE_ACTIVE : NAV_LINE_BASE, LINE_SPRING)
+  const hoverTint = useSpring(active ? 1 : 0, PROXIMITY_SPRING)
   const prefersReducedMotion = useReducedMotion()
   const pathRef = useRef<SVGPathElement>(null)
   const animFrameRef = useRef<number | null>(null)
@@ -140,13 +201,9 @@ function NavSectionHeader({
   const isAnimating = useRef(false)
 
   useEffect(() => {
-    lineWidth.set(active ? 55 : 32)
-  }, [active, lineWidth])
-
-  useEffect(() => {
-    const unsubscribe = lineWidth.on('change', (v) => setWidthValue(v))
-    return unsubscribe
-  }, [lineWidth])
+    lineWidth.set(active ? NAV_LINE_ACTIVE : NAV_LINE_BASE)
+    hoverTint.set(active ? 1 : 0)
+  }, [active, lineWidth, hoverTint])
 
   useEffect(() => {
     return () => {
@@ -154,7 +211,13 @@ function NavSectionHeader({
     }
   }, [])
 
-  const lineColor = active || isHovered ? 'var(--color-accent)' : 'var(--color-border)'
+  const lineColor = useTransform(hoverTint, (t) =>
+    t >= 0.999
+      ? 'var(--color-accent)'
+      : t <= 0.001
+        ? 'var(--color-border)'
+        : `color-mix(in oklab, var(--color-accent) ${Math.round(t * 100)}%, var(--color-border))`,
+  )
 
   const LINE_LENGTH = 54
   const CENTER_Y = 4
@@ -214,43 +277,43 @@ function NavSectionHeader({
       className="group relative flex h-px cursor-pointer items-center gap-3 after:absolute after:left-0 after:top-1/2 after:size-full after:-translate-y-1/2 after:p-3.5"
       onMouseEnter={() => {
         playHoverSound()
-        lineWidth.set(55)
-        setIsHovered(true)
+        lineWidth.set(NAV_LINE_ACTIVE)
+        hoverTint.set(1)
         startWave()
       }}
       onMouseLeave={() => {
-        if (!active) lineWidth.set(32)
-        setIsHovered(false)
+        if (!active) {
+          lineWidth.set(NAV_LINE_BASE)
+          hoverTint.set(0)
+        }
         stopWave()
       }}
     >
-      <svg
+      <motion.svg
         viewBox={`0 0 ${LINE_LENGTH} 8`}
         className="h-2 overflow-visible"
-        style={{ width: widthValue }}
+        style={{ width: lineWidth }}
         preserveAspectRatio="none"
       >
         {prefersReducedMotion ? (
-          <path
+          <motion.path
             d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
-            stroke={lineColor}
+            style={{ stroke: lineColor }}
             strokeWidth={1.5}
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
-            style={{ transition: 'stroke 0.25s ease' }}
           />
         ) : (
           <>
-            <path
+            <motion.path
               ref={pathRef}
               d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
-              stroke={lineColor}
+              style={{ stroke: lineColor }}
               strokeWidth={1.5}
               strokeLinecap="round"
               strokeLinejoin="round"
               fill="none"
-              style={{ transition: 'stroke 0.25s ease' }}
             />
             <path
               d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
@@ -260,7 +323,7 @@ function NavSectionHeader({
             />
           </>
         )}
-      </svg>
+      </motion.svg>
       <span
         className={cn(
           'text-foreground inline-flex items-center gap-1 whitespace-nowrap transition-[color,opacity] duration-150 ease group-hover:text-(--color-accent) group-hover:opacity-100',
@@ -282,6 +345,8 @@ function NavItem({
   onHover,
   onLeave,
   number,
+  listKey,
+  position,
 }: {
   item: ComponentItem
   isActive: boolean
@@ -289,24 +354,22 @@ function NavItem({
   onHover: () => void
   onLeave: () => void
   number?: number
+  listKey: string
+  position: number
 }) {
-  const lineWidth = useSpring(isActive ? 55 : 32, LINE_SPRING)
-  const [widthValue, setWidthValue] = useState(isActive ? 55 : 32)
-  const [isHovered, setIsHovered] = useState(false)
+  const baseWidth = isActive ? NAV_LINE_ACTIVE : NAV_LINE_BASE
+  const lineWidth = useSpring(baseWidth, LINE_SPRING)
   const prefersReducedMotion = useReducedMotion()
   const pathRef = useRef<SVGPathElement>(null)
   const animFrameRef = useRef<number | null>(null)
   const waveStartTime = useRef<number | null>(null)
   const isAnimating = useRef(false)
 
-  useEffect(() => {
-    lineWidth.set(isActive ? 55 : 32)
-  }, [isActive, lineWidth])
+  const proximitySpring = useProximity(listKey, position)
 
   useEffect(() => {
-    const unsubscribe = lineWidth.on('change', (v) => setWidthValue(v))
-    return unsubscribe
-  }, [lineWidth])
+    lineWidth.set(isActive ? NAV_LINE_ACTIVE : NAV_LINE_BASE)
+  }, [isActive, lineWidth])
 
   useEffect(() => {
     return () => {
@@ -314,7 +377,14 @@ function NavItem({
     }
   }, [])
 
-  const lineColor = isActive || isHovered ? 'var(--color-accent)' : 'var(--color-border)'
+  const proximityWidth = useTransform([lineWidth, proximitySpring], ([w, p]: number[]) =>
+    prefersReducedMotion ? w : w + p * PROXIMITY_WIDTH_BOOST,
+  )
+  const lineColor = useTransform(proximitySpring, (p) => {
+    if (isActive) return 'var(--color-accent)'
+    if (prefersReducedMotion || p <= 0.001) return 'var(--color-border)'
+    return `color-mix(in oklab, var(--color-accent) ${Math.round(p * 100)}%, var(--color-border))`
+  })
 
   const LINE_LENGTH = 54
   const CENTER_Y = 4
@@ -384,45 +454,41 @@ function NavItem({
       className="group sidebar-nav-item relative flex h-px cursor-pointer items-center gap-3"
       onMouseEnter={() => {
         playHoverSound()
-        lineWidth.set(55)
-        setIsHovered(true)
+        lineWidth.set(NAV_LINE_ACTIVE)
         onHover()
         startWave()
       }}
       onMouseLeave={() => {
-        if (!isActive) lineWidth.set(32)
-        setIsHovered(false)
+        if (!isActive) lineWidth.set(NAV_LINE_BASE)
         stopWave()
         onLeave()
       }}
     >
-      <svg
+      <motion.svg
         viewBox={`0 0 ${LINE_LENGTH} 8`}
         className="h-2 overflow-visible"
-        style={{ width: widthValue }}
+        style={{ width: proximityWidth }}
         preserveAspectRatio="none"
       >
         {prefersReducedMotion ? (
-          <path
+          <motion.path
             d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
-            stroke={lineColor}
+            style={{ stroke: lineColor }}
             strokeWidth={1.5}
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
-            style={{ transition: 'stroke 0.25s ease' }}
           />
         ) : (
           <>
-            <path
+            <motion.path
               ref={pathRef}
               d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
-              stroke={lineColor}
+              style={{ stroke: lineColor }}
               strokeWidth={1.5}
               strokeLinecap="round"
               strokeLinejoin="round"
               fill="none"
-              style={{ transition: 'stroke 0.25s ease' }}
             />
             <path
               d={`M0 ${CENTER_Y}L${LINE_LENGTH} ${CENTER_Y}`}
@@ -432,7 +498,7 @@ function NavItem({
             />
           </>
         )}
-      </svg>
+      </motion.svg>
       <span
         className={cn(
           'text-foreground inline-flex items-center gap-1 whitespace-nowrap transition-[color,opacity] duration-150 ease group-hover:text-(--color-accent) group-hover:opacity-100',
@@ -459,6 +525,13 @@ function SidebarNav() {
   const pointerX = useMotionValue(0)
   const pointerY = useMotionValue(0)
   const previewOpacity = useSpring(0, { stiffness: 400, damping: 30 })
+
+  const hoverPosition = useMotionValue(Number.NaN)
+  const hoverList = useMotionValue('')
+  const hoverCtx = useMemo(
+    () => ({ position: hoverPosition, list: hoverList }),
+    [hoverPosition, hoverList],
+  )
 
   const normalSorted = useMemo(
     () =>
@@ -487,19 +560,22 @@ function SidebarNav() {
   const isStarsPage = pathname === '/stars'
   const isDesignPage = pathname === '/design'
 
-  const hoverHandlers = (item: ComponentItem) => ({
+  const hoverHandlers = (item: ComponentItem, listKey: string, position: number) => ({
     onHover: () => {
+      hoverList.set(listKey)
+      hoverPosition.set(position)
       setHoveredItem(item)
       previewOpacity.set(1)
     },
     onLeave: () => {
+      hoverPosition.set(Number.NaN)
       setHoveredItem(null)
       previewOpacity.set(0)
     },
   })
 
   return (
-    <>
+    <HoverPositionContext.Provider value={hoverCtx}>
       <AnimatePresence>
         {hoveredItem && (
           <motion.div
@@ -544,30 +620,21 @@ function SidebarNav() {
             <NavSectionHeader title="Illustration" isNew />
             {ILLUSTRATION_COMPONENTS.length > 0 && (
               <>
-                <Separator
-                  growFrom={hoveredItem?.id === ILLUSTRATION_COMPONENTS[0]?.id ? 'end' : undefined}
-                />
+                <Separator listKey="illustration" position={-0.5} />
                 {ILLUSTRATION_COMPONENTS.map((item, index) => {
                   const isActive = activeId === item.id
-                  const nextItem = ILLUSTRATION_COMPONENTS[index + 1]
                   return (
                     <Fragment key={item.id}>
                       <NavItem
                         item={item}
                         isActive={isActive}
                         itemRef={isActive ? activeRef : undefined}
-                        {...hoverHandlers(item)}
+                        listKey="illustration"
+                        position={index}
+                        {...hoverHandlers(item, 'illustration', index)}
                       />
                       {index !== ILLUSTRATION_COMPONENTS.length - 1 && (
-                        <Separator
-                          growFrom={
-                            hoveredItem?.id === item.id
-                              ? 'start'
-                              : hoveredItem?.id === nextItem?.id
-                                ? 'end'
-                                : undefined
-                          }
-                        />
+                        <Separator listKey="illustration" position={index + 0.5} />
                       )}
                     </Fragment>
                   )
@@ -579,10 +646,9 @@ function SidebarNav() {
             {sortById ? (
               <>
                 <NavSectionHeader title="All Components" active />
-                <Separator growFrom={hoveredItem?.id === normalSorted[0]?.id ? 'end' : undefined} />
+                <Separator listKey="all" position={-0.5} />
                 {normalSorted.map((item, index) => {
                   const isActive = activeId === item.id
-                  const nextItem = normalSorted[index + 1]
                   return (
                     <Fragment key={item.id}>
                       <NavItem
@@ -590,18 +656,12 @@ function SidebarNav() {
                         isActive={isActive}
                         itemRef={isActive ? activeRef : undefined}
                         number={index}
-                        {...hoverHandlers(item)}
+                        listKey="all"
+                        position={index}
+                        {...hoverHandlers(item, 'all', index)}
                       />
                       {index !== normalSorted.length - 1 && (
-                        <Separator
-                          growFrom={
-                            hoveredItem?.id === item.id
-                              ? 'start'
-                              : hoveredItem?.id === nextItem?.id
-                                ? 'end'
-                                : undefined
-                          }
-                        />
+                        <Separator listKey="all" position={index + 0.5} />
                       )}
                     </Fragment>
                   )
@@ -612,14 +672,9 @@ function SidebarNav() {
                 (collection, collectionIndex, filteredArray) => (
                   <Fragment key={collection.id}>
                     <NavSectionHeader title={collection.name} active />
-                    <Separator
-                      growFrom={
-                        hoveredItem?.id === collection.components[0]?.id ? 'end' : undefined
-                      }
-                    />
+                    <Separator listKey={collection.id} position={-0.5} />
                     {collection.components.map((item, index) => {
                       const isActive = activeId === item.id
-                      const nextItem = collection.components[index + 1]
                       return (
                         <Fragment key={item.id}>
                           <NavItem
@@ -627,18 +682,12 @@ function SidebarNav() {
                             isActive={isActive}
                             itemRef={isActive ? activeRef : undefined}
                             number={index}
-                            {...hoverHandlers(item)}
+                            listKey={collection.id}
+                            position={index}
+                            {...hoverHandlers(item, collection.id, index)}
                           />
                           {index !== collection.components.length - 1 && (
-                            <Separator
-                              growFrom={
-                                hoveredItem?.id === item.id
-                                  ? 'start'
-                                  : hoveredItem?.id === nextItem?.id
-                                    ? 'end'
-                                    : undefined
-                              }
-                            />
+                            <Separator listKey={collection.id} position={index + 0.5} />
                           )}
                         </Fragment>
                       )
@@ -653,28 +702,21 @@ function SidebarNav() {
               <>
                 <Separator count={4} />
                 <NavSectionHeader title="Basic" active />
-                <Separator growFrom={hoveredItem?.id === basicSorted[0]?.id ? 'end' : undefined} />
+                <Separator listKey="basic" position={-0.5} />
                 {basicSorted.map((item, index) => {
                   const isActive = activeId === item.id
-                  const nextItem = basicSorted[index + 1]
                   return (
                     <Fragment key={item.id}>
                       <NavItem
                         item={item}
                         isActive={isActive}
                         itemRef={isActive ? activeRef : undefined}
-                        {...hoverHandlers(item)}
+                        listKey="basic"
+                        position={index}
+                        {...hoverHandlers(item, 'basic', index)}
                       />
                       {index !== basicSorted.length - 1 && (
-                        <Separator
-                          growFrom={
-                            hoveredItem?.id === item.id
-                              ? 'start'
-                              : hoveredItem?.id === nextItem?.id
-                                ? 'end'
-                                : undefined
-                          }
-                        />
+                        <Separator listKey="basic" position={index + 0.5} />
                       )}
                     </Fragment>
                   )
@@ -691,7 +733,7 @@ function SidebarNav() {
           </div>
         </div>
       </div>
-    </>
+    </HoverPositionContext.Provider>
   )
 }
 
