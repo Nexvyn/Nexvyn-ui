@@ -1,14 +1,77 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { motion, useReducedMotion } from 'motion/react'
 import { Header } from '@/components/layout/header'
 import { GooeyFilter } from '@/components/layout/gooey-filter'
 import { PixelTrail } from '@/components/layout/pixel-trail'
 import { useScreenSize } from '@/hooks/use-screen-size'
 import { Button } from '@/components/layout/button'
+import { springs } from '@/lib/motion-tokens'
 import Link from 'next/link'
+
+function HeroCtaArrowIcon({ active }: { active: boolean }) {
+  const reduceMotion = useReducedMotion()
+  const transition = reduceMotion ? { duration: 0 } : springs.fast
+
+  return (
+    <span
+      aria-hidden="true"
+      className="relative inline-flex size-3.5 shrink-0 items-center justify-center overflow-hidden"
+    >
+      <motion.svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="absolute inset-0"
+        initial={false}
+        animate={
+          reduceMotion
+            ? { opacity: active ? 0 : 1 }
+            : active
+              ? { opacity: 0, x: -5, scale: 0.92 }
+              : { opacity: 1, x: 0, scale: 1 }
+        }
+        transition={transition}
+      >
+        <path d="m9 18 6-6-6-6" />
+      </motion.svg>
+      <motion.svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="absolute inset-0"
+        initial={false}
+        animate={
+          reduceMotion
+            ? { opacity: active ? 1 : 0 }
+            : active
+              ? { opacity: 1, x: 0, scale: 1 }
+              : { opacity: 0, x: -7, scale: 0.92 }
+        }
+        transition={reduceMotion ? transition : { ...transition, delay: active ? 0.05 : 0 }}
+      >
+        <path d="M5 12h14" />
+        <path d="m12 5 7 7-7 7" />
+      </motion.svg>
+    </span>
+  )
+}
 
 export default function HomePage() {
   const screenSize = useScreenSize()
+  const [ctaActive, setCtaActive] = useState(false)
 
   useEffect(() => {
     if ('scrollRestoration' in history) {
@@ -58,32 +121,20 @@ export default function HomePage() {
         <div className="w-full flex items-center justify-center gap-3 mt-8 sm:mt-10">
           <Button
             asChild
-            className="rounded-2xl squircle-corners active:scale-[0.97] duration-150 group"
+            className="rounded-2xl squircle-corners active:scale-[0.97] duration-150"
             style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
           >
             <Link
               href="/components"
-              className="gap-0.5"
+              className="gap-1.5"
               style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              onPointerEnter={() => setCtaActive(true)}
+              onPointerLeave={() => setCtaActive(false)}
+              onFocus={() => setCtaActive(true)}
+              onBlur={() => setCtaActive(false)}
             >
               <span className="text-center">Components</span>
-              <span className="w-0 opacity-0 group-hover:w-3.5 group-hover:opacity-100 transition-[width,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center overflow-hidden">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="transition-transform duration-300 group-hover:translate-x-0.5"
-                >
-                  <path d="M5 12h14" />
-                  <path d="m12 5 7 7-7 7" />
-                </svg>
-              </span>
+              <HeroCtaArrowIcon active={ctaActive} />
             </Link>
           </Button>
         </div>
