@@ -13,7 +13,7 @@ import {
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
-import { motion, useReducedMotion } from 'motion/react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { springs } from '@/lib/motion-tokens'
 import { useProximityHighlight, ProximityHighlight } from '@/lib/hooks/use-proximity-highlight'
@@ -180,9 +180,11 @@ export const ContextMenu = forwardRef<HTMLDivElement, ContextMenuProps>(
         >
           {children}
         </div>
-        {open && (
-          <ContextMenuPanel ref={contentRef} position={position} className={menuClassName} />
-        )}
+        <AnimatePresence>
+          {open && (
+            <ContextMenuPanel ref={contentRef} position={position} className={menuClassName} />
+          )}
+        </AnimatePresence>
       </ContextMenuContext.Provider>
     )
   },
@@ -212,6 +214,7 @@ const ContextMenuPanel = forwardRef<HTMLDivElement, ContextMenuPanelProps>(
     }, [])
 
     const [adjustedPos, setAdjustedPos] = useState(position)
+    const [transformOrigin, setTransformOrigin] = useState('top left')
     useEffect(() => {
       const panel = panelRef.current
       if (!panel) return
@@ -219,9 +222,17 @@ const ContextMenuPanel = forwardRef<HTMLDivElement, ContextMenuPanelProps>(
       const vw = window.innerWidth
       const vh = window.innerHeight
       const margin = 8
+      const vCenterX = vw / 2
+      const vCenterY = vh / 2
 
-      let x = position.x
-      let y = position.y
+      // Grow the menu away from the cursor's quadrant so it stays on
+      // screen, but anchor the panel so the chosen origin corner lands
+      // exactly at the cursor — not just clamped independently of it.
+      const horizontal = position.x < vCenterX ? 'left' : 'right'
+      const vertical = position.y < vCenterY ? 'top' : 'bottom'
+
+      let x = horizontal === 'left' ? position.x : position.x - rect.width
+      let y = vertical === 'top' ? position.y : position.y - rect.height
 
       if (x + rect.width > vw - margin) x = vw - rect.width - margin
       if (y + rect.height > vh - margin) y = vh - rect.height - margin
@@ -229,20 +240,7 @@ const ContextMenuPanel = forwardRef<HTMLDivElement, ContextMenuPanelProps>(
       if (y < margin) y = margin
 
       setAdjustedPos({ x, y })
-    }, [position])
-
-    const transformOrigin = useMemo(() => {
-      if (typeof window === 'undefined') return 'top left'
-      const cx = position.x
-      const cy = position.y
-      const vw = window.innerWidth
-      const vh = window.innerHeight
-      const vCenterX = vw / 2
-      const vCenterY = vh / 2
-
-      const horizontal = cx < vCenterX ? 'left' : 'right'
-      const vertical = cy < vCenterY ? 'top' : 'bottom'
-      return `${vertical} ${horizontal}`
+      setTransformOrigin(`${vertical} ${horizontal}`)
     }, [position])
 
     useEffect(() => {
