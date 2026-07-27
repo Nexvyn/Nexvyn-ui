@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion } from 'motion/react'
 import {
-  CodeXml,
   Maximize,
   Minimize,
   ExternalLink,
@@ -18,7 +17,7 @@ import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
 import { NewStarIcon } from '@/components/layout/new-star'
-import { MailIcon, XIcon } from './icons'
+import { MailIcon, XIcon, CodeIcon } from './icons'
 import DependencyPill from './dependency-pill'
 import PropsTable from './props-table'
 import { CodeBlock } from './code-block'
@@ -214,10 +213,10 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               type="button"
               onClick={toggleCode}
               aria-label={codeOpen ? 'Hide code' : 'Get code'}
-              className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl p-1.5"
+              className="detail-toolbar-btn group hit-area-44 cursor-pointer rounded-xl p-1.5"
               style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
             >
-              <CodeXml className="h-5 w-5" />
+              <CodeIcon className="h-5 w-5" />
             </button>
           </Tooltip>
         )}
