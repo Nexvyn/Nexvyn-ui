@@ -1,6 +1,6 @@
 'use client'
 
-import { useSyncExternalStore, useCallback, useEffect, useState } from 'react'
+import { useSyncExternalStore, useCallback, useEffect } from 'react'
 import { motion, useMotionValue, useTransform } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { Button } from './button'
@@ -27,6 +27,8 @@ function getServerSnapshot() {
   return 'light' as const
 }
 
+const emptySubscribe = () => () => {}
+
 export function ThemeToggle({
   className,
   showShortcut = true,
@@ -36,10 +38,11 @@ export function ThemeToggle({
   showShortcut?: boolean
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
 }) {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  )
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
   const dark = mounted && theme === 'dark'
 
@@ -52,7 +55,7 @@ export function ThemeToggle({
       localStorage.setItem('theme', next ? 'dark' : 'light')
     } catch {}
 
-    window.getComputedStyle(document.documentElement).opacity
+    void window.getComputedStyle(document.documentElement).opacity
 
     setTimeout(() => {
       document.documentElement.classList.remove('no-transitions')
@@ -75,10 +78,9 @@ export function ThemeToggle({
     <Button
       onClick={toggle}
       className={cn(
-        'h-9 px-3 gap-1.5 group rounded-2xl squircle-corners hit-area-44 hover:bg-(--color-surface-2) hover:text-(--color-fg)',
+        'h-9 px-3 gap-1.5 group rounded-2xl squircle-corners hit-area-44 text-(--color-fg) hover:bg-(--color-surface-2) hover:text-(--color-fg)',
         className,
       )}
-      style={{ color: 'var(--color-fg)' }}
       variant={variant}
       size="sm"
       aria-label={dark ? 'Switch to light mode (T)' : 'Switch to dark mode (T)'}
