@@ -32,7 +32,7 @@ export function CodeIcon({ className }: { className?: string }) {
     <svg className={className} width="20" height="20" viewBox="0 0 24 24" fill="none">
       <g
         strokeLinecap="round"
-        strokeWidth="1.5"
+        strokeWidth="2"
         stroke="currentColor"
         className="transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none"
       >
