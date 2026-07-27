@@ -63,14 +63,23 @@ export default function ComponentsPage() {
   const [sortByCategory, setSortByCategory] = useState(false)
   const [sortAnimating, setSortAnimating] = useState(false)
 
-  const [illustrationSlots, setIllustrationSlots] = useState<Record<string, number>>({})
-
-  useEffect(() => {
+  const [illustrationSlots, setIllustrationSlots] = useState<Record<string, number>>(() => {
     const slots: Record<string, number> = {}
     for (const item of NORMAL_COMPONENTS) {
-      if (item.collection === 'illustration') slots[item.id] = Math.random()
+      if (item.collection === 'illustration') slots[item.id] = 0.5
     }
-    setIllustrationSlots(slots)
+    return slots
+  })
+
+  useEffect(() => {
+    setIllustrationSlots(() => {
+      const slots: Record<string, number> = {}
+      for (const item of NORMAL_COMPONENTS) {
+        if (item.collection === 'illustration') slots[item.id] = Math.random()
+      }
+      return slots
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const normalSorted = useMemo(

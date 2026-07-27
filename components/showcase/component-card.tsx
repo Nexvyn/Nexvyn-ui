@@ -27,7 +27,7 @@ export function ComponentCard({ item }: { item: ComponentItem }) {
     >
       <div
         className={cn(
-          'pointer-events-none flex min-w-0 items-center justify-center overflow-hidden',
+          'pointer-events-none flex min-w-0 items-center justify-center',
           isTall && 'min-h-40 flex-1',
           isFeature && 'min-h-56 flex-1 sm:min-h-72',
           isDefault && 'min-h-40 sm:min-h-48',
