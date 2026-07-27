@@ -131,7 +131,7 @@ function PreviewBottomBar({
         </button>
       </Tooltip>
       <Tooltip content="Toggle sound (M)" side="top">
-        <SoundToggle className="h-10 w-10 shrink-0 rounded-xl squircle-corners border border-(--color-border) bg-(--color-surface-2) backdrop-blur-sm" />
+        <SoundToggle variant="ghost" className={`${bottomBarIconButtonClass} p-0`} />
       </Tooltip>
       <AnatomyLicenseToggle itemId={itemId} />
     </div>
