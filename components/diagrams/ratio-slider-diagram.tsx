@@ -15,6 +15,7 @@ import {
   DimH,
   DimLabel,
   DimV,
+  PadGuide,
   Selection,
 } from '@/components/diagrams/lib/parts'
 import {
@@ -132,6 +133,12 @@ export function RatioSliderWireframe() {
           <line
             x1={BP.x + BP_LEFT_W}
             y1={BP.y + BP.h + 18.5}
+            x2={BP_DIV_X}
+            y2={BP.y + BP.h + 18.5}
+          />
+          <line
+            x1={BP_DIV_X + BP.divW}
+            y1={BP.y + BP.h + 18.5}
             x2={BP_RIGHT_X}
             y2={BP.y + BP.h + 18.5}
           />
@@ -140,23 +147,35 @@ export function RatioSliderWireframe() {
           gap 8
         </DimLabel>
 
-        <g
-          stroke="var(--bp-accent, var(--color-accent))"
-          strokeWidth={theme.guide.strokeWidth}
-          strokeDasharray="2 2"
-          opacity={theme.guide.structOpacity}
-        >
-          <line x1={BP.x} y1={BP.y + 8} x2={BP.x + 12} y2={BP.y + 8} />
-          <line
-            x1={BP_RIGHT_X + BP_RIGHT_W - 12}
-            y1={BP.y + 8}
-            x2={BP_RIGHT_X + BP_RIGHT_W}
-            y2={BP.y + 8}
-          />
-        </g>
+        <PadGuide
+          x={BP.x + 12}
+          y={BP.y + 4}
+          w={BP_LEFT_W - 24}
+          h={BP.h - 8}
+          offset={0.8}
+          boxX={BP.x}
+          boxY={BP.y}
+          boxW={BP_LEFT_W}
+          boxH={BP.h}
+          boxRx={BP.rx}
+          clipOffset={0.8}
+        />
         <DimLabel x={BP.x + 6} y={BP.y + 8 - 3} anchor="middle">
           12
         </DimLabel>
+        <PadGuide
+          x={BP_RIGHT_X + 12}
+          y={BP.y + 4}
+          w={BP_RIGHT_W - 24}
+          h={BP.h - 8}
+          offset={0.8}
+          boxX={BP_RIGHT_X}
+          boxY={BP.y}
+          boxW={BP_RIGHT_W}
+          boxH={BP.h}
+          boxRx={BP.rx}
+          clipOffset={0.8}
+        />
         <DimLabel x={BP_RIGHT_X + BP_RIGHT_W - 6} y={BP.y + 8 - 3} anchor="middle">
           12
         </DimLabel>
@@ -287,7 +306,7 @@ function DividerShape() {
         width={AN.divW}
         height={AN.divH}
         rx={3}
-        fill="var(--color-accent)"
+        fill="var(--bp-accent, var(--color-accent))"
         stroke="var(--color-fg)"
         strokeWidth={1.5}
         className={spotlight.className}
@@ -340,7 +359,7 @@ function AnnotationsLayer() {
         pointerEvents: 'none',
         filter: dimmed ? 'url(#spotlight-blur)' : 'none',
       }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={AN.x} y={AN.y} w={AN.w} h={AN.h} />
       <DimH x1={AN.x} x2={AN.x + AN.w} y={AN.y - 14} label={`${AN.w}`} />
@@ -369,7 +388,8 @@ function AnnotationsLayer() {
           y2={AN.y + AN.h + 10}
         />
         <line x1={AN_RIGHT_X} y1={AN.y + AN.h + 4} x2={AN_RIGHT_X} y2={AN.y + AN.h + 10} />
-        <line x1={AN.x + AN_LEFT_W} y1={AN.y + AN.h + 7} x2={AN_RIGHT_X} y2={AN.y + AN.h + 7} />
+        <line x1={AN.x + AN_LEFT_W} y1={AN.y + AN.h + 7} x2={AN_DIV_X} y2={AN.y + AN.h + 7} />
+        <line x1={AN_DIV_X + AN.divW} y1={AN.y + AN.h + 7} x2={AN_RIGHT_X} y2={AN.y + AN.h + 7} />
       </g>
       <DimLabel x={AN.x + AN_LEFT_W + AN.gap / 2} y={AN.y + AN.h + 20} anchor="middle">
         gap 8
