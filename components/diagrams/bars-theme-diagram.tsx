@@ -83,7 +83,7 @@ export function BarsThemeBlueprint() {
       </g>
       <text
         x={BP_CENTER_X}
-        y={BP_CENTER_Y + BAR.maxH / 2 + 22}
+        y={BP_CENTER_Y + BAR.maxH / 2 + 36}
         textAnchor="middle"
         fontSize={11}
         fontWeight={500}
@@ -106,7 +106,7 @@ export function BarsThemeBlueprint() {
           y2={BP_CENTER_Y + BAR.maxH / 2}
           label={`${BAR.maxH.toFixed(0)}`}
         />
-        <DimLabel x={BP_LEFT} y={BP_CENTER_Y + BAR.maxH / 2 + 12} anchor="start">
+        <DimLabel x={BP_LEFT} y={BP_CENTER_Y - BAR.maxH / 2 - 4} anchor="start">
           {`r${BAR.r.toFixed(1)}`}
         </DimLabel>
         <g
@@ -117,14 +117,28 @@ export function BarsThemeBlueprint() {
         >
           <line
             x1={BP_XS[1] + BAR.w}
-            y1={BP_CENTER_Y - 4}
+            y1={BP_CENTER_Y + BAR.maxH / 2 + 6}
             x2={BP_XS[1] + BAR.w}
-            y2={BP_CENTER_Y + 4}
+            y2={BP_CENTER_Y + BAR.maxH / 2 + 11}
           />
-          <line x1={BP_XS[2]} y1={BP_CENTER_Y - 4} x2={BP_XS[2]} y2={BP_CENTER_Y + 4} />
-          <line x1={BP_XS[1] + BAR.w} y1={BP_CENTER_Y} x2={BP_XS[2]} y2={BP_CENTER_Y} />
+          <line
+            x1={BP_XS[2]}
+            y1={BP_CENTER_Y + BAR.maxH / 2 + 6}
+            x2={BP_XS[2]}
+            y2={BP_CENTER_Y + BAR.maxH / 2 + 11}
+          />
+          <line
+            x1={BP_XS[1] + BAR.w}
+            y1={BP_CENTER_Y + BAR.maxH / 2 + 8.5}
+            x2={BP_XS[2]}
+            y2={BP_CENTER_Y + BAR.maxH / 2 + 8.5}
+          />
         </g>
-        <DimLabel x={(BP_XS[1] + BAR.w + BP_XS[2]) / 2} y={BP_CENTER_Y - 8} anchor="middle">
+        <DimLabel
+          x={(BP_XS[1] + BAR.w + BP_XS[2]) / 2}
+          y={BP_CENTER_Y + BAR.maxH / 2 + 20}
+          anchor="middle"
+        >
           {`${BAR.gap.toFixed(1)}`}
         </DimLabel>
       </g>
@@ -213,7 +227,7 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection
         x={AN_XS[0]}

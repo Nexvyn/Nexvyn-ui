@@ -32,16 +32,16 @@ const BAR_COUNT = 5
 const WAVE_FREQ = 1.4
 const WAVE_PHASE_STEP = (Math.PI * 2) / BAR_COUNT
 
-const STATE_COLOR_TOKEN: Record<OrbState, 'accent' | 'destructive'> = {
-  idle: 'accent',
-  connecting: 'accent',
-  listening: 'accent',
-  thinking: 'accent',
-  speaking: 'accent',
+const STATE_COLOR_TOKEN: Record<OrbState, 'foreground' | 'destructive'> = {
+  idle: 'foreground',
+  connecting: 'foreground',
+  listening: 'foreground',
+  thinking: 'foreground',
+  speaking: 'foreground',
   error: 'destructive',
 }
 
-const FALLBACK_ACCENT: [number, number, number] = [26, 115, 242]
+const FALLBACK_FOREGROUND: [number, number, number] = [10, 10, 10]
 const FALLBACK_DESTRUCTIVE: [number, number, number] = [232, 80, 80]
 
 const BLEND_MS = 280
@@ -71,14 +71,14 @@ export function BarsTheme({
 
   const reduceMotion = useReducedMotion()
 
-  const accentRgb = useCssColorRgb('--color-accent', FALLBACK_ACCENT)
+  const foregroundRgb = useCssColorRgb('--color-fg', FALLBACK_FOREGROUND)
   const destructiveRgb = useCssColorRgb('--color-destructive', FALLBACK_DESTRUCTIVE)
-  const accentRgbRef = useRef(accentRgb)
+  const foregroundRgbRef = useRef(foregroundRgb)
   const destructiveRgbRef = useRef(destructiveRgb)
-  const currentColorRef = useRef<[number, number, number]>(accentRgb)
+  const currentColorRef = useRef<[number, number, number]>(foregroundRgb)
   useEffect(() => {
-    accentRgbRef.current = accentRgb
-  }, [accentRgb])
+    foregroundRgbRef.current = foregroundRgb
+  }, [foregroundRgb])
   useEffect(() => {
     destructiveRgbRef.current = destructiveRgb
   }, [destructiveRgb])
@@ -122,7 +122,7 @@ export function BarsTheme({
       const targetRgb =
         STATE_COLOR_TOKEN[state] === 'destructive'
           ? destructiveRgbRef.current
-          : accentRgbRef.current
+          : foregroundRgbRef.current
       const [cr, cg, cb] = currentColorRef.current
       currentColorRef.current = reduceMotion
         ? targetRgb
@@ -269,7 +269,7 @@ export function BarsTheme({
     ...style,
   }
 
-  const initialBg = state === 'error' ? 'var(--color-destructive)' : 'var(--color-accent)'
+  const initialBg = state === 'error' ? 'var(--color-destructive)' : 'var(--color-fg)'
 
   const content = (
     <span
