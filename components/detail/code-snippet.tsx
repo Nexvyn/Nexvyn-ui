@@ -45,26 +45,31 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
   if (!code) return null
 
   return (
-    <div className={cn('py-2', className)}>
+    <div className={cn('relative py-2', className)}>
       <Highlight theme={theme} code={code.trim()} language={language}>
         {({ className: prismClass, style, tokens, getLineProps, getTokenProps }) => (
           <pre
             className={cn(
               prismClass,
-              'text-[13px] overflow-x-auto font-mono font-medium no-scrollbar',
+              'text-[13px] overflow-x-auto font-mono font-normal no-scrollbar whitespace-pre',
             )}
-            style={{ ...style, backgroundColor: 'transparent' }}
+            style={{
+              ...style,
+              backgroundColor: 'transparent',
+              fontVariantLigatures: 'none',
+              fontFeatureSettings: '"liga" 0, "calt" 0',
+            }}
           >
             {tokens.map((line, i) => (
               <div
                 key={`line-${i + 1}`}
                 {...getLineProps({ line })}
-                className="flex items-center hover:bg-(--color-surface-2)/40 py-px px-4"
+                className="flex w-max min-w-full items-baseline hover:bg-(--color-surface-2)/40 py-px px-4"
               >
-                <span className="mr-4 select-none text-(--color-muted) text-right text-[10px] items-center flex w-6 justify-end">
+                <span className="mr-4 shrink-0 select-none text-(--color-muted) text-right text-[13px] w-6">
                   {i + 1}
                 </span>
-                <span>
+                <span className="whitespace-pre">
                   {line.map((token, key) => (
                     <span key={key} {...getTokenProps({ token })} />
                   ))}
@@ -74,6 +79,13 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
           </pre>
         )}
       </Highlight>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-0 bottom-0 right-0 w-8"
+        style={{
+          background: 'linear-gradient(to left, var(--detail-code-bg) 25%, transparent)',
+        }}
+      />
     </div>
   )
 }
