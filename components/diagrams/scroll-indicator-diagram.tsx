@@ -45,7 +45,7 @@ export function ScrollIndicatorWireframe() {
               y1={y}
               x2={BP_RAIL_X}
               y2={y}
-              stroke={isPast && isMajor ? 'var(--bp-accent, var(--color-accent))' : 'currentColor'}
+              stroke={isPast && isMajor ? 'var(--color-accent)' : 'currentColor'}
               strokeWidth={isMajor ? 1.25 : 1}
               className={`${BP_MORPH} ${isPast ? 'opacity-90 group-hover:opacity-100' : 'opacity-30 group-hover:opacity-50'}`}
             />
@@ -189,7 +189,7 @@ function ThumbShape() {
         y1={ACTIVE_Y}
         x2={RAIL_X}
         y2={ACTIVE_Y}
-        stroke="var(--color-accent)"
+        stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={hovered === 'thumb' ? 3 : 2.25}
         strokeLinecap="round"
         className={spotlight.className}
@@ -215,7 +215,7 @@ function CounterShape() {
         textAnchor="end"
         fontSize={10}
         fontFamily="var(--font-mono)"
-        className={`fill-[var(--color-accent)] tabular-nums ${spotlight.className}`}
+        className={`fill-(--color-accent) tabular-nums ${spotlight.className}`}
         opacity={hovered === 'counter' ? 1 : 0.9}
       >
         2/4
@@ -252,7 +252,7 @@ function LabelsShape() {
             fontFamily="var(--font-mono)"
             fontWeight={isActive ? 600 : 500}
             className={`uppercase tracking-wider ${
-              isActive ? 'fill-[var(--color-accent)]' : 'fill-current'
+              isActive ? 'fill-(--color-accent)' : 'fill-current'
             } ${spotlight.className}`}
             opacity={isActive ? 1 : hovered === 'labels' ? 0.75 : 0.45}
           >
@@ -270,7 +270,7 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={RAIL_X - 16} y={RAIL_Y1} w={16} h={RAIL_Y2 - RAIL_Y1} />
       <DimV
