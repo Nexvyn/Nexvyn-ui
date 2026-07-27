@@ -3,7 +3,11 @@
 import { useEffect, useId } from 'react'
 import { useAnimate } from 'motion/react'
 
-export function StarMascot({ className }: { className?: string }) {
+type StarMascotProps = {
+  className?: string
+}
+
+export function StarMascot({ className }: StarMascotProps) {
   const gradientId = useId()
   const gradientIdBack = `${gradientId}-back`
   const [scope, animate] = useAnimate()
@@ -28,10 +32,27 @@ export function StarMascot({ className }: { className?: string }) {
         timers.push(id)
       })
 
+    const resetPose = () => {
+      animate('.mascot-coin', { y: 0, scaleY: 1, rotateY: 0 }, { duration: 0 })
+      animate('.mascot-eye', { scaleY: 1 }, { duration: 0 })
+      animate('.mascot-platform', { scale: 1, opacity: 0, x: '-50%' }, { duration: 0 })
+      animate('.mascot-wave-path', { d: starRest }, { duration: 0 })
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) resetPose()
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
     const playJumpSequence = async () => {
       await wait(600)
 
       while (isPlaying) {
+        if (document.hidden) {
+          resetPose()
+          await wait(300)
+          continue
+        }
         await Promise.all([
           animate('.mascot-coin', { y: 10, scaleY: 0.8 }, { duration: 0.15, ease: 'easeOut' }),
           animate(
@@ -78,7 +99,7 @@ export function StarMascot({ className }: { className?: string }) {
         animate('.mascot-eye', { scaleY: 1 }, { type: 'spring', stiffness: 400, damping: 25 })
         animate(
           '.mascot-platform',
-          { scale: 1, opacity: 0.1, x: '-50%' },
+          { scale: 1, opacity: 0, x: '-50%' },
           { type: 'spring', stiffness: 400, damping: 25 },
         )
         await animate(
@@ -86,6 +107,30 @@ export function StarMascot({ className }: { className?: string }) {
           { y: 0, scaleY: 1 },
           { type: 'spring', stiffness: 400, damping: 25 },
         )
+        if (!isPlaying) return
+
+        await Promise.all([
+          animate('.mascot-coin', { y: -7, scaleY: 0.96 }, { duration: 0.12, ease: 'easeOut' }),
+          animate(
+            '.mascot-platform',
+            { scale: 1.14, opacity: 0.12, x: '-50%' },
+            { duration: 0.12, ease: 'easeOut' },
+          ),
+        ])
+        if (!isPlaying) return
+
+        await Promise.all([
+          animate(
+            '.mascot-coin',
+            { y: 0, scaleY: 1 },
+            { type: 'spring', stiffness: 520, damping: 18 },
+          ),
+          animate(
+            '.mascot-platform',
+            { scale: 1, opacity: 0, x: '-50%' },
+            { type: 'spring', stiffness: 520, damping: 22 },
+          ),
+        ])
         if (!isPlaying) return
 
         await wait(150)
@@ -128,6 +173,10 @@ export function StarMascot({ className }: { className?: string }) {
     const playBlinkSequence = async () => {
       await wait(2000)
       while (isPlaying) {
+        if (document.hidden) {
+          await wait(300)
+          continue
+        }
         await animate('.mascot-eye', { scaleY: 0.1 }, { duration: 0.05 })
         if (!isPlaying) return
         await animate('.mascot-eye', { scaleY: 1 }, { duration: 0.05 })
@@ -144,6 +193,7 @@ export function StarMascot({ className }: { className?: string }) {
     return () => {
       isPlaying = false
       timers.forEach(clearTimeout)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
   }, [animate])
 
@@ -164,7 +214,7 @@ export function StarMascot({ className }: { className?: string }) {
           width: 50%;
           height: 10px;
           background: var(--color-fg);
-          opacity: 0.1;
+          opacity: 0;
           border-radius: 50%;
           transform: translateX(-50%);
         }
