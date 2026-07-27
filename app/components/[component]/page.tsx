@@ -45,6 +45,7 @@ import {
   FluidOrbDemo,
   PhoneMockupDemo,
   LaptopMockupDemo,
+  RocketLaunchDemo,
 } from '@/components/ui/previews'
 
 function DemoFrame({
@@ -345,6 +346,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <LaptopMockupDemo />
+        </DemoFrame>
+      )
+    case 'rocket-launch':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <RocketLaunchDemo />
         </DemoFrame>
       )
     case 'not-found-card':

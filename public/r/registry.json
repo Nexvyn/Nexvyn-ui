@@ -665,6 +665,19 @@
       ]
     },
     {
+      "name": "rocket-launch",
+      "type": "registry:ui",
+      "title": "Rocket Launch",
+      "description": "A hand-drawn rocket illustration that ignites its engines and lifts off the pad on demand, with a reset back to rest.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/illustration/rocket-launch.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "fluid-orb",
       "type": "registry:ui",
       "title": "Fluid Orb",

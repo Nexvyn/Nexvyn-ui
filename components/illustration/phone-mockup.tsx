@@ -13,8 +13,10 @@ const mockupChassisVariants = {
     button: 'bg-(--color-card)',
   },
   accent: {
-    frame: 'bg-(--color-accent)',
-    button: 'bg-(--color-accent)',
+    frame:
+      'bg-(--color-accent) dark:bg-[color-mix(in_srgb,var(--color-accent)_60%,var(--color-card))]',
+    button:
+      'bg-(--color-accent) dark:bg-[color-mix(in_srgb,var(--color-accent)_60%,var(--color-card))]',
   },
 } as const
 

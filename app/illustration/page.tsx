@@ -5,6 +5,7 @@ import { ThemeToggle } from '@/components/layout/theme-toggle'
 import { AnimatedTitle } from '@/components/showcase/animated-title'
 import { PhoneMockupCard } from '@/components/illustration/phone-mockup'
 import { LaptopMockupCard } from '@/components/illustration/laptop-mockup'
+import { RocketLaunchIllustration } from '@/components/illustration/rocket-launch'
 import { ILLUSTRATION_COMPONENTS, getComponentHref } from '@/lib/components-registry'
 
 function IllustrationThumbnail({ id }: { id: string }) {
@@ -21,6 +22,9 @@ function IllustrationThumbnail({ id }: { id: string }) {
         <div className="h-full w-full bg-(--color-accent)/10" />
       </LaptopMockupCard>
     )
+  }
+  if (id === 'rocket-launch') {
+    return <RocketLaunchIllustration className="pointer-events-none scale-90" />
   }
   return null
 }
