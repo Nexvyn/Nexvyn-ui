@@ -7,6 +7,11 @@ import { ComponentCard } from '@/components/showcase/component-card'
 import { AnimatedTitle } from '@/components/showcase/animated-title'
 import { AnatomyLicenseNotice } from '@/components/detail/anatomy-license-notice'
 import {
+  ComponentSearchProvider,
+  useComponentSearch,
+  useShortcutLabel,
+} from '@/components/detail/component-search'
+import {
   BASIC_COMPONENTS,
   COMPONENTS,
   NORMAL_COMPONENTS,
@@ -29,6 +34,47 @@ function shuffleIllustrationsIn(
     result.splice(index, 0, item)
   }
   return result
+}
+
+function SearchIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.25"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden
+    >
+      <circle cx="7" cy="7" r="4.5" />
+      <path d="M13.5 13.5 10.5 10.5" />
+    </svg>
+  )
+}
+
+function SearchButton() {
+  const search = useComponentSearch()
+  const shortcut = useShortcutLabel()
+
+  if (!search) return null
+
+  return (
+    <button
+      onClick={() => search.setOpen(true)}
+      className="inline-flex h-9 items-center justify-center gap-2 rounded-2xl squircle-corners px-3 text-sm font-medium text-(--color-fg) opacity-40 outline-none transition-colors hover:bg-(--color-surface) hover:opacity-100 focus-visible:ring-2 focus-visible:ring-(--color-accent)"
+      title="Search components"
+    >
+      <SearchIcon className="size-4.5" />
+      <span className="hidden sm:inline">Search</span>
+      <kbd className="border-(--color-border) text-(--color-muted) hidden rounded-md squircle-corners border px-1.5 py-0.5 font-sans text-[10px] md:inline-block">
+        {shortcut}
+      </kbd>
+    </button>
+  )
 }
 
 function SortIcon({ className, animate }: { className?: string; animate?: boolean }) {
@@ -59,7 +105,7 @@ function SortIcon({ className, animate }: { className?: string; animate?: boolea
   )
 }
 
-export default function ComponentsPage() {
+function ComponentsPageContent() {
   const [sortByCategory, setSortByCategory] = useState(false)
   const [sortAnimating, setSortAnimating] = useState(false)
 
@@ -123,6 +169,7 @@ export default function ComponentsPage() {
             className="text-2xl font-normal tracking-tight sm:text-3xl"
           />
           <div className="flex items-center gap-2">
+            <SearchButton />
             <button
               onClick={() => {
                 setSortAnimating(true)
@@ -215,5 +262,13 @@ export default function ComponentsPage() {
 
       <Footer />
     </div>
+  )
+}
+
+export default function ComponentsPage() {
+  return (
+    <ComponentSearchProvider>
+      <ComponentsPageContent />
+    </ComponentSearchProvider>
   )
 }
