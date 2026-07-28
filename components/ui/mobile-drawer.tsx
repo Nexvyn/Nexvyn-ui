@@ -1,8 +1,10 @@
 'use client'
 
 import {
+  createContext,
   forwardRef,
   useCallback,
+  useContext,
   useEffect,
   useId,
   useRef,
@@ -31,20 +33,26 @@ export interface MobileDrawerProps extends HTMLAttributes<HTMLDivElement> {
   dismissible?: boolean
 }
 
+const MobileDrawerTitleIdContext = createContext<string | undefined>(undefined)
+
 export interface MobileDrawerTitleProps extends HTMLAttributes<HTMLHeadingElement> {
   children: ReactNode
 }
 
 export const MobileDrawerTitle = forwardRef<HTMLHeadingElement, MobileDrawerTitleProps>(
-  ({ children, className, ...props }, ref) => (
-    <h2
-      ref={ref}
-      className={cn('px-6 pt-6 pb-2 text-lg font-semibold text-(--color-fg)', className)}
-      {...props}
-    >
-      {children}
-    </h2>
-  ),
+  ({ children, className, id, ...props }, ref) => {
+    const contextId = useContext(MobileDrawerTitleIdContext)
+    return (
+      <h2
+        ref={ref}
+        id={id ?? contextId}
+        className={cn('px-6 pt-6 pb-2 text-lg font-semibold text-(--color-fg)', className)}
+        {...props}
+      >
+        {children}
+      </h2>
+    )
+  },
 )
 MobileDrawerTitle.displayName = 'MobileDrawerTitle'
 
@@ -111,7 +119,7 @@ export const MobileDrawer = forwardRef<HTMLDivElement, MobileDrawerProps>(
             className="fixed inset-0 z-300"
             role="dialog"
             aria-modal="true"
-            aria-labelledby={titleId}
+            aria-labelledby={'aria-label' in props ? undefined : titleId}
             {...props}
           >
             <motion.div
@@ -147,7 +155,9 @@ export const MobileDrawer = forwardRef<HTMLDivElement, MobileDrawerProps>(
                 <div className="h-1 w-9 rounded-full bg-(--color-border)" />
               </div>
 
-              <div data-title-id={titleId}>{children}</div>
+              <MobileDrawerTitleIdContext.Provider value={titleId}>
+                {children}
+              </MobileDrawerTitleIdContext.Provider>
             </motion.div>
           </div>
         )}
@@ -172,7 +182,7 @@ export function MobileDrawerPreview() {
       >
         Open Drawer
       </button>
-      <MobileDrawer open={open} onClose={() => setOpen(false)} aria-label="Filters">
+      <MobileDrawer open={open} onClose={() => setOpen(false)}>
         <MobileDrawerTitle>Filters</MobileDrawerTitle>
         <div className="px-6 pb-6 space-y-3">
           {['Category', 'Price', 'Rating', 'Brand'].map((label) => (

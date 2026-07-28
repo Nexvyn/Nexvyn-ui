@@ -19,6 +19,7 @@ import {
   DimH,
   DimLabel,
   DimV,
+  PadGuide,
   Selection,
 } from '@/components/diagrams/lib/parts'
 
@@ -132,6 +133,23 @@ export function MobileDrawerBlueprint() {
         </g>
         <DimLabel x={BP.panelX + BP.padX / 2} y={item1Y - 6} anchor="middle">
           {`${BP.padX}`}
+        </DimLabel>
+
+        <PadGuide
+          x={BP.panelX + BP.padX + 4}
+          y={item1Y + 2}
+          w={BP.panelW - BP.padX * 2 - 8}
+          h={BP.itemH - 4}
+          offset={0.6}
+          boxX={BP.panelX + BP.padX}
+          boxY={item1Y}
+          boxW={BP.panelW - BP.padX * 2}
+          boxH={BP.itemH}
+          boxRx={2}
+          clipOffset={0.6}
+        />
+        <DimLabel x={BP.panelX + BP.padX + 2} y={item1Y + BP.itemH / 2 + 2} anchor="middle">
+          16/12
         </DimLabel>
       </g>
     </Blueprint>
@@ -296,7 +314,7 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={PANEL_X} y={PANEL_Y} w={MD.panelW} h={PANEL_H} />
       <DimH x1={PANEL_X} x2={PANEL_X + MD.panelW} y={PANEL_Y - 14} label={`${MD.panelW}`} />
