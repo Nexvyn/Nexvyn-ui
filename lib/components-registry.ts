@@ -1,6 +1,7 @@
 import { accordionMetadata } from '@/components/ui/Doc/accordion-metadata'
 import { actionButtonMetadata } from '@/components/ui/Doc/action-button-metadata'
 import { adaptiveActionsMetadata } from '@/components/ui/Doc/adaptive-actions-metadata'
+import { aiInputMetadata } from '@/components/ui/Doc/ai-input-metadata'
 import { badgeMetadata } from '@/components/ui/Doc/badge-metadata'
 import { buttonMetadata } from '@/components/ui/Doc/button-metadata'
 import { barsThemeMetadata } from '@/components/ui/Doc/bars-theme-metadata'
@@ -121,6 +122,7 @@ const COMPONENTS_UNSORTED: ComponentItem[] = [
   accordionMetadata,
   actionButtonMetadata,
   adaptiveActionsMetadata,
+  aiInputMetadata,
   badgeMetadata,
   buttonMetadata,
   barsThemeMetadata,

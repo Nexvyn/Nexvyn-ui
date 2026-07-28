@@ -12,6 +12,9 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
       (m) => m.AdaptiveActionsBlueprint,
     ),
   ),
+  'ai-input-blueprint': dynamic(() =>
+    import('@/components/diagrams/ai-input-diagram').then((m) => m.AiInputBlueprint),
+  ),
   'button-blueprint': dynamic(() =>
     import('@/components/diagrams/button-diagram').then((m) => m.ButtonBlueprint),
   ),

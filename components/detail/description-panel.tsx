@@ -89,6 +89,7 @@ const ANATOMY_COMPONENTS = [
   'accordion',
   'action-button',
   'adaptive-actions',
+  'ai-input',
   'badge',
   'bars-theme',
   'breadcrumbs',
