@@ -14,7 +14,9 @@ import { COMPONENTS } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import {
   AccordionDemo,
+  ActionButtonDemo,
   BadgeDemo,
+  ButtonDemo,
   BounceSidebarDemo,
   BreadcrumbsDemo,
   CheckboxDemo,
@@ -141,10 +143,22 @@ export function ComponentDemo({ id }: { id: string }) {
           <AccordionDemo />
         </DemoFrame>
       )
+    case 'action-button':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ActionButtonDemo />
+        </DemoFrame>
+      )
     case 'badge':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <BadgeDemo />
+        </DemoFrame>
+      )
+    case 'button':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ButtonDemo />
         </DemoFrame>
       )
     case 'breadcrumbs':
