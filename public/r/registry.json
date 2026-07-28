@@ -73,6 +73,21 @@
       ]
     },
     {
+      "name": "adaptive-actions",
+      "type": "registry:ui",
+      "title": "Adaptive Actions",
+      "description": "A responsive action toolbar that measures its available inline size and moves overflowed items into an accessible dropdown menu, with priority and pinned flags to control what stays visible.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/adaptive-actions.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",

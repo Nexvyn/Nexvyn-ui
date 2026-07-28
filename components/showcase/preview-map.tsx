@@ -7,6 +7,11 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'action-button-blueprint': dynamic(() =>
     import('@/components/diagrams/action-button-diagram').then((m) => m.ActionButtonBlueprint),
   ),
+  'adaptive-actions-blueprint': dynamic(() =>
+    import('@/components/diagrams/adaptive-actions-diagram').then(
+      (m) => m.AdaptiveActionsBlueprint,
+    ),
+  ),
   'button-blueprint': dynamic(() =>
     import('@/components/diagrams/button-diagram').then((m) => m.ButtonBlueprint),
   ),
