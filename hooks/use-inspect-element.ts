@@ -94,7 +94,7 @@ function computeGaps(el: HTMLElement, cs: CSSStyleDeclaration, frameRect: DOMRec
 
     if (isVertical) {
       const gapValue = b.top - a.bottom
-      if (gapValue > 0) {
+      if (Math.round(gapValue) > 0) {
         gaps.push({
           x: a.left - frameRect.left,
           y: a.bottom - frameRect.top,
@@ -106,7 +106,7 @@ function computeGaps(el: HTMLElement, cs: CSSStyleDeclaration, frameRect: DOMRec
       }
     } else {
       const gapValue = b.left - a.right
-      if (gapValue > 0) {
+      if (Math.round(gapValue) > 0) {
         gaps.push({
           x: a.right - frameRect.left,
           y: a.top - frameRect.top,
@@ -198,9 +198,10 @@ export function useInspectElement(
       const flexDirection = display.includes('flex') ? cs.flexDirection || 'row' : null
 
       let gaps = computeGaps(target, cs, frameRect)
-      if (gaps.length === 0 && target.parentElement && content.contains(target.parentElement)) {
-        const parentCs = getComputedStyle(target.parentElement)
-        gaps = computeGaps(target.parentElement, parentCs, frameRect)
+      let ancestor = target.parentElement
+      while (gaps.length === 0 && ancestor && content.contains(ancestor)) {
+        gaps = computeGaps(ancestor, getComputedStyle(ancestor), frameRect)
+        ancestor = ancestor.parentElement
       }
 
       const anchorName = target.getAttribute('data-slot') || target.tagName.toLowerCase()

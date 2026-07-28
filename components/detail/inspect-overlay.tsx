@@ -162,37 +162,63 @@ function PaddingStrips({ data }: { data: InspectData }) {
 function GapStrips({ gaps }: { gaps: GapInfo[] }) {
   return (
     <>
-      {gaps.map((g, i) => (
-        <div
-          key={i}
-          data-inspect-ui
-          style={{
-            position: 'absolute',
-            left: g.x,
-            top: g.y,
-            width: g.width,
-            height: g.height,
-            backgroundColor: GREEN,
-            border: `1px dashed ${GREEN_LINE}`,
-            pointerEvents: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <span
+      {gaps.map((g, i) => {
+        const fitsInside = g.direction === 'horizontal' ? g.width > 14 : g.height > 14
+
+        const labelStyle: React.CSSProperties = fitsInside
+          ? {
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }
+          : g.direction === 'horizontal'
+            ? {
+                position: 'absolute',
+                top: -14,
+                left: '50%',
+                transform: 'translateX(-50%)',
+              }
+            : {
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)',
+                whiteSpace: 'nowrap',
+              }
+
+        return (
+          <div
+            key={i}
+            data-inspect-ui
             style={{
-              fontSize: 10,
-              fontFamily: 'ui-monospace, monospace',
-              color: GREEN_LABEL,
-              fontWeight: 600,
-              lineHeight: 1,
+              position: 'absolute',
+              left: g.x,
+              top: g.y,
+              width: g.width,
+              height: g.height,
+              backgroundColor: GREEN,
+              border: `1px dashed ${GREEN_LINE}`,
+              pointerEvents: 'none',
             }}
           >
-            {g.value}
-          </span>
-        </div>
-      ))}
+            <div data-inspect-ui style={{ ...labelStyle, pointerEvents: 'none' }}>
+              <span
+                style={{
+                  fontSize: 10,
+                  fontFamily: 'ui-monospace, monospace',
+                  color: fitsInside ? GREEN_LABEL : BLUE,
+                  fontWeight: 600,
+                  lineHeight: 1,
+                }}
+              >
+                {g.value}
+              </span>
+            </div>
+          </div>
+        )
+      })}
     </>
   )
 }

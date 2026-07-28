@@ -56,10 +56,15 @@ export const TabsSubtle = forwardRef<HTMLDivElement, TabsSubtleProps>(
       () =>
         Children.toArray(children).filter(
           (child): child is ReactElement<{ value: string }> =>
-            isValidElement(child) &&
-            typeof child.props === 'object' &&
-            child.props !== null &&
-            'value' in child.props,
+            isValidElement(child) && child.type === TabsSubtleItem,
+        ),
+      [children],
+    )
+
+    const panels = useMemo(
+      () =>
+        Children.toArray(children).filter(
+          (child) => isValidElement(child) && child.type !== TabsSubtleItem,
         ),
       [children],
     )
@@ -99,22 +104,25 @@ export const TabsSubtle = forwardRef<HTMLDivElement, TabsSubtleProps>(
 
     return (
       <TabsSubtleContext.Provider value={{ selectedValue, onSelect, idPrefix, layoutId }}>
-        <div
-          ref={(node) => {
-            ;(containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
-            if (typeof ref === 'function') ref(node)
-            else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
-          }}
-          role="tablist"
-          aria-orientation="horizontal"
-          onKeyDown={handleKeyDown}
-          className={cn(
-            'relative inline-flex items-center gap-0.5 rounded-lg squircle-corners bg-muted p-1 select-none overflow-x-auto max-w-full',
-            className,
-          )}
-          {...props}
-        >
-          {children}
+        <div className="flex flex-col gap-2">
+          <div
+            ref={(node) => {
+              ;(containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+              if (typeof ref === 'function') ref(node)
+              else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+            }}
+            role="tablist"
+            aria-orientation="horizontal"
+            onKeyDown={handleKeyDown}
+            className={cn(
+              'relative inline-flex items-center gap-0.5 rounded-lg squircle-corners bg-muted p-1.5 select-none overflow-x-auto max-w-full',
+              className,
+            )}
+            {...props}
+          >
+            {items}
+          </div>
+          {panels}
         </div>
       </TabsSubtleContext.Provider>
     )

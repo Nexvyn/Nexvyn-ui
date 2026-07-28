@@ -181,7 +181,7 @@ function AnnotationsLayer() {
         pointerEvents: 'none',
         filter: isOthersHovered ? 'url(#spotlight-blur)' : 'none',
       }}
-      className={`transition-all duration-200 ease-out ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
     >
       <PadGuide
         x={AN.x + BADGE.padX}
