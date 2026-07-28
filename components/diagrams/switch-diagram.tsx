@@ -21,65 +21,121 @@ import {
   DimH,
   DimLabel,
   DimV,
+  PadGuide,
   Selection,
 } from '@/components/diagrams/lib/parts'
+
 const SWITCH = {
   trackW: 44,
   trackH: 24,
-  rx: 12,
+  trackRx: 12,
+  inset: 2,
   thumb: 20,
   travel: 20,
-  gap: 12,
-  font: 12,
-  labelW: 60,
+  labelGap: 12,
+  labelW: 72,
+  labelFont: 12,
 } as const
 
-const TOTAL_W = SWITCH.trackW + SWITCH.gap + SWITCH.labelW
-const BP_X = (220 - TOTAL_W) / 2
+const ROW_W = SWITCH.trackW + SWITCH.labelGap + SWITCH.labelW
+const BP_X = (220 - ROW_W) / 2
 const BP_Y = (140 - SWITCH.trackH) / 2
-
-const THUMB_MORPH_CLASS =
-  'origin-center transition-transform duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:scale-x-[1.15] motion-reduce:transition-none motion-reduce:transform-none'
+const BP_THUMB_CX = BP_X + SWITCH.inset + SWITCH.thumb / 2
+const BP_THUMB_CY = BP_Y + SWITCH.trackH / 2
 
 export function SwitchBlueprint() {
   const theme = blueprintTheme
-  const thumbCx = BP_X + SWITCH.travel + SWITCH.thumb / 2
-  const thumbCy = BP_Y + SWITCH.trackH / 2
+
   return (
     <Blueprint>
+      <defs>
+        <pattern
+          id="bp-hatch-switch-travel"
+          width="4"
+          height="4"
+          patternTransform="rotate(45)"
+          patternUnits="userSpaceOnUse"
+        >
+          <line
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="4"
+            stroke="currentColor"
+            strokeWidth="0.75"
+            opacity="0.35"
+          />
+        </pattern>
+      </defs>
+
       <rect
         x={BP_X}
         y={BP_Y}
         width={SWITCH.trackW}
         height={SWITCH.trackH}
-        rx={SWITCH.rx}
+        rx={SWITCH.trackRx}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
         className={BP_FILL_SOLID}
       />
-      <circle
-        cx={thumbCx}
-        cy={thumbCy}
-        r={SWITCH.thumb / 2}
-        fill="var(--color-bg)"
-        style={{ transformBox: 'fill-box' }}
-        className={THUMB_MORPH_CLASS}
-      />
+
+      <g
+        style={{ transformOrigin: `${BP_THUMB_CX}px ${BP_THUMB_CY}px` }}
+        className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-x-5 group-focus-visible:translate-x-5 motion-reduce:transition-none motion-reduce:transform-none"
+      >
+        <circle cx={BP_THUMB_CX} cy={BP_THUMB_CY} r={SWITCH.thumb / 2} fill="var(--color-bg)" />
+        <circle
+          cx={BP_THUMB_CX}
+          cy={BP_THUMB_CY}
+          r={SWITCH.thumb / 2}
+          fill="url(#bp-hatch-switch-travel)"
+          className={BP_HIDE_ON_MORPH}
+        />
+        <circle
+          cx={BP_THUMB_CX}
+          cy={BP_THUMB_CY}
+          r={SWITCH.thumb / 2}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={theme.wireframe.strokeWidth}
+          strokeOpacity={theme.wireframe.strokeOpacity}
+        />
+      </g>
+
       <text
-        x={BP_X + SWITCH.trackW + SWITCH.gap}
-        y={thumbCy + 4}
-        fontSize={SWITCH.font}
-        fontWeight={500}
+        x={BP_X + SWITCH.trackW + SWITCH.labelGap}
+        y={BP_THUMB_CY + 4}
+        fontSize={SWITCH.labelFont}
+        fontWeight="500"
         fontFamily="var(--font-sans)"
         className={BP_TEXT_SOFT}
       >
-        Enabled
+        Notifications
       </text>
+
       <g className={BP_HIDE_ON_MORPH}>
         <Selection x={BP_X} y={BP_Y} w={SWITCH.trackW} h={SWITCH.trackH} />
+        <PadGuide
+          x={BP_X + SWITCH.inset}
+          y={BP_Y + SWITCH.inset}
+          w={SWITCH.trackW - SWITCH.inset * 2}
+          h={SWITCH.trackH - SWITCH.inset * 2}
+          offset={0.8}
+          boxX={BP_X}
+          boxY={BP_Y}
+          boxW={SWITCH.trackW}
+          boxH={SWITCH.trackH}
+          boxRx={SWITCH.trackRx}
+          clipOffset={0.8}
+        />
         <DimH x1={BP_X} x2={BP_X + SWITCH.trackW} y={BP_Y - 14} label={`${SWITCH.trackW}`} />
-        <DimV x={BP_X - 12} y1={BP_Y} y2={BP_Y + SWITCH.trackH} label={`${SWITCH.trackH}`} />
-
+        <DimV
+          x={BP_X - 12}
+          y1={BP_Y}
+          y2={BP_Y + SWITCH.trackH}
+          label={`${SWITCH.trackH}`}
+          labelXOffset={-6}
+        />
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
@@ -87,140 +143,110 @@ export function SwitchBlueprint() {
           opacity={theme.guide.structOpacity}
         >
           <line
-            x1={BP_X + SWITCH.thumb / 2}
+            x1={BP_THUMB_CX}
             y1={BP_Y + SWITCH.trackH + 4}
-            x2={BP_X + SWITCH.thumb / 2}
+            x2={BP_THUMB_CX}
             y2={BP_Y + SWITCH.trackH + 9}
           />
           <line
-            x1={thumbCx}
+            x1={BP_THUMB_CX + SWITCH.travel}
             y1={BP_Y + SWITCH.trackH + 4}
-            x2={thumbCx}
+            x2={BP_THUMB_CX + SWITCH.travel}
             y2={BP_Y + SWITCH.trackH + 9}
           />
           <line
-            x1={BP_X + SWITCH.thumb / 2}
+            x1={BP_THUMB_CX}
             y1={BP_Y + SWITCH.trackH + 6.5}
-            x2={thumbCx}
+            x2={BP_THUMB_CX + SWITCH.travel}
             y2={BP_Y + SWITCH.trackH + 6.5}
           />
         </g>
-        <DimLabel
-          x={(BP_X + SWITCH.thumb / 2 + thumbCx) / 2}
-          y={BP_Y + SWITCH.trackH + 22}
-          anchor="middle"
-        >
-          {`${SWITCH.travel}`}
+        <DimLabel x={BP_THUMB_CX + SWITCH.travel / 2} y={BP_Y + SWITCH.trackH + 20}>
+          travel 20
         </DimLabel>
-        <DimLabel
-          x={BP_X + SWITCH.trackW + SWITCH.gap}
-          y={BP_Y + SWITCH.trackH + 22}
-          anchor="start"
-        >
-          {`r${SWITCH.rx}`}
-        </DimLabel>
-
-        <g
-          stroke="var(--bp-accent, var(--color-accent))"
-          strokeWidth={theme.guide.strokeWidth}
-          strokeDasharray="2 2"
-          opacity={theme.guide.structOpacity}
-        >
-          <line x1={BP_X + SWITCH.trackW} y1={BP_Y - 4} x2={BP_X + SWITCH.trackW} y2={BP_Y - 9} />
-          <line
-            x1={BP_X + SWITCH.trackW + SWITCH.gap}
-            y1={BP_Y - 4}
-            x2={BP_X + SWITCH.trackW + SWITCH.gap}
-            y2={BP_Y - 9}
-          />
-          <line
-            x1={BP_X + SWITCH.trackW}
-            y1={BP_Y - 6.5}
-            x2={BP_X + SWITCH.trackW + SWITCH.gap}
-            y2={BP_Y - 6.5}
-          />
-        </g>
-        <DimLabel x={BP_X + SWITCH.trackW + SWITCH.gap / 2} y={BP_Y - 12} anchor="middle">
-          {`${SWITCH.gap}`}
+        <DimLabel x={BP_X + SWITCH.trackW + 7} y={BP_Y + SWITCH.trackH + 20} anchor="start">
+          r12, pad 2
         </DimLabel>
       </g>
     </Blueprint>
   )
 }
-const TX = 66
-const TY = 70
 
-function TrackShape() {
-  const { setHovered } = useAnatomy()
-  const spotlight = useSpotlight('track')
+const AN = {
+  tx: 118,
+  ty: 68,
+} as const
+
+function ControlShape() {
+  const { hovered, setHovered } = useAnatomy()
+  const spotlight = useSpotlight('control')
+  const active = hovered === 'control'
+
   return (
-    <g
-      onMouseEnter={() => setHovered('track')}
+    <rect
+      x="0"
+      y="0"
+      width={SWITCH.trackW}
+      height={SWITCH.trackH}
+      rx={SWITCH.trackRx}
+      fill="currentColor"
+      fillOpacity={active ? 0.14 : 0.04}
+      stroke="currentColor"
+      strokeWidth={active ? 2 : blueprintTheme.wireframe.strokeWidth}
+      className={`cursor-pointer ${spotlight.className}`}
+      style={{ ...spotlight.style, pointerEvents: 'all' }}
+      onMouseEnter={() => setHovered('control')}
       onMouseLeave={() => setHovered(null)}
-      className="cursor-pointer"
-      style={{ pointerEvents: 'all' }}
-    >
-      <rect
-        x={0}
-        y={0}
-        width={SWITCH.trackW}
-        height={SWITCH.trackH}
-        rx={SWITCH.rx}
-        fill="currentColor"
-        fillOpacity={0.9}
-        className={spotlight.className}
-        style={spotlight.style}
-      />
-    </g>
+    />
   )
 }
 
 function ThumbShape() {
-  const { setHovered } = useAnatomy()
+  const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('thumb')
-  const cx = SWITCH.travel + SWITCH.thumb / 2
+  const active = hovered === 'thumb'
+  const cx = SWITCH.inset + SWITCH.thumb / 2 + SWITCH.travel
   const cy = SWITCH.trackH / 2
+
   return (
-    <g
+    <circle
+      cx={cx}
+      cy={cy}
+      r={SWITCH.thumb / 2}
+      fill={active ? 'currentColor' : 'url(#bp-anatomy-hatch)'}
+      stroke="currentColor"
+      strokeWidth={active ? 1.75 : blueprintTheme.wireframe.strokeWidth}
+      className={`cursor-pointer ${spotlight.className}`}
+      style={{ ...spotlight.style, pointerEvents: 'all' }}
       onMouseEnter={() => setHovered('thumb')}
       onMouseLeave={() => setHovered(null)}
-      className="cursor-pointer"
-      style={{ pointerEvents: 'all' }}
-    >
-      <rect x={0} y={0} width={SWITCH.trackW} height={SWITCH.trackH} fill="transparent" />
-      <circle
-        cx={cx}
-        cy={cy}
-        r={SWITCH.thumb / 2}
-        fill="var(--color-bg)"
-        className={spotlight.className}
-        style={spotlight.style}
-      />
-    </g>
+    />
   )
 }
 
 function LabelShape() {
-  const { setHovered } = useAnatomy()
+  const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('label')
-  const x = SWITCH.trackW + SWITCH.gap
-  const cy = SWITCH.trackH / 2
+  const active = hovered === 'label'
+  const x = SWITCH.trackW + SWITCH.labelGap
+
   return (
     <g
       onMouseEnter={() => setHovered('label')}
       onMouseLeave={() => setHovered(null)}
       className="cursor-pointer"
-      style={{ pointerEvents: 'all' }}
+      style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      <rect x={x - 4} y={cy - 10} width={SWITCH.labelW + 8} height={20} fill="transparent" />
+      <rect x={x - 4} y="2" width={SWITCH.labelW + 8} height="20" fill="transparent" />
       <text
         x={x}
-        y={cy + 4}
-        fontSize={13}
+        y={SWITCH.trackH / 2 + 4}
+        fontSize={SWITCH.labelFont}
+        fontWeight={active ? 650 : 500}
         fontFamily="var(--font-sans)"
         className={`fill-current ${spotlight.className}`}
       >
-        Enabled
+        Notifications
       </text>
     </g>
   )
@@ -229,96 +255,89 @@ function LabelShape() {
 function AnnotationsLayer() {
   const { hovered } = useAnatomy()
   const dimmed = hovered !== null
-  const cx = SWITCH.travel + SWITCH.thumb / 2
-  const cy = SWITCH.trackH / 2
+
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={0} y={0} w={SWITCH.trackW} h={SWITCH.trackH} />
-      <DimH x1={0} x2={SWITCH.trackW} y={-14} label={`${SWITCH.trackW}`} />
-      <DimV x={-12} y1={0} y2={SWITCH.trackH} label={`${SWITCH.trackH}`} labelXOffset={-6} />
-      <DimLabel x={0} y={SWITCH.trackH + 14} anchor="start">
-        {`r${SWITCH.rx}`}
-      </DimLabel>
-
-      <g
-        stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
-        strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
-      >
-        <line x1={SWITCH.thumb / 2} y1={cy} x2={cx} y2={cy} />
-      </g>
-      <DimLabel x={(SWITCH.thumb / 2 + cx) / 2} y={cy - 6} anchor="middle">
-        {`${SWITCH.travel}`}
-      </DimLabel>
-
-      <g
-        stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
-        strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
-      >
-        <line x1={SWITCH.trackW} y1={cy} x2={SWITCH.trackW + SWITCH.gap} y2={cy} />
-      </g>
-      <DimLabel x={SWITCH.trackW + SWITCH.gap / 2} y={cy - 6} anchor="middle">
-        {`${SWITCH.gap}`}
+      <PadGuide
+        x={SWITCH.inset}
+        y={SWITCH.inset}
+        w={SWITCH.trackW - SWITCH.inset * 2}
+        h={SWITCH.trackH - SWITCH.inset * 2}
+        offset={0.8}
+        boxX={0}
+        boxY={0}
+        boxW={SWITCH.trackW}
+        boxH={SWITCH.trackH}
+        boxRx={SWITCH.trackRx}
+        clipOffset={0.8}
+      />
+      <DimH x1={0} x2={SWITCH.trackW} y={-14} label="44" />
+      <DimV x={-12} y1={0} y2={SWITCH.trackH} label="24" labelXOffset={-6} />
+      <DimLabel x={0} y={SWITCH.trackH + 18} anchor="start">
+        r12, pad 2
       </DimLabel>
     </g>
   )
 }
 
-function OverlayLines() {
-  const trackMidX = TX + SWITCH.trackW / 2
-  const trackTop = TY
-  const thumbCx = TX + SWITCH.travel + SWITCH.thumb / 2
-  const thumbBottom = TY + SWITCH.trackH / 2 + SWITCH.thumb / 2
-  const labelMidX = TX + SWITCH.trackW + SWITCH.gap + SWITCH.labelW / 2
+function LinesLayer() {
+  const controlMidX = AN.tx + SWITCH.trackW / 2
+  const thumbCx = AN.tx + SWITCH.inset + SWITCH.thumb / 2 + SWITCH.travel
+  const thumbBottom = AN.ty + SWITCH.trackH / 2 + SWITCH.thumb / 2
+  const labelRight = AN.tx + SWITCH.trackW + SWITCH.labelGap + SWITCH.labelW
+  const labelMidY = AN.ty + SWITCH.trackH / 2
+
   return (
     <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="track" x1={trackMidX} y1={trackTop} x2={trackMidX} y2={trackTop - 40} />
-      <OverlayLine id="thumb" x1={thumbCx} y1={thumbBottom} x2={thumbCx} y2={thumbBottom + 36} />
-      <OverlayLine id="label" x1={labelMidX} y1={trackTop} x2={labelMidX} y2={trackTop - 40} />
+      <OverlayLine id="control" x1={controlMidX} y1={AN.ty} x2={controlMidX} y2={36} />
+      <OverlayLine id="thumb" x1={thumbCx} y1={thumbBottom} x2={thumbCx} y2={122} />
+      <OverlayLine id="label" x1={labelRight} y1={labelMidY} x2={278} y2={labelMidY} />
     </g>
   )
 }
 
-function Tags() {
-  const trackMidX = TX + SWITCH.trackW / 2
-  const trackTop = TY
-  const thumbCx = TX + SWITCH.travel + SWITCH.thumb / 2
-  const thumbBottom = TY + SWITCH.trackH / 2 + SWITCH.thumb / 2
-  const labelMidX = TX + SWITCH.trackW + SWITCH.gap + SWITCH.labelW / 2
+function TagsLayer() {
+  const controlMidX = AN.tx + SWITCH.trackW / 2
+  const thumbCx = AN.tx + SWITCH.inset + SWITCH.thumb / 2 + SWITCH.travel
+  const labelMidY = AN.ty + SWITCH.trackH / 2
+
   return (
     <>
       <foreignObject
-        x={trackMidX - 45}
-        y={trackTop - 40 - 24}
-        width={90}
-        height={24}
+        x={controlMidX - 40}
+        y="12"
+        width="80"
+        height="24"
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="track" label="Track" className="items-end justify-center" isAccent />
+        <AnatomyTag
+          part="control"
+          label="Switch.Control"
+          className="items-end justify-center"
+          isAccent
+        />
       </foreignObject>
       <foreignObject
-        x={thumbCx - 65}
-        y={thumbBottom + 36}
-        width={130}
-        height={24}
+        x={thumbCx - 45}
+        y="122"
+        width="90"
+        height="24"
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="thumb" label="Thumb (squash)" className="items-start justify-center" />
+        <AnatomyTag part="thumb" label="Switch.Thumb" className="items-start justify-center" />
       </foreignObject>
       <foreignObject
-        x={labelMidX - 45}
-        y={trackTop - 40 - 24}
-        width={90}
-        height={24}
+        x="278"
+        y={labelMidY - 12}
+        width="90"
+        height="24"
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="label" label="Label" className="items-end justify-center" />
+        <AnatomyTag part="label" label="Switch.Label" className="items-center justify-start" />
       </foreignObject>
     </>
   )
@@ -326,15 +345,15 @@ function Tags() {
 
 export function SwitchAnatomy() {
   return (
-    <AnatomyFrame viewBox="-20 -20 300 200" maxWidthClassName="max-w-[360px]">
-      <g transform={`translate(${TX}, ${TY})`}>
-        <TrackShape />
+    <AnatomyFrame viewBox="60 0 330 160" maxWidthClassName="max-w-[440px]">
+      <g transform={`translate(${AN.tx}, ${AN.ty})`}>
+        <ControlShape />
         <ThumbShape />
         <LabelShape />
         <AnnotationsLayer />
       </g>
-      <OverlayLines />
-      <Tags />
+      <LinesLayer />
+      <TagsLayer />
     </AnatomyFrame>
   )
 }
