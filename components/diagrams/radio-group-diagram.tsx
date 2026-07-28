@@ -15,6 +15,7 @@ import {
 import {
   Blueprint,
   BP_HIDE_ON_MORPH,
+  BP_MORPH,
   BP_TEXT_SOFT,
   blueprintTheme,
   DimH,
@@ -22,10 +23,11 @@ import {
   DimV,
   Selection,
 } from '@/components/diagrams/lib/parts'
+
 const RADIO = {
   circle: 20,
   r: 10,
-  dot: 8,
+  dot: 10,
   gap: 12,
   rowGap: 8,
   font: 11,
@@ -45,8 +47,13 @@ function bpRowY(i: number) {
   return BP_Y + i * (ROW_H + RADIO.rowGap)
 }
 
-const DOT_MORPH_CLASS =
-  'origin-center transition-transform duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:scale-125 group-focus-visible:scale-125 motion-reduce:transition-none motion-reduce:transform-none'
+const NEXT_ROW = SELECTED_ROW + 1
+
+const DOT_OUT_CLASS =
+  'origin-center transition-[opacity,transform] duration-(--motion-dur-base) ease-(--motion-ease-out) delay-0 group-hover:opacity-0 group-hover:scale-50 group-focus-visible:opacity-0 group-focus-visible:scale-50 motion-reduce:transition-none motion-reduce:transform-none'
+
+const DOT_IN_CLASS =
+  'origin-center opacity-0 scale-50 transition-[opacity,transform] duration-(--motion-dur-base) ease-(--motion-ease-out) delay-150 group-hover:opacity-100 group-hover:scale-100 group-hover:delay-300 group-focus-visible:opacity-100 group-focus-visible:scale-100 group-focus-visible:delay-300 motion-reduce:transition-none motion-reduce:transform-none'
 
 export function RadioGroupBlueprint() {
   const theme = blueprintTheme
@@ -56,6 +63,7 @@ export function RadioGroupBlueprint() {
         const y = bpRowY(i)
         const cy = y + RADIO.r
         const isSelected = i === SELECTED_ROW
+        const isNext = i === NEXT_ROW
         return (
           <g key={label}>
             <circle
@@ -68,6 +76,13 @@ export function RadioGroupBlueprint() {
               strokeOpacity={
                 isSelected ? theme.wireframe.strokeOpacity : theme.wireframe.strokeOpacity * 0.55
               }
+              className={
+                isSelected
+                  ? `${BP_MORPH} group-hover:stroke-opacity-40 group-focus-visible:stroke-opacity-40`
+                  : isNext
+                    ? `${BP_MORPH} group-hover:stroke-opacity-100 group-focus-visible:stroke-opacity-100`
+                    : undefined
+              }
             />
             {isSelected && (
               <circle
@@ -76,7 +91,17 @@ export function RadioGroupBlueprint() {
                 r={RADIO.dot / 2}
                 fill="currentColor"
                 style={{ transformBox: 'fill-box' }}
-                className={DOT_MORPH_CLASS}
+                className={DOT_OUT_CLASS}
+              />
+            )}
+            {isNext && (
+              <circle
+                cx={BP_X + RADIO.r}
+                cy={cy}
+                r={RADIO.dot / 2}
+                fill="currentColor"
+                style={{ transformBox: 'fill-box' }}
+                className={DOT_IN_CLASS}
               />
             )}
             <text
@@ -152,8 +177,38 @@ export function RadioGroupBlueprint() {
     </Blueprint>
   )
 }
+
 const TX = 56
 const TY = 20
+
+function ContainerShape() {
+  const { setHovered } = useAnatomy()
+  const spotlight = useSpotlight('container')
+
+  return (
+    <g
+      onMouseEnter={() => setHovered('container')}
+      onMouseLeave={() => setHovered(null)}
+      className="cursor-pointer"
+      style={{ pointerEvents: 'all' }}
+    >
+      <rect
+        x={-8}
+        y={-8}
+        width={TOTAL_W + 16}
+        height={TOTAL_H + 16}
+        rx={6}
+        fill="transparent"
+        stroke="currentColor"
+        strokeWidth={1}
+        strokeDasharray="3 3"
+        strokeOpacity={0.3}
+        className={spotlight.className}
+        style={spotlight.style}
+      />
+    </g>
+  )
+}
 
 function CircleShape({ i }: { i: number }) {
   const { setHovered } = useAnatomy()
@@ -238,6 +293,76 @@ function LabelShape({ i }: { i: number }) {
   )
 }
 
+function HiddenInputShape() {
+  const { setHovered } = useAnatomy()
+  const spotlight = useSpotlight('hidden-input')
+  const y = bpRowY(SELECTED_ROW) - BP_Y
+  const cy = y + RADIO.r
+  return (
+    <g
+      onMouseEnter={() => setHovered('hidden-input')}
+      onMouseLeave={() => setHovered(null)}
+      className="cursor-pointer"
+      style={{ pointerEvents: 'all' }}
+    >
+      <rect
+        x={-6}
+        y={cy - 6}
+        width={12}
+        height={12}
+        rx={2}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={0.75}
+        strokeDasharray="2 1.5"
+        strokeOpacity={0.5}
+        className={spotlight.className}
+        style={spotlight.style}
+      />
+      <text
+        x={0}
+        y={cy + 2.5}
+        textAnchor="middle"
+        fontSize={6}
+        fontFamily="var(--font-mono)"
+        fillOpacity={0.5}
+        className={`fill-current ${spotlight.className}`}
+        style={spotlight.style}
+      >
+        ⌧
+      </text>
+    </g>
+  )
+}
+
+function FocusRingShape() {
+  const { setHovered } = useAnatomy()
+  const spotlight = useSpotlight('focus-ring')
+  const y = bpRowY(0) - BP_Y
+  const cy = y + RADIO.r
+  return (
+    <g
+      onMouseEnter={() => setHovered('focus-ring')}
+      onMouseLeave={() => setHovered(null)}
+      className="cursor-pointer"
+      style={{ pointerEvents: 'all' }}
+    >
+      <circle
+        cx={RADIO.r}
+        cy={cy}
+        r={RADIO.r + 4}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeOpacity={0.4}
+        strokeDasharray="4 2"
+        className={spotlight.className}
+        style={spotlight.style}
+      />
+    </g>
+  )
+}
+
 function AnnotationsLayer() {
   const { hovered } = useAnatomy()
   const dimmed = hovered !== null
@@ -247,7 +372,7 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={0} y={selY} w={RADIO.circle} h={RADIO.circle} />
       <DimH x1={0} x2={RADIO.circle} y={selY - 14} label={`${RADIO.circle}`} />
@@ -274,7 +399,6 @@ function AnnotationsLayer() {
       <DimLabel x={RADIO.circle + RADIO.gap / 2} y={selY + RADIO.r - 6} anchor="middle">
         {`${RADIO.gap}`}
       </DimLabel>
-
       <g
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={blueprintTheme.guide.strokeWidth}
@@ -294,31 +418,72 @@ function AnnotationsLayer() {
 
 function OverlayLines() {
   const selY = bpRowY(SELECTED_ROW) - BP_Y
+  const row0Y = bpRowY(0) - BP_Y
   const circleMidX = TX + RADIO.r
   const circleTop = TY + selY
   const circleCy = TY + selY + RADIO.r
   const dotBottom = circleCy + RADIO.dot / 2
   const labelMidX = TX + RADIO.circle + RADIO.gap + RADIO.labelW / 2
   const labelY = TY + selY
+  const containerLeft = TX - 8
+  const containerMidY = TY + TOTAL_H / 2
+  const focusCy = TY + row0Y + RADIO.r
+  const focusRight = TX + RADIO.r + RADIO.r + 4
   return (
     <g strokeWidth="1" className="pointer-events-none">
+      <OverlayLine
+        id="container"
+        x1={containerLeft}
+        y1={containerMidY}
+        x2={containerLeft - 30}
+        y2={containerMidY}
+      />
       <OverlayLine id="circle" x1={circleMidX} y1={circleTop} x2={circleMidX} y2={circleTop - 40} />
       <OverlayLine id="dot" x1={circleMidX} y1={dotBottom} x2={circleMidX} y2={dotBottom + 36} />
       <OverlayLine id="label" x1={labelMidX} y1={labelY} x2={labelMidX} y2={labelY - 40} />
+      <OverlayLine
+        id="hidden-input"
+        x1={TX - 6}
+        y1={circleCy}
+        x2={TX - 6 - 30}
+        y2={circleCy + 30}
+      />
+      <OverlayLine
+        id="focus-ring"
+        x1={focusRight}
+        y1={focusCy}
+        x2={focusRight + 30}
+        y2={focusCy - 20}
+      />
     </g>
   )
 }
 
 function Tags() {
   const selY = bpRowY(SELECTED_ROW) - BP_Y
+  const row0Y = bpRowY(0) - BP_Y
   const circleMidX = TX + RADIO.r
   const circleTop = TY + selY
   const circleCy = TY + selY + RADIO.r
   const dotBottom = circleCy + RADIO.dot / 2
   const labelMidX = TX + RADIO.circle + RADIO.gap + RADIO.labelW / 2
   const labelY = TY + selY
+  const containerLeft = TX - 8
+  const containerMidY = TY + TOTAL_H / 2
+  const focusCy = TY + row0Y + RADIO.r
+  const focusRight = TX + RADIO.r + RADIO.r + 4
   return (
     <>
+      <foreignObject
+        x={containerLeft - 30 - 75}
+        y={containerMidY - 12}
+        width={75}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
+        <AnatomyTag part="container" label="Group" className="items-center justify-end" isAccent />
+      </foreignObject>
+
       <foreignObject
         x={circleMidX - 50}
         y={circleTop - 40 - 24}
@@ -326,8 +491,14 @@ function Tags() {
         height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="circle" label="Radio" className="items-end justify-center" isAccent />
+        <AnatomyTag
+          part="circle"
+          label="Radio circle"
+          className="items-end justify-center"
+          isAccent
+        />
       </foreignObject>
+
       <foreignObject
         x={circleMidX - 60}
         y={dotBottom + 36}
@@ -337,6 +508,7 @@ function Tags() {
       >
         <AnatomyTag part="dot" label="Traveling dot" className="items-start justify-center" />
       </foreignObject>
+
       <foreignObject
         x={labelMidX - 45}
         y={labelY - 40 - 24}
@@ -346,14 +518,35 @@ function Tags() {
       >
         <AnatomyTag part="label" label="Label" className="items-end justify-center" />
       </foreignObject>
+
+      <foreignObject
+        x={TX - 6 - 30 - 80}
+        y={circleCy + 30 - 4}
+        width={80}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
+        <AnatomyTag part="hidden-input" label="Hidden input" className="items-center justify-end" />
+      </foreignObject>
+
+      <foreignObject
+        x={focusRight + 30}
+        y={focusCy - 20 - 12}
+        width={80}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
+        <AnatomyTag part="focus-ring" label="Focus ring" className="items-end justify-start" />
+      </foreignObject>
     </>
   )
 }
 
 export function RadioGroupAnatomy() {
   return (
-    <AnatomyFrame viewBox="-40 -70 300 260" maxWidthClassName="max-w-[380px]">
+    <AnatomyFrame viewBox="-80 -80 340 280" maxWidthClassName="max-w-[400px]">
       <g transform={`translate(${TX}, ${TY})`}>
+        <ContainerShape />
         {ROWS.map((label, i) => (
           <g key={label}>
             <CircleShape i={i} />
@@ -361,6 +554,8 @@ export function RadioGroupAnatomy() {
           </g>
         ))}
         <DotShape />
+        <HiddenInputShape />
+        <FocusRingShape />
         <AnnotationsLayer />
       </g>
       <OverlayLines />
