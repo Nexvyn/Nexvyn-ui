@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 
 const SOURCE_MAP: Record<string, string[]> = {
+  accordion: ['components', 'ui', 'accordion.tsx'],
   badge: ['components', 'ui', 'badge.tsx'],
   'bounce-sidebar': ['components', 'ui', 'bounce-sidebar.tsx'],
   breadcrumbs: ['components', 'ui', 'breadcrumbs.tsx'],
