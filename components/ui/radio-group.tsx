@@ -23,13 +23,14 @@ interface RadioGroupContextValue {
   setValue: (v: string) => void
   name?: string
   groupId: string
+  disabled: boolean
+  required: boolean
+  orientation: 'vertical' | 'horizontal'
   focusedValue: string | null
-  setFocusedValue: (v: string) => void
+  setFocusedValue: (v: string | null) => void
   itemValues: string[]
   registerItem: (v: string) => void
   unregisterItem: (v: string) => void
-  required?: boolean
-  ariaInvalid?: boolean
 }
 
 const RadioGroupContext = createContext<RadioGroupContextValue | null>(null)
@@ -45,11 +46,11 @@ export interface RadioGroupProps {
   defaultValue?: string
   onValueChange?: (value: string) => void
   name?: string
+  disabled?: boolean
+  required?: boolean
+  orientation?: 'vertical' | 'horizontal'
   children?: ReactNode
   className?: string
-  required?: boolean
-  'aria-invalid'?: boolean
-  'aria-describedby'?: string
 }
 
 export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
@@ -59,11 +60,11 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
       defaultValue,
       onValueChange,
       name,
+      disabled = false,
+      required = false,
+      orientation = 'vertical',
       children,
       className,
-      required,
-      'aria-invalid': ariaInvalid,
-      'aria-describedby': ariaDescribedby,
       ...props
     },
     ref,
@@ -100,13 +101,19 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
         if (count === 0) return
 
         const currentIdx = focusedValue ? itemValues.indexOf(focusedValue) : -1
-
         let nextIdx = currentIdx
 
-        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        const isRTL = typeof document !== 'undefined' && document.documentElement.dir === 'rtl'
+
+        const forward =
+          orientation === 'vertical' ? ['ArrowDown'] : isRTL ? ['ArrowLeft'] : ['ArrowRight']
+        const backward =
+          orientation === 'vertical' ? ['ArrowUp'] : isRTL ? ['ArrowRight'] : ['ArrowLeft']
+
+        if (forward.includes(e.key)) {
           e.preventDefault()
           nextIdx = currentIdx < 0 ? 0 : (currentIdx + 1) % count
-        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        } else if (backward.includes(e.key)) {
           e.preventDefault()
           nextIdx = currentIdx < 0 ? count - 1 : (currentIdx - 1 + count) % count
         } else if (e.key === 'Home') {
@@ -115,6 +122,8 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
         } else if (e.key === 'End') {
           e.preventDefault()
           nextIdx = count - 1
+        } else {
+          return
         }
 
         if (nextIdx !== currentIdx && nextIdx >= 0) {
@@ -129,7 +138,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
           }
         }
       },
-      [itemValues, focusedValue, setValue],
+      [itemValues, focusedValue, setValue, orientation],
     )
 
     const ctx = useMemo<RadioGroupContextValue>(
@@ -138,25 +147,27 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
         setValue,
         name,
         groupId,
+        disabled,
+        required,
+        orientation,
         focusedValue,
         setFocusedValue,
         itemValues,
         registerItem,
         unregisterItem,
-        required,
-        ariaInvalid,
       }),
       [
         value,
         setValue,
         name,
         groupId,
+        disabled,
+        required,
+        orientation,
         focusedValue,
         itemValues,
         registerItem,
         unregisterItem,
-        required,
-        ariaInvalid,
       ],
     )
 
@@ -169,10 +180,14 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
             else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
           }}
           role="radiogroup"
-          aria-invalid={ariaInvalid}
-          aria-describedby={ariaDescribedby}
+          aria-orientation={orientation}
+          aria-required={required || undefined}
+          aria-disabled={disabled || undefined}
           onKeyDown={handleKeyDown}
-          className={cn('flex flex-col gap-2', className)}
+          className={cn(
+            orientation === 'vertical' ? 'flex flex-col gap-2' : 'flex flex-row gap-4',
+            className,
+          )}
           {...props}
         >
           {children}
@@ -183,37 +198,39 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
 )
 RadioGroup.displayName = 'RadioGroup'
 
-export interface RadioItemProps {
+export interface RadioGroupItemProps {
   value: string
-  label?: string
   disabled?: boolean
   className?: string
+  children?: ReactNode
 }
 
-export const RadioItem = forwardRef<HTMLDivElement, RadioItemProps>(
-  ({ value: itemValue, label, disabled, className, ...props }, ref) => {
+export const RadioGroupItem = forwardRef<HTMLDivElement, RadioGroupItemProps>(
+  ({ value: itemValue, disabled: itemDisabled, className, children, ...props }, ref) => {
     const {
       value,
       setValue,
       name,
       groupId,
+      disabled: groupDisabled,
+      required,
       focusedValue,
       setFocusedValue,
       itemValues,
       registerItem,
       unregisterItem,
-      required,
-      ariaInvalid,
-    } = useRadioGroupCtx('RadioItem')
+    } = useRadioGroupCtx('RadioGroupItem')
+
     const reduceMotion = useReducedMotion()
+    const isDisabled = groupDisabled || itemDisabled
     const isSelected = value === itemValue
     const id = `${groupId}-${itemValue}`
 
     useEffect(() => {
-      if (disabled) return
+      if (isDisabled) return
       registerItem(itemValue)
       return () => unregisterItem(itemValue)
-    }, [itemValue, disabled, registerItem, unregisterItem])
+    }, [itemValue, isDisabled, registerItem, unregisterItem])
 
     const isTabbable =
       focusedValue !== null ? focusedValue === itemValue : itemValue === (value ?? itemValues[0])
@@ -226,22 +243,23 @@ export const RadioItem = forwardRef<HTMLDivElement, RadioItemProps>(
           name={name}
           value={itemValue}
           checked={isSelected}
-          disabled={disabled}
+          disabled={isDisabled}
           required={required}
           readOnly
           className="sr-only"
           tabIndex={-1}
+          aria-hidden="true"
         />
         <button
           type="button"
           role="radio"
           aria-checked={isSelected}
-          aria-label={label}
+          aria-labelledby={`${id}-label`}
           data-radio-value={itemValue}
-          disabled={disabled}
+          disabled={isDisabled}
           tabIndex={isTabbable ? 0 : -1}
           onClick={() => {
-            if (!disabled) {
+            if (!isDisabled) {
               playClickSound()
               setValue(itemValue)
               setFocusedValue(itemValue)
@@ -249,56 +267,64 @@ export const RadioItem = forwardRef<HTMLDivElement, RadioItemProps>(
           }}
           onFocus={() => setFocusedValue(itemValue)}
           onMouseEnter={() => {
-            if (!disabled) playHoverSound()
+            if (!isDisabled) playHoverSound()
           }}
+          onPointerDown={(e) => e.preventDefault()}
           className={cn(
-            'relative flex size-5 shrink-0 items-center justify-center rounded-full border p-0 transition-[color,background-color,border-color,transform]',
-            'active:scale-[0.97] motion-reduce:active:scale-100',
+            'relative flex size-5 shrink-0 items-center justify-center rounded-full border-2 border-(--color-border) p-0',
+            'transition-[border-color,transform] duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none',
+            'active:scale-[0.97] motion-reduce:active:scale-100 motion-reduce:transform-none',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
             'disabled:cursor-not-allowed disabled:opacity-50',
-            isSelected ? 'border-(--color-fg)' : 'border-(--color-border)',
-            ariaInvalid && 'border-(--color-error)',
+            isSelected && 'border-(--color-fg)',
           )}
-          onPointerDown={(e) => e.preventDefault()}
         >
           {isSelected && (
-            <motion.span
-              layoutId={`${groupId}-dot`}
-              className="rounded-full bg-(--color-fg)"
-              style={{ width: 8, height: 8 }}
+            <motion.div
+              layoutId={reduceMotion ? undefined : `${groupId}-dot`}
+              className="size-2.5 rounded-full bg-(--color-fg)"
               transition={reduceMotion ? { duration: 0 } : springs.moderate}
             />
           )}
         </button>
-        {label && (
+        {children && (
           <label
+            id={`${id}-label`}
             htmlFor={id}
-            className="min-h-11 flex items-center text-sm text-(--color-fg) select-none"
+            className={cn(
+              'min-h-11 flex items-center text-sm text-(--color-fg) select-none',
+              isDisabled && 'cursor-not-allowed opacity-50',
+            )}
             onClick={() => {
-              if (!disabled) {
+              if (!isDisabled) {
                 playClickSound()
                 setValue(itemValue)
                 setFocusedValue(itemValue)
               }
             }}
           >
-            {label}
+            {children}
           </label>
         )}
       </div>
     )
   },
 )
-RadioItem.displayName = 'RadioItem'
+RadioGroupItem.displayName = 'RadioGroupItem'
+
+/** @deprecated Use `RadioGroupItem` instead */
+export const RadioItem = RadioGroupItem
+/** @deprecated Use `RadioGroupItemProps` instead */
+export type RadioItemProps = RadioGroupItemProps
 
 export function RadioGroupPreview() {
   const [value, setValue] = useState('medium')
   return (
     <div className="flex h-full w-full items-center justify-center p-6">
       <RadioGroup value={value} onValueChange={setValue} name="size">
-        <RadioItem value="small" label="Small" />
-        <RadioItem value="medium" label="Medium" />
-        <RadioItem value="large" label="Large" />
+        <RadioGroupItem value="small">Small</RadioGroupItem>
+        <RadioGroupItem value="medium">Medium</RadioGroupItem>
+        <RadioGroupItem value="large">Large</RadioGroupItem>
       </RadioGroup>
     </div>
   )
