@@ -4,6 +4,12 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'accordion-blueprint': dynamic(() =>
     import('@/components/diagrams/accordion-diagram').then((m) => m.AccordionBlueprint),
   ),
+  'action-button-blueprint': dynamic(() =>
+    import('@/components/diagrams/action-button-diagram').then((m) => m.ActionButtonBlueprint),
+  ),
+  'button-blueprint': dynamic(() =>
+    import('@/components/diagrams/button-diagram').then((m) => m.ButtonBlueprint),
+  ),
   'phone-mockup-blueprint': dynamic(() =>
     import('@/components/diagrams/phone-mockup-diagram').then((m) => m.PhoneMockupWireframe),
   ),
