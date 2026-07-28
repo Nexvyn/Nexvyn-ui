@@ -1,215 +1,277 @@
 'use client'
 
 import {
+  cloneElement,
   forwardRef,
+  isValidElement,
   useCallback,
-  useEffect,
   useId,
-  useRef,
   useState,
-  type ButtonHTMLAttributes,
+  type ReactNode,
 } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { springs } from '@/lib/motion-tokens'
-import { playHoverSound, playClickSound } from '@/lib/sound'
-export interface CheckboxProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
-  checked?: boolean
+
+export type CheckedState = boolean | 'indeterminate'
+
+export interface CheckboxProps {
+  id?: string
+  checked?: CheckedState
   defaultChecked?: boolean
-  onCheckedChange?: (checked: boolean) => void
-  label?: string
-  indeterminate?: boolean
+  onCheckedChange?: (checked: CheckedState) => void
   name?: string
   disabled?: boolean
   required?: boolean
-  strikeThrough?: boolean
-  'aria-invalid'?: boolean
+  'aria-invalid'?: boolean | 'true' | 'false' | 'grammar' | 'spelling'
+  'aria-label'?: string
+  'aria-labelledby'?: string
   'aria-describedby'?: string
+  className?: string
+  value?: string
 }
 
-export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
+export interface CheckboxFieldProps {
+  label: string
+  description?: string
+  strikeThrough?: boolean
+  className?: string
+  children: ReactNode
+}
+
+function useControlledChecked(
+  controlledValue: CheckedState | undefined,
+  defaultValue: boolean | undefined,
+  onChange: ((checked: CheckedState) => void) | undefined,
+): [CheckedState, (next: CheckedState) => void] {
+  const [internal, setInternal] = useState<CheckedState>(defaultValue ?? false)
+  const isControlled = controlledValue !== undefined
+  const value = isControlled ? controlledValue : internal
+
+  const setValue = useCallback(
+    (next: CheckedState) => {
+      if (!isControlled) setInternal(next)
+      onChange?.(next)
+    },
+    [isControlled, onChange],
+  )
+
+  return [value, setValue]
+}
+
+const CHECK_PATH = 'M3.5 8.5L7 12L12.5 5.5'
+const DASH_PATH = 'M4 8L12 8'
+
+function CheckGlyph({ state, animate }: { state: CheckedState; animate: boolean }) {
+  const reduceMotion = useReducedMotion()
+  const isChecked = state === true
+  const isIndeterminate = state === 'indeterminate'
+  const shouldShow = isChecked || isIndeterminate
+
+  if (!shouldShow) return null
+
+  const path = isIndeterminate ? DASH_PATH : CHECK_PATH
+  const shouldAnimate = animate && !reduceMotion
+
+  return (
+    <svg viewBox="0 0 16 16" fill="none" className="absolute inset-0 size-full" aria-hidden="true">
+      <motion.path
+        d={path}
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={shouldAnimate ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
+        animate={{ pathLength: 1, opacity: 1 }}
+        exit={shouldAnimate ? { pathLength: 0, opacity: 0 } : undefined}
+        transition={shouldAnimate ? springs.fast : { duration: 0 }}
+      />
+    </svg>
+  )
+}
+
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (
     {
-      checked: checkedProp,
-      defaultChecked = false,
+      id,
+      checked: controlledChecked,
+      defaultChecked,
       onCheckedChange,
-      label,
-      indeterminate = false,
       name,
-      disabled,
-      required,
-      strikeThrough = false,
-      className,
-      id: idProp,
+      disabled = false,
+      required = false,
       'aria-invalid': ariaInvalid,
-      'aria-describedby': ariaDescribedby,
-      ...props
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledBy,
+      'aria-describedby': ariaDescribedBy,
+      className,
+      value = 'on',
     },
-    ref,
+    forwardedRef,
   ) => {
-    const reactId = useId()
-    const id = idProp ?? reactId
-    const isControlled = checkedProp !== undefined
-    const [internal, setInternal] = useState(defaultChecked)
-    const value = isControlled ? checkedProp : internal
-    const reduceMotion = useReducedMotion()
-
-    const isFirstRenderRef = useRef(true)
-    useEffect(() => {
-      isFirstRenderRef.current = false
-    }, [])
-
-    const toggle = useCallback(() => {
-      if (disabled) return
-      playClickSound()
-      if (indeterminate) {
-        if (!isControlled) setInternal(true)
-        onCheckedChange?.(true)
-      } else {
-        const next = !value
-        if (!isControlled) setInternal(next)
-        onCheckedChange?.(next)
-      }
-    }, [value, indeterminate, isControlled, onCheckedChange, disabled])
-
-    const inputRef = useCallback(
-      (node: HTMLInputElement | null) => {
-        if (node) node.indeterminate = indeterminate
-      },
-      [indeterminate],
+    const [checkedState, setCheckedState] = useControlledChecked(
+      controlledChecked,
+      defaultChecked,
+      onCheckedChange,
     )
 
-    const isChecked = indeterminate ? false : value
-    const ariaChecked = indeterminate ? 'mixed' : value
-    const showGlyph = indeterminate || value
-    // eslint-disable-next-line react-hooks/refs
-    const skipDrawIn = isFirstRenderRef.current || !!reduceMotion
+    const [toggleCount, setToggleCount] = useState(0)
+
+    const isChecked = checkedState === true
+    const isIndeterminate = checkedState === 'indeterminate'
+
+    const ariaCheckedValue = isIndeterminate ? 'mixed' : isChecked
+
+    const handleClick = useCallback(() => {
+      if (disabled) return
+      const next: CheckedState = isIndeterminate ? true : !isChecked
+      setCheckedState(next)
+      setToggleCount((c) => c + 1)
+    }, [disabled, isIndeterminate, isChecked, setCheckedState])
+
+    const handleKeyDown = useCallback(
+      (e: React.KeyboardEvent<HTMLButtonElement>) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault()
+          handleClick()
+        }
+      },
+      [handleClick],
+    )
+
+    const handlePointerDown = useCallback((e: React.PointerEvent<HTMLButtonElement>) => {
+      e.preventDefault()
+    }, [])
 
     return (
-      <div className="flex items-center gap-3">
-        <input
-          ref={inputRef}
-          type="checkbox"
+      <>
+        <button
           id={id}
+          type="button"
+          role="checkbox"
+          aria-checked={ariaCheckedValue}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
+          aria-invalid={ariaInvalid}
+          aria-describedby={ariaDescribedBy}
+          aria-disabled={disabled || undefined}
+          disabled={disabled}
+          aria-required={required || undefined}
+          onClick={handleClick}
+          onKeyDown={handleKeyDown}
+          onPointerDown={handlePointerDown}
+          className={cn(
+            'relative inline-flex size-5 shrink-0 items-center justify-center rounded-[5px] supports-[corner-shape:squircle]:corner-squircle',
+            'border border-(--color-border)',
+            'transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-1 focus-visible:ring-offset-(--color-bg)',
+            'disabled:cursor-not-allowed disabled:opacity-50',
+            (isChecked || isIndeterminate) &&
+              'border-transparent bg-(--color-fg) text-(--color-bg)',
+            !(isChecked || isIndeterminate) && 'bg-(--color-bg)',
+            ariaInvalid && 'border-destructive',
+            className,
+          )}
+        >
+          <CheckGlyph state={checkedState} animate={toggleCount > 0} />
+        </button>
+        <input
+          ref={forwardedRef}
+          type="checkbox"
           name={name}
+          value={value}
           checked={isChecked}
           disabled={disabled}
           required={required}
-          readOnly
-          className="sr-only"
+          aria-hidden="true"
           tabIndex={-1}
+          onChange={() => {}}
+          className="pointer-events-none absolute size-0 opacity-0"
+          style={{ position: 'absolute', width: 0, height: 0 }}
         />
-        <button
-          ref={ref}
-          type="button"
-          role="checkbox"
-          aria-checked={ariaChecked}
-          aria-label={label}
-          aria-invalid={ariaInvalid}
-          aria-describedby={ariaDescribedby}
-          disabled={disabled}
-          onClick={toggle}
-          onMouseEnter={() => {
-            if (!disabled) playHoverSound()
-          }}
-          className={cn(
-            'flex size-5 shrink-0 items-center justify-center rounded-[5px] squircle-corners border transition-[color,background-color,border-color,transform]',
-            'active:scale-[0.97] motion-reduce:active:scale-100',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
-            'disabled:cursor-not-allowed disabled:opacity-50',
-            value
-              ? 'border-(--color-fg) bg-(--color-fg) text-(--color-bg)'
-              : 'border-(--color-border) bg-transparent text-transparent',
-            ariaInvalid && 'border-(--color-error)',
-            className,
-          )}
-          onPointerDown={(e) => e.preventDefault()}
-          {...props}
-        >
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={3}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="shrink-0"
-          >
-            <AnimatePresence>
-              {showGlyph &&
-                (indeterminate ? (
-                  <motion.path
-                    key="dash"
-                    d="M5 12h14"
-                    initial={skipDrawIn ? false : { pathLength: 0, pathOffset: 0.5 }}
-                    animate={{ pathLength: 1, pathOffset: 0 }}
-                    exit={{ pathLength: 0, pathOffset: 0.5 }}
-                    transition={reduceMotion ? { duration: 0 } : springs.settle}
-                  />
-                ) : (
-                  <motion.path
-                    key="check"
-                    d="M5 12.5l4.5 4.5L19 7.5"
-                    initial={skipDrawIn ? false : { pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    exit={{ pathLength: 1 }}
-                    transition={reduceMotion ? { duration: 0 } : springs.settle}
-                  />
-                ))}
-            </AnimatePresence>
-          </svg>
-        </button>
-        {label && (
-          <label
-            htmlFor={id}
-            className="min-h-11 flex items-center text-sm select-none"
-            onClick={toggle}
-          >
-            {strikeThrough ? (
-              <span
-                className={cn(
-                  'relative inline-block transition-colors duration-(--motion-dur-base) ease-(--motion-ease-out)',
-                  value ? 'text-(--color-muted)' : 'text-(--color-fg)',
-                )}
-              >
-                {label}
-                <motion.span
-                  aria-hidden="true"
-                  className="absolute left-0 right-0 top-1/2 h-px bg-current motion-reduce:transition-none"
-                  style={{ transformOrigin: 'left' }}
-                  initial={false}
-                  animate={{ scaleX: value ? 1 : 0 }}
-                  transition={reduceMotion ? { duration: 0 } : springs.settle}
-                />
-              </span>
-            ) : (
-              <span className="text-(--color-fg)">{label}</span>
-            )}
-          </label>
-        )}
-      </div>
+      </>
     )
   },
 )
 Checkbox.displayName = 'Checkbox'
-export function CheckboxPreview() {
-  const [checked, setChecked] = useState(false)
-  const [todoChecked, setTodoChecked] = useState(false)
+
+export function CheckboxField({
+  label,
+  description,
+  strikeThrough = false,
+  className,
+  children,
+}: CheckboxFieldProps) {
+  const generatedId = useId()
+  const labelId = `${generatedId}-label`
+  const descriptionId = description ? `${generatedId}-description` : undefined
+  const checkbox = isValidElement<CheckboxProps>(children) ? children : null
+  const controlId = checkbox?.props.id ?? `${generatedId}-control`
+  const describedBy = [checkbox?.props['aria-describedby'], descriptionId].filter(Boolean).join(' ')
+  const control = checkbox
+    ? cloneElement(checkbox, {
+        id: controlId,
+        'aria-labelledby':
+          checkbox.props['aria-labelledby'] ?? (checkbox.props['aria-label'] ? undefined : labelId),
+        'aria-describedby': describedBy || undefined,
+      })
+    : children
+
+  const isChecked = checkbox?.props.checked === true
+  const reduceMotion = useReducedMotion()
+
   return (
-    <div className="flex h-full w-full items-center justify-center p-6">
-      <div className="space-y-3">
-        <Checkbox checked={checked} onCheckedChange={setChecked} label="Accept terms" />
-        <Checkbox indeterminate label="Indeterminate" />
-        <Checkbox checked disabled label="Disabled" />
-        <Checkbox
-          checked={todoChecked}
-          onCheckedChange={setTodoChecked}
-          label="Buy groceries"
-          strikeThrough
-        />
+    <div className={cn('flex min-h-11 items-start gap-3', className)}>
+      {control}
+      <div className="flex flex-col gap-0.5">
+        <label
+          id={labelId}
+          htmlFor={controlId}
+          className="cursor-pointer text-base font-medium leading-tight select-none"
+        >
+          {strikeThrough ? (
+            <span
+              className={cn(
+                'relative inline-block transition-colors duration-(--motion-dur-base) ease-(--motion-ease-out) motion-reduce:transition-none',
+                isChecked ? 'text-(--color-muted)' : 'text-(--color-fg)',
+              )}
+            >
+              {label}
+              <motion.span
+                aria-hidden="true"
+                className="absolute left-0 right-0 top-1/2 h-px bg-current motion-reduce:transition-none"
+                style={{ transformOrigin: 'left' }}
+                initial={false}
+                animate={{ scaleX: isChecked ? 1 : 0 }}
+                transition={reduceMotion ? { duration: 0 } : springs.settle}
+              />
+            </span>
+          ) : (
+            <span className="text-(--color-fg)">{label}</span>
+          )}
+        </label>
+        {description && (
+          <p id={descriptionId} className="text-sm leading-snug text-(--color-muted)">
+            {description}
+          </p>
+        )}
       </div>
+    </div>
+  )
+}
+
+export function CheckboxPreview() {
+  const [todoChecked, setTodoChecked] = useState(false)
+
+  return (
+    <div className="flex flex-col gap-4 p-8">
+      <Checkbox defaultChecked />
+      <Checkbox />
+      <Checkbox checked="indeterminate" />
+      <Checkbox disabled defaultChecked />
+      <CheckboxField label="Buy groceries" strikeThrough>
+        <Checkbox checked={todoChecked} onCheckedChange={(next) => setTodoChecked(next === true)} />
+      </CheckboxField>
     </div>
   )
 }
