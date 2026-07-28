@@ -260,7 +260,7 @@ function AnatomyBackground() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={AN.x} y={AN.y} w={rowW} h={AN.itemH} />
       <DimH x1={AN.x} x2={AN.x + rowW} y={AN.y - 14} label={`${rowW}`} />
