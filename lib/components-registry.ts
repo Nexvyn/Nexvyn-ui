@@ -1,5 +1,6 @@
 import { accordionMetadata } from '@/components/ui/Doc/accordion-metadata'
 import { actionButtonMetadata } from '@/components/ui/Doc/action-button-metadata'
+import { adaptiveActionsMetadata } from '@/components/ui/Doc/adaptive-actions-metadata'
 import { badgeMetadata } from '@/components/ui/Doc/badge-metadata'
 import { buttonMetadata } from '@/components/ui/Doc/button-metadata'
 import { barsThemeMetadata } from '@/components/ui/Doc/bars-theme-metadata'
@@ -119,6 +120,7 @@ export function compareComponentsByCollection(a: ComponentItem, b: ComponentItem
 const COMPONENTS_UNSORTED: ComponentItem[] = [
   accordionMetadata,
   actionButtonMetadata,
+  adaptiveActionsMetadata,
   badgeMetadata,
   buttonMetadata,
   barsThemeMetadata,

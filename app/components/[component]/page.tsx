@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils'
 import {
   AccordionDemo,
   ActionButtonDemo,
+  AdaptiveActionsDemo,
   BadgeDemo,
   ButtonDemo,
   BounceSidebarDemo,
@@ -147,6 +148,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <ActionButtonDemo />
+        </DemoFrame>
+      )
+    case 'adaptive-actions':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <AdaptiveActionsDemo />
         </DemoFrame>
       )
     case 'badge':

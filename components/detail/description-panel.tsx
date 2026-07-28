@@ -88,6 +88,7 @@ import { Tooltip } from './tooltip'
 const ANATOMY_COMPONENTS = [
   'accordion',
   'action-button',
+  'adaptive-actions',
   'badge',
   'bars-theme',
   'breadcrumbs',

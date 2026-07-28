@@ -4,6 +4,7 @@ import path from 'node:path'
 const SOURCE_MAP: Record<string, string[]> = {
   accordion: ['components', 'ui', 'accordion.tsx'],
   'action-button': ['components', 'ui', 'action-button.tsx'],
+  'adaptive-actions': ['components', 'ui', 'adaptive-actions.tsx'],
   badge: ['components', 'ui', 'badge.tsx'],
   button: ['components', 'ui', 'button.tsx'],
   'bounce-sidebar': ['components', 'ui', 'bounce-sidebar.tsx'],
