@@ -344,32 +344,38 @@ export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(
     return (
       <span
         ref={ref}
-        className={cn('min-w-0 truncate', !label && 'text-(--color-muted)', className)}
+        className={cn(
+          'relative inline-block min-w-0 truncate',
+          !label && 'text-(--color-muted)',
+          className,
+        )}
         {...props}
       >
-        <AnimatePresence initial={false} mode="wait">
+        <AnimatePresence initial={false}>
           {label ? (
             <motion.span
               key={label}
               initial={{ opacity: 0, y: 3 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -3 }}
+              animate={{ opacity: 1, y: 0, position: 'static' }}
+              exit={{ opacity: 0, y: -3, position: 'absolute' }}
               transition={{
                 ...springs.fast,
                 opacity: { duration: 0.1 },
               }}
               className="inline-block min-w-0 truncate"
+              style={{ top: 0, left: 0 }}
             >
               {label}
             </motion.span>
           ) : (
             <motion.span
               key="placeholder"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, position: 'static' }}
+              animate={{ opacity: 1, position: 'static' }}
+              exit={{ opacity: 0, position: 'absolute' }}
               transition={{ duration: 0.06 }}
               className="inline-block min-w-0 truncate"
+              style={{ top: 0, left: 0 }}
             >
               {placeholder}
             </motion.span>
@@ -642,22 +648,37 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       ],
     )
 
+    // The hidden width-measurement clone renders the same SelectItems with the
+    // same indices as the real panel. It must never share the real registerItem
+    // map — otherwise its (invisible, off-panel) elements race the real panel's
+    // items for the same index slots and the proximity highlight tracks the
+    // wrong element entirely.
+    const measureOnlyCtx = useMemo<SelectContentContextValue>(
+      () => ({
+        ...contentCtx,
+        registerItem: () => {},
+      }),
+      [contentCtx],
+    )
+
     if (!mounted) return null
 
     return createPortal(
       <SelectContentContext.Provider value={contentCtx}>
         {!open && (
-          <div
-            ref={measureRef}
-            aria-hidden="true"
-            className={cn(
-              'pointer-events-none invisible fixed top-0 left-0 min-w-48 border border-(--color-border) bg-(--color-bg) p-1.5 **:min-w-max',
-              'rounded-lg supports-[corner-shape:squircle]:corner-squircle supports-[corner-shape:squircle]:rounded-[11px]',
-              className,
-            )}
-          >
-            {indexedChildren}
-          </div>
+          <SelectContentContext.Provider value={measureOnlyCtx}>
+            <div
+              ref={measureRef}
+              aria-hidden="true"
+              className={cn(
+                'pointer-events-none invisible fixed top-0 left-0 min-w-48 border border-(--color-border) bg-(--color-bg) p-1.5 **:min-w-max',
+                'rounded-lg supports-[corner-shape:squircle]:corner-squircle supports-[corner-shape:squircle]:rounded-[11px]',
+                className,
+              )}
+            >
+              {indexedChildren}
+            </div>
+          </SelectContentContext.Provider>
         )}
 
         <AnimatePresence>
@@ -691,7 +712,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                 className={cn(
                   'relative w-full min-w-48 overflow-hidden border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
                   'rounded-lg supports-[corner-shape:squircle]:corner-squircle supports-[corner-shape:squircle]:rounded-[11px]',
-                  'shadow-xl',
+                  'shadow-[0_14px_34px_-22px_rgba(0,0,0,0.15)]',
                   className,
                 )}
                 tabIndex={-1}
@@ -706,7 +727,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                   {selectedRect && (
                     <motion.div
                       aria-hidden="true"
-                      className="pointer-events-none absolute inset-x-1.5 top-0 rounded-md supports-[corner-shape:squircle]:corner-squircle bg-(--color-accent)/15"
+                      className="pointer-events-none absolute inset-x-3 top-0 rounded-md supports-[corner-shape:squircle]:corner-squircle bg-(--color-accent)/15"
                       initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
                       animate={{ opacity: 1, y: selectedRect.top, height: selectedRect.height }}
                       exit={
@@ -728,7 +749,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                   highlightSize={highlightSize}
                   highlightOpacity={highlightOpacity}
                   axis={axis}
-                  className="mx-1.5 rounded-md supports-[corner-shape:squircle]:corner-squircle bg-(--color-surface-2)"
+                  className="mx-3 rounded-md supports-[corner-shape:squircle]:corner-squircle bg-(--color-surface-2)"
                 />
 
                 <AnimatePresence>
