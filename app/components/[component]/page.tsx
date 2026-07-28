@@ -13,6 +13,7 @@ import { useScreenSize } from '@/hooks/use-screen-size'
 import { COMPONENTS } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import {
+  AccordionDemo,
   BadgeDemo,
   BounceSidebarDemo,
   BreadcrumbsDemo,
@@ -134,6 +135,12 @@ function ScrollFadeDemo() {
 
 export function ComponentDemo({ id }: { id: string }) {
   switch (id) {
+    case 'accordion':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <AccordionDemo />
+        </DemoFrame>
+      )
     case 'badge':
       return (
         <DemoFrame className="flex items-center justify-center p-6">

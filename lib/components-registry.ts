@@ -1,3 +1,4 @@
+import { accordionMetadata } from '@/components/ui/Doc/accordion-metadata'
 import { badgeMetadata } from '@/components/ui/Doc/badge-metadata'
 import { barsThemeMetadata } from '@/components/ui/Doc/bars-theme-metadata'
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
@@ -114,6 +115,7 @@ export function compareComponentsByCollection(a: ComponentItem, b: ComponentItem
 }
 
 const COMPONENTS_UNSORTED: ComponentItem[] = [
+  accordionMetadata,
   badgeMetadata,
   barsThemeMetadata,
   bounceSidebarMetadata,

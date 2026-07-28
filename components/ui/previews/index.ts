@@ -1,3 +1,6 @@
+export { AccordionPreview } from './accordion-preview'
+export { AccordionAnatomy as AccordionBreakdown } from '@/components/diagrams/accordion-diagram'
+export { AccordionDemo } from './accordion-demo'
 export { BadgePreview } from './badge-preview'
 export { BadgeAnatomy as BadgeBreakdown } from '@/components/diagrams/badge-diagram'
 export { BadgeDemo } from './badge-demo'

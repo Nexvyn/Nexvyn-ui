@@ -3,15 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion } from 'motion/react'
-import {
-  Maximize,
-  Minimize,
-  ExternalLink,
-  Copy,
-  Check,
-  MessageSquare,
-  Frame,
-} from 'lucide-react'
+import { Maximize, Minimize, ExternalLink, Copy, Check, MessageSquare, Frame } from 'lucide-react'
 import { activeComponent, installCommand, PANEL_INFO } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
@@ -94,6 +86,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 import { Tooltip } from './tooltip'
 
 const ANATOMY_COMPONENTS = [
+  'accordion',
   'badge',
   'bars-theme',
   'breadcrumbs',
