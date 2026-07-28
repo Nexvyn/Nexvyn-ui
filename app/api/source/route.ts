@@ -37,6 +37,7 @@ const SOURCE_MAP: Record<string, string[]> = {
   'bars-theme': ['components', 'ui', 'bars-theme.tsx'],
   'glow-orb': ['components', 'ui', 'glow-orb.tsx'],
   'fluid-orb': ['components', 'ui', 'fluid-orb.tsx'],
+  'dia-text': ['components', 'ui', 'dia-text.tsx'],
 }
 
 export async function GET(request: Request) {

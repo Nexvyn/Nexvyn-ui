@@ -736,6 +736,23 @@
           "type": "registry:lib"
         }
       ]
+    },
+    {
+      "name": "dia-text",
+      "type": "registry:ui",
+      "title": "Dia Text",
+      "description": "Diagonal clip-path reveal for bold display typography. Text sweeps into view with an angled edge as the component enters the viewport.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "components/ui/dia-text.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        }
+      ]
     }
   ]
 }
