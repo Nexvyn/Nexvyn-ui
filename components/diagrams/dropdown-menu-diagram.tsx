@@ -62,49 +62,54 @@ export function DropdownMenuBlueprint() {
   const theme = blueprintTheme
   return (
     <Blueprint>
-      <rect
-        x={BP_PANEL.x}
-        y={BP_PANEL.y}
-        width={BP_PANEL.w}
-        height={BP_PANEL.h}
-        rx={BP_PANEL.rx}
-        strokeWidth={theme.wireframe.strokeWidth}
-        strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_PANEL}
-      />
-      {ITEM_LABELS.map((label, i) => (
-        <g key={i}>
-          <rect
-            x={BP_PANEL.x + 6}
-            y={BP_ITEM_Y[i]}
-            width={BP_PANEL.w - 12}
-            height={DM.itemH}
-            rx={DM.itemRx}
-            strokeWidth={theme.wireframe.strokeWidth * 0.5}
-            strokeOpacity={theme.wireframe.strokeOpacity * 0.3}
-            className={BP_HIDE_ON_MORPH}
-          />
-          <text
-            x={BP_PANEL.x + DM.itemPadX}
-            y={BP_ITEM_Y[i] + DM.itemH / 2 + 4}
-            fontSize={10}
-            fontFamily="var(--font-sans)"
-            className={BP_TEXT_SOFT}
-          >
-            {label}
-          </text>
-        </g>
-      ))}
-      <line
-        x1={BP_PANEL.x + DM.itemPadX}
-        y1={BP_SEP_Y}
-        x2={BP_PANEL.x + BP_PANEL.w - DM.itemPadX}
-        y2={BP_SEP_Y}
-        stroke="currentColor"
-        strokeWidth={0.5}
-        opacity={theme.wireframe.strokeOpacity * 0.4}
-        className={BP_HIDE_ON_MORPH}
-      />
+      <g
+        style={{ transformOrigin: `${BP_PANEL.x + BP_PANEL.w / 2}px ${BP_PANEL.y}px` }}
+        className=""
+      >
+        <rect
+          x={BP_PANEL.x}
+          y={BP_PANEL.y}
+          width={BP_PANEL.w}
+          height={BP_PANEL.h}
+          rx={BP_PANEL.rx}
+          strokeWidth={theme.wireframe.strokeWidth}
+          strokeOpacity={theme.wireframe.strokeOpacity}
+          className={BP_FILL_PANEL}
+        />
+        {ITEM_LABELS.map((label, i) => (
+          <g key={i}>
+            <rect
+              x={BP_PANEL.x + 6}
+              y={BP_ITEM_Y[i]}
+              width={BP_PANEL.w - 12}
+              height={DM.itemH}
+              rx={DM.itemRx}
+              strokeWidth={theme.wireframe.strokeWidth * 0.5}
+              strokeOpacity={theme.wireframe.strokeOpacity * 0.3}
+              className={BP_HIDE_ON_MORPH}
+            />
+            <text
+              x={BP_PANEL.x + DM.itemPadX}
+              y={BP_ITEM_Y[i] + DM.itemH / 2 + 4}
+              fontSize={10}
+              fontFamily="var(--font-sans)"
+              className={BP_TEXT_SOFT}
+            >
+              {label}
+            </text>
+          </g>
+        ))}
+        <line
+          x1={BP_PANEL.x + DM.itemPadX}
+          y1={BP_SEP_Y}
+          x2={BP_PANEL.x + BP_PANEL.w - DM.itemPadX}
+          y2={BP_SEP_Y}
+          stroke="currentColor"
+          strokeWidth={0.5}
+          opacity={theme.wireframe.strokeOpacity * 0.4}
+          className={BP_HIDE_ON_MORPH}
+        />
+      </g>
       <rect
         x={BP_TRIGGER.x}
         y={BP_TRIGGER.y}
@@ -447,7 +452,7 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={0} y={0} w={AN.panelW} h={AN_PANEL_H} />
       <DimH x1={0} x2={AN.panelW} y={-14} label={`${AN.panelW}`} />
