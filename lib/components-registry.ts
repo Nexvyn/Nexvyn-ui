@@ -36,6 +36,7 @@ import { tabsSubtleMetadata } from '@/components/ui/Doc/tabs-subtle-metadata'
 import { phoneMockupMetadata } from '@/components/ui/Doc/phone-mockup-metadata'
 import { laptopMockupMetadata } from '@/components/ui/Doc/laptop-mockup-metadata'
 import { rocketLaunchMetadata } from '@/components/ui/Doc/rocket-launch-metadata'
+import { diaTextMetadata } from '@/components/ui/Doc/dia-text-metadata'
 
 export type ComponentItem = {
   id: string
@@ -157,6 +158,7 @@ const COMPONENTS_UNSORTED: ComponentItem[] = [
   phoneMockupMetadata,
   laptopMockupMetadata,
   rocketLaunchMetadata,
+  diaTextMetadata,
 ]
 
 /** Canonical ordered list used by grid, sidebar, and numbering. */

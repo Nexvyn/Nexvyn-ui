@@ -102,6 +102,7 @@ const ANATOMY_COMPONENTS = [
   'combobox',
   'command-palette',
   'context-menu',
+  'dia-text',
   'dropdown-menu',
   'fader',
   'fluid-orb',
