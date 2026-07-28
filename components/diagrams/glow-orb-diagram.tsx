@@ -23,22 +23,19 @@ import {
   Selection,
 } from '@/components/diagrams/lib/parts'
 
-// Real ratio from components/ui/glow-orb.tsx: d = size * 0.55. Evaluated
-// at a representative size=80 -> d=44. The outer `size x size` box is the
-// full interactive hit region — visibly larger than the drawn orb, same as
-// the real `interactive` button whose rootStyle is size x size while the
-// visible FluidOrb circle is only 55% of it.
-const REF_SIZE = 80
-const D = REF_SIZE * 0.55
-const GLOW_R = D / 2 + 4
+const RATIO = 0.55
 
-// ---------------------------------------------------------------------
-// Blueprint
-// ---------------------------------------------------------------------
-
+const BP_REF_SIZE = 60
+const BP_D = BP_REF_SIZE * RATIO
+const BP_GLOW_R = BP_D / 2 + 4
 const BP_CX = 110
-const BP_CY = 70
-const BP_HIT = { x: BP_CX - REF_SIZE / 2, y: BP_CY - REF_SIZE / 2, w: REF_SIZE, h: REF_SIZE }
+const BP_CY = 66
+const BP_HIT = {
+  x: BP_CX - BP_REF_SIZE / 2,
+  y: BP_CY - BP_REF_SIZE / 2,
+  w: BP_REF_SIZE,
+  h: BP_REF_SIZE,
+}
 
 export function GlowOrbBlueprint() {
   const theme = blueprintTheme
@@ -47,7 +44,7 @@ export function GlowOrbBlueprint() {
       <circle
         cx={BP_CX}
         cy={BP_CY}
-        r={GLOW_R}
+        r={BP_GLOW_R}
         fill="none"
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={1.5}
@@ -60,7 +57,7 @@ export function GlowOrbBlueprint() {
         <circle
           cx={BP_CX}
           cy={BP_CY}
-          r={D / 2}
+          r={BP_D / 2}
           strokeWidth={theme.wireframe.strokeWidth}
           strokeOpacity={theme.wireframe.strokeOpacity}
           className={BP_FILL_SOLID}
@@ -68,7 +65,7 @@ export function GlowOrbBlueprint() {
       </g>
       <text
         x={BP_CX}
-        y={BP_CY + REF_SIZE / 2 + 20}
+        y={BP_CY + BP_REF_SIZE / 2 + 24}
         textAnchor="middle"
         fontSize={11}
         fontWeight={500}
@@ -88,31 +85,35 @@ export function GlowOrbBlueprint() {
           strokeDasharray="2 2"
           strokeOpacity={theme.guide.structOpacity}
         />
-        <Selection x={BP_CX - D / 2} y={BP_CY - D / 2} w={D} h={D} />
+        <Selection x={BP_CX - BP_D / 2} y={BP_CY - BP_D / 2} w={BP_D} h={BP_D} />
         <DimH
-          x1={BP_CX - D / 2}
-          x2={BP_CX + D / 2}
-          y={BP_CY - D / 2 - 14}
-          label={`d${D.toFixed(0)}`}
+          x1={BP_CX - BP_D / 2}
+          x2={BP_CX + BP_D / 2}
+          y={BP_CY - BP_D / 2 - 14}
+          label={`d${BP_D.toFixed(0)}`}
         />
-        <DimLabel x={BP_HIT.x} y={BP_HIT.y - 8} anchor="start">
-          {`${REF_SIZE} × ${REF_SIZE} hit area`}
+        <DimLabel x={BP_HIT.x} y={BP_HIT.y - 22} anchor="start">
+          {`${BP_REF_SIZE} × ${BP_REF_SIZE} hit area`}
         </DimLabel>
       </g>
     </Blueprint>
   )
 }
 
-// ---------------------------------------------------------------------
-// Anatomy
-// ---------------------------------------------------------------------
-
+const AN_REF_SIZE = 80
+const AN_D = AN_REF_SIZE * RATIO
+const AN_GLOW_R = AN_D / 2 + 4
 const AN_CX = 140
 const AN_CY = 90
-const AN_HIT = { x: AN_CX - REF_SIZE / 2, y: AN_CY - REF_SIZE / 2, w: REF_SIZE, h: REF_SIZE }
-const ORB_TOP = AN_CY - D / 2
-const ORB_BOTTOM = AN_CY + D / 2
-const GLOW_RIGHT_X = AN_CX + GLOW_R
+const AN_HIT = {
+  x: AN_CX - AN_REF_SIZE / 2,
+  y: AN_CY - AN_REF_SIZE / 2,
+  w: AN_REF_SIZE,
+  h: AN_REF_SIZE,
+}
+const ORB_TOP = AN_CY - AN_D / 2
+const ORB_BOTTOM = AN_CY + AN_D / 2
+const GLOW_RIGHT_X = AN_CX + AN_GLOW_R
 
 function InteractionZoneShape() {
   const { setHovered } = useAnatomy()
@@ -152,7 +153,7 @@ function GlowShape() {
       <circle
         cx={AN_CX}
         cy={AN_CY}
-        r={GLOW_R}
+        r={AN_GLOW_R}
         fill="none"
         stroke="currentColor"
         strokeWidth={1.5}
@@ -177,7 +178,7 @@ function OrbShape() {
       <circle
         cx={AN_CX}
         cy={AN_CY}
-        r={D / 2}
+        r={AN_D / 2}
         fill="currentColor"
         fillOpacity={0.9}
         className={spotlight.className}
@@ -193,12 +194,17 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={AN_CX - D / 2} y={ORB_TOP} w={D} h={D} />
-      <DimH x1={AN_CX - D / 2} x2={AN_CX + D / 2} y={ORB_TOP - 14} label={`d${D.toFixed(0)}`} />
+      <Selection x={AN_CX - AN_D / 2} y={ORB_TOP} w={AN_D} h={AN_D} />
+      <DimH
+        x1={AN_CX - AN_D / 2}
+        x2={AN_CX + AN_D / 2}
+        y={ORB_TOP - 14}
+        label={`d${AN_D.toFixed(0)}`}
+      />
       <DimLabel x={AN_HIT.x} y={AN_HIT.y - 8} anchor="start">
-        {`${REF_SIZE} × ${REF_SIZE} hit area`}
+        {`${AN_REF_SIZE} × ${AN_REF_SIZE} hit area`}
       </DimLabel>
     </g>
   )
