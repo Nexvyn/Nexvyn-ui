@@ -135,6 +135,21 @@ export function TableBlueprint() {
         <DimLabel x={padCellX - 4} y={padCellY + TABLE.rowH / 2 + 2} anchor="end">
           {`${TABLE.pad.y}`}
         </DimLabel>
+        <PadGuide
+          x={padCellX + TABLE.pad.x}
+          y={BP_Y + TABLE.pad.y}
+          w={TABLE.colW[0] - TABLE.pad.x * 2}
+          h={TABLE.rowH - TABLE.pad.y * 2}
+          offset={0.8}
+          boxX={padCellX}
+          boxY={BP_Y}
+          boxW={TABLE.colW[0]}
+          boxH={TABLE.rowH}
+          clipOffset={0.8}
+        />
+        <DimLabel x={padCellX - 4} y={BP_Y + TABLE.rowH / 2 + 2} anchor="end">
+          {`${TABLE.pad.y}`}
+        </DimLabel>
       </g>
     </Blueprint>
   )
@@ -287,7 +302,7 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={0} y={0} w={TABLE_W} h={TABLE_H} />
       <DimH x1={0} x2={TABLE_W} y={-14} label={`${TABLE_W}`} />
