@@ -16,6 +16,7 @@ import {
   AccordionDemo,
   ActionButtonDemo,
   AdaptiveActionsDemo,
+  AiInputDemo,
   BadgeDemo,
   ButtonDemo,
   BounceSidebarDemo,
@@ -154,6 +155,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <AdaptiveActionsDemo />
+        </DemoFrame>
+      )
+    case 'ai-input':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <AiInputDemo />
         </DemoFrame>
       )
     case 'badge':
