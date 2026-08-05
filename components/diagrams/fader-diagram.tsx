@@ -1,10 +1,11 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset -- licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
 // This file is NOT covered by the repository's root MIT LICENSE.
 
+import { useId } from 'react'
 import {
   Blueprint,
   BP_HIDE_ON_MORPH,
@@ -32,29 +33,88 @@ const BP_PAD_X = 14
 export function FaderBlueprint() {
   const theme = blueprintTheme
   const midY = BP_TRACK.y + BP_TRACK.h / 2
+  const uid = useId().replace(/:/g, '')
+  const hatchId = `bp-fader-hatch-${uid}`
+  const fillCls = `bp-fader-fill-${uid}`
+  const barCls = `bp-fader-bar-${uid}`
+  const valOutCls = `bp-fader-val-out-${uid}`
+  const valInCls = `bp-fader-val-in-${uid}`
   return (
     <Blueprint>
       <defs>
+        <pattern
+          id={hatchId}
+          patternUnits="userSpaceOnUse"
+          width="4"
+          height="4"
+          patternTransform="rotate(45)"
+        >
+          <rect width="4" height="4" className="fill-transparent" />
+          <line
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="4"
+            stroke="currentColor"
+            strokeWidth="1"
+            className="opacity-60"
+          />
+          <line
+            x1="4"
+            y1="0"
+            x2="4"
+            y2="4"
+            stroke="currentColor"
+            strokeWidth="1"
+            className="opacity-60"
+          />
+        </pattern>
         <style>
           {`
-            .nx-fader-progress {
-              transition: fill 0.15s, stroke 0.15s, opacity 0.15s, width var(--motion-dur-slow) var(--motion-ease-out) 0s;
+            .${fillCls} {
+              width: ${BP_FILL_IDLE}px;
+              transition:
+                width var(--motion-dur-slow) var(--motion-ease-in-out) 0ms,
+                opacity var(--motion-dur-fast) var(--motion-ease-out);
             }
-            .group:hover .nx-fader-progress,
-            .group:focus-visible .nx-fader-progress {
-              transition: fill 0.15s, stroke 0.15s, opacity 0.15s, width var(--motion-dur-slow) var(--motion-ease-out) 200ms;
+            .group:hover .${fillCls}, .group:focus-visible .${fillCls} {
+              width: ${BP_FILL_IDLE * 1.3333}px;
+              transition:
+                width var(--motion-dur-slow) var(--motion-ease-in-out) 0ms,
+                opacity var(--motion-dur-fast) var(--motion-ease-out);
             }
-            .nx-fader-bar {
-              transition: transform var(--motion-dur-slow) var(--motion-ease-out) 0s, fill 0.15s, stroke 0.15s, opacity 0.15s;
+            .${barCls} {
+              transition:
+                translate var(--motion-dur-slow) var(--motion-ease-in-out) 0ms,
+                scale var(--motion-dur-slow) var(--motion-ease-in-out) 0ms,
+                opacity var(--motion-dur-slow) var(--motion-ease-out) 0ms;
             }
-            .group:hover .nx-fader-bar,
-            .group:focus-visible .nx-fader-bar {
-              transition: transform var(--motion-dur-slow) var(--motion-ease-out) 200ms, fill 0.15s, stroke 0.15s, opacity 0.15s;
+            .group:hover .${barCls}, .group:focus-visible .${barCls} {
+              transition:
+                translate var(--motion-dur-slow) var(--motion-ease-in-out) 0ms,
+                scale var(--motion-dur-slow) var(--motion-ease-in-out) 0ms,
+                opacity var(--motion-dur-slow) var(--motion-ease-out) 0ms;
+            }
+            .${valOutCls} {
+              transition: opacity var(--motion-dur-fast) var(--motion-ease-out) 120ms;
+            }
+            .group:hover .${valOutCls}, .group:focus-visible .${valOutCls} {
+              transition: opacity var(--motion-dur-fast) var(--motion-ease-out) 0ms;
+            }
+            .${valInCls} {
+              transition: opacity var(--motion-dur-fast) var(--motion-ease-out) 0ms;
+            }
+            .group:hover .${valInCls}, .group:focus-visible .${valInCls} {
+              transition: opacity var(--motion-dur-fast) var(--motion-ease-out) 120ms;
+            }
+            @media (prefers-reduced-motion: reduce) {
+              .${fillCls}, .${barCls}, .${valOutCls}, .${valInCls} {
+                transition: none;
+              }
             }
           `}
         </style>
       </defs>
-
       <rect
         x={BP_TRACK.x}
         y={BP_TRACK.y}
@@ -70,10 +130,18 @@ export function FaderBlueprint() {
         y={BP_TRACK.y}
         height={BP_TRACK.h}
         rx={BP_TRACK.rx}
-        className="nx-fader-progress w-[90px] fill-current opacity-20 group-hover:w-[120px] group-focus-visible:w-[120px] group-hover:opacity-35 group-focus-visible:opacity-35 motion-reduce:transition-none"
+        fill={`url(#${hatchId})`}
+        className={`${fillCls} opacity-70 group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none`}
+      />
+      <rect
+        x={BP_TRACK.x}
+        y={BP_TRACK.y}
+        height={BP_TRACK.h}
+        rx={BP_TRACK.rx}
+        className={`${fillCls} fill-current opacity-0 group-hover:opacity-40 group-focus-visible:opacity-40 motion-reduce:transition-none`}
       />
       <g
-        className="nx-fader-bar group-hover:translate-x-[30px] group-focus-visible:translate-x-[30px] motion-reduce:transform-none"
+        className={`${barCls} group-hover:translate-x-7.5 group-focus-visible:translate-x-7.5 motion-reduce:transition-none motion-reduce:transform-none`}
         style={{ transformOrigin: `${BP_TRACK.x + BP_FILL_IDLE}px ${midY}px` }}
       >
         <rect
@@ -81,9 +149,8 @@ export function FaderBlueprint() {
           y={midY - BP_BAR.h / 2}
           width={BP_BAR.w}
           height={BP_BAR.h}
-          rx={2}
-          strokeWidth={theme.wireframe.strokeWidth}
-          className={`${BP_MORPH} fill-transparent stroke-current opacity-60 group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2) group-hover:stroke-transparent group-focus-visible:stroke-transparent group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:scale-y-125 group-focus-visible:scale-y-125 motion-reduce:transform-none`}
+          rx={BP_BAR.w / 2}
+          className={`${barCls} fill-current opacity-85 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:scale-y-[1.35] group-focus-visible:scale-y-[1.35] motion-reduce:transition-none motion-reduce:transform-none`}
           style={{ transformOrigin: `${BP_TRACK.x + BP_FILL_IDLE}px ${midY}px` }}
         />
       </g>
@@ -93,7 +160,7 @@ export function FaderBlueprint() {
         fontSize={14}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={`${BP_MORPH} fill-current opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        className={`${BP_MORPH} fill-current opacity-90`}
       >
         Volume
       </text>
@@ -103,7 +170,7 @@ export function FaderBlueprint() {
         textAnchor="end"
         fontSize={14}
         fontFamily="var(--font-sans)"
-        className={`${BP_MORPH} fill-current opacity-35 group-hover:opacity-0 group-focus-visible:opacity-0`}
+        className={`${valOutCls} fill-current opacity-90 tabular-nums group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none`}
       >
         50%
       </text>
@@ -113,9 +180,7 @@ export function FaderBlueprint() {
         textAnchor="end"
         fontSize={14}
         fontFamily="var(--font-sans)"
-        strokeWidth={theme.wireframe.textStrokeWidth}
-        strokeOpacity={theme.wireframe.textOpacity}
-        className={`${BP_MORPH} fill-transparent stroke-current opacity-0 group-hover:fill-current group-focus-visible:fill-current group-hover:stroke-transparent group-focus-visible:stroke-transparent group-hover:opacity-100 group-focus-visible:opacity-100`}
+        className={`${valInCls} fill-current opacity-0 tabular-nums group-hover:opacity-90 group-focus-visible:opacity-90 motion-reduce:transition-none`}
       >
         67%
       </text>
@@ -295,7 +360,7 @@ function AnatomyBackground() {
         pointerEvents: 'none',
         filter: dimmed ? 'url(#spotlight-blur)' : 'none',
       }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <PadGuide
         x={AN.x + AN.padX}
@@ -400,8 +465,8 @@ function AnatomyLines() {
     <g strokeWidth="1" className="pointer-events-none">
       <OverlayLine id="root" x1={70} y1={109} x2={20} y2={109} />
       <OverlayLine id="fill" x1={130} y1={40} x2={130} y2={90} />
-      <OverlayLine id="thumb" x1={162} y1={145} x2={162} y2={128} />
-      <OverlayLine id="track" x1={220} y1={178} x2={220} y2={128} />
+      <OverlayLine id="thumb" x1={170} y1={145} x2={170} y2={128} />
+      <OverlayLine id="track" x1={270} y1={178} x2={270} y2={128} />
     </g>
   )
 }
@@ -433,7 +498,7 @@ function AnatomyTags() {
         />
       </foreignObject>
       <foreignObject
-        x={112}
+        x={115}
         y={148}
         width={110}
         height={24}
@@ -442,7 +507,7 @@ function AnatomyTags() {
         <AnatomyTag part="thumb" label="Grab bar" className="items-start justify-center" />
       </foreignObject>
       <foreignObject
-        x={220}
+        x={270}
         y={178}
         width={110}
         height={24}
@@ -459,7 +524,7 @@ function AnatomyTags() {
       >
         <AnatomyTag
           part="interaction"
-          label="Interaction zone (≥24px)"
+          label="Interaction zone (>=24px)"
           isAccent
           className="items-center justify-start"
         />

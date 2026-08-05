@@ -18,7 +18,7 @@ function rgbToHex([r, g, b]: [number, number, number]): string {
 }
 
 export function FluidOrbPreview() {
-  const [tone, setTone] = useState<NeutralTone>('muted')
+  const [tone, setTone] = useState<NeutralTone>('subtle')
   const fg = useCssColorRgb('--color-fg', [10, 10, 10])
   const muted = useCssColorRgb('--color-muted', [115, 115, 115])
   const subtle = useCssColorRgb('--color-subtle', [163, 163, 163])

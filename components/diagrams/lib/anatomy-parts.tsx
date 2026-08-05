@@ -17,6 +17,38 @@ interface AnatomyContextType {
 
 const AnatomyContext = createContext<AnatomyContextType | null>(null)
 
+const SPOTLIGHT_TRANSITION =
+  'transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none'
+
+function staticOpacityClass(value: number, fallback: string): string {
+  switch (value) {
+    case 0:
+      return 'opacity-0'
+    case 10:
+      return 'opacity-10'
+    case 20:
+      return 'opacity-20'
+    case 30:
+      return 'opacity-30'
+    case 40:
+      return 'opacity-40'
+    case 50:
+      return 'opacity-50'
+    case 60:
+      return 'opacity-60'
+    case 70:
+      return 'opacity-70'
+    case 80:
+      return 'opacity-80'
+    case 90:
+      return 'opacity-90'
+    case 100:
+      return 'opacity-100'
+    default:
+      return fallback
+  }
+}
+
 export function useAnatomy() {
   const context = useContext(AnatomyContext)
   if (!context) throw new Error('useAnatomy must be used within AnatomyFrame')
@@ -32,21 +64,18 @@ export function useSpotlight(
 
   const isHovered = hovered !== null && ids.includes(hovered)
   const isOthersHovered = hovered !== null && !isHovered
+  const idleOpacity = options?.defaultOpacity ?? (options?.isInteraction ? 40 : 70)
 
-  const opacityClass = options?.isInteraction
-    ? isHovered
-      ? 'opacity-100'
-      : isOthersHovered
+  const opacityClass = isHovered
+    ? 'opacity-100'
+    : isOthersHovered
+      ? options?.isInteraction
         ? 'opacity-20'
-        : 'opacity-40'
-    : isHovered
-      ? 'opacity-100'
-      : isOthersHovered
-        ? 'opacity-30'
-        : 'opacity-70'
+        : 'opacity-30'
+      : staticOpacityClass(idleOpacity, options?.isInteraction ? 'opacity-40' : 'opacity-70')
 
   return {
-    className: `transition-all duration-200 ease-out ${opacityClass}`,
+    className: `${SPOTLIGHT_TRANSITION} ${opacityClass}`,
     style: {
       filter: isOthersHovered ? 'url(#spotlight-blur)' : 'none',
     },
@@ -60,8 +89,8 @@ export function useSpotlightBadge(partId: string) {
 
   return {
     isHovered,
-    wrapperClassName: `transition-all duration-200 ease-out ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`,
-    wrapperStyle: { filter: isOthersHovered ? 'blur(1px)' : 'none' },
+    wrapperClassName: `${SPOTLIGHT_TRANSITION} ${isOthersHovered ? 'opacity-60' : 'opacity-100'}`,
+    wrapperStyle: { filter: 'none' },
   }
 }
 
@@ -81,7 +110,7 @@ export function AnatomyTag({
 
   return (
     <div
-      className={`pointer-events-none flex h-full w-full ${wrapperClassName} ${className}`}
+      className={cn('pointer-events-none flex h-full w-full', wrapperClassName, className)}
       style={wrapperStyle}
     >
       <button
@@ -91,13 +120,15 @@ export function AnatomyTag({
         onFocus={() => setHovered(part)}
         onBlur={() => setHovered(null)}
         style={{ pointerEvents: 'all' }}
-        className={`cursor-pointer rounded border px-2 py-0.5 text-[10px] font-medium leading-tight whitespace-nowrap outline-none transition-all duration-200 ease-out focus-visible:ring-2 focus-visible:ring-(--color-accent) shadow-sm ${
+        className={cn(
+          'cursor-pointer squircle-corners rounded-md border bg-(--color-bg) px-2 py-1 text-[10px] font-medium leading-tight whitespace-nowrap shadow-sm outline-none',
+          'transition-colors duration-(--motion-dur-fast) ease focus-visible:ring-2 focus-visible:ring-(--color-accent) motion-reduce:transition-none',
           isHovered
             ? 'border-(--color-fg) bg-(--color-fg) text-(--color-bg)'
             : isAccent
-              ? 'border-(--color-fg)/40 bg-(--color-bg) text-(--color-fg)'
-              : 'border-(--color-border) bg-(--color-bg) text-(--color-fg)/80'
-        }`}
+              ? 'border-(--color-fg)/40 text-(--color-fg)'
+              : 'border-(--color-border) text-(--color-fg)/80',
+        )}
       >
         {label}
       </button>
@@ -175,14 +206,14 @@ export function AnatomyFrame({
 
   return (
     <AnatomyContext.Provider value={{ hovered, setHovered }}>
-      <div className="flex w-full items-center justify-center overflow-visible py-8 px-2">
+      <div className="flex w-full items-center justify-center overflow-visible px-2 py-8">
         <svg
           aria-hidden="true"
           viewBox={viewBox}
           fill="none"
           overflow="visible"
           className={cn(
-            'block mx-auto h-auto w-full max-w-full overflow-visible font-mono text-xs text-(--color-fg)/80',
+            'mx-auto block h-auto w-full max-w-full overflow-visible font-mono text-xs text-(--color-fg)/80',
             maxWidthClassName,
           )}
         >

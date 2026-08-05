@@ -326,7 +326,7 @@ function ProgressShape() {
           cy={194}
           r={8}
           fill="none"
-          stroke="var(--color-accent)"
+          stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={hovered === 'progress' ? 2 : 1.5}
           strokeDasharray={`${8 * 2 * Math.PI * 0.6} ${8 * 2 * Math.PI}`}
           strokeLinecap="round"
@@ -348,7 +348,7 @@ function AnnotationsLayer() {
         pointerEvents: 'none',
         filter: isOthersHovered ? 'url(#spotlight-blur)' : 'none',
       }}
-      className={`transition-all duration-200 ease-out ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
     >
       <g
         stroke="var(--bp-accent, var(--color-accent))"

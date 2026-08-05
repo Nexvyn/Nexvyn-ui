@@ -42,9 +42,15 @@ export function ClipboardFieldBlueprint() {
   const commandX = promptX + 9 + FIELD.gap
   const iconX = BP.x + FIELD.w - FIELD.padX - FIELD.icon
   const iconY = midY - FIELD.icon / 2
+  const commandClipRight = iconX - 8
 
   return (
     <Blueprint>
+      <defs>
+        <clipPath id="bp-clipboard-command-clip">
+          <rect x={commandX} y={BP.y} width={commandClipRight - commandX} height={FIELD.h} />
+        </clipPath>
+      </defs>
       <rect
         x={BP.x}
         y={BP.y}
@@ -69,6 +75,7 @@ export function ClipboardFieldBlueprint() {
         y={midY + 4}
         fontSize={FIELD.font}
         fontFamily="var(--font-mono)"
+        clipPath="url(#bp-clipboard-command-clip)"
         className={`${BP_MORPH} fill-(--color-muted) opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
       >
         npx shadcn@latest add …
@@ -105,7 +112,7 @@ export function ClipboardFieldBlueprint() {
         <DimLabel x={BP.x + FIELD.padX / 2} y={midY + 2} anchor="middle">
           12
         </DimLabel>
-        <DimLabel x={BP.x + FIELD.w - FIELD.padX / 2} y={midY + 2} anchor="middle">
+        <DimLabel x={BP.x + FIELD.w - FIELD.padX / 2} y={BP.y - 6} anchor="middle">
           12
         </DimLabel>
         <DimLabel x={BP.x + FIELD.w / 2} y={BP.y + 7} anchor="middle">

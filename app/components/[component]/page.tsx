@@ -13,7 +13,12 @@ import { useScreenSize } from '@/hooks/use-screen-size'
 import { COMPONENTS } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import {
+  AccordionDemo,
+  ActionButtonDemo,
+  AdaptiveActionsDemo,
+  AiInputDemo,
   BadgeDemo,
+  ButtonDemo,
   BounceSidebarDemo,
   BreadcrumbsDemo,
   CheckboxDemo,
@@ -46,6 +51,8 @@ import {
   PhoneMockupDemo,
   LaptopMockupDemo,
   RocketLaunchDemo,
+  DiaTextDemo,
+  NavigationCompassDemo,
 } from '@/components/ui/previews'
 
 function DemoFrame({
@@ -134,10 +141,40 @@ function ScrollFadeDemo() {
 
 export function ComponentDemo({ id }: { id: string }) {
   switch (id) {
+    case 'accordion':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <AccordionDemo />
+        </DemoFrame>
+      )
+    case 'action-button':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ActionButtonDemo />
+        </DemoFrame>
+      )
+    case 'adaptive-actions':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <AdaptiveActionsDemo />
+        </DemoFrame>
+      )
+    case 'ai-input':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <AiInputDemo />
+        </DemoFrame>
+      )
     case 'badge':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <BadgeDemo />
+        </DemoFrame>
+      )
+    case 'button':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ButtonDemo />
         </DemoFrame>
       )
     case 'breadcrumbs':
@@ -352,6 +389,18 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame>
           <RocketLaunchDemo />
+        </DemoFrame>
+      )
+    case 'dia-text':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <DiaTextDemo />
+        </DemoFrame>
+      )
+    case 'navigation-compass':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <NavigationCompassDemo />
         </DemoFrame>
       )
     case 'not-found-card':

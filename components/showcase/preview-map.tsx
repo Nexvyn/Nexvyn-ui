@@ -1,6 +1,23 @@
 import dynamic from 'next/dynamic'
 
 export const blueprintPreviews: Record<string, React.ComponentType> = {
+  'accordion-blueprint': dynamic(() =>
+    import('@/components/diagrams/accordion-diagram').then((m) => m.AccordionBlueprint),
+  ),
+  'action-button-blueprint': dynamic(() =>
+    import('@/components/diagrams/action-button-diagram').then((m) => m.ActionButtonBlueprint),
+  ),
+  'adaptive-actions-blueprint': dynamic(() =>
+    import('@/components/diagrams/adaptive-actions-diagram').then(
+      (m) => m.AdaptiveActionsBlueprint,
+    ),
+  ),
+  'ai-input-blueprint': dynamic(() =>
+    import('@/components/diagrams/ai-input-diagram').then((m) => m.AiInputBlueprint),
+  ),
+  'button-blueprint': dynamic(() =>
+    import('@/components/diagrams/button-diagram').then((m) => m.ButtonBlueprint),
+  ),
   'phone-mockup-blueprint': dynamic(() =>
     import('@/components/diagrams/phone-mockup-diagram').then((m) => m.PhoneMockupWireframe),
   ),
@@ -9,6 +26,14 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   ),
   'rocket-launch-blueprint': dynamic(() =>
     import('@/components/diagrams/rocket-launch-diagram').then((m) => m.RocketLaunchBlueprint),
+  ),
+  'dia-text-blueprint': dynamic(() =>
+    import('@/components/diagrams/dia-text-diagram').then((m) => m.DiaTextBlueprint),
+  ),
+  'navigation-compass-blueprint': dynamic(() =>
+    import('@/components/diagrams/navigation-compass-diagram').then(
+      (m) => m.NavigationCompassBlueprint,
+    ),
   ),
   'badge-blueprint': dynamic(() =>
     import('@/components/diagrams/badge-diagram').then((m) => m.BadgeBlueprint),

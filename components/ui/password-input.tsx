@@ -99,7 +99,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
         {label ? (
           <label
             htmlFor={id}
-            className={cn('pb-2 font-medium text-sm font-sans', labelClassName)}
+            className={cn('mb-2 block font-medium text-sm font-sans', labelClassName)}
             style={{ color: 'var(--color-fg)' }}
           >
             {label}

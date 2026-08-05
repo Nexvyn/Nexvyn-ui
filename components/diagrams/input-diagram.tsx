@@ -6,6 +6,13 @@
 // This file is NOT covered by the repository's root MIT LICENSE.
 
 import {
+  AnatomyFrame,
+  AnatomyTag,
+  OverlayLine,
+  useAnatomy,
+  useSpotlight,
+} from '@/components/diagrams/lib/anatomy-parts'
+import {
   Blueprint,
   BP_FILL_PANEL,
   BP_HIDE_ON_MORPH,
@@ -18,12 +25,279 @@ import {
   PadGuide,
   Selection,
 } from '@/components/diagrams/lib/parts'
-import {
-  AnatomyFrame,
-  AnatomyTag,
-  OverlayLine,
-  useSpotlight,
-} from '@/components/diagrams/lib/anatomy-parts'
+
+const FIELD = { x: 80, y: 100, w: 280, h: 44, rx: 8 } as const
+const PAD_X = 14
+const ICON_SIZE = 16
+
+function ContainerShape() {
+  const spotlight = useSpotlight('container')
+  return (
+    <rect
+      x={FIELD.x}
+      y={FIELD.y}
+      width={FIELD.w}
+      height={FIELD.h}
+      rx={FIELD.rx}
+      fill="transparent"
+      stroke="currentColor"
+      strokeWidth={1.25}
+      strokeOpacity={0.5}
+      className={spotlight.className}
+      style={spotlight.style}
+    />
+  )
+}
+
+function BorderShape() {
+  const spotlight = useSpotlight('border')
+  return (
+    <rect
+      x={FIELD.x}
+      y={FIELD.y}
+      width={FIELD.w}
+      height={FIELD.h}
+      rx={FIELD.rx}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      className={spotlight.className}
+      style={spotlight.style}
+    />
+  )
+}
+
+function FocusRingShape() {
+  const spotlight = useSpotlight('focus-ring')
+  return (
+    <rect
+      x={FIELD.x - 3}
+      y={FIELD.y - 3}
+      width={FIELD.w + 6}
+      height={FIELD.h + 6}
+      rx={FIELD.rx + 3}
+      fill="none"
+      stroke="var(--bp-accent, var(--color-accent))"
+      strokeWidth={2}
+      strokeDasharray="4 3"
+      className={spotlight.className}
+      style={spotlight.style}
+    />
+  )
+}
+
+function StartAdornmentShape() {
+  const spotlight = useSpotlight('start-adornment')
+  const cx = FIELD.x + PAD_X + ICON_SIZE / 2
+  const cy = FIELD.y + FIELD.h / 2
+  return (
+    <g
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      className={spotlight.className}
+      style={spotlight.style}
+    >
+      <circle cx={cx - 1.5} cy={cy - 1.5} r={4.5} />
+      <line x1={cx + 1.5} y1={cy + 1.5} x2={cx + 5} y2={cy + 5} />
+    </g>
+  )
+}
+
+function EndAdornmentShape() {
+  const spotlight = useSpotlight('end-adornment')
+  const x = FIELD.x + FIELD.w - PAD_X - 24
+  const cy = FIELD.y + FIELD.h / 2
+  return (
+    <g className={spotlight.className} style={spotlight.style}>
+      <rect
+        x={x}
+        y={cy - 8}
+        width={22}
+        height={16}
+        rx={3}
+        stroke="currentColor"
+        strokeWidth={1}
+        fill="transparent"
+      />
+      <text
+        x={x + 11}
+        y={cy + 3.5}
+        textAnchor="middle"
+        fontSize={8}
+        fontFamily="var(--font-sans)"
+        className="fill-current opacity-60"
+      >
+        ⌘K
+      </text>
+    </g>
+  )
+}
+
+function NativeInputShape() {
+  const spotlight = useSpotlight('native-input')
+  const x = FIELD.x + PAD_X + ICON_SIZE + 10
+  const cy = FIELD.y + FIELD.h / 2
+  return (
+    <text
+      x={x}
+      y={cy + 4}
+      fontSize={13}
+      fontFamily="var(--font-sans)"
+      className={`fill-(--color-muted) ${spotlight.className}`}
+      style={spotlight.style}
+    >
+      you@example.com
+    </text>
+  )
+}
+
+function LinesLayer() {
+  const { hovered } = useAnatomy()
+  const midY = FIELD.y + FIELD.h / 2
+  const iconCx = FIELD.x + PAD_X + ICON_SIZE / 2
+  const endX = FIELD.x + FIELD.w - PAD_X - 12
+  const lineStrokeWidth = hovered ? 1.25 : 1
+
+  return (
+    <g strokeWidth={lineStrokeWidth}>
+      <OverlayLine
+        id="container"
+        x1={FIELD.x + FIELD.w}
+        y1={midY + 14}
+        x2={FIELD.x + FIELD.w + 30}
+        y2={midY + 14}
+      />
+      <OverlayLine
+        id="native-input"
+        x1={FIELD.x + FIELD.w / 2}
+        y1={FIELD.y}
+        x2={FIELD.x + FIELD.w / 2}
+        y2={FIELD.y - 30}
+      />
+      <OverlayLine
+        id="start-adornment"
+        x1={iconCx}
+        y1={FIELD.y + FIELD.h}
+        x2={iconCx}
+        y2={FIELD.y + FIELD.h + 30}
+      />
+      <OverlayLine
+        id="end-adornment"
+        x1={endX}
+        y1={FIELD.y + FIELD.h}
+        x2={endX}
+        y2={FIELD.y + FIELD.h + 30}
+      />
+      <OverlayLine id="focus-ring" x1={FIELD.x} y1={midY - 10} x2={FIELD.x - 30} y2={midY - 10} />
+      <OverlayLine id="border" x1={FIELD.x} y1={midY + 10} x2={FIELD.x - 30} y2={midY + 10} />
+    </g>
+  )
+}
+
+function TagsLayer() {
+  const midY = FIELD.y + FIELD.h / 2
+  const iconCx = FIELD.x + PAD_X + ICON_SIZE / 2
+  const endX = FIELD.x + FIELD.w - PAD_X - 12
+
+  return (
+    <>
+      <foreignObject
+        x={FIELD.x + FIELD.w + 34}
+        y={midY + 14 - 12}
+        width={90}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
+        <AnatomyTag
+          part="container"
+          label="Container"
+          className="items-center justify-start"
+          isAccent
+        />
+      </foreignObject>
+
+      <foreignObject
+        x={FIELD.x + FIELD.w / 2 - 50}
+        y={FIELD.y - 30 - 26}
+        width={100}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
+        <AnatomyTag part="native-input" label="Native Input" className="items-end justify-center" />
+      </foreignObject>
+
+      <foreignObject
+        x={iconCx - 55}
+        y={FIELD.y + FIELD.h + 32}
+        width={110}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
+        <AnatomyTag
+          part="start-adornment"
+          label="Start Adornment"
+          className="items-start justify-center"
+        />
+      </foreignObject>
+
+      <foreignObject
+        x={endX - 50}
+        y={FIELD.y + FIELD.h + 32}
+        width={100}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
+        <AnatomyTag
+          part="end-adornment"
+          label="End Adornment"
+          className="items-start justify-center"
+        />
+      </foreignObject>
+
+      <foreignObject
+        x={FIELD.x - 30 - 80}
+        y={midY - 10 - 12}
+        width={80}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
+        <AnatomyTag
+          part="focus-ring"
+          label="Focus Ring"
+          className="items-center justify-end"
+          isAccent
+        />
+      </foreignObject>
+
+      <foreignObject
+        x={FIELD.x - 30 - 60}
+        y={midY + 10 - 12}
+        width={60}
+        height={24}
+        className="pointer-events-none overflow-visible"
+      >
+        <AnatomyTag part="border" label="Border" className="items-center justify-end" />
+      </foreignObject>
+    </>
+  )
+}
+
+export function InputAnatomy() {
+  return (
+    <AnatomyFrame viewBox="-10 30 500 180" maxWidthClassName="max-w-xl">
+      <FocusRingShape />
+      <ContainerShape />
+      <BorderShape />
+      <StartAdornmentShape />
+      <EndAdornmentShape />
+      <NativeInputShape />
+      <LinesLayer />
+      <TagsLayer />
+    </AnatomyFrame>
+  )
+}
 
 const BP_FIELD = { x: 30, y: 44, w: 160, h: 44, rx: 6 } as const
 const BP_PAD_X = 14
@@ -139,185 +413,5 @@ export function InputWireframe() {
         </DimLabel>
       </g>
     </Blueprint>
-  )
-}
-
-const AN_FIELD = { x: 90, y: 96, w: 260, h: 44, rx: 6 } as const
-const AN_PAD_X = 14
-const AN_ICON = 16
-
-function LabelShape() {
-  const spotlight = useSpotlight('label')
-  return (
-    <text
-      x={AN_FIELD.x}
-      y={80}
-      fontSize={13}
-      fontWeight={500}
-      fontFamily="var(--font-sans)"
-      className={`fill-current ${spotlight.className}`}
-      style={spotlight.style}
-    >
-      Email
-    </text>
-  )
-}
-
-function FieldShape() {
-  const spotlight = useSpotlight('field')
-  return (
-    <rect
-      x={AN_FIELD.x}
-      y={AN_FIELD.y}
-      width={AN_FIELD.w}
-      height={AN_FIELD.h}
-      rx={AN_FIELD.rx}
-      stroke="currentColor"
-      strokeWidth={1.25}
-      fill="transparent"
-      className={spotlight.className}
-      style={spotlight.style}
-    />
-  )
-}
-
-function IconShape() {
-  const spotlight = useSpotlight('icon')
-  const cx = AN_FIELD.x + AN_PAD_X + AN_ICON / 2
-  const cy = AN_FIELD.y + AN_FIELD.h / 2
-  return (
-    <g
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      className={spotlight.className}
-      style={spotlight.style}
-    >
-      <circle cx={cx - 2} cy={cy - 2} r={4.5} />
-      <line x1={cx + 1.2} y1={cy + 1.2} x2={cx + 5} y2={cy + 5} />
-    </g>
-  )
-}
-
-function ValueText() {
-  const cy = AN_FIELD.y + AN_FIELD.h / 2
-  const x = AN_FIELD.x + AN_PAD_X + AN_ICON + 8
-  return (
-    <text
-      x={x}
-      y={cy + 4}
-      fontSize={13}
-      fontFamily="var(--font-sans)"
-      className="fill-(--color-muted) opacity-70"
-    >
-      you@example.com
-    </text>
-  )
-}
-
-function ErrorShape() {
-  const spotlight = useSpotlight('error')
-  return (
-    <text
-      x={AN_FIELD.x}
-      y={168}
-      fontSize={12}
-      fontFamily="var(--font-sans)"
-      className={`fill-(--color-error) ${spotlight.className}`}
-      style={spotlight.style}
-    >
-      Password is required
-    </text>
-  )
-}
-
-function LinesLayer() {
-  const midY = AN_FIELD.y + AN_FIELD.h / 2
-  const iconCx = AN_FIELD.x + AN_PAD_X + AN_ICON / 2
-  const iconBottom = midY + AN_ICON / 2
-  const labelX = AN_FIELD.x + 30
-  const labelTop = 80 - 13 * 0.72
-  const errorX = AN_FIELD.x + 70
-  const errorBottom = 168 + 2
-
-  return (
-    <>
-      <OverlayLine id="label" x1={labelX} y1={labelTop} x2={labelX} y2={labelTop - 30} />
-      <OverlayLine id="icon" x1={iconCx} y1={iconBottom} x2={iconCx} y2={iconBottom + 30} />
-      <OverlayLine
-        id="field"
-        x1={AN_FIELD.x + AN_FIELD.w}
-        y1={midY}
-        x2={AN_FIELD.x + AN_FIELD.w + 34}
-        y2={midY}
-      />
-      <OverlayLine id="error" x1={errorX} y1={errorBottom} x2={errorX} y2={errorBottom + 30} />
-    </>
-  )
-}
-
-function TagsLayer() {
-  const midY = AN_FIELD.y + AN_FIELD.h / 2
-  const iconCx = AN_FIELD.x + AN_PAD_X + AN_ICON / 2
-  const iconBottom = midY + AN_ICON / 2
-  const labelX = AN_FIELD.x + 30
-  const labelTop = 80 - 13 * 0.72
-  const errorX = AN_FIELD.x + 70
-  const errorBottom = 168 + 2
-
-  return (
-    <>
-      <foreignObject
-        x={labelX - 50}
-        y={labelTop - 30 - 24}
-        width={100}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="label" label="Label" className="items-end justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={iconCx - 45}
-        y={iconBottom + 30}
-        width={90}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="icon" label="Icon" className="items-start justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={AN_FIELD.x + AN_FIELD.w + 40}
-        y={midY - 12}
-        width={90}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="field" label="Field" className="items-center justify-start" isAccent />
-      </foreignObject>
-      <foreignObject
-        x={errorX - 55}
-        y={errorBottom + 30}
-        width={110}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="error" label="Error" className="items-start justify-center" />
-      </foreignObject>
-    </>
-  )
-}
-
-export function InputAnatomy() {
-  return (
-    <AnatomyFrame viewBox="40 -10 460 260" maxWidthClassName="max-w-xl">
-      <LabelShape />
-      <FieldShape />
-      <IconShape />
-      <ValueText />
-      <ErrorShape />
-      <LinesLayer />
-      <TagsLayer />
-    </AnatomyFrame>
   )
 }

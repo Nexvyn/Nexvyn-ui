@@ -45,8 +45,8 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --font-sans: 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'Segoe UI', ui-monospace, monospace;
-  --font-serif: 'Segoe UI', serif;
+  --font-mono: var(--font-mono-loaded), ui-monospace, 'Cascadia Code', 'Consolas', monospace;
+  --font-serif: ui-serif, 'Georgia', serif;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -128,13 +128,16 @@
   --color-error: #dc2626;
   --color-success: #16a34a;
   --color-new: #b8953a;
+  --color-inspect: #6b97ff;
+  --color-inspect-content: #7884e8;
+  --color-inspect-label: #1e503c;
 
   --mascot-stop-1: #7aa6c6;
   --mascot-stop-2: #afc7dc;
   --mascot-stop-3: #d8e6f1;
   --mascot-stop-4: #eef4fa;
   --mascot-stop-5: #ffffff;
-  --mascot-stop-6: #000000;
+  --mascot-stop-6: #ffffff;
   --mascot-foot: #7aa6c6;
 
   --bg: var(--color-bg);
@@ -153,6 +156,22 @@
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 9999px;
 }
 
 html,
@@ -265,7 +284,8 @@ html.dark,
   --mascot-stop-2: #eef4fa;
   --mascot-stop-3: #d8e6f1;
   --mascot-stop-4: #afc7dc;
-  --mascot-stop-5: #7aa6c6;
+  --mascot-stop-5: #ffffff;
+  --mascot-stop-6: #ffffff;
 }
 
 .dark html,

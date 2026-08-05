@@ -23,15 +23,15 @@ import {
 
 const BP = {
   x: 30,
-  y: 18,
+  y: 14,
   w: 160,
-  triggerH: 32,
+  triggerH: 40,
   triggerRx: 6,
   triggerPadX: 16,
-  triggerPadY: 12,
+  triggerPadY: 11,
   gap: 6,
-  panelPad: 5,
-  itemH: 20,
+  panelPad: 6,
+  itemH: 22,
   itemRx: 4,
 } as const
 
@@ -58,25 +58,32 @@ export function SelectBlueprint() {
         className={BP_FILL_PANEL}
       />
       <text
-        x={BP.x + 12}
+        x={BP.x + BP.triggerPadX}
         y={BP.y + BP.triggerH / 2 + 4}
         fontSize={13}
         fontWeight={500}
         fontFamily="var(--font-sans)"
         className={BP_TEXT_SOFT}
       >
-        Select…
+        Select...
       </text>
 
-      <path
-        d={`M${BP.x + BP.w - BP.triggerPadX - 8} ${BP.y + BP.triggerH / 2 - 3} l4 4 4-4`}
-        strokeWidth={1.5}
-        stroke="currentColor"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={`${BP_MORPH} opacity-55 group-hover:opacity-100 group-focus-visible:opacity-100`}
-      />
+      <g
+        style={{
+          transformOrigin: `${BP.x + BP.w - BP.triggerPadX - 4}px ${BP.y + BP.triggerH / 2}px`,
+        }}
+        className="transition-transform duration-(--motion-dur-base) ease-(--motion-ease-in-out) group-hover:rotate-180 group-focus-visible:rotate-180 motion-reduce:transition-none motion-reduce:transform-none"
+      >
+        <path
+          d={`M${BP.x + BP.w - BP.triggerPadX - 8} ${BP.y + BP.triggerH / 2 - 3} l4 4 4-4`}
+          strokeWidth={1.5}
+          stroke="currentColor"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={`${BP_MORPH} opacity-55 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        />
+      </g>
       <rect
         x={BP.x}
         y={BP_PANEL_Y}
@@ -86,15 +93,17 @@ export function SelectBlueprint() {
         strokeWidth={theme.wireframe.strokeWidth}
         className={`${BP_MORPH} fill-transparent stroke-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-popover group-focus-visible:fill-popover group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
       />
-      <rect
-        x={BP.x + BP.panelPad}
-        y={bpItemY(1)}
-        width={BP.w - BP.panelPad * 2}
-        height={BP.itemH}
-        rx={BP.itemRx}
-        fill="var(--bp-accent, var(--color-accent))"
-        className={`${BP_MORPH} opacity-0 group-hover:opacity-15 group-focus-visible:opacity-15`}
-      />
+      <g className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-out) delay-0 group-hover:translate-y-5.5 group-focus-visible:translate-y-5.5 group-hover:delay-150 group-focus-visible:delay-150 motion-reduce:transition-none motion-reduce:transform-none">
+        <rect
+          x={BP.x + BP.panelPad}
+          y={bpItemY(0)}
+          width={BP.w - BP.panelPad * 2}
+          height={BP.itemH}
+          rx={BP.itemRx}
+          fill="var(--bp-accent, var(--color-accent))"
+          className={`${BP_MORPH} opacity-0 group-hover:opacity-15 group-focus-visible:opacity-15`}
+        />
+      </g>
       {BP_ITEMS.map((label, i) => (
         <text
           key={label}
@@ -102,7 +111,7 @@ export function SelectBlueprint() {
           y={bpItemY(i) + BP.itemH / 2 + 4}
           fontSize={12}
           fontFamily="var(--font-sans)"
-          className={`${BP_MORPH} fill-current opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100`}
+          className={`${BP_MORPH} fill-current opacity-40 group-hover:opacity-100 group-focus-visible:opacity-100`}
         >
           {label}
         </text>
@@ -241,7 +250,7 @@ function TriggerShape() {
         fontFamily="var(--font-sans)"
         className={`fill-current pointer-events-none ${spotlight.className}`}
       >
-        Select…
+        Select...
       </text>
 
       <path
@@ -301,7 +310,7 @@ function ItemShape({ index, label }: { index: number; label: string }) {
           width={AN.w - AN.panelPad * 2}
           height={AN.itemH}
           rx={AN.itemRx}
-          fill="var(--color-accent)"
+          fill="var(--bp-accent, var(--color-accent))"
           fillOpacity={0.15}
           className="pointer-events-none"
         />
@@ -336,7 +345,7 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={AN.x} y={AN.y} w={AN.w} h={AN.triggerH} />
       <Selection x={AN.x} y={AN_PANEL_Y} w={AN.w} h={AN_PANEL_H} />

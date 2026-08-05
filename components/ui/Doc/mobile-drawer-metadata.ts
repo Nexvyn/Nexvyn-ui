@@ -5,7 +5,6 @@ export const mobileDrawerMetadata: ComponentItem = {
   name: 'Mobile Drawer',
   collection: 'overlays',
   previewType: 'default',
-  isNew: true,
   description:
     'A bottom-sheet drawer with swipe-to-dismiss, focus trap, scroll lock, and grab handle. The canonical mobile overlay.',
   registry: 'mobile-drawer',

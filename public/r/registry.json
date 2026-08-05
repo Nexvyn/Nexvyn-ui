@@ -4,6 +4,109 @@
   "homepage": "https://ui.nexvyn.dev",
   "items": [
     {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "A vertically stacked set of interactive headings that each reveal a section of content, with a grid-rows unfold animation and full keyboard support.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "action-button",
+      "type": "registry:ui",
+      "title": "Action Button",
+      "description": "An async-aware button with an idle → pending → success/error state machine, promise tracking, abort support, and live screen-reader announcements.",
+      "dependencies": [
+        "motion",
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "components/ui/action-button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "A pressable trigger with spring-animated depth feedback, sound cues, and solid/outline/ghost/link variants.",
+      "dependencies": [
+        "motion",
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "adaptive-actions",
+      "type": "registry:ui",
+      "title": "Adaptive Actions",
+      "description": "A responsive action toolbar that measures its available inline size and moves overflowed items into an accessible dropdown menu, with priority and pinned flags to control what stays visible.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/adaptive-actions.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "ai-input",
+      "type": "registry:ui",
+      "title": "AI Input",
+      "description": "AI composer textarea with auto-grow, send/stop button morph, attachment slots, and Enter-to-send.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/ai-input.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",
@@ -665,6 +768,21 @@
       ]
     },
     {
+      "name": "navigation-compass",
+      "type": "registry:ui",
+      "title": "Navigation Compass",
+      "description": "A draggable compass dial that doubles as a nav menu — scroll rotates it with physical lag, and links entering the active zone scale up and light with the accent.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/illustration/navigation-compass.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "rocket-launch",
       "type": "registry:ui",
       "title": "Rocket Launch",
@@ -696,6 +814,25 @@
         },
         {
           "path": "lib/resolve-css-color.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "dia-text",
+      "type": "registry:ui",
+      "title": "Dia Text",
+      "description": "Diagonal clip-path reveal for bold display typography. Text sweeps into view with an angled edge as the component enters the viewport.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/ui/dia-text.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
           "type": "registry:lib"
         }
       ]

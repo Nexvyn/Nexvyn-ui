@@ -6,7 +6,6 @@ export const badgeMetadata: ComponentItem = {
   collection: 'inputs',
   basic: true,
   previewType: 'default',
-  isNew: true,
   description:
     'A compact status label with solid, muted, and dot variants for tagging content inline.',
   registry: 'badge',

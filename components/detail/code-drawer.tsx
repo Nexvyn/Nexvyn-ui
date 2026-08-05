@@ -104,14 +104,19 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
 
   useEffect(() => {
-    if (!open || !item?.registry) return
+    if (!open || !item?.registry) {
+      return
+    }
     let cancelled = false
-    const request = fetch(`/r/${item.registry}.json`)
-    setLoading(true)
-    setFiles([])
-    setSelectedFileIndex(0)
 
-    request
+    Promise.resolve().then(() => {
+      if (cancelled) return
+      setLoading(true)
+      setFiles([])
+      setSelectedFileIndex(0)
+    })
+
+    fetch(`/r/${item.registry}.json`)
       .then((res) => {
         if (!res.ok) throw new Error()
         return res.json()
@@ -139,7 +144,7 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
     return () => {
       cancelled = true
     }
-  }, [open, item?.registry])
+  }, [open, item?.registry, item?.id])
 
   const selectedFile = files[selectedFileIndex] || files[0]
   const code = selectedFile?.content || ''

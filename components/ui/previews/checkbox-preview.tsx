@@ -1,24 +1,32 @@
 'use client'
 
 import { useState } from 'react'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Checkbox, CheckboxField } from '@/components/ui/checkbox'
 
 export function CheckboxPreview() {
-  const [checked, setChecked] = useState(false)
   const [todoChecked, setTodoChecked] = useState(false)
+
   return (
-    <div className="flex h-full w-full items-center justify-center p-6">
-      <div className="space-y-3">
-        <Checkbox checked={checked} onCheckedChange={setChecked} label="Accept terms" />
-        <Checkbox indeterminate label="Indeterminate" />
-        <Checkbox checked disabled label="Disabled" />
-        <Checkbox
-          checked={todoChecked}
-          onCheckedChange={setTodoChecked}
-          label="Buy groceries"
-          strikeThrough
-        />
-      </div>
+    <div className="flex w-full max-w-sm flex-col items-start gap-6 p-8">
+      <CheckboxField label="Accept terms">
+        <Checkbox name="terms" />
+      </CheckboxField>
+
+      <CheckboxField label="Receive updates">
+        <Checkbox defaultChecked name="updates" />
+      </CheckboxField>
+
+      <CheckboxField label="Select all">
+        <Checkbox checked="indeterminate" />
+      </CheckboxField>
+
+      <CheckboxField label="Disabled option">
+        <Checkbox disabled defaultChecked />
+      </CheckboxField>
+
+      <CheckboxField label="Buy groceries" strikeThrough>
+        <Checkbox checked={todoChecked} onCheckedChange={(next) => setTodoChecked(next === true)} />
+      </CheckboxField>
     </div>
   )
 }

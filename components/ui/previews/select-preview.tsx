@@ -13,7 +13,7 @@ export function SelectPreview() {
   const [value, setValue] = useState('')
   return (
     <div className="flex h-full w-full items-center justify-center p-2 sm:p-6">
-      <div className="w-48 space-y-4">
+      <div className="w-48 space-y-3">
         <Select value={value} onValueChange={setValue} name="size">
           <SelectTrigger>
             <SelectValue placeholder="Choose size" />
@@ -24,7 +24,9 @@ export function SelectPreview() {
             <SelectItem value="large">Large</SelectItem>
           </SelectContent>
         </Select>
-        <p className="text-xs text-(--color-muted)">Selected: {value || 'none'}</p>
+        <p className="rounded-md border border-(--color-border) bg-(--color-surface) px-3 py-1.5 text-xs text-(--color-muted)">
+          Selected: {value || 'none'}
+        </p>
       </div>
     </div>
   )

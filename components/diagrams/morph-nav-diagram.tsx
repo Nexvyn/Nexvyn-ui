@@ -330,7 +330,7 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={PANEL_X} y={PANEL_Y} w={MN.panelW} h={PANEL_H} />
       <DimH x1={PANEL_X} x2={PANEL_X + MN.panelW} y={PANEL_Y - 14} label={`${MN.panelW}`} />

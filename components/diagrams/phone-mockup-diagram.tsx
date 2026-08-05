@@ -51,6 +51,25 @@ export function PhoneMockupWireframe() {
 
   return (
     <Blueprint className="h-auto w-90 sm:w-110">
+      <defs>
+        <pattern
+          id="bp-hatch-phone-screen"
+          width="4"
+          height="4"
+          patternTransform="rotate(45)"
+          patternUnits="userSpaceOnUse"
+        >
+          <line
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="4"
+            stroke="currentColor"
+            strokeWidth="0.5"
+            opacity="0.35"
+          />
+        </pattern>
+      </defs>
       {SIDE_BUTTONS.map((btn, i) => {
         const x = btn.side === 'left' ? BP.x - 2 : BP.x + BP.w + 2
         const y1 = BP.y + (btn.top / 100) * BP.h
@@ -90,6 +109,15 @@ export function PhoneMockupWireframe() {
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
         className={BP_FILL_SOLID}
+      />
+      <rect
+        x={screenX}
+        y={screenY}
+        width={screenW}
+        height={screenH}
+        rx={SCREEN_RX}
+        fill="url(#bp-hatch-phone-screen)"
+        className={BP_HIDE_ON_MORPH}
       />
 
       <rect

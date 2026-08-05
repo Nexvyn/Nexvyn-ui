@@ -3,22 +3,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion } from 'motion/react'
-import {
-  CodeXml,
-  Maximize,
-  Minimize,
-  ExternalLink,
-  Copy,
-  Check,
-  MessageSquare,
-  Frame,
-} from 'lucide-react'
+import { Maximize, Minimize, ExternalLink, Copy, Check, MessageSquare, Frame } from 'lucide-react'
 import { activeComponent, installCommand, PANEL_INFO } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
 import { NewStarIcon } from '@/components/layout/new-star'
-import { MailIcon, XIcon } from './icons'
+import { MailIcon, XIcon, CodeIcon } from './icons'
 import DependencyPill from './dependency-pill'
 import PropsTable from './props-table'
 import { CodeBlock } from './code-block'
@@ -95,6 +86,10 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 import { Tooltip } from './tooltip'
 
 const ANATOMY_COMPONENTS = [
+  'accordion',
+  'action-button',
+  'adaptive-actions',
+  'ai-input',
   'badge',
   'bars-theme',
   'breadcrumbs',
@@ -107,6 +102,7 @@ const ANATOMY_COMPONENTS = [
   'combobox',
   'command-palette',
   'context-menu',
+  'dia-text',
   'dropdown-menu',
   'fader',
   'fluid-orb',
@@ -118,6 +114,7 @@ const ANATOMY_COMPONENTS = [
   'mobile-drawer',
   'morph-nav',
   'nav-menu',
+  'navigation-compass',
   'password-input',
   'radio-group',
   'ratio-slider',
@@ -214,10 +211,10 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               type="button"
               onClick={toggleCode}
               aria-label={codeOpen ? 'Hide code' : 'Get code'}
-              className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl p-1.5"
+              className="detail-toolbar-btn group hit-area-44 cursor-pointer rounded-xl p-1.5"
               style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
             >
-              <CodeXml className="h-5 w-5" />
+              <CodeIcon className="h-5 w-5" />
             </button>
           </Tooltip>
         )}
