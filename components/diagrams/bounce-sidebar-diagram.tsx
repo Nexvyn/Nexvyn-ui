@@ -299,12 +299,7 @@ function AnnotationsLayer() {
           x2={AN.listX + AN.listW + 16}
           y2={itemY(0) + AN.itemH}
         />
-        <line
-          x1={AN.listX + AN.padL}
-          y1={itemY(1)}
-          x2={AN.listX + AN.listW + 16}
-          y2={itemY(1)}
-        />
+        <line x1={AN.listX + AN.padL} y1={itemY(1)} x2={AN.listX + AN.listW + 16} y2={itemY(1)} />
       </g>
       <DimV
         x={AN.listX + AN.listW + 10}

@@ -62,7 +62,15 @@ export function LaptopMockupWireframe() {
           patternTransform="rotate(45)"
           patternUnits="userSpaceOnUse"
         >
-          <line x1="0" y1="0" x2="0" y2="4" stroke="currentColor" strokeWidth="0.5" opacity="0.35" />
+          <line
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="4"
+            stroke="currentColor"
+            strokeWidth="0.5"
+            opacity="0.35"
+          />
         </pattern>
       </defs>
       <path

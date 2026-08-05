@@ -128,9 +128,9 @@
   --color-error: #dc2626;
   --color-success: #16a34a;
   --color-new: #b8953a;
- --color-inspect: #6b97ff;
+  --color-inspect: #6b97ff;
   --color-inspect-content: #7884e8;
- --color-inspect-label: #1e503c;
+  --color-inspect-label: #1e503c;
 
   --mascot-stop-1: #7aa6c6;
   --mascot-stop-2: #afc7dc;

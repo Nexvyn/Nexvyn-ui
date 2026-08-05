@@ -5,7 +5,6 @@ export const contextMenuMetadata: ComponentItem = {
   name: 'Context Menu',
   collection: 'menus',
   previewType: 'default',
-  isNew: true,
 
   description:
     'A right-click (or long-press) menu that opens at the pointer position with origin-aware unfurl, proximity highlight, and keyboard-shortcut hints.',

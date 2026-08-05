@@ -5,7 +5,6 @@ export const fluidOrbMetadata: ComponentItem = {
   name: 'Fluid Orb',
   collection: 'effects',
   previewType: 'default',
-  isNew: true,
   description:
     'A WebGL fluid orb in muted/neutral design tokens (follows light and dark theme). Sphere normals, fBm noise, glass highlights, and a pulsing core driven by audio level.',
   registry: 'fluid-orb',

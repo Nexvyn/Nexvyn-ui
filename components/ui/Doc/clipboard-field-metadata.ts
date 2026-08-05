@@ -5,7 +5,6 @@ export const clipboardFieldMetadata: ComponentItem = {
   name: 'Clipboard Field',
   collection: 'inputs',
   previewType: 'default',
-  isNew: true,
   description:
     'A one-click install/copy field that morphs between the command and a success label using CSS grid fr tracks — JS only copies and toggles state.',
   registry: 'clipboard-field',
