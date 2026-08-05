@@ -768,6 +768,21 @@
       ]
     },
     {
+      "name": "navigation-compass",
+      "type": "registry:ui",
+      "title": "Navigation Compass",
+      "description": "A draggable compass dial that doubles as a nav menu — scroll rotates it with physical lag, and links entering the active zone scale up and light with the accent.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/illustration/navigation-compass.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "rocket-launch",
       "type": "registry:ui",
       "title": "Rocket Launch",

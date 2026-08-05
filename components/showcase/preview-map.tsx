@@ -30,6 +30,11 @@ export const blueprintPreviews: Record<string, React.ComponentType> = {
   'dia-text-blueprint': dynamic(() =>
     import('@/components/diagrams/dia-text-diagram').then((m) => m.DiaTextBlueprint),
   ),
+  'navigation-compass-blueprint': dynamic(() =>
+    import('@/components/diagrams/navigation-compass-diagram').then(
+      (m) => m.NavigationCompassBlueprint,
+    ),
+  ),
   'badge-blueprint': dynamic(() =>
     import('@/components/diagrams/badge-diagram').then((m) => m.BadgeBlueprint),
   ),

@@ -52,6 +52,7 @@ import {
   LaptopMockupDemo,
   RocketLaunchDemo,
   DiaTextDemo,
+  NavigationCompassDemo,
 } from '@/components/ui/previews'
 
 function DemoFrame({
@@ -394,6 +395,12 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <DiaTextDemo />
+        </DemoFrame>
+      )
+    case 'navigation-compass':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <NavigationCompassDemo />
         </DemoFrame>
       )
     case 'not-found-card':

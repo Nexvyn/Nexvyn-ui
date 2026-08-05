@@ -37,6 +37,7 @@ import { phoneMockupMetadata } from '@/components/ui/Doc/phone-mockup-metadata'
 import { laptopMockupMetadata } from '@/components/ui/Doc/laptop-mockup-metadata'
 import { rocketLaunchMetadata } from '@/components/ui/Doc/rocket-launch-metadata'
 import { diaTextMetadata } from '@/components/ui/Doc/dia-text-metadata'
+import { navigationCompassMetadata } from '@/components/ui/Doc/navigation-compass-metadata'
 
 export type ComponentItem = {
   id: string
@@ -159,6 +160,7 @@ const COMPONENTS_UNSORTED: ComponentItem[] = [
   laptopMockupMetadata,
   rocketLaunchMetadata,
   diaTextMetadata,
+  navigationCompassMetadata,
 ]
 
 /** Canonical ordered list used by grid, sidebar, and numbering. */
