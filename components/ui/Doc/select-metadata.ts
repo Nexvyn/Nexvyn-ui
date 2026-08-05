@@ -6,7 +6,6 @@ export const selectMetadata: ComponentItem = {
   collection: 'menus',
   basic: true,
   previewType: 'default',
-  isNew: true,
   description:
     'A form select with a two-layer proximity highlight (selected accent tint + muted hover), drawn check animation, and a trigger label morph on selection change.',
   registry: 'select',

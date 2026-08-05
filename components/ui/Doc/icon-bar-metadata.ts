@@ -5,7 +5,6 @@ export const iconBarMetadata: ComponentItem = {
   name: 'Icon Bar',
   collection: 'menus',
   previewType: 'default',
-  isNew: true,
   description:
     'A horizontal toolbar of icon buttons with bloom-open label reveal on hover/selection, accent dot indicator, and roving tabindex.',
   registry: 'icon-bar',

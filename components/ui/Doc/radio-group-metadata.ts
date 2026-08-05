@@ -5,7 +5,6 @@ export const radioGroupMetadata: ComponentItem = {
   name: 'Radio Group',
   collection: 'inputs',
   previewType: 'default',
-  isNew: true,
   basic: true,
   description:
     'A radio group with roving tabindex and a traveling dot morph — the selection indicator springs from the previous radio to the new one via layoutId animation.',
