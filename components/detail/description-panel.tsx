@@ -114,6 +114,7 @@ const ANATOMY_COMPONENTS = [
   'mobile-drawer',
   'morph-nav',
   'nav-menu',
+  'navigation-compass',
   'password-input',
   'radio-group',
   'ratio-slider',
