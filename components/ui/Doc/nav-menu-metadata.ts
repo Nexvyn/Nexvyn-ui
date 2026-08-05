@@ -6,7 +6,6 @@ export const navMenuMetadata: ComponentItem = {
   collection: 'navigation',
 
   previewType: 'default',
-  isNew: true,
   description:
     'A vertical navigation list with two-layer proximity highlight (active route + hover), weight-shift labels, and status dots for new/updated items.',
   registry: 'nav-menu',

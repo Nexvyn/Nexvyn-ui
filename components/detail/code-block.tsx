@@ -65,12 +65,12 @@ export function CodeBlock({ children, variant = 'usage', className }: CodeBlockP
   return (
     <pre
       className={cn(
-        'detail-code-block overflow-x-auto font-mono leading-relaxed select-text',
+        'detail-code-block overflow-x-auto font-mono font-normal leading-relaxed select-text',
         variant === 'install' ? 'detail-code-install text-xs' : 'detail-code-usage text-[13.5px]',
         className,
       )}
     >
-      <code dangerouslySetInnerHTML={{ __html: highlightCode(children) }} />
+      <code className="font-mono" dangerouslySetInnerHTML={{ __html: highlightCode(children) }} />
     </pre>
   )
 }

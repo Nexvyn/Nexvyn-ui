@@ -21,6 +21,7 @@ import {
   DimH,
   DimLabel,
   DimV,
+  PadGuide,
   Selection,
 } from '@/components/diagrams/lib/parts'
 
@@ -125,6 +126,23 @@ export function NavMenuBlueprint() {
         </DimLabel>
         <DimLabel x={BP_X + BP.navW - NM.inset / 2} y={BP_Y + 8 - 3} anchor="middle">
           {`${NM.inset}`}
+        </DimLabel>
+
+        <PadGuide
+          x={BP_X + 12}
+          y={BP_Y + BP_ITEM_Y[0] + 8}
+          w={BP.navW - 24}
+          h={BP.itemH - 16}
+          offset={0.8}
+          boxX={BP_X}
+          boxY={BP_Y + BP_ITEM_Y[0]}
+          boxW={BP.navW}
+          boxH={BP.itemH}
+          boxRx={BP.itemRx}
+          clipOffset={0.8}
+        />
+        <DimLabel x={BP_X + 6} y={BP_Y + BP_ITEM_Y[0] - 4} anchor="middle">
+          8
         </DimLabel>
       </g>
     </Blueprint>
@@ -284,7 +302,7 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={0} y={0} w={NM.navW} h={NAV_H} />
       <DimH x1={0} x2={NM.navW} y={-14} label={`${NM.navW}`} />

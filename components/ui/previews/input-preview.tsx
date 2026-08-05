@@ -30,7 +30,13 @@ export function InputPreview() {
               <path d="M11 11l3.5 3.5" />
             </svg>
           }
+          endAdornment={
+            <kbd className="rounded border border-(--color-border) px-1 py-0.5 text-[10px] text-(--color-muted)">
+              ⌘K
+            </kbd>
+          }
         />
+        <Input label="Disabled" placeholder="Cannot edit" disabled />
       </div>
     </div>
   )

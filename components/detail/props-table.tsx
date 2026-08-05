@@ -26,7 +26,7 @@ export default function PropsTable({ props }: PropsTableProps) {
 
           <div className="flex w-36 shrink-0 flex-col gap-1 pt-0.5">
             {(prop.options ?? [prop.type]).map((value) => (
-              <span key={value} className="detail-props-type wrap-break-word">
+              <span key={value} className="detail-props-type wrap-break-word font-mono">
                 {value}
               </span>
             ))}

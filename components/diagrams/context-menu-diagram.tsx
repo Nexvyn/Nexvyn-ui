@@ -87,7 +87,7 @@ export function ContextMenuBlueprint() {
       />
       <g
         style={{ transformOrigin: `${BP_PANEL.x}px ${BP_PANEL.y + BP_PANEL.h}px` }}
-        className="scale-95 opacity-85 transition-[transform,opacity] duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100 motion-reduce:transition-none motion-reduce:transform-none"
+        className="scale-95 opacity-85 transition-[transform,opacity] duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:scale-100 group-hover:-translate-y-[6px] group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:-translate-y-[6px] group-focus-visible:opacity-100 motion-reduce:transition-none motion-reduce:transform-none"
       >
         <rect
           x={BP_PANEL.x}
@@ -371,7 +371,7 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={0} y={0} w={AN.panelW} h={AN_PANEL_H} />
       <DimH x1={0} x2={AN.panelW} y={-14} label={`${AN.panelW}`} />

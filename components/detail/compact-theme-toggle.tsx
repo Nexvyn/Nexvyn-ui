@@ -62,7 +62,7 @@ export default function CompactThemeToggle({ className = '' }: { className?: str
       localStorage.setItem('theme', next ? 'dark' : 'light')
     } catch {}
 
-    window.getComputedStyle(document.documentElement).opacity
+    void window.getComputedStyle(document.documentElement).opacity
 
     setTimeout(() => {
       document.documentElement.classList.remove('no-transitions')

@@ -5,7 +5,6 @@ export const inputMessageMetadata: ComponentItem = {
   name: 'Input Message',
   collection: 'inputs',
   previewType: 'default',
-  isNew: true,
   description:
     'An auto-growing chat composer with drag-and-drop file attachments, image/PDF preview tiles, and Enter-to-send.',
   registry: 'input-message',

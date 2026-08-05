@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Caveat } from 'next/font/google'
+import { Caveat, JetBrains_Mono } from 'next/font/google'
 import { Providers } from '@/components/providers'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
@@ -9,6 +9,12 @@ import { Agentation } from 'agentation'
 const caveat = Caveat({
   subsets: ['latin'],
   variable: '--font-handwriting',
+  display: 'swap',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono-loaded',
   display: 'swap',
 })
 
@@ -57,7 +63,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={caveat.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${caveat.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <Script
           id="theme-setup"

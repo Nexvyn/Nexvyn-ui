@@ -38,14 +38,19 @@ export function ScrollIndicatorPreview() {
   const [active, setActive] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
   const sectionRefs = useRef<(HTMLElement | null)[]>([])
-  const lockUntil = useRef(0)
+  const isLocked = useRef(false)
+  const lockTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const goTo = (index: number) => {
     const container = scrollRef.current
     const el = sectionRefs.current[index]
     if (!container || !el) return
     setActive(index)
-    lockUntil.current = Date.now() + 800
+    isLocked.current = true
+    if (lockTimer.current) clearTimeout(lockTimer.current)
+    lockTimer.current = setTimeout(() => {
+      isLocked.current = false
+    }, 800)
     const top =
       el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop
     container.scrollTo({ top: top - 8, behavior: 'smooth' })
@@ -55,7 +60,7 @@ export function ScrollIndicatorPreview() {
     const container = scrollRef.current
     if (!container) return
     const onScroll = () => {
-      if (Date.now() < lockUntil.current) return
+      if (isLocked.current) return
 
       const scrollTop = container.scrollTop
 
@@ -77,6 +82,12 @@ export function ScrollIndicatorPreview() {
     }
     container.addEventListener('scroll', onScroll, { passive: true })
     return () => container.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (lockTimer.current) clearTimeout(lockTimer.current)
+    }
   }, [])
 
   return (

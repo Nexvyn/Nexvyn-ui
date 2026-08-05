@@ -223,6 +223,7 @@ export function Fader({
             )}
           </BaseSlider.Value>
         </div>
+        {/* /group/fader */}
       </div>
     </BaseSlider.Root>
   )

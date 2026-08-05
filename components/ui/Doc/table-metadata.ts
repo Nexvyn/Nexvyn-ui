@@ -5,7 +5,6 @@ export const tableMetadata: ComponentItem = {
   name: 'Table',
   collection: 'inputs',
   previewType: 'default',
-  isNew: true,
   basic: true,
   description:
     'A composable data table with semantic markup and a per-row hover highlight that dims into the active row.',

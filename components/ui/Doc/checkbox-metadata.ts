@@ -4,28 +4,73 @@ export const checkboxMetadata: ComponentItem = {
   id: 'checkbox',
   name: 'Checkbox',
   collection: 'inputs',
-  previewType: 'default',
-  isNew: true,
   basic: true,
+  previewType: 'default',
   description:
-    'A checkbox with drawn check animation, indeterminate state, and hidden native input for forms.',
+    'A toggle control with drawn-check animation, indeterminate state, and full form integration via hidden native input.',
   registry: 'checkbox',
   dependencies: [{ name: 'motion' }],
-  interaction: 'Click to toggle. Supports checked, unchecked, and indeterminate states.',
+  interaction:
+    'Click or Space/Enter to toggle. Supports checked, unchecked, and indeterminate states. Drawn check glyph animates on toggle with spring physics. Respects reduced motion.',
   props: [
-    { name: 'checked', type: 'boolean', description: 'Controlled checked state.' },
+    {
+      name: 'checked',
+      type: 'boolean | "indeterminate"',
+      description: 'Controlled checked state. Omit for uncontrolled.',
+    },
+    {
+      name: 'defaultChecked',
+      type: 'boolean',
+      description: 'Initial checked state for uncontrolled usage.',
+    },
     {
       name: 'onCheckedChange',
-      type: '(checked: boolean) => void',
-      description: 'Called on change.',
+      type: '(checked: boolean | "indeterminate") => void',
+      description: 'Callback when the checked state changes.',
     },
-    { name: 'label', type: 'string', description: 'Label text.' },
-    { name: 'indeterminate', type: 'boolean', description: 'Show indeterminate state.' },
     {
-      name: 'strikeThrough',
+      name: 'name',
+      type: 'string',
+      description: 'Form field name for the hidden native input.',
+    },
+    {
+      name: 'disabled',
       type: 'boolean',
-      description: 'Draws a line through the label when checked, to-do-list style.',
+      description: 'Disables the checkbox.',
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      description: 'Marks the field as required for form validation.',
+    },
+    {
+      name: 'aria-invalid',
+      type: 'boolean',
+      description: 'Indicates validation error state.',
+    },
+    {
+      name: 'aria-describedby',
+      type: 'string',
+      description: 'ID of the element describing the checkbox.',
+    },
+    {
+      name: 'className',
+      type: 'string',
+      description: 'Additional CSS classes merged via cn().',
     },
   ],
-  usage: `<Checkbox label="Accept terms" checked={checked} onCheckedChange={setChecked} />`,
+  usage: `import { Checkbox, CheckboxField } from "@/components/ui/checkbox"
+
+export function Demo() {
+  return (
+    <div className="flex flex-col gap-4">
+      <CheckboxField label="Accept terms" description="You agree to our Terms.">
+        <Checkbox name="terms" required />
+      </CheckboxField>
+      <CheckboxField label="Subscribe to updates">
+        <Checkbox name="subscribe" defaultChecked />
+      </CheckboxField>
+    </div>
+  )
+}`,
 }

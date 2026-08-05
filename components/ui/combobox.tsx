@@ -410,6 +410,7 @@ export const ComboboxContent = forwardRef<HTMLDivElement, ComboboxContentProps>(
     } = useComboboxCtx('ComboboxContent')
     const panelRef = useRef<HTMLDivElement | null>(null)
     const [position, setPosition] = useState({ left: 0, top: 0 })
+    const [positioned, setPositioned] = useState(false)
 
     const filteredOptions = useMemo(() => {
       if (!query) return allOptions
@@ -462,6 +463,7 @@ export const ComboboxContent = forwardRef<HTMLDivElement, ComboboxContentProps>(
           top = triggerRect.bottom + sideOffset
         }
         setPosition({ left, top })
+        setPositioned(true)
       }
 
       const frame = requestAnimationFrame(measure)
@@ -573,6 +575,7 @@ export const ComboboxContent = forwardRef<HTMLDivElement, ComboboxContentProps>(
             top: position.top,
             maxHeight: 320,
             overflowY: 'auto',
+            visibility: positioned ? 'visible' : 'hidden',
           }}
           tabIndex={-1}
           {...handlers}

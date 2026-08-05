@@ -5,7 +5,6 @@ export const tabsSubtleMetadata: ComponentItem = {
   name: 'Tabs Subtle',
   collection: 'navigation',
   previewType: 'default',
-  isNew: true,
   description:
     'A pill-style tab list where the selected indicator springs between tabs, built on the WAI-ARIA tabs pattern with full roving-focus keyboard support.',
   registry: 'tabs-subtle',

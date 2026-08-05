@@ -1,4 +1,9 @@
+import { accordionMetadata } from '@/components/ui/Doc/accordion-metadata'
+import { actionButtonMetadata } from '@/components/ui/Doc/action-button-metadata'
+import { adaptiveActionsMetadata } from '@/components/ui/Doc/adaptive-actions-metadata'
+import { aiInputMetadata } from '@/components/ui/Doc/ai-input-metadata'
 import { badgeMetadata } from '@/components/ui/Doc/badge-metadata'
+import { buttonMetadata } from '@/components/ui/Doc/button-metadata'
 import { barsThemeMetadata } from '@/components/ui/Doc/bars-theme-metadata'
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
 import { breadcrumbsMetadata } from '@/components/ui/Doc/breadcrumbs-metadata'
@@ -31,6 +36,8 @@ import { tabsSubtleMetadata } from '@/components/ui/Doc/tabs-subtle-metadata'
 import { phoneMockupMetadata } from '@/components/ui/Doc/phone-mockup-metadata'
 import { laptopMockupMetadata } from '@/components/ui/Doc/laptop-mockup-metadata'
 import { rocketLaunchMetadata } from '@/components/ui/Doc/rocket-launch-metadata'
+import { diaTextMetadata } from '@/components/ui/Doc/dia-text-metadata'
+import { navigationCompassMetadata } from '@/components/ui/Doc/navigation-compass-metadata'
 
 export type ComponentItem = {
   id: string
@@ -114,7 +121,12 @@ export function compareComponentsByCollection(a: ComponentItem, b: ComponentItem
 }
 
 const COMPONENTS_UNSORTED: ComponentItem[] = [
+  accordionMetadata,
+  actionButtonMetadata,
+  adaptiveActionsMetadata,
+  aiInputMetadata,
   badgeMetadata,
+  buttonMetadata,
   barsThemeMetadata,
   bounceSidebarMetadata,
   breadcrumbsMetadata,
@@ -147,6 +159,8 @@ const COMPONENTS_UNSORTED: ComponentItem[] = [
   phoneMockupMetadata,
   laptopMockupMetadata,
   rocketLaunchMetadata,
+  diaTextMetadata,
+  navigationCompassMetadata,
 ]
 
 /** Canonical ordered list used by grid, sidebar, and numbering. */

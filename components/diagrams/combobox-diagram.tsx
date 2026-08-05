@@ -338,7 +338,7 @@ function OptionShape({ index, label, desc }: { index: number; label: string; des
           width={AN.w - AN.panelPad * 2}
           height={AN.itemH}
           rx={AN.itemRx}
-          fill="var(--color-accent)"
+          fill="var(--bp-accent, var(--color-accent))"
           fillOpacity={0.15}
           className="pointer-events-none"
         />
@@ -384,7 +384,7 @@ function AnnotationsLayer() {
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
-      className={`transition-all duration-200 ease-out ${dimmed ? 'opacity-30' : 'opacity-100'}`}
+      className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <Selection x={AN.x} y={AN.y} w={AN.w} h={AN.inputH} />
       <Selection x={AN.x} y={AN_PANEL_Y} w={AN.w} h={AN_PANEL_H} />
