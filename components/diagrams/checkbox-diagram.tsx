@@ -23,7 +23,7 @@ import {
 } from '@/components/diagrams/lib/anatomy-parts'
 
 const BOX = { size: 20, r: 5 } as const
-const ROW = { labelGap: 12, labelFont: 14 } as const
+const ROW = { labelGap: 12, labelFont: 14, labelW: 90, h: 44 } as const
 const BP_CENTER = { x: 88, y: 70 } as const
 const WRAP = { x: 58, y: 47, w: 148, h: 46, rx: 8 } as const
 
