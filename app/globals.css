@@ -335,3 +335,28 @@ html.dark body {
 .squircle-corners {
   corner-shape: squircle;
 }
+.components-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 260px;
+  grid-auto-flow: row dense;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .components-grid {
+    grid-template-columns: repeat(auto-fill, 390px);
+    justify-content: center;
+  }
+
+  .card-tall {
+    grid-row: span 2;
+  }
+}
+
+@media (min-width: 56rem) {
+  .card-feature {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+}

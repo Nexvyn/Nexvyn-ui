@@ -162,7 +162,7 @@ function ComponentsPageContent() {
     >
       <Header />
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-2 pt-4 sm:px-6 md:px-12 md:pb-4 md:pt-12">
+      <main className="mx-auto w-full max-w-325 flex-1 px-4 pb-2 pt-4 sm:px-6 md:px-12 md:pb-4 md:pt-12">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-2">
           <AnimatedTitle
             title="Components"
@@ -205,7 +205,7 @@ function ComponentsPageContent() {
                     className="text-lg font-normal tracking-tight"
                   />
                 </div>
-                <div className="grid grid-flow-dense grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="components-grid">
                   {items.map((item) => (
                     <ComponentCard key={item.id} item={item} />
                   ))}
@@ -221,7 +221,7 @@ function ComponentsPageContent() {
                     className="text-lg font-normal tracking-tight"
                   />
                 </div>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="components-grid">
                   {basicSorted.map((item) => (
                     <ComponentCard key={item.id} item={item} />
                   ))}
@@ -231,7 +231,7 @@ function ComponentsPageContent() {
           </div>
         ) : (
           <div className="space-y-10">
-            <div className="grid grid-flow-dense grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="components-grid">
               {normalSorted.map((item) => (
                 <ComponentCard key={item.id} item={item} />
               ))}
@@ -245,7 +245,7 @@ function ComponentsPageContent() {
                     className="text-lg font-normal tracking-tight"
                   />
                 </div>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="components-grid">
                   {basicSorted.map((item) => (
                     <ComponentCard key={item.id} item={item} />
                   ))}
