@@ -118,6 +118,7 @@ function ComponentsPageContent() {
   })
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIllustrationSlots(() => {
       const slots: Record<string, number> = {}
       for (const item of NORMAL_COMPONENTS) {
@@ -125,7 +126,6 @@ function ComponentsPageContent() {
       }
       return slots
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const normalSorted = useMemo(
@@ -206,8 +206,8 @@ function ComponentsPageContent() {
                   />
                 </div>
                 <div className="components-grid">
-                  {items.map((item) => (
-                    <ComponentCard key={item.id} item={item} />
+                  {items.map((item, i) => (
+                    <ComponentCard key={item.id} item={item} index={i} />
                   ))}
                 </div>
               </div>
@@ -222,8 +222,8 @@ function ComponentsPageContent() {
                   />
                 </div>
                 <div className="components-grid">
-                  {basicSorted.map((item) => (
-                    <ComponentCard key={item.id} item={item} />
+                  {basicSorted.map((item, i) => (
+                    <ComponentCard key={item.id} item={item} index={i} />
                   ))}
                 </div>
               </div>
@@ -232,8 +232,8 @@ function ComponentsPageContent() {
         ) : (
           <div className="space-y-10">
             <div className="components-grid">
-              {normalSorted.map((item) => (
-                <ComponentCard key={item.id} item={item} />
+              {normalSorted.map((item, i) => (
+                <ComponentCard key={item.id} item={item} index={i} />
               ))}
             </div>
             {basicSorted.length > 0 && (
@@ -246,8 +246,8 @@ function ComponentsPageContent() {
                   />
                 </div>
                 <div className="components-grid">
-                  {basicSorted.map((item) => (
-                    <ComponentCard key={item.id} item={item} />
+                  {basicSorted.map((item, i) => (
+                    <ComponentCard key={item.id} item={item} index={i} />
                   ))}
                 </div>
               </div>

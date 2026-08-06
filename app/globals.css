@@ -504,25 +504,28 @@ html.dark body {
 .components-grid {
   display: grid;
   grid-template-columns: 1fr;
-  grid-auto-rows: 260px;
-  grid-auto-flow: row dense;
   gap: 1rem;
 }
 
 @media (min-width: 640px) {
   .components-grid {
-    grid-template-columns: repeat(auto-fill, 390px);
-    justify-content: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .card-tall {
     grid-row: span 2;
+    min-height: 480px;
   }
 }
 
 @media (min-width: 56rem) {
+  .components-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .card-feature {
     grid-column: span 2;
     grid-row: span 2;
+    min-height: 480px;
   }
 }
