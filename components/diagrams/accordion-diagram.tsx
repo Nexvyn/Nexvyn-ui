@@ -29,7 +29,7 @@ import {
   DRAFT_LABEL_BEAT,
   DRAFT_LABEL_ALT_BEAT,
   stampBeat,
-} from '@/components/diagrams/lib/parts'
+} from '@/components/diagrams/lib/diagram-parts'
 
 const BP_ITEM_W = 172
 const BP_TRIGGER_H = 48

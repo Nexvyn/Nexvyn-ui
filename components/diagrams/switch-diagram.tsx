@@ -31,7 +31,7 @@ import {
   DRAFT_LABEL_BEAT,
   DRAFT_LABEL_ALT_BEAT,
   stampBeat,
-} from '@/components/diagrams/lib/parts'
+} from '@/components/diagrams/lib/diagram-parts'
 
 const SWITCH = {
   trackW: 44,

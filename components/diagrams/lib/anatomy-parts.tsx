@@ -172,7 +172,7 @@ export function OverlayLine({
   )
 }
 
-export { squirclePillPath } from '@/components/diagrams/lib/parts'
+export { squirclePillPath } from '@/components/diagrams/lib/diagram-parts'
 
 export function AnatomyDefs() {
   return (

@@ -19,7 +19,7 @@ import {
   DRAFT_LABEL_BEAT,
   DRAFT_LABEL_ALT_BEAT,
   stampBeat,
-} from '@/components/diagrams/lib/parts'
+} from '@/components/diagrams/lib/diagram-parts'
 
 const SCALE = 0.71
 const OFFSET_X = 79.6

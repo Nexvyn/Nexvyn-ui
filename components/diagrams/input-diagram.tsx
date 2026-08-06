@@ -30,7 +30,7 @@ import {
   DRAFT_LABEL_BEAT,
   DRAFT_LABEL_ALT_BEAT,
   stampBeat,
-} from '@/components/diagrams/lib/parts'
+} from '@/components/diagrams/lib/diagram-parts'
 
 const FIELD = { x: 80, y: 100, w: 280, h: 44, rx: 8 } as const
 const PAD_X = 14

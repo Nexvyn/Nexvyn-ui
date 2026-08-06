@@ -27,7 +27,7 @@ import {
   DRAFT_LABEL_BEAT,
   DRAFT_LABEL_ALT_BEAT,
   stampBeat,
-} from '@/components/diagrams/lib/parts'
+} from '@/components/diagrams/lib/diagram-parts'
 
 const REF_SIZE = 100
 const BAR = {

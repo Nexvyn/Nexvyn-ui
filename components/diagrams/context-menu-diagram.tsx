@@ -29,7 +29,7 @@ import {
   DRAFT_LABEL_BEAT,
   DRAFT_LABEL_ALT_BEAT,
   stampBeat,
-} from '@/components/diagrams/lib/parts'
+} from '@/components/diagrams/lib/diagram-parts'
 
 const BP_MORPH_OPACITY =
   'transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) motion-reduce:transition-none'

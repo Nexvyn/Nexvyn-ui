@@ -26,7 +26,7 @@ import {
   MeasureH,
   MeasureV,
   MeasureNote,
-} from '@/components/diagrams/lib/parts'
+} from '@/components/diagrams/lib/diagram-parts'
 
 const CONTAINER = { x: 30, y: 40, w: 260, h: 70 } as const
 const TEXT_X = CONTAINER.x + 16

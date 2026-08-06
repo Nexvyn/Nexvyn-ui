@@ -23,7 +23,7 @@ import {
   DRAFT_LABEL_BEAT,
   DRAFT_LABEL_ALT_BEAT,
   stampBeat,
-} from '@/components/diagrams/lib/parts'
+} from '@/components/diagrams/lib/diagram-parts'
 
 const LID = { x: 35, y: 18, w: 150, rx: 5.4 } as const
 const SCALE = LID.w / 280

@@ -27,7 +27,7 @@ import {
   DRAFT_LABEL_BEAT,
   DRAFT_LABEL_ALT_BEAT,
   stampBeat,
-} from '@/components/diagrams/lib/parts'
+} from '@/components/diagrams/lib/diagram-parts'
 
 const BP_FILL_ACCENT = `${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:fill-(--color-accent) group-focus-visible:fill-(--color-accent) group-hover:stroke-transparent group-focus-visible:stroke-transparent`
 

@@ -23,7 +23,7 @@ import {
   DRAFT_LABEL_BEAT,
   DRAFT_LABEL_ALT_BEAT,
   stampBeat,
-} from '@/components/diagrams/lib/parts'
+} from '@/components/diagrams/lib/diagram-parts'
 
 const SPIKE_FILLS = [
   'M0.499548 92.9137C27.3142 82.6937 63.9363 57.6958 110.366 17.9201L21.7657 107.614C15.6859 102.901 9.59766 96.8914 0.499548 92.9137Z',

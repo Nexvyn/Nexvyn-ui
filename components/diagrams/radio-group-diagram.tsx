@@ -30,7 +30,7 @@ import {
   DRAFT_LABEL_BEAT,
   DRAFT_LABEL_ALT_BEAT,
   stampBeat,
-} from '@/components/diagrams/lib/parts'
+} from '@/components/diagrams/lib/diagram-parts'
 
 // Three 44px rows exceed the 140px sheet, so the blueprint shows the final two.
 const RADIO = {
