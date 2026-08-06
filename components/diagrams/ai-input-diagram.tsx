@@ -13,49 +13,55 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_FILL_SOLID,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
+  DraftSurface,
+  DRAFT_BEAT,
+  DRAFT_FILL_PANEL,
+  DRAFT_FILL_SOLID,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  beat,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
 } from '@/components/diagrams/lib/parts'
 
 const CONTAINER_X = 20
 const CONTAINER_Y = 20
-const CONTAINER_RX = 12
+const CONTAINER_RX = 6
 
-const TEXTAREA_PAD_X = 28
-const TEXTAREA_PAD_TOP = 24
-const TEXTAREA_H = 32
+const TEXTAREA_PAD_X = 14
+const TEXTAREA_PAD_TOP = 12
+const TEXTAREA_H = 24
 const TEXTAREA_Y = CONTAINER_Y + TEXTAREA_PAD_TOP
 
-const ROW_GAP_TOP = 8
+const ROW_GAP_TOP = 4
 const ROW_Y = TEXTAREA_Y + TEXTAREA_H + ROW_GAP_TOP
-const ROW_PAD_X = 20
+const ROW_PAD_X = 10
 const ROW_ITEM = 32
-const ROW_PAD_BOTTOM = 20
-const ROW_H = 8 + ROW_ITEM + ROW_PAD_BOTTOM
-const GAP = 14
+const ROW_PAD_BOTTOM = 10
+const ROW_H = ROW_GAP_TOP + ROW_ITEM + ROW_PAD_BOTTOM
+const GAP = 6
 
 const PLUS_R = ROW_ITEM / 2
 const PLUS_CX = CONTAINER_X + ROW_PAD_X + PLUS_R
-const PLUS_CY = ROW_Y + 8 + ROW_ITEM / 2
+const PLUS_CY = ROW_Y + ROW_GAP_TOP + ROW_ITEM / 2
 
-const AGENT_W = 64
-const AGENT_H = 22
+const AGENT_W = 72
+const AGENT_H = 32
 const AGENT_X = PLUS_CX + PLUS_R + GAP
 const AGENT_Y = PLUS_CY - AGENT_H / 2
 
 const SEND_R = ROW_ITEM / 2
-const MIC_R = 12
-const SETTINGS_W = 74
-const SETTINGS_H = 20
+const MIC_R = 16
+const SETTINGS_W = 84
+const SETTINGS_H = 28
 
 const CONTAINER_W =
   AGENT_X +
@@ -147,8 +153,8 @@ function TextareaShape() {
       />
       <text
         x={TEXTAREA.x}
-        y={TEXTAREA.y + TEXTAREA.h / 2 + 3}
-        fontSize={10}
+        y={TEXTAREA.y + TEXTAREA.h / 2 + 5}
+        fontSize={14}
         fontFamily="var(--font-sans)"
         className={`fill-current ${spotlight.className}`}
         style={spotlight.style}
@@ -214,8 +220,8 @@ function AgentMenuShape() {
       />
       <text
         x={AGENT.x + AGENT.w / 2}
-        y={AGENT.y + AGENT.h / 2 + 3}
-        fontSize={9}
+        y={AGENT.y + AGENT.h / 2 + 5}
+        fontSize={14}
         textAnchor="middle"
         className={`fill-current ${spotlight.className}`}
         style={spotlight.style}
@@ -250,8 +256,8 @@ function SettingsDropdownShape() {
       />
       <text
         x={SETTINGS.x + SETTINGS.w / 2}
-        y={SETTINGS.y + SETTINGS.h / 2 + 3}
-        fontSize={8}
+        y={SETTINGS.y + SETTINGS.h / 2 + 5}
+        fontSize={14}
         textAnchor="middle"
         className={`fill-current ${spotlight.className}`}
         style={spotlight.style}
@@ -332,8 +338,8 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={CONTAINER.x} y={CONTAINER.y} w={CONTAINER.w} h={CONTAINER.h} />
-      <PadGuide
+      <GripFrame x={CONTAINER.x} y={CONTAINER.y} w={CONTAINER.w} h={CONTAINER.h} />
+      <InsetGuide
         x={TEXTAREA.x}
         y={TEXTAREA.y}
         w={CONTAINER.w - TEXTAREA_PAD_X * 2}
@@ -346,20 +352,24 @@ function AnnotationsLayer() {
         boxRx={CONTAINER.rx}
         clipOffset={0.8}
       />
-      <DimLabel x={CONTAINER.x + TEXTAREA_PAD_X} y={CONTAINER.y + CONTAINER.h - 2} anchor="start">
+      <MeasureNote
+        x={CONTAINER.x + TEXTAREA_PAD_X}
+        y={CONTAINER.y + CONTAINER.h - 2}
+        anchor="start"
+      >
         {`${TEXTAREA_PAD_X}`}
-      </DimLabel>
+      </MeasureNote>
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line x1={PLUS.cx + PLUS.r} y1={PLUS.cy} x2={AGENT.x} y2={AGENT.y + AGENT.h / 2} />
       </g>
-      <DimLabel x={PLUS.cx + PLUS.r + GAP / 2} y={PLUS.cy - PLUS.r - 4} anchor="middle">
+      <MeasureNote x={PLUS.cx + PLUS.r + GAP / 2} y={PLUS.cy - PLUS.r - 4} anchor="middle">
         {`${GAP}`}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }
@@ -509,16 +519,16 @@ export function AiInputAnatomy() {
 }
 
 const BP_C = {
-  w: 190,
-  y: 30,
+  w: 210,
+  y: 29,
   rx: 6,
   padX: 10,
-  padTop: 9,
-  taH: 4,
-  rowGapTop: 5,
-  rowPadX: 8,
-  rowItem: 14,
-  rowPadBottom: 7,
+  padTop: 12,
+  taH: 24,
+  rowGapTop: 4,
+  rowPadX: 10,
+  rowItem: 32,
+  rowPadBottom: 10,
   gap: 6,
 } as const
 
@@ -529,58 +539,71 @@ const BP_H = BP_ROW_Y + BP_C.rowItem + BP_C.rowPadBottom - BP_C.y
 
 const BP_PLUS_R = BP_C.rowItem / 2
 const BP_PLUS_CX = BP_X + BP_C.rowPadX + BP_PLUS_R
-const BP_PLUS_CY = BP_ROW_Y + BP_PLUS_R
+const BP_PLUS_CY = BP_ROW_Y + BP_C.rowGapTop + BP_PLUS_R
 
 const BP_SEND_R = BP_C.rowItem / 2
 const BP_SEND_CX = BP_X + BP_C.w - BP_C.rowPadX - BP_SEND_R
 const BP_SEND_CY = BP_PLUS_CY
 
-const BP_MIC_R = 5.5
+const BP_MIC_R = 16
 const BP_MIC_CX = BP_SEND_CX - BP_SEND_R - BP_C.gap - BP_MIC_R
 const BP_MIC_CY = BP_PLUS_CY
 
-const BP_SETTINGS_W = 32
-const BP_SETTINGS_H = 10
+const BP_SETTINGS_W = 64
+const BP_SETTINGS_H = 28
 const BP_SETTINGS_X = BP_MIC_CX - BP_MIC_R - BP_C.gap - BP_SETTINGS_W
 const BP_SETTINGS_Y = BP_PLUS_CY - BP_SETTINGS_H / 2
 
 export function AiInputBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
 
   return (
-    <Blueprint>
+    <DraftSurface>
       <rect
         x={BP_X}
         y={BP_C.y}
         width={BP_C.w}
         height={BP_H}
         rx={BP_C.rx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
-        className={`${BP_FILL_PANEL} supports-[corner-shape:squircle]:corner-squircle`}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_PANEL} supports-[corner-shape:squircle]:corner-squircle`}
       />
 
       <rect
         x={BP_X + BP_C.padX}
-        y={BP_TA_Y}
-        width={70}
-        height={BP_C.taH}
+        y={BP_TA_Y + 10}
+        width={56}
+        height={4}
         rx={2}
-        className={BP_TEXT_SOFT}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       />
 
       <circle
         cx={BP_PLUS_CX}
         cy={BP_PLUS_CY}
         r={BP_PLUS_R}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
-        className={`${BP_TEXT_SOFT} fill-transparent stroke-current`}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`ink-draw ${DRAFT_TEXT_SOFT} fill-transparent stroke-current`}
       />
       <path
-        d={`M${BP_PLUS_CX} ${BP_PLUS_CY - 3} V${BP_PLUS_CY + 3} M${BP_PLUS_CX - 3} ${BP_PLUS_CY} H${BP_PLUS_CX + 3}`}
-        strokeWidth={1}
+        d={`M${BP_PLUS_CX} ${BP_PLUS_CY - 6} V${BP_PLUS_CY + 6} M${BP_PLUS_CX - 6} ${BP_PLUS_CY} H${BP_PLUS_CX + 6}`}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
+        strokeWidth={1.25}
         strokeLinecap="round"
         fill="none"
-        className={`${BP_TEXT_SOFT} stroke-current`}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`ink-draw ${DRAFT_TEXT_SOFT} stroke-current`}
       />
 
       <rect
@@ -589,43 +612,60 @@ export function AiInputBlueprint() {
         width={BP_SETTINGS_W}
         height={BP_SETTINGS_H}
         rx={BP_SETTINGS_H / 2}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
-        className={`${BP_TEXT_SOFT} fill-transparent stroke-current`}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`ink-draw ${DRAFT_TEXT_SOFT} fill-transparent stroke-current`}
       />
 
       <rect
-        x={BP_MIC_CX - 1.5}
-        y={BP_MIC_CY - 3.5}
-        width={3}
-        height={5}
-        rx={1.5}
-        className={BP_TEXT_SOFT}
+        x={BP_MIC_CX - 2.25}
+        y={BP_MIC_CY - 5}
+        width={4.5}
+        height={8}
+        rx={2.25}
+        style={beat(DRAFT_BEAT.hatch)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       />
       <path
-        d={`M${BP_MIC_CX - 3} ${BP_MIC_CY} a3 3 0 0 0 6 0`}
-        strokeWidth={0.75}
+        d={`M${BP_MIC_CX - 4.5} ${BP_MIC_CY} a4.5 4.5 0 0 0 9 0`}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
+        strokeWidth={1}
         fill="none"
-        className={`${BP_TEXT_SOFT} stroke-current`}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`ink-draw ${DRAFT_TEXT_SOFT} stroke-current`}
       />
 
       <circle
         cx={BP_SEND_CX}
         cy={BP_SEND_CY}
         r={BP_SEND_R}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
-        className={`${BP_FILL_SOLID} supports-[corner-shape:squircle]:corner-squircle`}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`ink-draw ${DRAFT_FILL_SOLID} supports-[corner-shape:squircle]:corner-squircle`}
       />
       <path
-        d={`M${BP_SEND_CX} ${BP_SEND_CY + 3} V${BP_SEND_CY - 2.5} M${BP_SEND_CX - 2.5} ${BP_SEND_CY - 0.5} l2.5 -2.5 2.5 2.5`}
-        strokeWidth={1.1}
+        d={`M${BP_SEND_CX} ${BP_SEND_CY + 5.5} V${BP_SEND_CY - 4.5} M${BP_SEND_CX - 4.5} ${BP_SEND_CY - 0.5} L${BP_SEND_CX} ${BP_SEND_CY - 5} L${BP_SEND_CX + 4.5} ${BP_SEND_CY - 0.5}`}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
+        strokeWidth={1.25}
         strokeLinecap="round"
         strokeLinejoin="round"
         fill="none"
-        className={`${BP_TEXT_SOFT} stroke-current group-hover:stroke-(--color-bg) group-focus-visible:stroke-(--color-bg)`}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`ink-draw ${DRAFT_TEXT_SOFT} stroke-current group-hover:stroke-(--color-bg) group-focus-visible:stroke-(--color-bg)`}
       />
 
-      <g className={BP_HIDE_ON_MORPH}>
-        <PadGuide
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <InsetGuide
           x={BP_X + BP_C.padX}
           y={BP_TA_Y}
           w={BP_C.w - BP_C.padX * 2}
@@ -637,20 +677,45 @@ export function AiInputBlueprint() {
           boxH={BP_H}
           boxRx={BP_C.rx}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <PadGuide
+        <InsetGuide
           x={BP_X + BP_C.rowPadX}
           y={BP_ROW_Y}
           w={BP_C.w - BP_C.rowPadX * 2}
           h={BP_C.rowItem + BP_C.rowPadBottom}
           offset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimH x1={BP_X} x2={BP_X + BP_C.w} y={BP_C.y - 10} label={`${BP_C.w}`} />
-        <DimV x={BP_X - 10} y1={BP_C.y} y2={BP_C.y + BP_H} label={`${BP_H}`} labelXOffset={-6} />
-        <DimLabel x={(BP_PLUS_CX + BP_SETTINGS_X) / 2} y={BP_C.y + BP_H + 10} anchor="middle">
+        <MeasureH
+          x1={BP_X}
+          x2={BP_X + BP_C.w}
+          y={BP_C.y - 10}
+          label={`${BP_C.w}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
+          x={BP_X - 10}
+          y1={BP_C.y}
+          y2={BP_C.y + BP_H}
+          label={`${BP_H}`}
+          labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <MeasureNote
+          x={(BP_PLUS_CX + BP_SETTINGS_X) / 2}
+          y={BP_C.y + BP_H + 10}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           {`gap ${BP_C.gap}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }

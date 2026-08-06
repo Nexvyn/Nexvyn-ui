@@ -12,9 +12,19 @@ import {
   useAnatomy,
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
-import { Blueprint, BP_HIDE_ON_MORPH, blueprintTheme } from '@/components/diagrams/lib/parts'
+import {
+  DraftSurface,
+  DRAFT_BEAT,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  draftTheme,
+  beat,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/parts'
 
-/** One spike arm, matching the geometry the live component instances. */
 const SPIKE_FILLS = [
   'M0.499548 92.9137C27.3142 82.6937 63.9363 57.6958 110.366 17.9201L21.7657 107.614C15.6859 102.901 9.59766 96.8914 0.499548 92.9137Z',
   'M110.509 18.0609C71.3409 65.0046 46.8222 101.949 36.9522 128.895C34.0939 121.069 27.9954 113.762 21.909 107.754L110.509 18.0609Z',
@@ -26,55 +36,62 @@ const SPIKE_CONTOUR =
 const SPIKE_INNER = { x: 21.7657, y: 107.614 } as const
 const SPIKE_AIM_CORRECTION = -44.65
 const SPIKE_BEARINGS = [45, 135, 225, 315] as const
+const SPIKE_BEATS = [DRAFT_BEAT.outline, '100ms', DRAFT_BEAT.anatomy, '300ms'] as const
 
-/** Matches the component: dial radius, arm rotation, and overall proportion. */
 const DIAL_R = 93.327 * 0.6
 const ROSE_ROTATION = 30
 
-/** Fits the rose (tips reach ~182) into the shared 220x140 Blueprint viewBox. */
 const BP_SCALE = 0.34
 const BP_CENTER_X = 110
 const BP_CENTER_Y = 70
 
 export function NavigationCompassBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
 
   return (
-    <Blueprint>
+    <DraftSurface>
       <g
         transform={`translate(${BP_CENTER_X}, ${BP_CENTER_Y}) scale(${BP_SCALE}) rotate(${ROSE_ROTATION})`}
       >
-        {SPIKE_BEARINGS.map((bearing) => (
-          <g key={bearing} transform={`rotate(${bearing})`}>
-            <g
-              transform={`translate(0, ${-DIAL_R}) rotate(${SPIKE_AIM_CORRECTION}) translate(${-SPIKE_INNER.x}, ${-SPIKE_INNER.y})`}
-            >
-              {SPIKE_FILLS.map((d, i) => (
+        <g
+          className="transition-transform duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:rotate-[-30deg] group-hover:delay-(--motion-dur-base) group-focus-visible:rotate-[-30deg] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:rotate-none"
+          style={{ transformOrigin: '0px 0px' }}
+        >
+          {SPIKE_BEARINGS.map((bearing, i) => (
+            <g key={bearing} transform={`rotate(${bearing})`}>
+              <g
+                transform={`translate(0, ${-DIAL_R}) rotate(${SPIKE_AIM_CORRECTION}) translate(${-SPIKE_INNER.x}, ${-SPIKE_INNER.y})`}
+              >
+                <g className="fade-note" style={beat(SPIKE_BEATS[i])}>
+                  {SPIKE_FILLS.map((fillPath, j) => (
+                    <path
+                      key={`fill-${j}`}
+                      d={fillPath}
+                      fill="var(--color-bg)"
+                      stroke="currentColor"
+                      strokeWidth={theme.wireframe.strokeWidth / BP_SCALE}
+                      strokeOpacity={theme.wireframe.strokeOpacity}
+                      strokeLinejoin="round"
+                    />
+                  ))}
+                </g>
                 <path
-                  key={`fill-${i}`}
-                  d={d}
-                  fill="var(--color-bg)"
+                  d={SPIKE_CONTOUR}
+                  fill="none"
                   stroke="currentColor"
                   strokeWidth={theme.wireframe.strokeWidth / BP_SCALE}
-                  strokeOpacity={theme.wireframe.strokeOpacity}
+                  strokeOpacity={theme.wireframe.strokeOpacity * 0.6}
+                  strokeLinecap="round"
                   strokeLinejoin="round"
+                  strokeDasharray={`${4.26 / BP_SCALE} ${4.26 / BP_SCALE}`}
+                  className="fade-note"
+                  style={beat(DRAFT_BEAT.guide)}
                 />
-              ))}
-              <path
-                d={SPIKE_CONTOUR}
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={theme.wireframe.strokeWidth / BP_SCALE}
-                strokeOpacity={theme.wireframe.strokeOpacity * 0.6}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray={`${4.26 / BP_SCALE} ${4.26 / BP_SCALE}`}
-              />
+              </g>
             </g>
-          </g>
-        ))}
+          ))}
+        </g>
 
-        {/* Drawn last so its fill sits over the arms, as in the component. */}
         <circle
           cx={0}
           cy={0}
@@ -83,9 +100,10 @@ export function NavigationCompassBlueprint() {
           stroke="currentColor"
           strokeWidth={theme.wireframe.strokeWidth / BP_SCALE}
           strokeOpacity={theme.wireframe.strokeOpacity}
+          className={`${DRAFT_INK_MORPH} group-hover:fill-(--color-popover) group-focus-visible:fill-(--color-popover)`}
         />
 
-        <g className={BP_HIDE_ON_MORPH}>
+        <g className={DRAFT_SCAFFOLD_FADE}>
           <circle
             cx={0}
             cy={0}
@@ -94,10 +112,12 @@ export function NavigationCompassBlueprint() {
             stroke="var(--color-accent)"
             strokeWidth={1 / BP_SCALE}
             strokeDasharray={`${3 / BP_SCALE} ${3 / BP_SCALE}`}
+            className="fade-note"
+            style={beat(DRAFT_BEAT.hatch)}
           />
         </g>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 

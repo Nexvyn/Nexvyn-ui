@@ -335,6 +335,172 @@ html.dark body {
 .squircle-corners {
   corner-shape: squircle;
 }
+.blueprint .ink-draw {
+  animation: bp-ink-draw 0.5s var(--motion-ease-out) both;
+  animation-delay: calc(var(--beat, 0ms) + var(--enter-delay, 0ms));
+}
+@keyframes bp-ink-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.blueprint .dash-march {
+  animation:
+    bp-dash-march 0.6s var(--motion-ease-out) both,
+    bp-fade-note 0.3s ease-out both,
+    bp-idle-march 7s linear infinite;
+  animation-delay:
+    calc(var(--beat, 350ms) + var(--enter-delay, 0ms)),
+    calc(var(--beat, 350ms) + var(--enter-delay, 0ms)), calc(1200ms + var(--enter-delay, 0ms));
+}
+@keyframes bp-dash-march {
+  from {
+    stroke-dashoffset: 24;
+  }
+}
+
+/* -4 is one dash period, keeping the idle loop seamless. */
+@keyframes bp-idle-march {
+  0%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+  8% {
+    stroke-dashoffset: -4;
+  }
+}
+
+.blueprint {
+  pointer-events: none;
+}
+.blueprint .note-lift {
+  pointer-events: all;
+  transition: opacity 120ms ease-out;
+}
+.blueprint .note-lift:hover,
+.group:focus-visible .blueprint .note-lift {
+  opacity: 1;
+}
+
+.blueprint .fade-note {
+  animation: bp-fade-note 0.35s ease-out both;
+  animation-delay: calc(var(--beat, 400ms) + var(--enter-delay, 0ms));
+}
+@keyframes bp-fade-note {
+  from {
+    opacity: 0;
+  }
+}
+
+.blueprint .note-stamp {
+  animation: bp-note-stamp 0.25s var(--motion-ease-out) both;
+  animation-delay: calc(var(--beat, 550ms) + var(--enter-delay, 0ms));
+}
+@keyframes bp-note-stamp {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+}
+
+.blueprint .handle-pop {
+  animation: bp-handle-pop 0.25s var(--motion-ease-out) both;
+  animation-delay: calc(var(--beat, 600ms) + var(--enter-delay, 0ms));
+}
+@keyframes bp-handle-pop {
+  from {
+    transform: scale(0);
+  }
+}
+
+@keyframes bp-measure-call {
+  0% {
+    fill: var(--color-accent);
+    opacity: 1;
+  }
+  100% {
+    fill: currentColor;
+    opacity: var(--motion-rest-opacity, 0.5);
+  }
+}
+.blueprint .group-hover\:nxv-measure,
+.blueprint .group-focus-visible\:nxv-measure {
+  animation: bp-measure-call 0.22s var(--motion-ease-out) both;
+}
+.blueprint .note-measure {
+  transition: opacity var(--motion-dur-fast, 120ms) ease-out;
+}
+.group:hover .blueprint .note-measure,
+.group:focus-visible .blueprint .note-measure {
+  animation: bp-measure-call 0.22s var(--motion-ease-out) var(--motion-dur-fast, 120ms) both;
+}
+
+/* TODO: Evaluate the experimental blueprint cursor before v1. */
+.nxv-bp-pencil {
+  --bp-cursor:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><path d='M22 4 L26 8 L11 23 L7 27 L4 24 L8 20 Z' fill='%237aa7c7' stroke='%230a0a0a' stroke-width='1.2' stroke-linejoin='round'/><path d='M22 4 L26 8 L24 10 L20 6 Z' fill='%23fafafa' stroke='%230a0a0a' stroke-width='1'/><path d='M11 23 L8 27' stroke='%230a0a0a' stroke-width='1'/></svg>")
+      3 28,
+    crosshair;
+}
+.group:has(.blueprint) {
+  cursor: var(--bp-cursor, crosshair);
+}
+
+/* TODO: Evaluate the experimental resting pixel before v1. */
+@keyframes bp-rest-breath {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+.nxv-bp-rest {
+  animation: bp-rest-breath 2.4s var(--motion-ease-in-out) infinite;
+}
+.group:hover .nxv-bp-rest,
+.group:focus-visible .nxv-bp-rest {
+  animation-play-state: paused;
+}
+
+/* pathLength=1 lets dasharray and offset span the complete measurement line. */
+.dim-draw line {
+  stroke-dasharray: 1;
+}
+.group:hover .dim-draw line,
+.group:focus-visible .dim-draw line {
+  animation: bp-dim-unroll var(--motion-dur-fast, 120ms) var(--motion-ease-out, ease-out) both;
+}
+@keyframes bp-dim-unroll {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.dim-draw line:nth-child(3) {
+  animation-delay: 60ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blueprint .ink-draw,
+  .blueprint .dash-march,
+  .blueprint .fade-note,
+  .blueprint .note-stamp,
+  .blueprint .note-lift,
+  .blueprint .handle-pop,
+  .group:hover .blueprint .note-measure,
+  .group:focus-visible .blueprint .note-measure,
+  .nxv-bp-rest,
+  .group:hover .dim-draw line,
+  .group:focus-visible .dim-draw line {
+    animation: none;
+    transition: none;
+  }
+}
 .components-grid {
   display: grid;
   grid-template-columns: 1fr;

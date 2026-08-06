@@ -5,6 +5,7 @@
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
 // This file is NOT covered by the repository's root MIT LICENSE.
 
+import { useState } from 'react'
 import {
   AnatomyFrame,
   AnatomyTag,
@@ -13,16 +14,23 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_FILL_SOLID,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
+  DraftSurface,
+  DRAFT_BEAT,
+  DRAFT_FILL_SOLID,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  beat,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
 } from '@/components/diagrams/lib/parts'
 
 const SWITCH = {
@@ -34,7 +42,7 @@ const SWITCH = {
   travel: 20,
   labelGap: 12,
   labelW: 72,
-  labelFont: 12,
+  labelFont: 14,
 } as const
 
 const ROW_W = SWITCH.trackW + SWITCH.labelGap + SWITCH.labelW
@@ -44,131 +52,194 @@ const BP_THUMB_CX = BP_X + SWITCH.inset + SWITCH.thumb / 2
 const BP_THUMB_CY = BP_Y + SWITCH.trackH / 2
 
 export function SwitchBlueprint() {
-  const theme = blueprintTheme
+  const [on, setOn] = useState(false)
+  const theme = draftTheme
 
   return (
-    <Blueprint>
-      <defs>
-        <pattern
-          id="bp-hatch-switch-travel"
-          width="4"
-          height="4"
-          patternTransform="rotate(45)"
-          patternUnits="userSpaceOnUse"
-        >
-          <line
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="4"
-            stroke="currentColor"
-            strokeWidth="0.75"
-            opacity="0.35"
-          />
-        </pattern>
-      </defs>
+    <div className="relative inline-block">
+      <DraftSurface>
+        <defs>
+          <pattern
+            id="bp-hatch-switch-travel"
+            width="4"
+            height="4"
+            patternTransform="rotate(45)"
+            patternUnits="userSpaceOnUse"
+          >
+            <line
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="4"
+              stroke="currentColor"
+              strokeWidth="0.75"
+              opacity="0.35"
+            />
+          </pattern>
+        </defs>
 
-      <rect
-        x={BP_X}
-        y={BP_Y}
-        width={SWITCH.trackW}
-        height={SWITCH.trackH}
-        rx={SWITCH.trackRx}
-        strokeWidth={theme.wireframe.strokeWidth}
-        strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_SOLID}
-      />
-
-      <g
-        style={{ transformOrigin: `${BP_THUMB_CX}px ${BP_THUMB_CY}px` }}
-        className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-x-5 group-focus-visible:translate-x-5 motion-reduce:transition-none motion-reduce:transform-none"
-      >
-        <circle cx={BP_THUMB_CX} cy={BP_THUMB_CY} r={SWITCH.thumb / 2} fill="var(--color-bg)" />
-        <circle
-          cx={BP_THUMB_CX}
-          cy={BP_THUMB_CY}
-          r={SWITCH.thumb / 2}
-          fill="url(#bp-hatch-switch-travel)"
-          className={BP_HIDE_ON_MORPH}
-        />
-        <circle
-          cx={BP_THUMB_CX}
-          cy={BP_THUMB_CY}
-          r={SWITCH.thumb / 2}
-          fill="none"
-          stroke="currentColor"
+        <rect
+          x={BP_X}
+          y={BP_Y}
+          width={SWITCH.trackW}
+          height={SWITCH.trackH}
+          rx={SWITCH.trackRx}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
           strokeWidth={theme.wireframe.strokeWidth}
           strokeOpacity={theme.wireframe.strokeOpacity}
+          style={beat(DRAFT_BEAT.outline)}
+          className={`ink-draw ${
+            on ? `${DRAFT_INK_MORPH} fill-(--color-fg) stroke-transparent` : DRAFT_FILL_SOLID
+          }`}
         />
-      </g>
 
-      <text
-        x={BP_X + SWITCH.trackW + SWITCH.labelGap}
-        y={BP_THUMB_CY + 4}
-        fontSize={SWITCH.labelFont}
-        fontWeight="500"
-        fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
-      >
-        Notifications
-      </text>
-
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_X} y={BP_Y} w={SWITCH.trackW} h={SWITCH.trackH} />
-        <PadGuide
-          x={BP_X + SWITCH.inset}
-          y={BP_Y + SWITCH.inset}
-          w={SWITCH.trackW - SWITCH.inset * 2}
-          h={SWITCH.trackH - SWITCH.inset * 2}
-          offset={0.8}
-          boxX={BP_X}
-          boxY={BP_Y}
-          boxW={SWITCH.trackW}
-          boxH={SWITCH.trackH}
-          boxRx={SWITCH.trackRx}
-          clipOffset={0.8}
-        />
-        <DimH x1={BP_X} x2={BP_X + SWITCH.trackW} y={BP_Y - 14} label={`${SWITCH.trackW}`} />
-        <DimV
-          x={BP_X - 12}
-          y1={BP_Y}
-          y2={BP_Y + SWITCH.trackH}
-          label={`${SWITCH.trackH}`}
-          labelXOffset={-6}
-        />
         <g
-          stroke="var(--bp-accent, var(--color-accent))"
-          strokeWidth={theme.guide.strokeWidth}
-          strokeDasharray="2 2"
-          opacity={theme.guide.structOpacity}
+          style={{ transformOrigin: `${BP_THUMB_CX}px ${BP_THUMB_CY}px` }}
+          className={`transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:delay-(--motion-dur-base) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none ${
+            on ? 'translate-x-5' : 'group-hover:translate-x-5 group-focus-visible:translate-x-5'
+          }`}
         >
-          <line
-            x1={BP_THUMB_CX}
-            y1={BP_Y + SWITCH.trackH + 4}
-            x2={BP_THUMB_CX}
-            y2={BP_Y + SWITCH.trackH + 9}
+          <circle
+            cx={BP_THUMB_CX}
+            cy={BP_THUMB_CY}
+            r={SWITCH.thumb / 2}
+            fill="var(--color-bg)"
+            className="fade-note"
+            style={beat(DRAFT_BEAT.anatomy)}
           />
-          <line
-            x1={BP_THUMB_CX + SWITCH.travel}
-            y1={BP_Y + SWITCH.trackH + 4}
-            x2={BP_THUMB_CX + SWITCH.travel}
-            y2={BP_Y + SWITCH.trackH + 9}
+          <circle
+            cx={BP_THUMB_CX}
+            cy={BP_THUMB_CY}
+            r={SWITCH.thumb / 2}
+            fill="url(#bp-hatch-switch-travel)"
+            className={on ? 'opacity-0' : DRAFT_SCAFFOLD_FADE}
           />
-          <line
-            x1={BP_THUMB_CX}
-            y1={BP_Y + SWITCH.trackH + 6.5}
-            x2={BP_THUMB_CX + SWITCH.travel}
-            y2={BP_Y + SWITCH.trackH + 6.5}
+          <circle
+            cx={BP_THUMB_CX}
+            cy={BP_THUMB_CY}
+            r={SWITCH.thumb / 2}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={theme.wireframe.strokeWidth}
+            strokeOpacity={theme.wireframe.strokeOpacity}
           />
         </g>
-        <DimLabel x={BP_THUMB_CX + SWITCH.travel / 2} y={BP_Y + SWITCH.trackH + 20}>
-          travel 20
-        </DimLabel>
-        <DimLabel x={BP_X + SWITCH.trackW + 7} y={BP_Y + SWITCH.trackH + 20} anchor="start">
-          r12, pad 2
-        </DimLabel>
-      </g>
-    </Blueprint>
+
+        <text
+          x={BP_X + SWITCH.trackW + SWITCH.labelGap}
+          y={BP_THUMB_CY + 5}
+          fontSize={SWITCH.labelFont}
+          fontWeight="500"
+          fontFamily="var(--font-sans)"
+          style={beat(DRAFT_LABEL_BEAT)}
+          className={`fade-note ${DRAFT_TEXT_SOFT}`}
+        >
+          Notifications
+        </text>
+
+        <g className={DRAFT_SCAFFOLD_FADE}>
+          <GripFrame
+            x={BP_X}
+            y={BP_Y}
+            w={SWITCH.trackW}
+            h={SWITCH.trackH}
+            className="note-stamp"
+            style={beat(DRAFT_BEAT.handle)}
+          />
+          <InsetGuide
+            x={BP_X + SWITCH.inset}
+            y={BP_Y + SWITCH.inset}
+            w={SWITCH.trackW - SWITCH.inset * 2}
+            h={SWITCH.trackH - SWITCH.inset * 2}
+            offset={0.8}
+            boxX={BP_X}
+            boxY={BP_Y}
+            boxW={SWITCH.trackW}
+            boxH={SWITCH.trackH}
+            boxRx={SWITCH.trackRx}
+            clipOffset={0.8}
+            className="dash-march"
+            style={beat(DRAFT_BEAT.guide)}
+          />
+          <MeasureH
+            x1={BP_X}
+            x2={BP_X + SWITCH.trackW}
+            y={BP_Y - 14}
+            label={`${SWITCH.trackW}`}
+            className="note-stamp"
+            style={beat(stampBeat(0))}
+          />
+          <MeasureV
+            x={BP_X - 12}
+            y1={BP_Y}
+            y2={BP_Y + SWITCH.trackH}
+            label={`${SWITCH.trackH}`}
+            labelXOffset={-6}
+            className="note-stamp"
+            style={beat(stampBeat(1))}
+          />
+          <g
+            stroke="var(--bp-accent, var(--color-accent))"
+            strokeWidth={theme.guide.strokeWidth}
+            strokeDasharray="2 2"
+            opacity={theme.guide.structOpacity}
+            className="dash-march"
+            style={beat(DRAFT_BEAT.hatch)}
+          >
+            <line
+              x1={BP_THUMB_CX}
+              y1={BP_Y + SWITCH.trackH + 4}
+              x2={BP_THUMB_CX}
+              y2={BP_Y + SWITCH.trackH + 9}
+            />
+            <line
+              x1={BP_THUMB_CX + SWITCH.travel}
+              y1={BP_Y + SWITCH.trackH + 4}
+              x2={BP_THUMB_CX + SWITCH.travel}
+              y2={BP_Y + SWITCH.trackH + 9}
+            />
+            <line
+              x1={BP_THUMB_CX}
+              y1={BP_Y + SWITCH.trackH + 6.5}
+              x2={BP_THUMB_CX + SWITCH.travel}
+              y2={BP_Y + SWITCH.trackH + 6.5}
+            />
+          </g>
+          <MeasureNote
+            x={BP_THUMB_CX + SWITCH.travel / 2}
+            y={BP_Y + SWITCH.trackH + 20}
+            className="note-stamp"
+            style={beat(stampBeat(1))}
+          >
+            travel 20
+          </MeasureNote>
+          <MeasureNote
+            x={BP_X + SWITCH.trackW + 7}
+            y={BP_Y + SWITCH.trackH + 20}
+            anchor="start"
+            className="note-stamp"
+            style={beat(stampBeat(2))}
+          >
+            r12, pad 2
+          </MeasureNote>
+        </g>
+      </DraftSurface>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={on}
+        aria-label="Toggle switch"
+        onClick={(event) => {
+          event.preventDefault()
+          event.stopPropagation()
+          setOn((value) => !value)
+        }}
+        className="pointer-events-auto absolute cursor-pointer rounded-full outline-none transition-shadow duration-(--motion-dur-fast) focus-visible:ring-2 focus-visible:ring-(--color-accent) motion-reduce:transition-none"
+        style={{ left: BP_X, top: BP_Y - 10, width: 44, height: 44 }}
+      />
+    </div>
   )
 }
 
@@ -192,7 +263,7 @@ function ControlShape() {
       fill="currentColor"
       fillOpacity={active ? 0.14 : 0.04}
       stroke="currentColor"
-      strokeWidth={active ? 2 : blueprintTheme.wireframe.strokeWidth}
+      strokeWidth={active ? 2 : draftTheme.wireframe.strokeWidth}
       className={`cursor-pointer ${spotlight.className}`}
       style={{ ...spotlight.style, pointerEvents: 'all' }}
       onMouseEnter={() => setHovered('control')}
@@ -215,7 +286,7 @@ function ThumbShape() {
       r={SWITCH.thumb / 2}
       fill={active ? 'currentColor' : 'url(#bp-anatomy-hatch)'}
       stroke="currentColor"
-      strokeWidth={active ? 1.75 : blueprintTheme.wireframe.strokeWidth}
+      strokeWidth={active ? 1.75 : draftTheme.wireframe.strokeWidth}
       className={`cursor-pointer ${spotlight.className}`}
       style={{ ...spotlight.style, pointerEvents: 'all' }}
       onMouseEnter={() => setHovered('thumb')}
@@ -240,7 +311,7 @@ function LabelShape() {
       <rect x={x - 4} y="2" width={SWITCH.labelW + 8} height="20" fill="transparent" />
       <text
         x={x}
-        y={SWITCH.trackH / 2 + 4}
+        y={SWITCH.trackH / 2 + 5}
         fontSize={SWITCH.labelFont}
         fontWeight={active ? 650 : 500}
         fontFamily="var(--font-sans)"
@@ -261,8 +332,8 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={0} y={0} w={SWITCH.trackW} h={SWITCH.trackH} />
-      <PadGuide
+      <GripFrame x={0} y={0} w={SWITCH.trackW} h={SWITCH.trackH} />
+      <InsetGuide
         x={SWITCH.inset}
         y={SWITCH.inset}
         w={SWITCH.trackW - SWITCH.inset * 2}
@@ -275,11 +346,11 @@ function AnnotationsLayer() {
         boxRx={SWITCH.trackRx}
         clipOffset={0.8}
       />
-      <DimH x1={0} x2={SWITCH.trackW} y={-14} label="44" />
-      <DimV x={-12} y1={0} y2={SWITCH.trackH} label="24" labelXOffset={-6} />
-      <DimLabel x={0} y={SWITCH.trackH + 18} anchor="start">
+      <MeasureH x1={0} x2={SWITCH.trackW} y={-14} label="44" />
+      <MeasureV x={-12} y1={0} y2={SWITCH.trackH} label="24" labelXOffset={-6} />
+      <MeasureNote x={0} y={SWITCH.trackH + 18} anchor="start">
         r12, pad 2
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }
@@ -316,7 +387,7 @@ function TagsLayer() {
       >
         <AnatomyTag
           part="control"
-          label="Switch.Control"
+          label="Switch.Root (track)"
           className="items-end justify-center"
           isAccent
         />
@@ -337,7 +408,11 @@ function TagsLayer() {
         height="24"
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="label" label="Switch.Label" className="items-center justify-start" />
+        <AnatomyTag
+          part="label"
+          label="Switch.Label (prop)"
+          className="items-center justify-start"
+        />
       </foreignObject>
     </>
   )

@@ -13,15 +13,20 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_FILL_SOLID,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  Selection,
+  DraftSurface,
+  DRAFT_FILL_SOLID,
+  DRAFT_SCAFFOLD_FADE,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
 } from '@/components/diagrams/lib/parts'
 
 const REF_SIZE = 100
@@ -34,7 +39,7 @@ const BAR = {
   minH: REF_SIZE * 0.06,
 } as const
 
-const HEIGHT_FACTORS = [0.3, 0.55, 0.85, 0.55, 0.3] as const
+const HEIGHT_FACTORS = [0.3, 0.55, 1, 0.55, 0.3] as const
 
 function barHeights() {
   const range = BAR.maxH - BAR.minH
@@ -54,9 +59,9 @@ const BP_XS = barXs(BP_LEFT)
 const BP_HEIGHTS = barHeights()
 
 export function BarsThemeBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <Blueprint>
+    <DraftSurface>
       <g>
         {BP_XS.map((x, i) => {
           const h = BP_HEIGHTS[i]
@@ -65,7 +70,7 @@ export function BarsThemeBlueprint() {
             <g
               key={i}
               style={{ transformOrigin: `${x + BAR.w / 2}px ${BP_CENTER_Y}px` }}
-              className="transition-transform duration-(--motion-dur-fast) ease-(--motion-ease-out) group-hover:scale-y-[1.15] group-focus-visible:scale-y-[1.15] motion-reduce:transition-none motion-reduce:transform-none"
+              className="transition-transform duration-(--motion-dur-fast) ease-(--motion-ease-out) group-hover:scale-y-[1.15] group-hover:delay-(--motion-dur-base) group-focus-visible:scale-y-[1.15] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none"
             >
               <rect
                 x={x}
@@ -73,47 +78,67 @@ export function BarsThemeBlueprint() {
                 width={BAR.w}
                 height={h}
                 rx={BAR.r}
+                pathLength={1}
+                strokeDasharray={1}
+                strokeDashoffset={1}
                 strokeWidth={theme.wireframe.strokeWidth}
                 strokeOpacity={theme.wireframe.strokeOpacity}
-                className={BP_FILL_SOLID}
+                style={beat(i === 0 ? DRAFT_BEAT.anatomy : `${200 + i * 60}ms`)}
+                className={`ink-draw ${DRAFT_FILL_SOLID}`}
               />
             </g>
           )
         })}
       </g>
-      <text
-        x={BP_CENTER_X}
-        y={BP_CENTER_Y + BAR.maxH / 2 + 36}
-        textAnchor="middle"
-        fontSize={11}
-        fontWeight={500}
-        fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
-      >
-        listening
-      </text>
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_LEFT} y={BP_CENTER_Y - BAR.maxH / 2} w={BLOCK_W} h={BAR.maxH} />
-        <DimH
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
+          x={BP_LEFT}
+          y={BP_CENTER_Y - BAR.maxH / 2}
+          w={BLOCK_W}
+          h={BAR.maxH}
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <MeasureNote
+          x={BP_LEFT}
+          y={BP_CENTER_Y + BAR.maxH / 2 + 34}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
+          {'size = 100 ref'}
+        </MeasureNote>
+        <MeasureH
           x1={BP_XS[2]}
           x2={BP_XS[2] + BAR.w}
           y={BP_CENTER_Y - BAR.maxH / 2 - 14}
           label={`${BAR.w.toFixed(1)}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
         />
-        <DimV
+        <MeasureV
           x={BP_LEFT - 12}
           y1={BP_CENTER_Y - BAR.maxH / 2}
           y2={BP_CENTER_Y + BAR.maxH / 2}
           label={`${BAR.maxH.toFixed(0)}`}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
         />
-        <DimLabel x={BP_LEFT} y={BP_CENTER_Y - BAR.maxH / 2 - 4} anchor="start">
+        <MeasureNote
+          x={BP_LEFT}
+          y={BP_CENTER_Y - BAR.maxH / 2 - 4}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        >
           {`r${BAR.r.toFixed(1)}`}
-        </DimLabel>
+        </MeasureNote>
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="2 2"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         >
           <line
             x1={BP_XS[1] + BAR.w}
@@ -134,15 +159,17 @@ export function BarsThemeBlueprint() {
             y2={BP_CENTER_Y + BAR.maxH / 2 + 8.5}
           />
         </g>
-        <DimLabel
+        <MeasureNote
           x={(BP_XS[1] + BAR.w + BP_XS[2]) / 2}
           y={BP_CENTER_Y + BAR.maxH / 2 + 20}
           anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
         >
           {`${BAR.gap.toFixed(1)}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -229,32 +256,32 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection
+      <GripFrame
         x={AN_XS[0]}
         y={TALLEST_TOP}
         w={AN_XS[AN_XS.length - 1] + BAR.w - AN_XS[0]}
         h={AN_HEIGHTS[TALLEST_I]}
       />
-      <DimH
+      <MeasureH
         x1={AN_XS[TALLEST_I]}
         x2={AN_XS[TALLEST_I] + BAR.w}
         y={TALLEST_TOP - 14}
         label={`${BAR.w.toFixed(1)}`}
       />
-      <DimV
+      <MeasureV
         x={AN_XS[0] - 12}
         y1={TALLEST_TOP}
         y2={TALLEST_BOTTOM}
         label={`${BAR.maxH.toFixed(0)}`}
       />
-      <DimLabel x={AN_XS[0]} y={TALLEST_BOTTOM + 14} anchor="start">
-        {`r${BAR.r.toFixed(1)} · min ${BAR.minH.toFixed(1)}`}
-      </DimLabel>
+      <MeasureNote x={AN_XS[0]} y={TALLEST_BOTTOM + 14} anchor="start">
+        {`r${BAR.r.toFixed(1)} · min ${BAR.minH.toFixed(1)} · size=100 ref`}
+      </MeasureNote>
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line
           x1={AN_XS[1] + BAR.w}
@@ -265,9 +292,9 @@ function AnnotationsLayer() {
         <line x1={AN_XS[2]} y1={AN_CENTER_Y - 4} x2={AN_XS[2]} y2={AN_CENTER_Y + 4} />
         <line x1={AN_XS[1] + BAR.w} y1={AN_CENTER_Y} x2={AN_XS[2]} y2={AN_CENTER_Y} />
       </g>
-      <DimLabel x={(AN_XS[1] + BAR.w + AN_XS[2]) / 2} y={AN_CENTER_Y - 8} anchor="middle">
+      <MeasureNote x={(AN_XS[1] + BAR.w + AN_XS[2]) / 2} y={AN_CENTER_Y - 8} anchor="middle">
         {`${BAR.gap.toFixed(1)}`}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }

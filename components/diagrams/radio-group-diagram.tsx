@@ -13,80 +13,111 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  Selection,
+  DraftSurface,
+  DRAFT_BEAT,
+  DRAFT_FILL_MUTED,
+  InsetGuide,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  beat,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  GripFrame,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
 } from '@/components/diagrams/lib/parts'
 
+// Three 44px rows exceed the 140px sheet, so the blueprint shows the final two.
 const RADIO = {
   circle: 20,
   r: 10,
   dot: 10,
   gap: 12,
   rowGap: 8,
-  font: 11,
+  rowH: 44,
+  font: 14,
   labelW: 56,
 } as const
 
-const ROWS = ['Small', 'Medium', 'Large'] as const
-const SELECTED_ROW = 1
-
-const ROW_H = RADIO.circle
+const ROW_H = RADIO.rowH
+const ROW_PITCH = ROW_H + RADIO.rowGap
 const TOTAL_W = RADIO.circle + RADIO.gap + RADIO.labelW
-const TOTAL_H = ROWS.length * ROW_H + (ROWS.length - 1) * RADIO.rowGap
-const BP_X = (220 - TOTAL_W) / 2
-const BP_Y = (140 - TOTAL_H) / 2
+
+const BP_ROWS = ['Medium', 'Large'] as const
+const BP_SELECTED_ROW = 0
+const BP_NEXT_ROW = BP_SELECTED_ROW + 1
+const BP_TOTAL_H = BP_ROWS.length * ROW_H + (BP_ROWS.length - 1) * RADIO.rowGap
+const BOX = { w: 120, inset: 12, rx: 6 } as const
+const BP_X = (220 - BOX.w) / 2
+const BP_Y = (140 - BP_TOTAL_H) / 2
+const BP_CIRCLE_X = BP_X + BOX.inset
+const BP_LABEL_X = BP_CIRCLE_X + RADIO.circle + RADIO.gap
 
 function bpRowY(i: number) {
-  return BP_Y + i * (ROW_H + RADIO.rowGap)
+  return BP_Y + i * ROW_PITCH
 }
 
-const NEXT_ROW = SELECTED_ROW + 1
+const ROW_SURFACE = `${DRAFT_INK_MORPH} fill-transparent group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2)`
 
 const DOT_OUT_CLASS =
-  'origin-center transition-[opacity,transform] duration-(--motion-dur-base) ease-(--motion-ease-out) delay-0 group-hover:opacity-0 group-hover:scale-50 group-focus-visible:opacity-0 group-focus-visible:scale-50 motion-reduce:transition-none motion-reduce:transform-none'
+  'origin-center transition-[opacity,transform] duration-(--motion-dur-base) ease-(--motion-ease-out) delay-0 group-hover:opacity-0 group-hover:scale-50 group-hover:delay-(--motion-dur-base) group-focus-visible:opacity-0 group-focus-visible:scale-50 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none'
 
 const DOT_IN_CLASS =
-  'origin-center opacity-0 scale-50 transition-[opacity,transform] duration-(--motion-dur-base) ease-(--motion-ease-out) delay-150 group-hover:opacity-100 group-hover:scale-100 group-hover:delay-300 group-focus-visible:opacity-100 group-focus-visible:scale-100 group-focus-visible:delay-300 motion-reduce:transition-none motion-reduce:transform-none'
+  'origin-center opacity-0 scale-50 transition-[opacity,transform] duration-(--motion-dur-base) ease-(--motion-ease-out) delay-150 group-hover:opacity-100 group-hover:scale-100 group-hover:delay-500 group-focus-visible:opacity-100 group-focus-visible:scale-100 group-focus-visible:delay-500 motion-reduce:transition-none motion-reduce:transform-none'
 
 export function RadioGroupBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <Blueprint>
-      {ROWS.map((label, i) => {
+    <DraftSurface>
+      {BP_ROWS.map((label, i) => {
         const y = bpRowY(i)
-        const cy = y + RADIO.r
-        const isSelected = i === SELECTED_ROW
-        const isNext = i === NEXT_ROW
+        const cy = y + ROW_H / 2
+        const isSelected = i === BP_SELECTED_ROW
+        const isNext = i === BP_NEXT_ROW
         return (
           <g key={label}>
+            <rect
+              x={BP_X}
+              y={y}
+              width={BOX.w}
+              height={ROW_H}
+              rx={BOX.rx}
+              stroke="currentColor"
+              strokeWidth={theme.wireframe.strokeWidth * 0.5}
+              strokeOpacity={theme.wireframe.strokeOpacity * 0.35}
+              style={beat(i === 0 ? DRAFT_BEAT.anatomy : `${260 + i * 60}ms`)}
+              className={`fade-note ${ROW_SURFACE}`}
+            />
             <circle
-              cx={BP_X + RADIO.r}
+              cx={BP_CIRCLE_X + RADIO.r}
               cy={cy}
               r={RADIO.r}
               fill="none"
               stroke="currentColor"
-              strokeWidth={theme.wireframe.strokeWidth}
+              strokeWidth={2}
               strokeOpacity={
                 isSelected ? theme.wireframe.strokeOpacity : theme.wireframe.strokeOpacity * 0.55
               }
+              pathLength={1}
+              strokeDasharray={1}
+              strokeDashoffset={1}
+              style={beat(isSelected ? DRAFT_BEAT.outline : '120ms')}
               className={
                 isSelected
-                  ? `${BP_MORPH} group-hover:stroke-opacity-40 group-focus-visible:stroke-opacity-40`
+                  ? `ink-draw ${DRAFT_INK_MORPH} group-hover:stroke-opacity-40 group-focus-visible:stroke-opacity-40`
                   : isNext
-                    ? `${BP_MORPH} group-hover:stroke-opacity-100 group-focus-visible:stroke-opacity-100`
-                    : undefined
+                    ? `ink-draw ${DRAFT_INK_MORPH} group-hover:stroke-opacity-100 group-focus-visible:stroke-opacity-100`
+                    : 'ink-draw'
               }
             />
             {isSelected && (
               <circle
-                cx={BP_X + RADIO.r}
+                cx={BP_CIRCLE_X + RADIO.r}
                 cy={cy}
                 r={RADIO.dot / 2}
                 fill="currentColor"
@@ -96,7 +127,7 @@ export function RadioGroupBlueprint() {
             )}
             {isNext && (
               <circle
-                cx={BP_X + RADIO.r}
+                cx={BP_CIRCLE_X + RADIO.r}
                 cy={cy}
                 r={RADIO.dot / 2}
                 fill="currentColor"
@@ -105,81 +136,94 @@ export function RadioGroupBlueprint() {
               />
             )}
             <text
-              x={BP_X + RADIO.circle + RADIO.gap}
-              y={cy + 4}
+              x={BP_LABEL_X}
+              y={cy + 5}
               fontSize={RADIO.font}
               fontWeight={500}
               fontFamily="var(--font-sans)"
-              className={BP_TEXT_SOFT}
+              style={beat(i === 0 ? DRAFT_LABEL_BEAT : DRAFT_LABEL_ALT_BEAT)}
+              className={`fade-note ${DRAFT_TEXT_SOFT}`}
             >
               {label}
             </text>
           </g>
         )
       })}
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_X} y={bpRowY(SELECTED_ROW)} w={TOTAL_W} h={ROW_H} />
-        <DimH x1={BP_X} x2={BP_X + RADIO.circle} y={BP_Y - 14} label={`${RADIO.circle}`} />
-        <DimV x={BP_X - 12} y1={BP_Y} y2={BP_Y + RADIO.circle} label={`${RADIO.circle}`} />
-
-        <g
-          stroke="var(--bp-accent, var(--color-accent))"
-          strokeWidth={theme.guide.strokeWidth}
-          strokeDasharray="2 2"
-          opacity={theme.guide.structOpacity}
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
+          x={BP_X}
+          y={bpRowY(BP_SELECTED_ROW)}
+          w={BOX.w}
+          h={ROW_H}
+          className="note-stamp"
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <InsetGuide
+          x={BP_CIRCLE_X}
+          y={bpRowY(BP_SELECTED_ROW) + (ROW_H - RADIO.circle) / 2}
+          w={RADIO.circle}
+          h={RADIO.circle}
+          offset={0.8}
+          boxX={BP_X}
+          boxY={bpRowY(BP_SELECTED_ROW)}
+          boxW={BOX.w}
+          boxH={ROW_H}
+          boxRx={BOX.rx}
+          clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
+        />
+        <MeasureH
+          x1={BP_X}
+          x2={BP_X + BOX.w}
+          y={BP_Y - 11}
+          label={`${BOX.w}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
+          x={BP_X - 13}
+          y1={bpRowY(0)}
+          y2={bpRowY(0) + ROW_H}
+          label={`${ROW_H}`}
+          labelXOffset={-5}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <MeasureV
+          x={BP_X + BOX.w + 13}
+          y1={bpRowY(0) + ROW_H / 2}
+          y2={bpRowY(1) + ROW_H / 2}
+          label={`${ROW_PITCH}`}
+          labelAnchor="start"
+          labelXOffset={5}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        />
+        <MeasureNote
+          x={BP_X}
+          y={BP_Y + BP_TOTAL_H + 12}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
         >
-          <line
-            x1={BP_X + RADIO.circle}
-            y1={bpRowY(0) + RADIO.circle + 2}
-            x2={BP_X + RADIO.circle}
-            y2={bpRowY(0) + RADIO.circle + 7}
-          />
-          <line
-            x1={BP_X + RADIO.circle + RADIO.gap}
-            y1={bpRowY(0) + RADIO.circle + 2}
-            x2={BP_X + RADIO.circle + RADIO.gap}
-            y2={bpRowY(0) + RADIO.circle + 7}
-          />
-          <line
-            x1={BP_X + RADIO.circle}
-            y1={bpRowY(0) + RADIO.circle + 4.5}
-            x2={BP_X + RADIO.circle + RADIO.gap}
-            y2={bpRowY(0) + RADIO.circle + 4.5}
-          />
-        </g>
-        <DimLabel
-          x={BP_X + RADIO.circle + RADIO.gap / 2}
-          y={bpRowY(0) + RADIO.circle + 18}
-          anchor="middle"
-        >
-          {`${RADIO.gap}`}
-        </DimLabel>
-
-        <g
-          stroke="var(--bp-accent, var(--color-accent))"
-          strokeWidth={theme.guide.strokeWidth}
-          strokeDasharray="2 2"
-          opacity={theme.guide.structOpacity}
-        >
-          <line
-            x1={BP_X - 6}
-            y1={bpRowY(0) + RADIO.circle}
-            x2={BP_X - 1}
-            y2={bpRowY(0) + RADIO.circle}
-          />
-          <line x1={BP_X - 6} y1={bpRowY(1)} x2={BP_X - 1} y2={bpRowY(1)} />
-          <line x1={BP_X - 3.5} y1={bpRowY(0) + RADIO.circle} x2={BP_X - 3.5} y2={bpRowY(1)} />
-        </g>
-        <DimLabel x={BP_X - 9} y={(bpRowY(0) + RADIO.circle + bpRowY(1)) / 2 + 2.5} anchor="end">
-          {`${RADIO.rowGap}`}
-        </DimLabel>
+          {`gap ${RADIO.rowGap} · r${BOX.rx}`}
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
 const TX = 56
 const TY = 20
+
+const AN_ROWS = ['Small', 'Medium', 'Large'] as const
+const AN_SELECTED_ROW = 1
+const AN_TOTAL_H = AN_ROWS.length * ROW_H + (AN_ROWS.length - 1) * RADIO.rowGap
+
+function anRowY(i: number) {
+  return i * ROW_PITCH
+}
 
 function ContainerShape() {
   const { setHovered } = useAnatomy()
@@ -196,8 +240,7 @@ function ContainerShape() {
         x={-8}
         y={-8}
         width={TOTAL_W + 16}
-        height={TOTAL_H + 16}
-        rx={6}
+        height={AN_TOTAL_H + 16}
         fill="transparent"
         stroke="currentColor"
         strokeWidth={1}
@@ -210,12 +253,41 @@ function ContainerShape() {
   )
 }
 
+function RowBoxesShape() {
+  const { setHovered } = useAnatomy()
+  const spotlight = useSpotlight('row')
+
+  return (
+    <g
+      onMouseEnter={() => setHovered('row')}
+      onMouseLeave={() => setHovered(null)}
+      style={{ pointerEvents: 'all' }}
+    >
+      {AN_ROWS.map((label, i) => (
+        <rect
+          key={label}
+          x={0}
+          y={anRowY(i)}
+          width={TOTAL_W}
+          height={ROW_H}
+          fill="transparent"
+          stroke="currentColor"
+          strokeWidth={draftTheme.guide.strokeWidth}
+          strokeDasharray="2 2"
+          strokeOpacity={0.25}
+          className={spotlight.className}
+          style={spotlight.style}
+        />
+      ))}
+    </g>
+  )
+}
+
 function CircleShape({ i }: { i: number }) {
   const { setHovered } = useAnatomy()
   const spotlight = useSpotlight('circle')
-  const isSelected = i === SELECTED_ROW
-  const y = bpRowY(i) - BP_Y
-  const cy = y + RADIO.r
+  const isSelected = i === AN_SELECTED_ROW
+  const cy = anRowY(i) + ROW_H / 2
   return (
     <g
       onMouseEnter={() => setHovered('circle')}
@@ -229,10 +301,10 @@ function CircleShape({ i }: { i: number }) {
         r={RADIO.r}
         fill="none"
         stroke="currentColor"
-        strokeWidth={1.25}
+        strokeWidth={2}
         strokeOpacity={isSelected ? 1 : 0.45}
-        className={i === SELECTED_ROW ? spotlight.className : undefined}
-        style={i === SELECTED_ROW ? spotlight.style : undefined}
+        className={isSelected ? spotlight.className : undefined}
+        style={isSelected ? spotlight.style : undefined}
       />
     </g>
   )
@@ -241,8 +313,7 @@ function CircleShape({ i }: { i: number }) {
 function DotShape() {
   const { setHovered } = useAnatomy()
   const spotlight = useSpotlight('dot')
-  const y = bpRowY(SELECTED_ROW) - BP_Y
-  const cy = y + RADIO.r
+  const cy = anRowY(AN_SELECTED_ROW) + ROW_H / 2
   return (
     <g
       onMouseEnter={() => setHovered('dot')}
@@ -266,8 +337,7 @@ function DotShape() {
 function LabelShape({ i }: { i: number }) {
   const { setHovered } = useAnatomy()
   const spotlight = useSpotlight('label')
-  const y = bpRowY(i) - BP_Y
-  const cy = y + RADIO.r
+  const cy = anRowY(i) + ROW_H / 2
   const x = RADIO.circle + RADIO.gap
   return (
     <g
@@ -276,18 +346,18 @@ function LabelShape({ i }: { i: number }) {
       className="cursor-pointer"
       style={{ pointerEvents: 'all' }}
     >
-      <rect x={x - 4} y={cy - 10} width={RADIO.labelW + 8} height={20} fill="transparent" />
+      <rect x={0} y={anRowY(i)} width={TOTAL_W} height={ROW_H} fill="transparent" />
       <text
         x={x}
-        y={cy + 4}
-        fontSize={13}
+        y={cy + 5}
+        fontSize={14}
         fontFamily="var(--font-sans)"
         className={
-          i === SELECTED_ROW ? `fill-current ${spotlight.className}` : 'fill-current opacity-70'
+          i === AN_SELECTED_ROW ? `fill-current ${spotlight.className}` : 'fill-current opacity-70'
         }
-        style={i === SELECTED_ROW ? spotlight.style : undefined}
+        style={i === AN_SELECTED_ROW ? spotlight.style : undefined}
       >
-        {ROWS[i]}
+        {AN_ROWS[i]}
       </text>
     </g>
   )
@@ -296,8 +366,7 @@ function LabelShape({ i }: { i: number }) {
 function HiddenInputShape() {
   const { setHovered } = useAnatomy()
   const spotlight = useSpotlight('hidden-input')
-  const y = bpRowY(SELECTED_ROW) - BP_Y
-  const cy = y + RADIO.r
+  const cy = anRowY(AN_SELECTED_ROW) + ROW_H / 2
   return (
     <g
       onMouseEnter={() => setHovered('hidden-input')}
@@ -338,8 +407,7 @@ function HiddenInputShape() {
 function FocusRingShape() {
   const { setHovered } = useAnatomy()
   const spotlight = useSpotlight('focus-ring')
-  const y = bpRowY(0) - BP_Y
-  const cy = y + RADIO.r
+  const cy = anRowY(0) + ROW_H / 2
   return (
     <g
       onMouseEnter={() => setHovered('focus-ring')}
@@ -366,68 +434,62 @@ function FocusRingShape() {
 function AnnotationsLayer() {
   const { hovered } = useAnatomy()
   const dimmed = hovered !== null
-  const selY = bpRowY(SELECTED_ROW) - BP_Y
-  const row0Bottom = bpRowY(0) - BP_Y + RADIO.circle
-  const row1Top = bpRowY(1) - BP_Y
+  const selCy = anRowY(AN_SELECTED_ROW) + ROW_H / 2
+  const row0Bottom = anRowY(0) + ROW_H
+  const row1Top = anRowY(1)
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={0} y={selY} w={RADIO.circle} h={RADIO.circle} />
-      <DimH x1={0} x2={RADIO.circle} y={selY - 14} label={`${RADIO.circle}`} />
-      <DimV
+      <GripFrame x={0} y={anRowY(AN_SELECTED_ROW)} w={TOTAL_W} h={ROW_H} />
+      <MeasureH x1={0} x2={RADIO.circle} y={selCy - RADIO.r - 14} label={`${RADIO.circle}`} />
+      <MeasureV
         x={-12}
-        y1={selY}
-        y2={selY + RADIO.circle}
+        y1={selCy - RADIO.r}
+        y2={selCy + RADIO.r}
         label={`${RADIO.circle}`}
         labelXOffset={-6}
       />
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
-        <line
-          x1={RADIO.circle}
-          y1={selY + RADIO.r}
-          x2={RADIO.circle + RADIO.gap}
-          y2={selY + RADIO.r}
-        />
+        <line x1={RADIO.circle} y1={selCy} x2={RADIO.circle + RADIO.gap} y2={selCy} />
       </g>
-      <DimLabel x={RADIO.circle + RADIO.gap / 2} y={selY + RADIO.r - 6} anchor="middle">
+      <MeasureNote x={RADIO.circle + RADIO.gap / 2} y={selCy - 6} anchor="middle">
         {`${RADIO.gap}`}
-      </DimLabel>
+      </MeasureNote>
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line x1={-16} y1={row0Bottom} x2={-10} y2={row0Bottom} />
         <line x1={-16} y1={row1Top} x2={-10} y2={row1Top} />
         <line x1={-13} y1={row0Bottom} x2={-13} y2={row1Top} />
       </g>
-      <DimLabel x={-19} y={(row0Bottom + row1Top) / 2 + 2.5} anchor="end">
+      <MeasureNote x={-19} y={(row0Bottom + row1Top) / 2 + 2.5} anchor="end">
         {`${RADIO.rowGap}`}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }
 
 function OverlayLines() {
-  const selY = bpRowY(SELECTED_ROW) - BP_Y
-  const row0Y = bpRowY(0) - BP_Y
+  const selCy = anRowY(AN_SELECTED_ROW) + ROW_H / 2
   const circleMidX = TX + RADIO.r
-  const circleTop = TY + selY
-  const circleCy = TY + selY + RADIO.r
+  const circleTop = TY + selCy - RADIO.r
+  const circleCy = TY + selCy
   const dotBottom = circleCy + RADIO.dot / 2
   const labelMidX = TX + RADIO.circle + RADIO.gap + RADIO.labelW / 2
-  const labelY = TY + selY
+  const labelY = TY + selCy - 7
   const containerLeft = TX - 8
-  const containerMidY = TY + TOTAL_H / 2
-  const focusCy = TY + row0Y + RADIO.r
+  const containerMidY = TY + AN_TOTAL_H / 2
+  const focusCy = TY + anRowY(0) + ROW_H / 2
   const focusRight = TX + RADIO.r + RADIO.r + 4
   return (
     <g strokeWidth="1" className="pointer-events-none">
@@ -460,17 +522,16 @@ function OverlayLines() {
 }
 
 function Tags() {
-  const selY = bpRowY(SELECTED_ROW) - BP_Y
-  const row0Y = bpRowY(0) - BP_Y
+  const selCy = anRowY(AN_SELECTED_ROW) + ROW_H / 2
   const circleMidX = TX + RADIO.r
-  const circleTop = TY + selY
-  const circleCy = TY + selY + RADIO.r
+  const circleTop = TY + selCy - RADIO.r
+  const circleCy = TY + selCy
   const dotBottom = circleCy + RADIO.dot / 2
   const labelMidX = TX + RADIO.circle + RADIO.gap + RADIO.labelW / 2
-  const labelY = TY + selY
+  const labelY = TY + selCy - 7
   const containerLeft = TX - 8
-  const containerMidY = TY + TOTAL_H / 2
-  const focusCy = TY + row0Y + RADIO.r
+  const containerMidY = TY + AN_TOTAL_H / 2
+  const focusCy = TY + anRowY(0) + ROW_H / 2
   const focusRight = TX + RADIO.r + RADIO.r + 4
   return (
     <>
@@ -544,10 +605,11 @@ function Tags() {
 
 export function RadioGroupAnatomy() {
   return (
-    <AnatomyFrame viewBox="-80 -80 340 280" maxWidthClassName="max-w-[400px]">
+    <AnatomyFrame viewBox="-80 -80 340 290" maxWidthClassName="max-w-[400px]">
       <g transform={`translate(${TX}, ${TY})`}>
         <ContainerShape />
-        {ROWS.map((label, i) => (
+        <RowBoxesShape />
+        {AN_ROWS.map((label, i) => (
           <g key={label}>
             <CircleShape i={i} />
             <LabelShape i={i} />

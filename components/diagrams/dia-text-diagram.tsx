@@ -12,7 +12,21 @@ import {
   useAnatomy,
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
-import { Blueprint, BP_HIDE_ON_MORPH, BP_TEXT_SOFT } from '@/components/diagrams/lib/parts'
+import {
+  DraftSurface,
+  DRAFT_BEAT,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_TEXT_SOFT,
+  beat,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+  GripFrame,
+  MeasureH,
+  MeasureV,
+  MeasureNote,
+} from '@/components/diagrams/lib/parts'
 
 const CONTAINER = { x: 30, y: 40, w: 260, h: 70 } as const
 const TEXT_X = CONTAINER.x + 16
@@ -240,7 +254,7 @@ const BP_BAND_W = 26
 
 export function DiaTextBlueprint() {
   return (
-    <Blueprint>
+    <DraftSurface>
       <defs>
         <linearGradient id="dia-text-bp-band" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stopColor="#c679c4" />
@@ -258,7 +272,8 @@ export function DiaTextBlueprint() {
         fontWeight={700}
         letterSpacing="-0.02em"
         fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
         Dia Text
       </text>
@@ -270,11 +285,44 @@ export function DiaTextBlueprint() {
         height={BP_MASK_H}
         fill="url(#dia-text-bp-band)"
         opacity={0.55}
-        style={{ transformBox: 'view-box' }}
-        className="transition-transform duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:translate-x-[150px] group-focus-visible:translate-x-[150px] motion-reduce:transition-none"
+        style={{ transformBox: 'view-box', ...beat(DRAFT_BEAT.hatch) }}
+        className="transition-transform duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:translate-x-[134px] group-hover:delay-(--motion-dur-base) group-focus-visible:translate-x-[134px] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none fade-note"
       />
 
-      <g className={BP_HIDE_ON_MORPH}>
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
+          x={BP_MASK_X}
+          y={BP_MASK_Y}
+          w={BP_MASK_W}
+          h={BP_MASK_H}
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <MeasureH
+          x1={BP_MASK_X}
+          x2={BP_MASK_X + BP_MASK_W}
+          y={BP_MASK_Y - 10}
+          label={`${BP_MASK_W}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
+          x={BP_MASK_X - 12}
+          y1={BP_MASK_Y}
+          y2={BP_MASK_Y + BP_MASK_H}
+          label={`${BP_MASK_H}`}
+          labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <MeasureNote
+          x={BP_MASK_X + BP_MASK_W + 8}
+          y={BP_MASK_Y + BP_MASK_H + 12}
+          anchor="end"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
+          band 26 · sweep
+        </MeasureNote>
         <line
           x1={BP_MASK_X + BP_MASK_W}
           y1={BP_MASK_Y}
@@ -283,8 +331,10 @@ export function DiaTextBlueprint() {
           stroke="var(--color-accent)"
           strokeWidth={1}
           strokeDasharray="2 2"
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }

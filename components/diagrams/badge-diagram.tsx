@@ -6,17 +6,23 @@
 // This file is NOT covered by the repository's root MIT LICENSE.
 
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
+  DraftSurface,
+  DRAFT_FILL_PANEL,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
   squirclePillPath,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
 } from '@/components/diagrams/lib/parts'
 import {
   AnatomyFrame,
@@ -39,29 +45,57 @@ const BADGE = {
 const BP = { x: (220 - BADGE.solidW) / 2, y: (140 - BADGE.h) / 2 } as const
 
 export function BadgeBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <Blueprint>
-      <path
-        d={squirclePillPath(BP.x, BP.y, BADGE.solidW, BADGE.h)}
-        strokeWidth={theme.wireframe.strokeWidth}
-        strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_PANEL}
-      />
-      <text
-        x={BP.x + BADGE.solidW / 2}
-        y={BP.y + BADGE.h / 2 + 4}
-        textAnchor="middle"
-        fontSize={BADGE.font}
-        fontWeight={500}
-        fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
-      >
-        Early Access
-      </text>
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP.x} y={BP.y} w={BADGE.solidW} h={BADGE.h} />
-        <PadGuide
+    <DraftSurface>
+      <style>{`
+        @keyframes bp-badge-press {
+          0% { transform: scale(1) translateY(0); }
+          35% { transform: scale(0.97) translateY(1px); }
+          100% { transform: scale(1) translateY(0); }
+        }
+        .blueprint .bp-badge-press {
+          transform-box: fill-box;
+          transform-origin: center;
+        }
+        .group:hover .blueprint .bp-badge-press,
+        .group:focus-visible .blueprint .bp-badge-press {
+          animation: bp-badge-press 450ms var(--motion-ease-in-out) 550ms both;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .group:hover .blueprint .bp-badge-press,
+          .group:focus-visible .blueprint .bp-badge-press {
+            animation: none;
+          }
+        }
+      `}</style>
+      <g className="bp-badge-press">
+        <path
+          d={squirclePillPath(BP.x, BP.y, BADGE.solidW, BADGE.h)}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
+          strokeWidth={theme.wireframe.strokeWidth}
+          strokeOpacity={theme.wireframe.strokeOpacity}
+          style={beat(DRAFT_BEAT.outline)}
+          className={`ink-draw ${DRAFT_FILL_PANEL}`}
+        />
+        <text
+          x={BP.x + BADGE.solidW / 2}
+          y={BP.y + BADGE.h / 2 + 4}
+          textAnchor="middle"
+          fontSize={BADGE.font}
+          fontWeight={500}
+          fontFamily="var(--font-sans)"
+          style={beat(DRAFT_LABEL_BEAT)}
+          className={`fade-note ${DRAFT_TEXT_SOFT}`}
+        >
+          Early Access
+        </text>
+      </g>
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame x={BP.x} y={BP.y} w={BADGE.solidW} h={BADGE.h} style={beat(DRAFT_BEAT.handle)} />
+        <InsetGuide
           x={BP.x + BADGE.padX}
           y={BP.y + 6}
           w={BADGE.solidW - BADGE.padX * 2}
@@ -73,24 +107,55 @@ export function BadgeBlueprint() {
           boxH={BADGE.h}
           boxRx={BADGE.r}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={BP.x + BADGE.padX / 2} y={BP.y + BADGE.h / 2 + 2} anchor="middle">
+        <MeasureNote
+          x={BP.x + BADGE.padX / 2}
+          y={BP.y + BADGE.h / 2 + 2}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        >
           12
-        </DimLabel>
-        <DimLabel
+        </MeasureNote>
+        <MeasureNote
           x={BP.x + BADGE.solidW - BADGE.padX / 2}
           y={BP.y + BADGE.h / 2 + 2}
           anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
         >
           12
-        </DimLabel>
-        <DimH x1={BP.x} x2={BP.x + BADGE.solidW} y={BP.y - 14} label={`${BADGE.solidW}`} />
-        <DimV x={BP.x - 14} y1={BP.y} y2={BP.y + BADGE.h} label={`${BADGE.h}`} labelXOffset={-6} />
-        <DimLabel x={BP.x} y={BP.y - 6} anchor="start">
+        </MeasureNote>
+        <MeasureH
+          x1={BP.x}
+          x2={BP.x + BADGE.solidW}
+          y={BP.y - 14}
+          label={`${BADGE.solidW}`}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        />
+        <MeasureV
+          x={BP.x - 14}
+          y1={BP.y}
+          y2={BP.y + BADGE.h}
+          label={`${BADGE.h}`}
+          labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        />
+        <MeasureNote
+          x={BP.x}
+          y={BP.y - 6}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
           {`r${BADGE.r}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -108,7 +173,7 @@ function ContainerShape() {
     <path
       d={squirclePillPath(AN.x, AN.y, BADGE.dotW, BADGE.h)}
       stroke="currentColor"
-      strokeWidth={hovered === 'container' ? 2 : blueprintTheme.wireframe.strokeWidth}
+      strokeWidth={hovered === 'container' ? 2 : draftTheme.wireframe.strokeWidth}
       fill={hovered === 'container' ? 'currentColor' : 'transparent'}
       fillOpacity={hovered === 'container' ? 0.1 : 0}
       className={`cursor-pointer ${spotlight.className}`}
@@ -183,7 +248,7 @@ function AnnotationsLayer() {
       }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
     >
-      <PadGuide
+      <InsetGuide
         x={AN.x + BADGE.padX}
         y={AN.y + 6}
         w={BADGE.dotW - BADGE.padX * 2}
@@ -196,26 +261,26 @@ function AnnotationsLayer() {
         boxRx={BADGE.r}
         clipOffset={0.8}
       />
-      <DimLabel x={AN.x + BADGE.padX / 2} y={AN_MID_Y + 2} anchor="middle">
+      <MeasureNote x={AN.x + BADGE.padX / 2} y={AN_MID_Y + 2} anchor="middle">
         12
-      </DimLabel>
-      <DimLabel x={AN.x + BADGE.dotW - BADGE.padX / 2} y={AN_MID_Y + 2} anchor="middle">
+      </MeasureNote>
+      <MeasureNote x={AN.x + BADGE.dotW - BADGE.padX / 2} y={AN_MID_Y + 2} anchor="middle">
         12
-      </DimLabel>
+      </MeasureNote>
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line x1={AN_DOT_CX + BADGE.dot / 2} y1={AN_MID_Y} x2={AN_TEXT_X} y2={AN_MID_Y} />
       </g>
-      <DimLabel x={(AN_DOT_CX + BADGE.dot / 2 + AN_TEXT_X) / 2} y={AN_MID_Y - 6} anchor="middle">
+      <MeasureNote x={(AN_DOT_CX + BADGE.dot / 2 + AN_TEXT_X) / 2} y={AN_MID_Y - 6} anchor="middle">
         6
-      </DimLabel>
-      <Selection x={AN.x} y={AN.y} w={BADGE.dotW} h={BADGE.h} />
-      <DimH x1={AN.x} x2={AN.x + BADGE.dotW} y={AN.y - 15} label={`${BADGE.dotW}`} />
-      <DimV
+      </MeasureNote>
+      <GripFrame x={AN.x} y={AN.y} w={BADGE.dotW} h={BADGE.h} />
+      <MeasureH x1={AN.x} x2={AN.x + BADGE.dotW} y={AN.y - 15} label={`${BADGE.dotW}`} />
+      <MeasureV
         x={AN.x - 15}
         y1={AN.y}
         y2={AN.y + BADGE.h}
@@ -223,9 +288,9 @@ function AnnotationsLayer() {
         labelXOffset={-6}
         labelAnchor="end"
       />
-      <DimLabel x={AN.x} y={AN.y - 6} anchor="start">
+      <MeasureNote x={AN.x} y={AN.y - 6} anchor="start">
         {`r${BADGE.r}`}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }
@@ -244,13 +309,17 @@ function TagsLayer() {
   return (
     <>
       <foreignObject
-        x={AN_DOT_CX - 48}
+        x={AN_DOT_CX - 58}
         y={118}
-        width={110}
+        width={140}
         height={24}
         className="pointer-events-none overflow-visible"
       >
-        <AnatomyTag part="dot" label="Dot Indicator" className="items-start justify-center" />
+        <AnatomyTag
+          part="dot"
+          label={'Dot (variant="dot")'}
+          className="items-start justify-center"
+        />
       </foreignObject>
       <foreignObject
         x={AN_TEXT_CENTER - 44}

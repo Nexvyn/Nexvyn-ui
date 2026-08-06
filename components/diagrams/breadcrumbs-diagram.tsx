@@ -6,14 +6,20 @@
 // This file is NOT covered by the repository's root MIT LICENSE.
 
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimV,
-  Selection,
+  DraftSurface,
+  DRAFT_FILL_PANEL,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  MeasureH,
+  MeasureV,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
 } from '@/components/diagrams/lib/parts'
 import {
   AnatomyFrame,
@@ -24,15 +30,15 @@ import {
 } from '@/components/diagrams/lib/anatomy-parts'
 
 const BREAD = {
-  items: ['Home', 'Components', 'Breadcrumbs'] as const,
+  items: ['Home', 'Docs', 'Breadcrumbs'] as const,
   itemH: 20,
-  sepW: 14,
+  sepW: 10,
   gap: 4,
-  rx: 4,
+  rx: 2,
 } as const
 
 function breadItemW(label: string) {
-  return label.length * 5 + 10
+  return label.length * 6.5 + 9
 }
 
 const BREAD_TOTAL_W = BREAD.items.reduce(
@@ -55,11 +61,16 @@ function itemX(i: number) {
 }
 
 export function BreadcrumbsBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
+  const lastIdx = BREAD.items.length - 1
+  const lastLabel = BREAD.items[lastIdx]
+  const lastTextW = breadItemW(lastLabel) - 10
+  const lastCx = itemX(lastIdx) + breadItemW(lastLabel) / 2
   return (
-    <Blueprint>
+    <DraftSurface>
       {BREAD.items.map((label, i) => {
         const w = breadItemW(label)
+        const inkAt = i === 0 ? DRAFT_BEAT.outline : i === 1 ? '260ms' : '320ms'
         return (
           <g key={i}>
             <rect
@@ -68,17 +79,22 @@ export function BreadcrumbsBlueprint() {
               width={w}
               height={BREAD.itemH}
               rx={BREAD.rx}
+              pathLength={1}
+              strokeDasharray={1}
+              strokeDashoffset={1}
               strokeWidth={theme.wireframe.strokeWidth}
               strokeOpacity={theme.wireframe.strokeOpacity}
-              className={i < BREAD.items.length - 1 ? BP_FILL_PANEL : ''}
+              style={beat(inkAt)}
+              className={`ink-draw ${i < BREAD.items.length - 1 ? DRAFT_FILL_PANEL : ''}`}
             />
             <text
               x={itemX(i) + w / 2}
-              y={BP.y + BREAD.itemH / 2 + 4}
-              fontSize={9}
+              y={BP.y + BREAD.itemH / 2 + 5}
+              fontSize={12}
               textAnchor="middle"
               fontFamily="var(--font-sans)"
-              className={BP_TEXT_SOFT}
+              style={beat(`${400 + i * 70}ms`)}
+              className={`fade-note ${DRAFT_TEXT_SOFT}`}
             >
               {label}
             </text>
@@ -89,35 +105,62 @@ export function BreadcrumbsBlueprint() {
                 return (
                   <path
                     d={`M${cx - 1.5} ${cy - 3.5}l3 3.5-3 3.5`}
+                    pathLength={1}
+                    strokeDasharray={1}
+                    strokeDashoffset={1}
                     fill="none"
                     stroke="currentColor"
                     strokeWidth={theme.wireframe.strokeWidth}
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     opacity={theme.wireframe.strokeOpacity}
-                    className={BP_HIDE_ON_MORPH}
+                    style={beat(`${260 + i * 60}ms`)}
+                    className={`ink-draw ${DRAFT_SCAFFOLD_FADE}`}
                   />
                 )
               })()}
           </g>
         )
       })}
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection
+      <line
+        x1={lastCx - lastTextW / 2}
+        y1={BP.y + BREAD.itemH + 3}
+        x2={lastCx + lastTextW / 2}
+        y2={BP.y + BREAD.itemH + 3}
+        stroke="var(--color-accent)"
+        strokeWidth={1}
+        strokeLinecap="round"
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
+        className="transition-[stroke-dashoffset] duration-(--motion-dur-slow) ease-(--motion-ease-out) group-hover:[stroke-dashoffset:0] group-hover:delay-(--motion-dur-base) group-focus-visible:[stroke-dashoffset:0] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
+      />
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
           x={BP.x}
           y={BP.y - 2}
           w={itemX(2) + breadItemW(BREAD.items[2]) - BP.x}
           h={BREAD.itemH + 4}
+          style={beat(DRAFT_BEAT.handle)}
         />
-        <DimH
+        <MeasureH
           x1={BP.x}
           x2={itemX(2) + breadItemW(BREAD.items[2])}
           y={BP.y - 12}
           label={`${itemX(2) + breadItemW(BREAD.items[2]) - BP.x}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
         />
-        <DimV x={BP.x - 12} y1={BP.y} y2={BP.y + BREAD.itemH} label={`${BREAD.itemH}`} />
+        <MeasureV
+          x={BP.x - 12}
+          y1={BP.y}
+          y2={BP.y + BREAD.itemH}
+          label={`${BREAD.itemH}`}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -126,7 +169,7 @@ const AN = {
   y: 60,
   itemH: 20,
   gap: 6,
-  sepW: 14,
+  sepW: 12,
   items: [
     { label: 'Home', w: 34 },
     { label: 'Components', w: 78 },
@@ -160,14 +203,14 @@ function AnatomyLink({ i }: { i: number }) {
         y={AN.y}
         width={item.w}
         height={AN.itemH}
-        rx={3}
+        rx={2}
         fill="currentColor"
         fillOpacity={isHovered ? 0.08 : 0}
       />
       <text
         x={x + item.w / 2}
-        y={AN.y + AN.itemH / 2 + 4}
-        fontSize={13}
+        y={AN.y + AN.itemH / 2 + 5}
+        fontSize={14}
         textAnchor="middle"
         fontFamily="var(--font-sans)"
         className={`fill-current ${isHovered ? 'opacity-100' : 'opacity-70'}`}
@@ -233,14 +276,14 @@ function AnatomyCurrent() {
         y={AN.y}
         width={item.w}
         height={AN.itemH}
-        rx={3}
+        rx={2}
         fill="currentColor"
         fillOpacity={isHovered ? 0.08 : 0}
       />
       <text
         x={x + item.w / 2}
-        y={AN.y + AN.itemH / 2 + 4}
-        fontSize={13}
+        y={AN.y + AN.itemH / 2 + 5}
+        fontSize={14}
         fontWeight={500}
         textAnchor="middle"
         fontFamily="var(--font-sans)"
@@ -262,9 +305,15 @@ function AnatomyBackground() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={AN.x} y={AN.y} w={rowW} h={AN.itemH} />
-      <DimH x1={AN.x} x2={AN.x + rowW} y={AN.y - 14} label={`${rowW}`} />
-      <DimV x={AN.x - 12} y1={AN.y} y2={AN.y + AN.itemH} label={`${AN.itemH}`} labelXOffset={-6} />
+      <GripFrame x={AN.x} y={AN.y} w={rowW} h={AN.itemH} />
+      <MeasureH x1={AN.x} x2={AN.x + rowW} y={AN.y - 14} label={`${rowW}`} />
+      <MeasureV
+        x={AN.x - 12}
+        y1={AN.y}
+        y2={AN.y + AN.itemH}
+        label={`${AN.itemH}`}
+        labelXOffset={-6}
+      />
     </g>
   )
 }

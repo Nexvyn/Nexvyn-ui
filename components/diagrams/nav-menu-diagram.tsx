@@ -13,16 +13,23 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
+  DraftSurface,
+  DRAFT_BEAT,
+  DRAFT_FILL_PANEL,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  beat,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  GripFrame,
+  squircleRectPath,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
 } from '@/components/diagrams/lib/parts'
 
 const NM = {
@@ -31,7 +38,7 @@ const NM = {
   itemRx: 4,
   itemPadX: 12,
   inset: 4,
-  navW: 220,
+  navW: 192,
 } as const
 
 const ITEM_Y = [0, NM.itemH + NM.itemGap, 2 * (NM.itemH + NM.itemGap), 3 * (NM.itemH + NM.itemGap)]
@@ -58,32 +65,29 @@ const BP_X = 30
 const BP_Y = 20
 
 export function NavMenuBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <Blueprint>
+    <DraftSurface>
       {ITEM_LABELS.map((label, i) => (
         <g key={label}>
           {i === 0 && (
-            <rect
-              x={BP_X}
-              y={BP_Y + BP_ITEM_Y[i]}
-              width={BP.navW}
-              height={BP.itemH}
-              rx={BP.itemRx}
-              fill="currentColor"
-              fillOpacity={0.12}
-              className={BP_HIDE_ON_MORPH}
-            />
+            <g className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-y-[22px] group-hover:delay-(--motion-dur-base) group-focus-visible:translate-y-[22px] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none">
+              <path
+                d={squircleRectPath(BP_X, BP_Y + BP_ITEM_Y[i], BP.navW, BP.itemH, BP.itemRx)}
+                fill="var(--bp-accent, var(--color-accent))"
+                className={`${DRAFT_INK_MORPH} opacity-0 group-hover:opacity-12 group-focus-visible:opacity-12`}
+              />
+            </g>
           )}
-          <rect
-            x={BP_X}
-            y={BP_Y + BP_ITEM_Y[i]}
-            width={BP.navW}
-            height={BP.itemH}
-            rx={BP.itemRx}
+          <path
+            d={squircleRectPath(BP_X, BP_Y + BP_ITEM_Y[i], BP.navW, BP.itemH, BP.itemRx)}
+            pathLength={i === 0 ? 1 : undefined}
+            strokeDasharray={i === 0 ? 1 : undefined}
+            strokeDashoffset={i === 0 ? 1 : undefined}
+            style={i === 0 ? beat(DRAFT_BEAT.outline) : undefined}
             strokeWidth={theme.wireframe.strokeWidth * 0.5}
             strokeOpacity={theme.wireframe.strokeOpacity * 0.3}
-            className={BP_FILL_PANEL}
+            className={i === 0 ? `ink-draw ${DRAFT_FILL_PANEL}` : DRAFT_FILL_PANEL}
           />
           <text
             x={BP_X + BP.itemPadX}
@@ -91,7 +95,8 @@ export function NavMenuBlueprint() {
             fontSize={10}
             fontWeight={i === 0 ? 500 : 400}
             fontFamily="var(--font-sans)"
-            className={BP_TEXT_SOFT}
+            style={beat(DRAFT_LABEL_BEAT)}
+            className={`fade-note ${DRAFT_TEXT_SOFT}`}
           >
             {label}
           </text>
@@ -99,53 +104,52 @@ export function NavMenuBlueprint() {
             <circle
               cx={BP_X + BP.navW - 14}
               cy={BP_Y + BP_ITEM_Y[i] + BP.itemH / 2}
-              r={2}
+              r={3}
               fill="currentColor"
               opacity={i === 1 ? 0.7 : 0.4}
-              className={BP_HIDE_ON_MORPH}
+              style={beat(DRAFT_LABEL_ALT_BEAT)}
+              className={`fade-note ${DRAFT_SCAFFOLD_FADE}`}
             />
           )}
         </g>
       ))}
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_X} y={BP_Y} w={BP.navW} h={BP_NAV_H} />
-        <DimH x1={BP_X} x2={BP_X + BP.navW} y={BP_Y - 12} label={`${BP.navW}`} />
-        <DimV x={BP_X - 12} y1={BP_Y} y2={BP_Y + BP_NAV_H} label={`${BP_NAV_H}`} />
-
-        <g
-          stroke="var(--bp-accent, var(--color-accent))"
-          strokeWidth={theme.guide.strokeWidth}
-          strokeDasharray="2 2"
-          opacity={theme.guide.structOpacity}
-        >
-          <line x1={BP_X} y1={BP_Y + 8} x2={BP_X + NM.inset} y2={BP_Y + 8} />
-          <line x1={BP_X + BP.navW - NM.inset} y1={BP_Y + 8} x2={BP_X + BP.navW} y2={BP_Y + 8} />
-        </g>
-        <DimLabel x={BP_X + NM.inset / 2} y={BP_Y + 8 - 3} anchor="middle">
-          {`${NM.inset}`}
-        </DimLabel>
-        <DimLabel x={BP_X + BP.navW - NM.inset / 2} y={BP_Y + 8 - 3} anchor="middle">
-          {`${NM.inset}`}
-        </DimLabel>
-
-        <PadGuide
-          x={BP_X + 12}
-          y={BP_Y + BP_ITEM_Y[0] + 8}
-          w={BP.navW - 24}
-          h={BP.itemH - 16}
-          offset={0.8}
-          boxX={BP_X}
-          boxY={BP_Y + BP_ITEM_Y[0]}
-          boxW={BP.navW}
-          boxH={BP.itemH}
-          boxRx={BP.itemRx}
-          clipOffset={0.8}
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
+          x={BP_X}
+          y={BP_Y}
+          w={BP.navW}
+          h={BP_NAV_H}
+          className="note-stamp"
+          style={beat(DRAFT_BEAT.handle)}
         />
-        <DimLabel x={BP_X + 6} y={BP_Y + BP_ITEM_Y[0] - 4} anchor="middle">
-          8
-        </DimLabel>
+        <MeasureH
+          x1={BP_X}
+          x2={BP_X + BP.navW}
+          y={BP_Y - 12}
+          label={`${BP.navW}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
+          x={BP_X - 12}
+          y1={BP_Y}
+          y2={BP_Y + BP_NAV_H}
+          label={`${BP_NAV_H}`}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+
+        <MeasureNote
+          x={BP_X + BP.navW}
+          y={BP_Y - 4}
+          anchor="end"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
+          {`pad ${NM.inset} · r${BP.itemRx}`}
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -167,9 +171,8 @@ function NavShape() {
         y={0}
         width={NM.navW}
         height={NAV_H}
-        rx={6}
         stroke="currentColor"
-        strokeWidth={blueprintTheme.wireframe.strokeWidth}
+        strokeWidth={draftTheme.wireframe.strokeWidth}
         strokeDasharray="3 3"
         fill="none"
         className={spotlight.className}
@@ -179,19 +182,19 @@ function NavShape() {
       <g className="pointer-events-none">
         <g
           stroke="var(--bp-accent, var(--color-accent))"
-          strokeWidth={blueprintTheme.guide.strokeWidth}
+          strokeWidth={draftTheme.guide.strokeWidth}
           strokeDasharray="2 2"
-          opacity={blueprintTheme.guide.structOpacity}
+          opacity={draftTheme.guide.structOpacity}
         >
           <line x1={0} y1={16} x2={NM.inset} y2={16} />
           <line x1={NM.navW - NM.inset} y1={16} x2={NM.navW} y2={16} />
         </g>
-        <DimLabel x={NM.inset / 2} y={16 - 4} anchor="middle">
+        <MeasureNote x={NM.inset / 2} y={16 - 4} anchor="middle">
           {`${NM.inset}`}
-        </DimLabel>
-        <DimLabel x={NM.navW - NM.inset / 2} y={16 - 4} anchor="middle">
+        </MeasureNote>
+        <MeasureNote x={NM.navW - NM.inset / 2} y={16 - 4} anchor="middle">
           {`${NM.inset}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
     </g>
   )
@@ -207,14 +210,10 @@ function ActiveHighlightShape() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all' }}
     >
-      <rect
-        x={NM.inset}
-        y={ITEM_Y[0]}
-        width={NM.navW - NM.inset * 2}
-        height={NM.itemH}
-        rx={NM.itemRx}
-        fill="currentColor"
-        fillOpacity={0.14}
+      <path
+        d={squircleRectPath(NM.inset, ITEM_Y[0], NM.navW - NM.inset * 2, NM.itemH, NM.itemRx)}
+        fill="var(--bp-accent, var(--color-accent))"
+        fillOpacity={0.12}
         className={spotlight.className}
         style={spotlight.style}
       />
@@ -232,12 +231,8 @@ function HoverHighlightShape() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all' }}
     >
-      <rect
-        x={NM.inset}
-        y={ITEM_Y[1]}
-        width={NM.navW - NM.inset * 2}
-        height={NM.itemH}
-        rx={NM.itemRx}
+      <path
+        d={squircleRectPath(NM.inset, ITEM_Y[1], NM.navW - NM.inset * 2, NM.itemH, NM.itemRx)}
         fill="currentColor"
         fillOpacity={0.07}
         className={spotlight.className}
@@ -274,8 +269,8 @@ function ItemShape({
       <rect x={0} y={y} width={NM.navW} height={NM.itemH} fill="transparent" />
       <text
         x={labelX}
-        y={midY + 4}
-        fontSize={13}
+        y={midY + 5}
+        fontSize={14}
         fontWeight={weight ?? 400}
         fontFamily="var(--font-sans)"
         className={`fill-current ${spotlight.className}`}
@@ -304,9 +299,9 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={0} y={0} w={NM.navW} h={NAV_H} />
-      <DimH x1={0} x2={NM.navW} y={-14} label={`${NM.navW}`} />
-      <DimV x={-12} y1={0} y2={NAV_H} label={`${NAV_H}`} labelXOffset={-6} />
+      <GripFrame x={0} y={0} w={NM.navW} h={NAV_H} />
+      <MeasureH x1={0} x2={NM.navW} y={-14} label={`${NM.navW}`} />
+      <MeasureV x={-12} y1={0} y2={NAV_H} label={`${NAV_H}`} labelXOffset={-6} />
     </g>
   )
 }

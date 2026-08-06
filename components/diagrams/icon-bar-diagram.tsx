@@ -13,16 +13,22 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  Selection,
+  DraftSurface,
+  DRAFT_FILL_PANEL,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
 } from '@/components/diagrams/lib/parts'
 
 const IB = {
@@ -83,6 +89,7 @@ function IconGlyph({
   strokeWidth = 1.5,
   opacity,
   className,
+  enterAt,
 }: {
   paths: string[]
   x: number
@@ -92,6 +99,7 @@ function IconGlyph({
   strokeWidth?: number
   opacity?: number
   className?: string
+  enterAt?: string
 }) {
   const scale = size / 24
   const offset = (cell - size) / 2
@@ -100,16 +108,21 @@ function IconGlyph({
       transform={`translate(${x + offset}, ${y + offset}) scale(${scale})`}
       opacity={opacity}
       className={className}
+      style={enterAt ? beat(enterAt) : undefined}
     >
-      {paths.map((d) => (
+      {paths.map((pd) => (
         <path
-          key={d}
-          d={d}
+          key={pd}
+          d={pd}
           fill="none"
           stroke="currentColor"
           strokeWidth={strokeWidth / scale}
           strokeLinecap="round"
           strokeLinejoin="round"
+          pathLength={enterAt ? 1 : undefined}
+          strokeDasharray={enterAt ? 1 : undefined}
+          strokeDashoffset={enterAt ? 1 : undefined}
+          className={enterAt ? 'ink-draw' : undefined}
         />
       ))}
     </g>
@@ -117,28 +130,35 @@ function IconGlyph({
 }
 
 export function IconBarBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <Blueprint>
+    <DraftSurface>
+      <g className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-x-[49px] group-hover:delay-(--motion-dur-base) group-focus-visible:translate-x-[49px] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none">
+        <rect
+          x={BP_X + BP_BTN_X[0]}
+          y={BP_Y}
+          width={BP_BTN1_W}
+          height={BP.btnH}
+          rx={BP.itemRx}
+          fill="currentColor"
+          fillOpacity={0.1}
+          style={beat(DRAFT_BEAT.hatch)}
+          className="fade-note"
+        />
+      </g>
       <rect
         x={BP_X + BP_BTN_X[0]}
         y={BP_Y}
         width={BP_BTN1_W}
         height={BP.btnH}
         rx={BP.itemRx}
-        fill="currentColor"
-        fillOpacity={0.1}
-        className={BP_HIDE_ON_MORPH}
-      />
-      <rect
-        x={BP_X + BP_BTN_X[0]}
-        y={BP_Y}
-        width={BP_BTN1_W}
-        height={BP.btnH}
-        rx={BP.itemRx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth * 0.5}
         strokeOpacity={theme.wireframe.strokeOpacity * 0.3}
-        className={BP_FILL_PANEL}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
 
       <IconGlyph
@@ -148,7 +168,8 @@ export function IconBarBlueprint() {
         cell={BP.icon}
         size={BP.icon * 0.65}
         strokeWidth={1.25}
-        className={`${BP_MORPH} opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        enterAt={DRAFT_BEAT.anatomy}
+        className={`${DRAFT_INK_MORPH} opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100`}
       />
       <text
         x={BP_X + BP.icon + 6}
@@ -156,7 +177,8 @@ export function IconBarBlueprint() {
         fontSize={9}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
         Pen
       </text>
@@ -166,7 +188,8 @@ export function IconBarBlueprint() {
         r={1.5}
         fill="currentColor"
         opacity={0.6}
-        className={BP_HIDE_ON_MORPH}
+        style={beat(DRAFT_BEAT.hatch)}
+        className={`fade-note ${DRAFT_SCAFFOLD_FADE}`}
       />
 
       <rect
@@ -175,9 +198,13 @@ export function IconBarBlueprint() {
         width={BP_BTN2_W}
         height={BP.btnH}
         rx={BP.itemRx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth * 0.5}
         strokeOpacity={theme.wireframe.strokeOpacity * 0.3}
-        className={BP_FILL_PANEL}
+        style={beat(DRAFT_DETAIL_BEAT.b)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
       <IconGlyph
         paths={ERASER_PATHS}
@@ -186,7 +213,8 @@ export function IconBarBlueprint() {
         cell={BP.icon}
         size={BP.icon * 0.65}
         strokeWidth={1.25}
-        className={`${BP_MORPH} opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        enterAt="260ms"
+        className={`${DRAFT_INK_MORPH} opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100`}
       />
 
       <rect
@@ -195,9 +223,13 @@ export function IconBarBlueprint() {
         width={BP_BTN3_W}
         height={BP.btnH}
         rx={BP.itemRx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth * 0.5}
         strokeOpacity={theme.wireframe.strokeOpacity * 0.15}
-        className={BP_FILL_PANEL}
+        style={beat(DRAFT_DETAIL_BEAT.c)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
 
       <IconGlyph
@@ -207,19 +239,36 @@ export function IconBarBlueprint() {
         cell={BP.icon}
         size={BP.icon * 0.65}
         strokeWidth={1.25}
+        enterAt="320ms"
         className="opacity-30"
       />
 
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_X} y={BP_Y} w={BP_TOTAL_W} h={BP.btnH} />
-        <DimH x1={BP_X} x2={BP_X + BP_TOTAL_W} y={BP_Y - 12} label={`${BP_TOTAL_W}`} />
-        <DimV x={BP_X - 12} y1={BP_Y} y2={BP_Y + BP.btnH} label={`${BP.btnH}`} />
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame x={BP_X} y={BP_Y} w={BP_TOTAL_W} h={BP.btnH} style={beat(DRAFT_BEAT.handle)} />
+        <MeasureH
+          x1={BP_X}
+          x2={BP_X + BP_TOTAL_W}
+          y={BP_Y - 12}
+          label={`${BP_TOTAL_W}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
+          x={BP_X - 12}
+          y1={BP_Y}
+          y2={BP_Y + BP.btnH}
+          label={`${BP.btnH}`}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
 
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="2 2"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         >
           <line
             x1={BP_X + BP_BTN_X[1] - BP.gap}
@@ -240,11 +289,17 @@ export function IconBarBlueprint() {
             y2={BP_Y + BP.btnH + 6.5}
           />
         </g>
-        <DimLabel x={BP_X + BP_BTN_X[1] - BP.gap / 2} y={BP_Y + BP.btnH + 18} anchor="middle">
+        <MeasureNote
+          x={BP_X + BP_BTN_X[1] - BP.gap / 2}
+          y={BP_Y + BP.btnH + 18}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           {`gap ${BP.gap}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -268,7 +323,7 @@ function ToolbarShape() {
         height={IB.btnH}
         rx={6}
         stroke="currentColor"
-        strokeWidth={blueprintTheme.wireframe.strokeWidth}
+        strokeWidth={draftTheme.wireframe.strokeWidth}
         strokeDasharray="3 3"
         fill="none"
         className={spotlight.className}
@@ -426,23 +481,23 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={0} y={0} w={TOTAL_W} h={IB.btnH} />
-      <DimH x1={0} x2={TOTAL_W} y={-14} label={`${TOTAL_W}`} />
-      <DimV x={-12} y1={0} y2={IB.btnH} label={`${IB.btnH}`} labelXOffset={-6} />
+      <GripFrame x={0} y={0} w={TOTAL_W} h={IB.btnH} />
+      <MeasureH x1={0} x2={TOTAL_W} y={-14} label={`${TOTAL_W}`} />
+      <MeasureV x={-12} y1={0} y2={IB.btnH} label={`${IB.btnH}`} labelXOffset={-6} />
 
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line x1={BTN_X[1] - IB.gap} y1={IB.btnH + 2} x2={BTN_X[1] - IB.gap} y2={IB.btnH + 6} />
         <line x1={BTN_X[1]} y1={IB.btnH + 2} x2={BTN_X[1]} y2={IB.btnH + 6} />
         <line x1={BTN_X[1] - IB.gap} y1={IB.btnH + 4} x2={BTN_X[1]} y2={IB.btnH + 4} />
       </g>
-      <DimLabel x={BTN_X[1] - IB.gap / 2} y={IB.btnH + 13} anchor="middle">
+      <MeasureNote x={BTN_X[1] - IB.gap / 2} y={IB.btnH + 13} anchor="middle">
         {`${IB.gap}`}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }

@@ -6,17 +6,23 @@
 // This file is NOT covered by the repository's root MIT LICENSE.
 
 import {
-  Blueprint,
-  BP_FILL_SOLID,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimV,
-  DimLabel,
-  PadGuide,
-  Selection,
-  squirclePillPath,
+  DraftSurface,
+  DRAFT_BEAT,
+  DRAFT_FILL_SOLID,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  beat,
+  MeasureH,
+  MeasureV,
+  MeasureNote,
+  InsetGuide,
+  GripFrame,
+  squircleRectPath,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
 } from '@/components/diagrams/lib/parts'
 import {
   AnatomyFrame,
@@ -28,56 +34,96 @@ import {
 
 const BP_BTN = {
   w: 130,
-  h: 40,
+  h: 44,
   r: 6,
   padX: 16,
-  padY: 12,
+  padY: 14,
   iconGap: 8,
-  iconSize: 12,
-  font: 12,
+  iconSize: 16,
+  font: 14,
 } as const
 const BP_X = (220 - BP_BTN.w) / 2
 const BP_Y = (140 - BP_BTN.h) / 2
 
 export function ActionButtonBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   const cy = BP_Y + BP_BTN.h / 2
   const iconX = BP_X + BP_BTN.padX
   const labelX = iconX + BP_BTN.iconSize + BP_BTN.iconGap
 
   return (
-    <Blueprint>
-      <path
-        d={squirclePillPath(BP_X, BP_Y, BP_BTN.w, BP_BTN.h)}
-        strokeWidth={theme.wireframe.strokeWidth}
-        strokeOpacity={theme.wireframe.strokeOpacity}
-        className={`${BP_FILL_SOLID} supports-[corner-shape:squircle]:corner-squircle`}
-      />
-      <rect
-        x={iconX}
-        y={cy - BP_BTN.iconSize / 2}
-        width={BP_BTN.iconSize}
-        height={BP_BTN.iconSize}
-        rx={2}
-        stroke="currentColor"
-        strokeWidth={1}
-        fill="none"
-        className={`${BP_TEXT_SOFT} group-hover:stroke-(--color-bg) group-focus-visible:stroke-(--color-bg)`}
-      />
-      <text
-        x={labelX}
-        y={cy + 4}
-        fontSize={BP_BTN.font}
-        fontWeight={500}
-        fontFamily="var(--font-sans)"
-        className={`${BP_TEXT_SOFT} group-hover:fill-(--color-bg) group-focus-visible:fill-(--color-bg)`}
-      >
-        Save
-      </text>
+    <DraftSurface>
+      <style>{`
+        @keyframes bp-abtn-press {
+          0% { transform: scale(1) translateY(0); }
+          35% { transform: scale(0.97) translateY(1px); }
+          100% { transform: scale(1) translateY(0); }
+        }
+        .blueprint .bp-abtn-press {
+          transform-box: fill-box;
+          transform-origin: center;
+        }
+        .group:hover .blueprint .bp-abtn-press,
+        .group:focus-visible .blueprint .bp-abtn-press {
+          animation: bp-abtn-press 450ms var(--motion-ease-in-out) 550ms both;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .group:hover .blueprint .bp-abtn-press,
+          .group:focus-visible .blueprint .bp-abtn-press {
+            animation: none;
+          }
+        }
+      `}</style>
+      <g className="bp-abtn-press">
+        <path
+          d={squircleRectPath(BP_X, BP_Y, BP_BTN.w, BP_BTN.h, BP_BTN.r)}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
+          strokeWidth={theme.wireframe.strokeWidth}
+          strokeOpacity={theme.wireframe.strokeOpacity}
+          style={beat(DRAFT_BEAT.outline)}
+          className={`ink-draw ${DRAFT_FILL_SOLID}`}
+        />
+        <rect
+          x={iconX}
+          y={cy - BP_BTN.iconSize / 2}
+          width={BP_BTN.iconSize}
+          height={BP_BTN.iconSize}
+          rx={2}
+          stroke="currentColor"
+          strokeWidth={1}
+          style={beat(DRAFT_DETAIL_BEAT.a)}
+          className="fade-note fill-current opacity-35 transition-opacity duration-(--motion-dur-base) ease-(--motion-ease-out) group-hover:opacity-0 group-hover:delay-(--motion-dur-base) group-focus-visible:opacity-0 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
+        />
+        <circle
+          cx={iconX + BP_BTN.iconSize / 2}
+          cy={cy}
+          r={6}
+          fill="none"
+          stroke="var(--color-bg)"
+          strokeWidth={1.5}
+          strokeLinecap="round"
+          strokeDasharray="4 3"
+          className="animate-spin opacity-0 transition-opacity duration-(--motion-dur-base) ease-(--motion-ease-out) group-hover:opacity-100 group-hover:delay-(--motion-dur-base) group-focus-visible:opacity-100 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:animate-none"
+          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
+        />
+        <text
+          x={labelX}
+          y={cy + 5}
+          fontSize={BP_BTN.font}
+          fontWeight={500}
+          fontFamily="var(--font-sans)"
+          style={beat(DRAFT_LABEL_BEAT)}
+          className={`fade-note ${DRAFT_TEXT_SOFT} group-hover:fill-(--color-bg) group-focus-visible:fill-(--color-bg)`}
+        >
+          Save
+        </text>
+      </g>
 
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_X} y={BP_Y} w={BP_BTN.w} h={BP_BTN.h} />
-        <PadGuide
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame x={BP_X} y={BP_Y} w={BP_BTN.w} h={BP_BTN.h} style={beat(DRAFT_BEAT.handle)} />
+        <InsetGuide
           x={BP_X + BP_BTN.padX}
           y={BP_Y + BP_BTN.padY}
           w={BP_BTN.w - BP_BTN.padX * 2}
@@ -89,26 +135,55 @@ export function ActionButtonBlueprint() {
           boxH={BP_BTN.h}
           boxRx={BP_BTN.r}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={BP_X + BP_BTN.padX / 2} y={cy + 2} anchor="middle">
+        <MeasureNote
+          x={BP_X + BP_BTN.padX / 2}
+          y={cy + 2}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           16
-        </DimLabel>
-        <DimLabel x={iconX + BP_BTN.iconSize + BP_BTN.iconGap / 2} y={cy + 2} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={iconX + BP_BTN.iconSize + BP_BTN.iconGap / 2}
+          y={cy + 2}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           8
-        </DimLabel>
-        <DimLabel x={BP_X + BP_BTN.w / 2} y={BP_Y + 8} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP_X + BP_BTN.w / 2}
+          y={BP_Y + 8}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
           {`${BP_BTN.padY}`}
-        </DimLabel>
-        <DimH x1={BP_X} x2={BP_X + BP_BTN.w} y={BP_Y - 12} label={`${BP_BTN.w}`} />
-        <DimV
+        </MeasureNote>
+        <MeasureH
+          x1={BP_X}
+          x2={BP_X + BP_BTN.w}
+          y={BP_Y - 12}
+          label={`${BP_BTN.w}`}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <MeasureV
           x={BP_X - 12}
           y1={BP_Y}
           y2={BP_Y + BP_BTN.h}
           label={`${BP_BTN.h}`}
           labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
         />
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -127,13 +202,17 @@ function RootShape() {
   const spotlight = useSpotlight('root')
 
   return (
-    <path
-      d={squirclePillPath(AN.x, AN.y, BTN.w, BTN.h)}
+    <rect
+      x={AN.x}
+      y={AN.y}
+      width={BTN.w}
+      height={BTN.h}
+      rx={BTN.r}
       stroke="currentColor"
-      strokeWidth={hovered === 'root' ? 2 : blueprintTheme.wireframe.strokeWidth}
+      strokeWidth={hovered === 'root' ? 2 : draftTheme.wireframe.strokeWidth}
       fill={hovered === 'root' ? 'currentColor' : 'transparent'}
       fillOpacity={hovered === 'root' ? 0.1 : 0}
-      className={`cursor-pointer ${spotlight.className}`}
+      className={`cursor-pointer supports-[corner-shape:squircle]:corner-squircle ${spotlight.className}`}
       style={{ ...spotlight.style, pointerEvents: 'all' }}
       onMouseEnter={() => setHovered('root')}
       onMouseLeave={() => setHovered(null)}
@@ -152,12 +231,12 @@ function IdleLayerShape() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      <rect x={AN.x + 10} y={AN.y + 8} width={130} height={28} fill="transparent" />
+      <rect x={AN.x + 12} y={AN.y + 8} width={126} height={28} fill="transparent" />
       <rect
-        x={AN.x + 20}
-        y={AN_MID_Y - 6}
-        width={12}
-        height={12}
+        x={AN.x + 16}
+        y={AN_MID_Y - 8}
+        width={16}
+        height={16}
         rx={2}
         stroke="currentColor"
         strokeWidth={hovered === 'idle-layer' ? 1.5 : 1}
@@ -166,14 +245,14 @@ function IdleLayerShape() {
         className={spotlight.className}
       />
       <text
-        x={AN.x + 44}
-        y={AN_MID_Y + 4}
-        fontSize={12}
+        x={AN.x + 40}
+        y={AN_MID_Y + 5}
+        fontSize={14}
         fontWeight={500}
         fontFamily="var(--font-sans)"
         className={`fill-current ${spotlight.className}`}
       >
-        Save Changes
+        Save
       </text>
     </g>
   )
@@ -204,9 +283,9 @@ function PendingLayerShape() {
         className={spotlight.className}
       />
       <circle
-        cx={AN_MID_X - 12}
+        cx={AN.x + 24}
         cy={AN_MID_Y}
-        r={5}
+        r={8}
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={1.5}
         strokeDasharray="8 6"
@@ -296,9 +375,9 @@ function AnnotationsLayer() {
       }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={AN.x} y={AN.y} w={BTN.w} h={BTN.h} />
-      <DimH x1={AN.x} x2={AN.x + BTN.w} y={AN.y - 18} label={`${BTN.w}`} />
-      <DimV
+      <GripFrame x={AN.x} y={AN.y} w={BTN.w} h={BTN.h} />
+      <MeasureH x1={AN.x} x2={AN.x + BTN.w} y={AN.y - 18} label={`${BTN.w}`} />
+      <MeasureV
         x={AN.x - 18}
         y1={AN.y}
         y2={AN.y + BTN.h}
@@ -306,9 +385,9 @@ function AnnotationsLayer() {
         labelXOffset={-6}
         labelAnchor="end"
       />
-      <DimLabel x={AN.x} y={AN.y - 8} anchor="start">
+      <MeasureNote x={AN.x} y={AN.y - 8} anchor="start">
         {`r${BTN.r}`}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }

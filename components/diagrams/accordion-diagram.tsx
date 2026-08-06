@@ -13,20 +13,28 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimV,
-  PadGuide,
-  Selection,
+  DraftSurface,
+  DRAFT_BEAT,
+  DRAFT_FILL_PANEL,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  beat,
+  MeasureH,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  squircleRectPath,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
 } from '@/components/diagrams/lib/parts'
 
 const BP_ITEM_W = 172
-const BP_TRIGGER_H = 26
-const BP_CONTENT_H = 24
+const BP_TRIGGER_H = 48
+const BP_FONT = 16
+const BP_CONTENT_H = 16
 const BP_ITEM_GAP = 8
 const BP_ITEM_R = 6
 const BP_CHEVRON = 8
@@ -35,12 +43,17 @@ const BP_CONTENT_PAD_B = 6
 const BP_X = (220 - BP_ITEM_W) / 2
 
 const BP_ITEM0_H = BP_TRIGGER_H + BP_CONTENT_H
-const BP_Y = (140 - (BP_ITEM0_H + 2 * BP_ITEM_GAP + 2 * BP_TRIGGER_H)) / 2
+const BP_Y = (140 - (BP_ITEM0_H + BP_ITEM_GAP + BP_TRIGGER_H)) / 2
 const BP_ITEM1_Y = BP_Y + BP_ITEM0_H + BP_ITEM_GAP
-const BP_ITEM2_Y = BP_ITEM1_Y + BP_TRIGGER_H + BP_ITEM_GAP
+
+const BP_CONTENT_RISE =
+  'opacity-40 translate-y-[2px] transition-[opacity,translate] duration-(--motion-dur-showcase) ease-(--motion-ease-out) group-hover:translate-y-[6px] group-hover:opacity-100 group-hover:delay-(--motion-dur-base) group-focus-visible:translate-y-[6px] group-focus-visible:opacity-100 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none'
+
+const BP_CHEVRON_FLIP =
+  'origin-center transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:rotate-180 group-hover:delay-(--motion-dur-base) group-focus-visible:rotate-180 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:rotate-none'
 
 function rowY(i: number) {
-  return i === 0 ? BP_Y : i === 1 ? BP_ITEM1_Y : BP_ITEM2_Y
+  return i === 0 ? BP_Y : BP_ITEM1_Y
 }
 
 function TriggerRow({
@@ -57,125 +70,113 @@ function TriggerRow({
     <>
       <text
         x={BP_X + BP_PAD_X}
-        y={midY + 4}
-        fontSize={12}
+        y={midY + 6}
+        fontSize={BP_FONT}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
         {label}
       </text>
-      <path
-        d={`M${BP_X + BP_ITEM_W - BP_PAD_X - BP_CHEVRON} ${midY - BP_CHEVRON / 3} L${BP_X + BP_ITEM_W - BP_PAD_X - BP_CHEVRON / 2} ${midY + BP_CHEVRON / 3} L${BP_X + BP_ITEM_W - BP_PAD_X} ${midY - BP_CHEVRON / 3}`}
-        fill="none"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={`${BP_TEXT_SOFT} origin-center transition-[fill,stroke,fill-opacity,stroke-opacity,opacity,transform] motion-reduce:transform-none ${chevronRotated ? 'rotate-180' : ''}`}
-        style={{ transformBox: 'fill-box' }}
-      />
+      <g className={BP_CHEVRON_FLIP} style={{ transformBox: 'fill-box' }}>
+        <path
+          d={`M${BP_X + BP_ITEM_W - BP_PAD_X - BP_CHEVRON} ${midY - BP_CHEVRON / 3} L${BP_X + BP_ITEM_W - BP_PAD_X - BP_CHEVRON / 2} ${midY + BP_CHEVRON / 3} L${BP_X + BP_ITEM_W - BP_PAD_X} ${midY - BP_CHEVRON / 3}`}
+          fill="none"
+          strokeWidth={1.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={`${DRAFT_TEXT_SOFT} origin-center transition-[fill,stroke,fill-opacity,stroke-opacity,opacity,transform] motion-reduce:transform-none ${chevronRotated ? 'rotate-180' : ''}`}
+          style={{ transformBox: 'fill-box' }}
+        />
+      </g>
     </>
   )
 }
 
 export function AccordionBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   const contentY = BP_Y + BP_TRIGGER_H
 
   return (
-    <Blueprint>
-      <rect
-        x={BP_X}
-        y={BP_Y}
-        width={BP_ITEM_W}
-        height={BP_ITEM0_H}
-        rx={BP_ITEM_R}
+    <DraftSurface>
+      <path
+        d={squircleRectPath(BP_X, BP_Y, BP_ITEM_W, BP_ITEM0_H, BP_ITEM_R)}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={`${BP_FILL_PANEL} supports-[corner-shape:squircle]:corner-squircle`}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
       <TriggerRow y={BP_Y} label="Section title" chevronRotated={false} />
-      <line
-        x1={BP_X + BP_PAD_X}
-        y1={contentY + BP_CONTENT_H / 2 - 4}
-        x2={BP_X + BP_ITEM_W - BP_PAD_X}
-        y2={contentY + BP_CONTENT_H / 2 - 4}
-        strokeWidth={1.25}
-        strokeLinecap="round"
-        className={BP_TEXT_SOFT}
-      />
-      <line
-        x1={BP_X + BP_PAD_X}
-        y1={contentY + BP_CONTENT_H / 2 + 4}
-        x2={BP_X + BP_ITEM_W * 0.65}
-        y2={contentY + BP_CONTENT_H / 2 + 4}
-        strokeWidth={1.25}
-        strokeLinecap="round"
-        className={BP_TEXT_SOFT}
-      />
+      <g className={BP_CONTENT_RISE}>
+        <text
+          x={BP_X + BP_PAD_X}
+          y={contentY + 4}
+          fontSize={8}
+          fontFamily="var(--font-sans)"
+          className={`${DRAFT_TEXT_SOFT}`}
+        >
+          Follows the WAI-ARIA pattern.
+        </text>
+      </g>
 
-      {[1, 2].map((i) => (
+      {[1].map((i) => (
         <g key={i}>
-          <rect
-            x={BP_X}
-            y={rowY(i)}
-            width={BP_ITEM_W}
-            height={BP_TRIGGER_H}
-            rx={BP_ITEM_R}
+          <path
+            d={squircleRectPath(BP_X, rowY(i), BP_ITEM_W, BP_TRIGGER_H, BP_ITEM_R)}
             strokeWidth={theme.wireframe.strokeWidth}
             strokeOpacity={theme.wireframe.strokeOpacity}
-            className={`${BP_FILL_PANEL} supports-[corner-shape:squircle]:corner-squircle`}
+            className={DRAFT_FILL_PANEL}
           />
-          <TriggerRow
-            y={rowY(i)}
-            label={i === 1 ? 'Another section' : 'Third section'}
-            chevronRotated={false}
-          />
+          <TriggerRow y={rowY(i)} label="Another section" chevronRotated={false} />
         </g>
       ))}
 
-      <g className={BP_HIDE_ON_MORPH}>
-        <PadGuide
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <InsetGuide
           x={BP_X + BP_PAD_X}
-          y={BP_Y}
+          y={BP_Y + 10}
           w={BP_ITEM_W - BP_PAD_X * 2}
-          h={BP_TRIGGER_H}
+          h={BP_ITEM0_H - 20}
           offset={0.8}
           boxX={BP_X}
           boxY={BP_Y}
           boxW={BP_ITEM_W}
-          boxH={BP_TRIGGER_H}
+          boxH={BP_ITEM0_H}
           boxRx={BP_ITEM_R}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <PadGuide
-          x={BP_X + BP_PAD_X}
-          y={contentY}
-          w={BP_ITEM_W - BP_PAD_X * 2}
-          h={BP_CONTENT_H - BP_CONTENT_PAD_B}
-          offset={0.8}
-          boxX={BP_X}
-          boxY={contentY}
-          boxW={BP_ITEM_W}
-          boxH={BP_CONTENT_H}
-          boxRx={0}
-          clipOffset={0.8}
-        />
-        <DimH x1={BP_X} x2={BP_X + BP_ITEM_W} y={BP_Y - 10} label={`${BP_ITEM_W}`} />
-        <DimV
+        <MeasureV
           x={BP_X - 10}
           y1={BP_ITEM1_Y}
-          y2={BP_ITEM2_Y}
+          y2={BP_Y + BP_ITEM0_H}
           label={`${BP_ITEM_GAP}`}
           labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
+          x={BP_X + BP_ITEM_W + 10}
+          y1={BP_ITEM1_Y}
+          y2={BP_ITEM1_Y + BP_TRIGGER_H}
+          label={`${BP_TRIGGER_H}`}
+          labelXOffset={6}
+          labelAnchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
         />
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
 const ITEM_W = 200
-const ITEM_H = 38
+const ITEM_H = 48
 const CONTENT_H = 44
 const ITEM_GAP = 8
 const ITEM_R = 6
@@ -280,8 +281,8 @@ function TriggerShape({ index }: { index: number }) {
       />
       <text
         x={PAD_X}
-        y={yOffset + ITEM_H / 2 + 4}
-        fontSize={11}
+        y={yOffset + ITEM_H / 2 + 6}
+        fontSize={16}
         fontFamily="var(--font-sans)"
         fontWeight={500}
         className={`fill-current ${spotlight.className}`}
@@ -418,8 +419,8 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={0} y={0} w={ITEM_W} h={ITEM_H} />
-      <PadGuide
+      <GripFrame x={0} y={0} w={ITEM_W} h={ITEM_H} />
+      <InsetGuide
         x={PAD_X}
         y={0}
         w={ITEM_W - PAD_X * 2}
@@ -432,10 +433,10 @@ function AnnotationsLayer() {
         boxRx={ITEM_R}
         clipOffset={0.8}
       />
-      <DimH x1={0} x2={PAD_X} y={ITEM_H + 14} label={`${PAD_X}`} />
-      <DimV x={-14} y1={0} y2={ITEM_H} label={`${ITEM_H}`} labelXOffset={-6} />
+      <MeasureH x1={0} x2={PAD_X} y={ITEM_H + 14} label={`${PAD_X}`} />
+      <MeasureV x={-14} y1={0} y2={ITEM_H} label={`${ITEM_H}`} labelXOffset={-6} />
 
-      <PadGuide
+      <InsetGuide
         x={PAD_X}
         y={ITEM_H}
         w={ITEM_W - PAD_X * 2}
@@ -448,7 +449,7 @@ function AnnotationsLayer() {
         boxRx={0}
         clipOffset={0.8}
       />
-      <DimV
+      <MeasureV
         x={ITEM_W + 14}
         y1={ITEM_H + CONTENT_H - 12}
         y2={ITEM_H + CONTENT_H}
@@ -457,7 +458,7 @@ function AnnotationsLayer() {
         labelAnchor="start"
       />
 
-      <DimV x={-14} y1={ITEM1_Y} y2={ITEM2_Y} label={`${ITEM_GAP}`} labelXOffset={-6} />
+      <MeasureV x={-14} y1={ITEM1_Y} y2={ITEM2_Y} label={`${ITEM_GAP}`} labelXOffset={-6} />
     </g>
   )
 }
@@ -597,7 +598,7 @@ function Tags() {
 
 export function AccordionAnatomy() {
   return (
-    <AnatomyFrame viewBox="-78 -38 426 260" maxWidthClassName="max-w-[500px]">
+    <AnatomyFrame viewBox="-78 -38 426 280" maxWidthClassName="max-w-[500px]">
       <g transform={`translate(${TX}, ${TY})`}>
         <ContainerShape />
         <ItemShape index={0} isExpanded />

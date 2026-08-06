@@ -5,18 +5,26 @@
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
 // This file is NOT covered by the repository's root MIT LICENSE.
 
+import { type CSSProperties } from 'react'
+
 import {
-  type BlueprintTheme,
-  Blueprint,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
+  type DraftTheme,
+  DraftSurface,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
 } from '@/components/diagrams/lib/parts'
 import {
   AnatomyFrame,
@@ -26,16 +34,17 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 
-const BP_PANEL = { x: 20, y: 10, w: 180, h: 74, rx: 8 } as const
-const BP_GAP = 12
-const BP_TRIGGER = { x: 20, y: BP_PANEL.y + BP_PANEL.h + BP_GAP, w: 180, h: 36, rx: 4 } as const
-const BP_RING = { cx: 162, cy: BP_TRIGGER.y + BP_TRIGGER.h / 2, r: 6 } as const
+const BP_PANEL = { x: 26, y: 6, w: 182, h: 72, rx: 8 } as const
+const BP_GAP = 8
+const BP_TRIGGER = { x: 26, y: BP_PANEL.y + BP_PANEL.h + BP_GAP, w: 182, h: 36, rx: 4 } as const
+const BP_RING = { cx: 170, cy: BP_TRIGGER.y + BP_TRIGGER.h / 2, r: 6 } as const
+const BP_ENTRY = { x: 34, y: 14, w: 166, h: 15, pitch: 21 } as const
 
 export function TableOfContentsWireframe() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <Blueprint>
-      <g className={BP_HIDE_ON_MORPH}>
+    <DraftSurface>
+      <g className={DRAFT_SCAFFOLD_FADE}>
         <rect
           x={BP_PANEL.x}
           y={BP_PANEL.y}
@@ -47,11 +56,65 @@ export function TableOfContentsWireframe() {
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="3 3"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <g fill="currentColor" opacity={theme.guide.structOpacity}>
-          <rect x={28} y={22} width={156} height={18} rx={4} fillOpacity={0.5} />
-          <rect x={28} y={44} width={156} height={18} rx={4} fillOpacity={0.3} />
-        </g>
+      </g>
+      <rect
+        x={BP_PANEL.x}
+        y={BP_PANEL.y}
+        width={BP_PANEL.w}
+        height={BP_PANEL.h}
+        rx={BP_PANEL.rx}
+        strokeWidth={theme.wireframe.strokeWidth}
+        className={`${DRAFT_INK_MORPH} fill-transparent stroke-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-(--color-popover) group-focus-visible:fill-(--color-popover) group-hover:stroke-(--color-border-strong) group-focus-visible:stroke-(--color-border-strong) group-hover:drop-shadow-md group-focus-visible:drop-shadow-md`}
+      />
+      <g fill="currentColor">
+        <rect
+          x={BP_ENTRY.x}
+          y={BP_ENTRY.y}
+          width={BP_ENTRY.w}
+          height={BP_ENTRY.h}
+          rx={4}
+          fillOpacity={0.5}
+          style={beat(DRAFT_BEAT.hatch)}
+          className={`fade-note ${DRAFT_INK_MORPH} opacity-50 group-hover:opacity-90 group-focus-visible:opacity-90`}
+        />
+        <rect
+          x={BP_ENTRY.x}
+          y={BP_ENTRY.y + BP_ENTRY.pitch}
+          width={BP_ENTRY.w}
+          height={BP_ENTRY.h}
+          rx={4}
+          fillOpacity={0.3}
+          style={beat(stampBeat(0))}
+          className={`fade-note ${DRAFT_INK_MORPH} opacity-50 group-hover:opacity-70 group-focus-visible:opacity-70`}
+        />
+        <rect
+          x={BP_ENTRY.x}
+          y={BP_ENTRY.y + BP_ENTRY.pitch * 2}
+          width={BP_ENTRY.w}
+          height={BP_ENTRY.h}
+          rx={4}
+          fillOpacity={0.2}
+          style={beat(stampBeat(1))}
+          className={`fade-note ${DRAFT_INK_MORPH} opacity-50 group-hover:opacity-60 group-focus-visible:opacity-60`}
+        />
+      </g>
+      <g
+        className="translate-y-0 transition-transform duration-(--motion-dur-base) ease-(--motion-ease-in-out) group-hover:translate-y-(--bp-toc-entry-step) group-hover:delay-(--motion-dur-base) group-focus-visible:translate-y-(--bp-toc-entry-step) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
+        style={{ '--bp-toc-entry-step': `${BP_ENTRY.pitch}px` } as CSSProperties}
+      >
+        <rect
+          x={BP_ENTRY.x - 4}
+          y={BP_ENTRY.y + 4}
+          width={1.5}
+          height={BP_ENTRY.h - 8}
+          rx={0.75}
+          fill="var(--bp-accent, var(--color-accent))"
+          style={beat(stampBeat(1))}
+          className="fade-note"
+        />
       </g>
       <rect
         x={BP_TRIGGER.x}
@@ -59,9 +122,13 @@ export function TableOfContentsWireframe() {
         width={BP_TRIGGER.w}
         height={BP_TRIGGER.h}
         rx={BP_TRIGGER.rx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2) group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2) group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
       />
       <text
         x={BP_TRIGGER.x + 24}
@@ -69,27 +136,38 @@ export function TableOfContentsWireframe() {
         fontSize={11}
         fontWeight={600}
         fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
         Getting Started
       </text>
       <line
-        x1={145}
+        x1={153}
         y1={BP_TRIGGER.y + 8}
-        x2={145}
+        x2={153}
         y2={BP_TRIGGER.y + 28}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         stroke="currentColor"
         strokeWidth={theme.guide.strokeWidth}
         opacity={theme.guide.dimOpacity}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className="ink-draw"
       />
       <circle
         cx={BP_RING.cx}
         cy={BP_RING.cy}
         r={BP_RING.r}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         fill="none"
         stroke="currentColor"
         strokeWidth={1.5}
         opacity={0.2}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className="ink-draw"
       />
       <circle
         cx={BP_RING.cx}
@@ -100,36 +178,53 @@ export function TableOfContentsWireframe() {
         strokeWidth={1.5}
         strokeDasharray={`${BP_RING.r * 2 * Math.PI * 0.6} ${BP_RING.r * 2 * Math.PI}`}
         strokeLinecap="round"
+        style={beat(DRAFT_BEAT.hatch)}
+        className="fade-note"
       />
       <path
-        d={`M${178} ${BP_RING.cy - 3} L${182} ${BP_RING.cy + 1} L${186} ${BP_RING.cy - 3}`}
+        d={`M${186} ${BP_RING.cy - 3} L${190} ${BP_RING.cy + 1} L${194} ${BP_RING.cy - 3}`}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         fill="none"
         stroke="currentColor"
         strokeWidth={1.5}
         strokeLinecap="round"
         strokeLinejoin="round"
         opacity={theme.wireframe.strokeOpacity}
+        style={beat(DRAFT_DETAIL_BEAT.b)}
+        className="ink-draw"
       />
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_TRIGGER.x} y={BP_TRIGGER.y} w={BP_TRIGGER.w} h={BP_TRIGGER.h} />
-        <DimH
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
+          x={BP_TRIGGER.x}
+          y={BP_TRIGGER.y}
+          w={BP_TRIGGER.w}
+          h={BP_TRIGGER.h}
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <MeasureH
           x1={BP_TRIGGER.x}
           x2={BP_TRIGGER.x + BP_TRIGGER.w}
-          y={BP_TRIGGER.y + BP_TRIGGER.h + 14}
+          y={BP_TRIGGER.y + BP_TRIGGER.h + 12}
           label={`${BP_TRIGGER.w}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
         />
-        <DimV
+        <MeasureV
           x={BP_TRIGGER.x - 12}
           y1={BP_TRIGGER.y}
           y2={BP_TRIGGER.y + BP_TRIGGER.h}
           label={`${BP_TRIGGER.h}`}
           labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
         />
-        <PadGuide
+        <InsetGuide
           x={BP_TRIGGER.x + 24}
-          y={BP_TRIGGER.y}
-          w={BP_TRIGGER.w - 48}
-          h={BP_TRIGGER.h}
+          y={BP_TRIGGER.y + 10}
+          w={97}
+          h={BP_TRIGGER.h - 20}
           offset={0.8}
           boxX={BP_TRIGGER.x}
           boxY={BP_TRIGGER.y}
@@ -137,43 +232,54 @@ export function TableOfContentsWireframe() {
           boxH={BP_TRIGGER.h}
           boxRx={BP_TRIGGER.rx}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={BP_TRIGGER.x + 12} y={BP_TRIGGER.y + BP_TRIGGER.h / 2 + 2} anchor="middle">
-          24
-        </DimLabel>
-        <DimLabel
-          x={BP_TRIGGER.x + BP_TRIGGER.w - 12}
+        <MeasureNote
+          x={BP_TRIGGER.x + 12}
           y={BP_TRIGGER.y + BP_TRIGGER.h / 2 + 2}
           anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
         >
           24
-        </DimLabel>
-        <DimLabel x={BP_TRIGGER.x} y={BP_TRIGGER.y - 4} anchor="start">
+        </MeasureNote>
+        <MeasureNote
+          x={BP_TRIGGER.x}
+          y={BP_TRIGGER.y - 4}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
           r4
-        </DimLabel>
+        </MeasureNote>
 
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="2 2"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_LABEL_ALT_BEAT)}
         >
           <line
-            x1={BP_TRIGGER.x + 40}
+            x1={BP_TRIGGER.x + BP_TRIGGER.w - 24}
             y1={BP_PANEL.y + BP_PANEL.h}
-            x2={BP_TRIGGER.x + 40}
+            x2={BP_TRIGGER.x + BP_TRIGGER.w - 24}
             y2={BP_TRIGGER.y}
           />
         </g>
-        <DimLabel
-          x={BP_TRIGGER.x + 46}
+        <MeasureNote
+          x={BP_TRIGGER.x + BP_TRIGGER.w - 18}
           y={(BP_PANEL.y + BP_PANEL.h + BP_TRIGGER.y) / 2 + 2.5}
           anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(5))}
         >
           {`${BP_GAP}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -183,7 +289,7 @@ const AN_ITEMS = [
   { label: 'API Reference', isActive: false },
 ] as const
 
-function PanelShape({ theme }: { theme: BlueprintTheme }) {
+function PanelShape({ theme }: { theme: DraftTheme }) {
   const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('panel')
 
@@ -250,7 +356,7 @@ function ItemShape({
   )
 }
 
-function TriggerShape({ theme }: { theme: BlueprintTheme }) {
+function TriggerShape({ theme }: { theme: DraftTheme }) {
   const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('trigger')
 
@@ -352,20 +458,20 @@ function AnnotationsLayer() {
     >
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line x1={140} y1={52} x2={140} y2={58} />
         <line x1={10} y1={30} x2={18} y2={30} />
       </g>
-      <DimLabel x={148} y={57} anchor="start">
+      <MeasureNote x={148} y={57} anchor="start">
         6
-      </DimLabel>
-      <DimLabel x={14} y={25} anchor="middle">
+      </MeasureNote>
+      <MeasureNote x={14} y={25} anchor="middle">
         8
-      </DimLabel>
-      <PadGuide
+      </MeasureNote>
+      <InsetGuide
         x={10 + 24}
         y={170}
         w={220 - 48}
@@ -378,18 +484,18 @@ function AnnotationsLayer() {
         boxRx={4}
         clipOffset={0.8}
       />
-      <Selection x={10} y={170} w={220} h={48} />
-      <DimH x1={10} x2={230} y={160} label="220" />
-      <DimV x={245} y1={170} y2={218} label="48" labelXOffset={5} labelAnchor="start" />
-      <DimLabel x={10 + 12} y={170 + 24 + 2} anchor="middle">
+      <GripFrame x={10} y={170} w={220} h={48} />
+      <MeasureH x1={10} x2={230} y={160} label="220" />
+      <MeasureV x={245} y1={170} y2={218} label="48" labelXOffset={5} labelAnchor="start" />
+      <MeasureNote x={10 + 12} y={170 + 24 + 2} anchor="middle">
         24
-      </DimLabel>
-      <DimLabel x={230 - 12} y={170 + 24 + 2} anchor="middle">
+      </MeasureNote>
+      <MeasureNote x={230 - 12} y={170 + 24 + 2} anchor="middle">
         24
-      </DimLabel>
-      <DimLabel x={10} y={166} anchor="start">
+      </MeasureNote>
+      <MeasureNote x={10} y={166} anchor="start">
         r4
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }
@@ -492,11 +598,11 @@ export function TableOfContentsBreakdown() {
   return (
     <AnatomyFrame viewBox="-146 -76 642 420" maxWidthClassName="max-w-[770px]">
       <g transform="translate(60, 20)">
-        <PanelShape theme={blueprintTheme} />
+        <PanelShape theme={draftTheme} />
         {AN_ITEMS.map((item, index) => (
           <ItemShape key={item.label} index={index} label={item.label} isActive={item.isActive} />
         ))}
-        <TriggerShape theme={blueprintTheme} />
+        <TriggerShape theme={draftTheme} />
         <TitleShape />
         <ProgressShape />
         <InteractionZone />
