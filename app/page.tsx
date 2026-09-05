@@ -1,11 +1,18 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { Header } from '@/components/layout/header'
+import { Footer } from '@/components/layout/footer'
 import { GooeyFilter } from '@/components/layout/gooey-filter'
 import { PixelTrail } from '@/components/layout/pixel-trail'
 import { useScreenSize } from '@/hooks/use-screen-size'
 import { Button } from '@/components/layout/button'
+import { HomeFeaturedShowcase } from '@/components/home/home-featured-showcase'
+import { HomeNote } from '@/components/home/home-note'
+import { HomeBuiltWith } from '@/components/home/home-built-with'
+import { HeroDiagramRails } from '@/components/home/hero-diagram-rails'
+import { HomeSponsors } from '@/components/home/home-sponsors'
+import { PageWaveProvider } from '@/components/home/page-wave'
 import { springs } from '@/lib/motion-tokens'
 import Link from 'next/link'
 
@@ -16,7 +23,7 @@ function HeroCtaArrowIcon({ active }: { active: boolean }) {
   return (
     <span
       aria-hidden="true"
-      className="relative inline-flex size-3.5 shrink-0 items-center justify-center overflow-hidden"
+      className="relative inline-flex size-3.5 shrink-0 items-center justify-center overflow-hidden translate-y-[0.5px]"
     >
       <motion.svg
         xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +35,7 @@ function HeroCtaArrowIcon({ active }: { active: boolean }) {
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="absolute inset-0"
+        className="absolute inset-0 size-full"
         initial={false}
         animate={
           reduceMotion
@@ -51,7 +58,7 @@ function HeroCtaArrowIcon({ active }: { active: boolean }) {
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="absolute inset-0"
+        className="absolute inset-0 size-full"
         initial={false}
         animate={
           reduceMotion
@@ -69,76 +76,92 @@ function HeroCtaArrowIcon({ active }: { active: boolean }) {
   )
 }
 
-export default function HomePage() {
-  const screenSize = useScreenSize()
-  const [ctaActive, setCtaActive] = useState(false)
-
-  useEffect(() => {
-    if ('scrollRestoration' in history) {
-      const previous = history.scrollRestoration
-      history.scrollRestoration = 'manual'
-      window.scrollTo(0, 0)
-      return () => {
-        history.scrollRestoration = previous
-      }
-    }
-    window.scrollTo(0, 0)
-  }, [])
+function ArrowCtaLink({ href, label }: { href: string; label: string }) {
+  const [active, setActive] = useState(false)
 
   return (
-    <div
-      className="h-dvh w-full font-sans overflow-hidden flex flex-col"
-      style={{
-        backgroundColor: 'var(--color-bg)',
-        color: 'var(--color-fg)',
-      }}
+    <Button
+      asChild
+      className="h-9 rounded-2xl squircle-corners px-4 duration-(--motion-dur-fast) ease-(--motion-ease-out) active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
     >
-      <GooeyFilter id="gooey-filter-pixel-trail" strength={8} />
-
-      <div
-        className="fixed inset-0 z-0 pointer-events-none"
-        style={{ filter: 'url(#gooey-filter-pixel-trail)' }}
+      <Link
+        href={href}
+        className="gap-1.5"
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        onPointerEnter={() => setActive(true)}
+        onPointerLeave={() => setActive(false)}
+        onFocus={() => setActive(true)}
+        onBlur={() => setActive(false)}
       >
-        <PixelTrail
-          pixelSize={screenSize.lessThan(`md`) ? 20 : 28}
-          fadeDuration={800}
-          delay={200}
-          pixelClassName="bg-(--color-fg) opacity-60"
-        />
-      </div>
+        {/* size lives here, not on Button: tailwind-merge reads text-cta as a color and would drop text-primary-foreground */}
+        <span className="text-cta text-center font-medium leading-none">{label}</span>
+        <HeroCtaArrowIcon active={active} />
+      </Link>
+    </Button>
+  )
+}
 
-      <Header />
+export default function HomePage() {
+  const screenSize = useScreenSize()
 
-      <section className="flex-1 w-full flex flex-col justify-end pb-8 px-4 sm:px-6 relative z-10">
-        <p
-          className="mx-auto max-w-70 sm:max-w-md text-center text-base sm:text-lg md:text-xl leading-relaxed font-normal animate-in fade-in slide-in-from-bottom-4 duration-1000 px-2"
-          style={{ color: 'var(--color-fg)' }}
-        >
-          library for design engineers clean components, smooth motion, and interfaces that feel
-          built, not assembled.
-        </p>
+  return (
+    <PageWaveProvider>
+      <div
+        className="w-full font-sans"
+        style={{
+          backgroundColor: 'var(--color-bg)',
+          color: 'var(--color-fg)',
+        }}
+      >
+        <div className="relative flex h-dvh w-full flex-col overflow-hidden">
+          <GooeyFilter id="gooey-filter-pixel-trail" strength={8} />
 
-        <div className="w-full flex items-center justify-center gap-3 mt-8 sm:mt-10">
-          <Button
-            asChild
-            className="rounded-2xl squircle-corners active:scale-[0.97] duration-150"
-            style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
+          <div
+            className="absolute inset-0 z-0 pointer-events-none"
+            style={{ filter: 'url(#gooey-filter-pixel-trail)' }}
           >
-            <Link
-              href="/components"
-              className="gap-1.5"
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              onPointerEnter={() => setCtaActive(true)}
-              onPointerLeave={() => setCtaActive(false)}
-              onFocus={() => setCtaActive(true)}
-              onBlur={() => setCtaActive(false)}
+            <PixelTrail
+              pixelSize={screenSize.lessThan(`md`) ? 20 : 28}
+              fadeDuration={800}
+              delay={200}
+              pixelClassName="bg-(--color-fg) opacity-60"
+            />
+          </div>
+
+          <HeroDiagramRails />
+
+          <Header />
+
+          <section className="relative z-10 flex flex-1 flex-col justify-end px-4 pb-8 sm:px-6">
+            <p
+              className="mx-auto max-w-70 animate-in fade-in slide-in-from-bottom-4 px-2 text-center text-base font-normal leading-relaxed duration-1000 sm:max-w-md sm:text-lg md:text-xl"
+              style={{ color: 'var(--color-fg)' }}
             >
-              <span className="text-center">Components</span>
-              <HeroCtaArrowIcon active={ctaActive} />
-            </Link>
-          </Button>
+              library for design engineers clean components, smooth motion, and interfaces that feel
+              built, not assembled.
+            </p>
+
+            <div className="mt-8 flex w-full items-center justify-center gap-3 sm:mt-10">
+              <ArrowCtaLink href="/components" label="Components" />
+            </div>
+          </section>
         </div>
-      </section>
-    </div>
+
+        <div
+          className="w-full px-4 pb-16 sm:px-6 sm:pb-20 lg:px-42"
+          style={{ backgroundColor: 'var(--color-bg)' }}
+        >
+          <HomeNote />
+          <HomeFeaturedShowcase />
+          <div className="mt-8 flex justify-center sm:mt-10">
+            <ArrowCtaLink href="/components" label="Browse all components" />
+          </div>
+          <HomeBuiltWith />
+          <HomeSponsors />
+        </div>
+
+        <Footer />
+      </div>
+    </PageWaveProvider>
   )
 }

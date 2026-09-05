@@ -2,7 +2,6 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { motion, useAnimationControls } from 'motion/react'
-import { v4 as uuidv4 } from 'uuid'
 import { cn } from '@/lib/utils'
 import { useDimensions } from '@/hooks/use-debounced-dimensions'
 
@@ -27,28 +26,61 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const dimensions = useDimensions(containerRef)
-  const [trailId] = useState(() => uuidv4())
+  const [trailId] = useState(() => crypto.randomUUID())
+  const pendingRef = useRef<{ x: number; y: number } | null>(null)
+  const rafRef = useRef(0)
+  const visibleRef = useRef(true)
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      if (!containerRef.current) return
-
-      const rect = containerRef.current.getBoundingClientRect()
-      const x = Math.floor((e.clientX - rect.left) / pixelSize)
-      const y = Math.floor((e.clientY - rect.top) / pixelSize)
-
-      const pixelElement = document.getElementById(
-        `${trailId}-pixel-${x}-${y}`,
-      ) as PixelElement | null
-      pixelElement?.__animatePixel?.()
+      if (!visibleRef.current || !containerRef.current) return
+      if (rafRef.current) {
+        pendingRef.current = { x: e.clientX, y: e.clientY }
+        return
+      }
+      const paint = (clientX: number, clientY: number) => {
+        if (!containerRef.current) return
+        const rect = containerRef.current.getBoundingClientRect()
+        const x = Math.floor((clientX - rect.left) / pixelSize)
+        const y = Math.floor((clientY - rect.top) / pixelSize)
+        const pixelElement = document.getElementById(
+          `${trailId}-pixel-${x}-${y}`,
+        ) as PixelElement | null
+        pixelElement?.__animatePixel?.()
+      }
+      paint(e.clientX, e.clientY)
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = 0
+        const pending = pendingRef.current
+        pendingRef.current = null
+        if (pending) paint(pending.x, pending.y)
+      })
     },
     [pixelSize, trailId],
   )
 
   useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      rafRef.current = 0
+      pendingRef.current = null
+    }
   }, [handleMouseMove])
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visibleRef.current = entry.isIntersecting && entry.intersectionRatio >= 0.2
+      },
+      { threshold: [0, 0.2] },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
 
   const columns = useMemo(
     () => Math.ceil(dimensions.width / pixelSize),

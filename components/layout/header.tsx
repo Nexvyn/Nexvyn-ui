@@ -39,18 +39,18 @@ export function Header() {
 
   return (
     <header
-      className="relative z-10 mx-auto flex w-full max-w-325 items-center justify-between bg-transparent px-4 pb-2 pt-4 text-sm tracking-tight md:px-12 md:pb-4 md:pt-12"
+      className="relative z-10 mx-auto flex w-full max-w-325 items-center justify-between bg-transparent px-4 pb-2 pt-4 text-sm tracking-tight sm:px-6 md:px-12 md:pb-4 md:pt-12"
       style={{ color: 'var(--color-muted)' }}
     >
       <div className="flex-1 pointer-events-auto">
         <Link
           ref={logoRef}
           href="/"
-          className="relative z-20 inline-block rounded-md text-xl no-underline outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) sm:text-2xl"
-          style={{ fontFamily: 'var(--font-handwriting), cursive', color: 'var(--color-accent)' }}
+          className="relative z-20 inline-block rounded-md text-xl no-underline outline-none focus-visible:ring-2 focus-visible:ring-(--color-fg) sm:text-2xl"
+          style={{ fontFamily: 'var(--font-handwriting), cursive', color: 'var(--color-fg)' }}
           suppressHydrationWarning
         >
-          Nexvyn/Ui (...)
+          Nexvyn/Ui
         </Link>
       </div>
       <div className="flex-1 flex justify-end items-center gap-2">
@@ -124,7 +124,7 @@ export function Header() {
                   )}
                 </AnimatePresence>
               </div>
-              <span>GitHub</span>
+              <span className="tracking-normal">GitHub</span>
             </a>
           </Button>
         </div>
