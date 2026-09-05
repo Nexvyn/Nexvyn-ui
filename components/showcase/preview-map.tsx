@@ -1,132 +1,57 @@
-import dynamic from 'next/dynamic'
+﻿import dynamic from 'next/dynamic'
+import type { ComponentType } from 'react'
 
-export const blueprintPreviews: Record<string, React.ComponentType> = {
-  'accordion-blueprint': dynamic(() =>
-    import('@/components/diagrams/accordion-diagram').then((m) => m.AccordionBlueprint),
-  ),
-  'action-button-blueprint': dynamic(() =>
-    import('@/components/diagrams/action-button-diagram').then((m) => m.ActionButtonBlueprint),
-  ),
-  'adaptive-actions-blueprint': dynamic(() =>
-    import('@/components/diagrams/adaptive-actions-diagram').then(
-      (m) => m.AdaptiveActionsBlueprint,
-    ),
-  ),
-  'ai-input-blueprint': dynamic(() =>
-    import('@/components/diagrams/ai-input-diagram').then((m) => m.AiInputBlueprint),
-  ),
-  'button-blueprint': dynamic(() =>
-    import('@/components/diagrams/button-diagram').then((m) => m.ButtonBlueprint),
-  ),
-  'phone-mockup-blueprint': dynamic(() =>
-    import('@/components/diagrams/phone-mockup-diagram').then((m) => m.PhoneMockupWireframe),
-  ),
-  'laptop-mockup-blueprint': dynamic(() =>
-    import('@/components/diagrams/laptop-mockup-diagram').then((m) => m.LaptopMockupWireframe),
-  ),
-  'rocket-launch-blueprint': dynamic(() =>
-    import('@/components/diagrams/rocket-launch-diagram').then((m) => m.RocketLaunchBlueprint),
-  ),
-  'dia-text-blueprint': dynamic(() =>
-    import('@/components/diagrams/dia-text-diagram').then((m) => m.DiaTextBlueprint),
-  ),
-  'navigation-compass-blueprint': dynamic(() =>
-    import('@/components/diagrams/navigation-compass-diagram').then(
-      (m) => m.NavigationCompassBlueprint,
-    ),
-  ),
-  'badge-blueprint': dynamic(() =>
-    import('@/components/diagrams/badge-diagram').then((m) => m.BadgeBlueprint),
-  ),
-  'breadcrumbs-blueprint': dynamic(() =>
-    import('@/components/diagrams/breadcrumbs-diagram').then((m) => m.BreadcrumbsBlueprint),
-  ),
-  'dropdown-menu-blueprint': dynamic(() =>
-    import('@/components/diagrams/dropdown-menu-diagram').then((m) => m.DropdownMenuBlueprint),
-  ),
-  'nav-menu-blueprint': dynamic(() =>
-    import('@/components/diagrams/nav-menu-diagram').then((m) => m.NavMenuBlueprint),
-  ),
-  'icon-bar-blueprint': dynamic(() =>
-    import('@/components/diagrams/icon-bar-diagram').then((m) => m.IconBarBlueprint),
-  ),
-  'input-blueprint': dynamic(() =>
-    import('@/components/diagrams/input-diagram').then((m) => m.InputWireframe),
-  ),
-  'checkbox-blueprint': dynamic(() =>
-    import('@/components/diagrams/checkbox-diagram').then((m) => m.CheckboxBlueprint),
-  ),
-  'combobox-blueprint': dynamic(() =>
-    import('@/components/diagrams/combobox-diagram').then((m) => m.ComboboxBlueprint),
-  ),
-  'context-menu-blueprint': dynamic(() =>
-    import('@/components/diagrams/context-menu-diagram').then((m) => m.ContextMenuBlueprint),
-  ),
-  'morph-nav-blueprint': dynamic(() =>
-    import('@/components/diagrams/morph-nav-diagram').then((m) => m.MorphNavBlueprint),
-  ),
-  'mobile-drawer-blueprint': dynamic(() =>
-    import('@/components/diagrams/mobile-drawer-diagram').then((m) => m.MobileDrawerBlueprint),
-  ),
-  'clipboard-field-blueprint': dynamic(() =>
-    import('@/components/diagrams/clipboard-field-diagram').then((m) => m.ClipboardFieldBlueprint),
-  ),
-  'fader-blueprint': dynamic(() =>
-    import('@/components/diagrams/fader-diagram').then((m) => m.FaderBlueprint),
-  ),
-  'bounce-sidebar-blueprint': dynamic(() =>
-    import('@/components/diagrams/bounce-sidebar-diagram').then((m) => m.BounceSidebarWireframe),
-  ),
-  'color-picker-blueprint': dynamic(() =>
-    import('@/components/diagrams/color-picker-diagram').then((m) => m.ColorPickerWireframe),
-  ),
-  'goo-dropdown-blueprint': dynamic(() =>
-    import('@/components/diagrams/goo-dropdown-diagram').then((m) => m.GooDropdownWireframe),
-  ),
-  'password-input-blueprint': dynamic(() =>
-    import('@/components/diagrams/password-input-diagram').then((m) => m.PasswordInputWireframe),
-  ),
-  'radio-group-blueprint': dynamic(() =>
-    import('@/components/diagrams/radio-group-diagram').then((m) => m.RadioGroupBlueprint),
-  ),
-  'ratio-slider-blueprint': dynamic(() =>
-    import('@/components/diagrams/ratio-slider-diagram').then((m) => m.RatioSliderWireframe),
-  ),
-  'scroll-indicator-blueprint': dynamic(() =>
-    import('@/components/diagrams/scroll-indicator-diagram').then(
-      (m) => m.ScrollIndicatorWireframe,
-    ),
-  ),
-  'select-blueprint': dynamic(() =>
-    import('@/components/diagrams/select-diagram').then((m) => m.SelectBlueprint),
-  ),
-  'switch-blueprint': dynamic(() =>
-    import('@/components/diagrams/switch-diagram').then((m) => m.SwitchBlueprint),
-  ),
-  'table-blueprint': dynamic(() =>
-    import('@/components/diagrams/table-diagram').then((m) => m.TableBlueprint),
-  ),
-  'table-of-contents-blueprint': dynamic(() =>
-    import('@/components/diagrams/table-of-contents-diagram').then(
-      (m) => m.TableOfContentsWireframe,
-    ),
-  ),
-  'tabs-subtle-blueprint': dynamic(() =>
-    import('@/components/diagrams/tabs-subtle-diagram').then((m) => m.TabsSubtleBlueprint),
-  ),
-  'input-copy-blueprint': dynamic(() =>
-    import('@/components/diagrams/input-copy-diagram').then((m) => m.InputCopyWireframe),
-  ),
-  'input-message-blueprint': dynamic(() =>
-    import('@/components/diagrams/input-message-diagram').then((m) => m.InputMessageBlueprint),
-  ),
-  'bars-theme-blueprint': dynamic(() =>
-    import('@/components/diagrams/bars-theme-diagram').then((m) => m.BarsThemeBlueprint),
-  ),
-  'glow-orb-blueprint': dynamic(() =>
-    import('@/components/diagrams/glow-orb-diagram').then((m) => m.GlowOrbBlueprint),
-  ),
-  'fluid-orb-blueprint': dynamic(() =>
-    import('@/components/diagrams/fluid-orb-diagram').then((m) => m.FluidOrbBlueprint),
-  ),
+// All blueprint wireframes are static SVG components that share the same two
+// diagram-part modules. Importing them through ONE dynamic() call bundles them
+// into a single lazily-loaded chunk (~1 request) instead of 40 separate chunks
+// (~40 requests) per gallery page view.
+const BlueprintsBundle = dynamic(() => import('@/components/diagrams/blueprints-bundle'))
+
+function makePreview(key: string): ComponentType {
+  return function BlueprintPreview(props) {
+    return <BlueprintsBundle render={key} {...props} />
+  }
+}
+
+export const blueprintPreviews: Record<string, ComponentType> = {
+  'accordion-blueprint': makePreview('accordion-blueprint'),
+  'action-button-blueprint': makePreview('action-button-blueprint'),
+  'adaptive-actions-blueprint': makePreview('adaptive-actions-blueprint'),
+  'ai-input-blueprint': makePreview('ai-input-blueprint'),
+  'button-blueprint': makePreview('button-blueprint'),
+  'phone-mockup-blueprint': makePreview('phone-mockup-blueprint'),
+  'laptop-mockup-blueprint': makePreview('laptop-mockup-blueprint'),
+  'rocket-launch-blueprint': makePreview('rocket-launch-blueprint'),
+  'dia-text-blueprint': makePreview('dia-text-blueprint'),
+  'navigation-compass-blueprint': makePreview('navigation-compass-blueprint'),
+  'badge-blueprint': makePreview('badge-blueprint'),
+  'breadcrumbs-blueprint': makePreview('breadcrumbs-blueprint'),
+  'dropdown-menu-blueprint': makePreview('dropdown-menu-blueprint'),
+  'nav-menu-blueprint': makePreview('nav-menu-blueprint'),
+  'icon-bar-blueprint': makePreview('icon-bar-blueprint'),
+  'input-blueprint': makePreview('input-blueprint'),
+  'checkbox-blueprint': makePreview('checkbox-blueprint'),
+  'combobox-blueprint': makePreview('combobox-blueprint'),
+  'context-menu-blueprint': makePreview('context-menu-blueprint'),
+  'morph-nav-blueprint': makePreview('morph-nav-blueprint'),
+  'mobile-drawer-blueprint': makePreview('mobile-drawer-blueprint'),
+  'clipboard-field-blueprint': makePreview('clipboard-field-blueprint'),
+  'fader-blueprint': makePreview('fader-blueprint'),
+  'bounce-sidebar-blueprint': makePreview('bounce-sidebar-blueprint'),
+  'color-picker-blueprint': makePreview('color-picker-blueprint'),
+  'goo-dropdown-blueprint': makePreview('goo-dropdown-blueprint'),
+  'password-input-blueprint': makePreview('password-input-blueprint'),
+  'radio-group-blueprint': makePreview('radio-group-blueprint'),
+  'ratio-slider-blueprint': makePreview('ratio-slider-blueprint'),
+  'scroll-indicator-blueprint': makePreview('scroll-indicator-blueprint'),
+  'select-blueprint': makePreview('select-blueprint'),
+  'switch-blueprint': makePreview('switch-blueprint'),
+  'table-blueprint': makePreview('table-blueprint'),
+  'table-of-contents-blueprint': makePreview('table-of-contents-blueprint'),
+  'tabs-subtle-blueprint': makePreview('tabs-subtle-blueprint'),
+  'input-copy-blueprint': makePreview('input-copy-blueprint'),
+  'input-message-blueprint': makePreview('input-message-blueprint'),
+  'bars-theme-blueprint': makePreview('bars-theme-blueprint'),
+  'glow-orb-blueprint': makePreview('glow-orb-blueprint'),
+  'fluid-orb-blueprint': makePreview('fluid-orb-blueprint'),
 }

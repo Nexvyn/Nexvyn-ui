@@ -15,7 +15,6 @@ import {
 import {
   DraftSurface,
   DRAFT_BEAT,
-  DRAFT_FILL_MUTED,
   InsetGuide,
   DRAFT_SCAFFOLD_FADE,
   DRAFT_INK_MORPH,
@@ -26,7 +25,6 @@ import {
   MeasureNote,
   MeasureV,
   GripFrame,
-  DRAFT_DETAIL_BEAT,
   DRAFT_LABEL_BEAT,
   DRAFT_LABEL_ALT_BEAT,
   stampBeat,

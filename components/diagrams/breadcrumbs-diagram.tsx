@@ -16,9 +16,6 @@ import {
   GripFrame,
   beat,
   DRAFT_BEAT,
-  DRAFT_DETAIL_BEAT,
-  DRAFT_LABEL_BEAT,
-  DRAFT_LABEL_ALT_BEAT,
   stampBeat,
 } from '@/components/diagrams/lib/diagram-parts'
 import {

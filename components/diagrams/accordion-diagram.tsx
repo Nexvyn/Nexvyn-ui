@@ -25,9 +25,7 @@ import {
   InsetGuide,
   GripFrame,
   squircleRectPath,
-  DRAFT_DETAIL_BEAT,
   DRAFT_LABEL_BEAT,
-  DRAFT_LABEL_ALT_BEAT,
   stampBeat,
 } from '@/components/diagrams/lib/diagram-parts'
 
@@ -39,7 +37,6 @@ const BP_ITEM_GAP = 8
 const BP_ITEM_R = 6
 const BP_CHEVRON = 8
 const BP_PAD_X = 16
-const BP_CONTENT_PAD_B = 6
 const BP_X = (220 - BP_ITEM_W) / 2
 
 const BP_ITEM0_H = BP_TRIGGER_H + BP_CONTENT_H
