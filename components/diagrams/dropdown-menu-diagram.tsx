@@ -13,17 +13,24 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_FILL_PANEL,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 
 const DM = {
   triggerW: 160,
@@ -59,12 +66,12 @@ const BP_ITEM_Y = [BP_PANEL.y + ITEM_Y[0], BP_PANEL.y + ITEM_Y[1], BP_PANEL.y + 
 const BP_SEP_Y = BP_PANEL.y + SEP_Y
 
 export function DropdownMenuBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <Blueprint>
+    <DraftSurface>
       <g
         style={{ transformOrigin: `${BP_PANEL.x + BP_PANEL.w / 2}px ${BP_PANEL.y}px` }}
-        className=""
+        className="transition-transform duration-(--motion-dur-showcase) ease-(--motion-ease-out) group-hover:translate-y-[6px] group-hover:delay-[320ms] group-focus-visible:translate-y-[6px] group-focus-visible:delay-[320ms] motion-reduce:transition-none"
       >
         <rect
           x={BP_PANEL.x}
@@ -72,9 +79,13 @@ export function DropdownMenuBlueprint() {
           width={BP_PANEL.w}
           height={BP_PANEL.h}
           rx={BP_PANEL.rx}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
           strokeWidth={theme.wireframe.strokeWidth}
           strokeOpacity={theme.wireframe.strokeOpacity}
-          className={BP_FILL_PANEL}
+          style={beat(DRAFT_DETAIL_BEAT.a)}
+          className={`ink-draw ${DRAFT_FILL_PANEL}`}
         />
         {ITEM_LABELS.map((label, i) => (
           <g key={i}>
@@ -84,16 +95,21 @@ export function DropdownMenuBlueprint() {
               width={BP_PANEL.w - 12}
               height={DM.itemH}
               rx={DM.itemRx}
+              pathLength={1}
+              strokeDasharray={1}
+              strokeDashoffset={1}
               strokeWidth={theme.wireframe.strokeWidth * 0.5}
               strokeOpacity={theme.wireframe.strokeOpacity * 0.3}
-              className={BP_HIDE_ON_MORPH}
+              style={beat(DRAFT_DETAIL_BEAT.c)}
+              className={`ink-draw ${DRAFT_SCAFFOLD_FADE}`}
             />
             <text
               x={BP_PANEL.x + DM.itemPadX}
               y={BP_ITEM_Y[i] + DM.itemH / 2 + 4}
               fontSize={10}
               fontFamily="var(--font-sans)"
-              className={BP_TEXT_SOFT}
+              style={beat(`${400 + i * 70}ms`)}
+              className={`fade-note ${DRAFT_TEXT_SOFT}`}
             >
               {label}
             </text>
@@ -107,7 +123,11 @@ export function DropdownMenuBlueprint() {
           stroke="currentColor"
           strokeWidth={0.5}
           opacity={theme.wireframe.strokeOpacity * 0.4}
-          className={BP_HIDE_ON_MORPH}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
+          style={beat(DRAFT_DETAIL_BEAT.c)}
+          className={`ink-draw ${DRAFT_SCAFFOLD_FADE}`}
         />
       </g>
       <rect
@@ -116,9 +136,13 @@ export function DropdownMenuBlueprint() {
         width={BP_TRIGGER.w}
         height={BP_TRIGGER.h}
         rx={BP_TRIGGER.rx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_PANEL}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
       <text
         x={BP_TRIGGER.x + 16}
@@ -126,35 +150,57 @@ export function DropdownMenuBlueprint() {
         fontSize={11}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
         Actions
       </text>
 
-      <path
-        d={`M${BP_TRIGGER.x + BP_TRIGGER.w - 24} ${BP_TRIGGER.y + BP_TRIGGER.h / 2 - 3} l4 4 4-4`}
-        strokeWidth={1.5}
-        stroke="currentColor"
-        fill="none"
-        opacity={theme.wireframe.strokeOpacity}
-        className={BP_HIDE_ON_MORPH}
-      />
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_PANEL.x} y={BP_PANEL.y} w={BP_PANEL.w} h={BP_PANEL.h} />
-        <DimH
+      <g
+        style={{
+          transformOrigin: `${BP_TRIGGER.x + BP_TRIGGER.w - 20}px ${BP_TRIGGER.y + BP_TRIGGER.h / 2 - 1}px`,
+        }}
+        className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:rotate-180 group-focus-visible:rotate-180 motion-reduce:transition-none motion-reduce:rotate-none"
+      >
+        <path
+          d={`M${BP_TRIGGER.x + BP_TRIGGER.w - 24} ${BP_TRIGGER.y + BP_TRIGGER.h / 2 - 3} l4 4 4-4`}
+          strokeWidth={1.5}
+          stroke="currentColor"
+          fill="none"
+          opacity={theme.wireframe.strokeOpacity}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
+          style={beat(DRAFT_DETAIL_BEAT.a)}
+          className={`ink-draw ${DRAFT_INK_MORPH} group-hover:opacity-100 group-focus-visible:opacity-100`}
+        />
+      </g>
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
+          x={BP_PANEL.x}
+          y={BP_PANEL.y}
+          w={BP_PANEL.w}
+          h={BP_PANEL.h}
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <MeasureH
           x1={BP_TRIGGER.x}
           x2={BP_TRIGGER.x + BP_TRIGGER.w}
           y={BP_TRIGGER.y - 12}
           label={`${BP_PANEL.w}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
         />
-        <DimV
+        <MeasureV
           x={BP_PANEL.x - 12}
           y1={BP_PANEL.y}
           y2={BP_PANEL.y + BP_PANEL.h}
           label={`${BP_PANEL.h}`}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
         />
 
-        <PadGuide
+        <InsetGuide
           x={BP_TRIGGER.x + 16}
           y={BP_TRIGGER.y + 12}
           w={BP_TRIGGER.w - 32}
@@ -166,16 +212,30 @@ export function DropdownMenuBlueprint() {
           boxH={BP_TRIGGER.h}
           boxRx={BP_TRIGGER.rx}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
 
-        <DimLabel x={BP_TRIGGER.x + 8} y={BP_TRIGGER.y + BP_TRIGGER.h - 4} anchor="middle">
+        <MeasureNote
+          x={BP_TRIGGER.x + 8}
+          y={BP_TRIGGER.y + BP_TRIGGER.h - 4}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           16
-        </DimLabel>
-        <DimLabel x={BP_TRIGGER.x + BP_TRIGGER.w / 2} y={BP_TRIGGER.y + 9} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP_TRIGGER.x + BP_TRIGGER.w / 2}
+          y={BP_TRIGGER.y + 9}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           12
-        </DimLabel>
+        </MeasureNote>
 
-        <PadGuide
+        <InsetGuide
           x={BP_PANEL.x + DM.padY}
           y={BP_PANEL.y + DM.padY}
           w={BP_PANEL.w - DM.padY * 2}
@@ -187,12 +247,20 @@ export function DropdownMenuBlueprint() {
           boxH={BP_PANEL.h}
           boxRx={BP_PANEL.rx}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={BP_PANEL.x + DM.padY - 2} y={BP_PANEL.y + BP_PANEL.h / 2 + 2.5} anchor="end">
+        <MeasureNote
+          x={BP_PANEL.x + DM.padY - 2}
+          y={BP_PANEL.y + BP_PANEL.h / 2 + 2.5}
+          anchor="end"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
           {`${DM.padY}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -242,7 +310,7 @@ function TriggerShape() {
         height={AN.triggerH}
         rx={AN.triggerRx}
         stroke="currentColor"
-        strokeWidth={blueprintTheme.wireframe.strokeWidth}
+        strokeWidth={draftTheme.wireframe.strokeWidth}
         fill="currentColor"
         fillOpacity={0.05}
         className={spotlight.className}
@@ -268,7 +336,7 @@ function TriggerShape() {
       />
 
       <g className="pointer-events-none">
-        <PadGuide
+        <InsetGuide
           x={AN.triggerPadX}
           y={AN_TRIGGER_Y + AN.triggerPadY}
           w={AN_TRIGGER_W - AN.triggerPadX * 2}
@@ -281,18 +349,18 @@ function TriggerShape() {
           boxRx={AN.triggerRx}
           clipOffset={0.8}
         />
-        <DimLabel x={7} y={AN_TRIGGER_Y + AN.triggerH / 2 + 2.5} anchor="middle">
+        <MeasureNote x={7} y={AN_TRIGGER_Y + AN.triggerH / 2 + 2.5} anchor="middle">
           {`${AN.triggerPadX}`}
-        </DimLabel>
-        <DimLabel x={AN_TRIGGER_W - 7} y={AN_TRIGGER_Y + AN.triggerH / 2 + 2.5} anchor="middle">
+        </MeasureNote>
+        <MeasureNote x={AN_TRIGGER_W - 7} y={AN_TRIGGER_Y + AN.triggerH / 2 + 2.5} anchor="middle">
           {`${AN.triggerPadX}`}
-        </DimLabel>
-        <DimLabel x={AN_TRIGGER_W / 2} y={AN_TRIGGER_Y + 8} anchor="middle">
+        </MeasureNote>
+        <MeasureNote x={AN_TRIGGER_W / 2} y={AN_TRIGGER_Y + 8} anchor="middle">
           {`${AN.triggerPadY}`}
-        </DimLabel>
-        <DimLabel x={AN_TRIGGER_W / 2} y={AN_TRIGGER_Y + AN.triggerH - 4} anchor="middle">
+        </MeasureNote>
+        <MeasureNote x={AN_TRIGGER_W / 2} y={AN_TRIGGER_Y + AN.triggerH - 4} anchor="middle">
           {`${AN.triggerPadY}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
     </g>
   )
@@ -315,7 +383,7 @@ function PanelShape() {
         height={AN_PANEL_H}
         rx={AN.panelRx}
         stroke="currentColor"
-        strokeWidth={blueprintTheme.wireframe.strokeWidth}
+        strokeWidth={draftTheme.wireframe.strokeWidth}
         fill="currentColor"
         fillOpacity={0.03}
         className={spotlight.className}
@@ -323,7 +391,7 @@ function PanelShape() {
       />
 
       <g className="pointer-events-none">
-        <PadGuide
+        <InsetGuide
           x={AN.panelPad}
           y={AN.panelPad}
           w={AN.panelW - AN.panelPad * 2}
@@ -336,18 +404,18 @@ function PanelShape() {
           boxRx={AN.panelRx}
           clipOffset={0.8}
         />
-        <DimLabel x={AN.panelPad - 2} y={AN_PANEL_H / 2 + 2.5} anchor="end">
+        <MeasureNote x={AN.panelPad - 2} y={AN_PANEL_H / 2 + 2.5} anchor="end">
           {`${AN.panelPad}`}
-        </DimLabel>
-        <DimLabel x={AN.panelW - AN.panelPad + 2} y={AN_PANEL_H / 2 + 2.5} anchor="start">
+        </MeasureNote>
+        <MeasureNote x={AN.panelW - AN.panelPad + 2} y={AN_PANEL_H / 2 + 2.5} anchor="start">
           {`${AN.panelPad}`}
-        </DimLabel>
-        <DimLabel x={AN.panelW / 2} y={AN.panelPad - 3} anchor="middle">
+        </MeasureNote>
+        <MeasureNote x={AN.panelW / 2} y={AN.panelPad - 3} anchor="middle">
           {`${AN.panelPad}`}
-        </DimLabel>
-        <DimLabel x={AN.panelW / 2} y={AN_PANEL_H - AN.panelPad + 9} anchor="middle">
+        </MeasureNote>
+        <MeasureNote x={AN.panelW / 2} y={AN_PANEL_H - AN.panelPad + 9} anchor="middle">
           {`${AN.panelPad}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
     </g>
   )
@@ -454,9 +522,9 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={0} y={0} w={AN.panelW} h={AN_PANEL_H} />
-      <DimH x1={0} x2={AN.panelW} y={-14} label={`${AN.panelW}`} />
-      <DimV x={-12} y1={0} y2={AN_PANEL_H} label={`${AN_PANEL_H}`} labelXOffset={-6} />
+      <GripFrame x={0} y={0} w={AN.panelW} h={AN_PANEL_H} />
+      <MeasureH x1={0} x2={AN.panelW} y={-14} label={`${AN.panelW}`} />
+      <MeasureV x={-12} y1={0} y2={AN_PANEL_H} label={`${AN_PANEL_H}`} labelXOffset={-6} />
     </g>
   )
 }

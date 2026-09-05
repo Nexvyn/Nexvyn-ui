@@ -31,7 +31,7 @@ function AnimatedChars({
         <span
           key={`${char}-${i}`}
           className="relative inline-block overflow-hidden align-baseline"
-          style={{ lineHeight: 1 }}
+          style={{ lineHeight: 1.1, paddingBottom: '0.08em', marginBottom: '-0.08em' }}
         >
           <motion.span
             initial={animate ? { y: '110%' } : false}

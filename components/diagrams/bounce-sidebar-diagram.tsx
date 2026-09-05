@@ -6,16 +6,22 @@
 // This file is NOT covered by the repository's root MIT LICENSE.
 
 import {
-  Blueprint,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
   AnatomyTag,
@@ -25,40 +31,45 @@ import {
 } from '@/components/diagrams/lib/anatomy-parts'
 
 const LABELS = ['Dashboard', 'Projects', 'Team'] as const
-const BP = { x: 58, y: 28, w: 104, rowH: 28, gap: 6, pad: 8, dot: 6 } as const
+const BP = { x: 58, y: 18, w: 104, rowH: 32, gap: 4, indent: 24, dot: 6 } as const
 
 export function BounceSidebarWireframe() {
-  const theme = blueprintTheme
-  const totalH = BP.pad * 2 + LABELS.length * BP.rowH + (LABELS.length - 1) * BP.gap
-  const rowY = (i: number) => BP.y + BP.pad + i * (BP.rowH + BP.gap)
+  const theme = draftTheme
+  const totalH = LABELS.length * BP.rowH + (LABELS.length - 1) * BP.gap
+  const rowY = (i: number) => BP.y + i * (BP.rowH + BP.gap)
 
   return (
-    <Blueprint>
+    <DraftSurface>
       {LABELS.map((label, i) => {
         const y = rowY(i)
         const active = i === 0
         return (
           <g key={label}>
             <rect
-              x={BP.x + 14}
+              x={BP.x + BP.indent}
               y={y}
-              width={BP.w - 18}
+              width={BP.w - BP.indent}
               height={BP.rowH}
               rx={6}
+              pathLength={1}
+              strokeDasharray={1}
+              strokeDashoffset={1}
               strokeWidth={theme.wireframe.strokeWidth}
               strokeOpacity={theme.wireframe.strokeOpacity}
-              className={`${BP_MORPH} fill-transparent stroke-current ${
+              style={beat(i === 0 ? DRAFT_BEAT.outline : `${200 + i * 60}ms`)}
+              className={`ink-draw ${DRAFT_INK_MORPH} fill-transparent stroke-current ${
                 active
                   ? 'group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2) group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)'
                   : 'group-hover:opacity-50 group-focus-visible:opacity-50'
               }`}
             />
             <text
-              x={BP.x + 26}
-              y={y + BP.rowH / 2 + 4}
-              fontSize={13}
+              x={BP.x + BP.indent + 4}
+              y={y + BP.rowH / 2 + 6}
+              fontSize={16}
               fontFamily="var(--font-sans)"
-              className={`${BP_MORPH} fill-current ${
+              style={beat(`${400 + i * 60}ms`)}
+              className={`fade-note ${DRAFT_INK_MORPH} fill-current ${
                 active
                   ? 'opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100'
                   : 'opacity-40 group-hover:opacity-70 group-focus-visible:opacity-70'
@@ -70,33 +81,57 @@ export function BounceSidebarWireframe() {
         )
       })}
       <circle
-        cx={BP.x + 6}
+        cx={BP.x + 11}
         cy={rowY(0) + BP.rowH / 2}
         r={BP.dot / 2}
         fill="var(--bp-accent, var(--color-accent))"
-        className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-y-[34px] group-focus-visible:translate-y-[34px] motion-reduce:transition-none"
+        style={beat(DRAFT_BEAT.hatch)}
+        className={`fade-note transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-y-[36px] group-hover:delay-(--motion-dur-base) group-focus-visible:translate-y-[36px] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none`}
       />
 
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP.x} y={BP.y} w={BP.w} h={totalH} />
-        <DimH x1={BP.x} x2={BP.x + BP.w} y={BP.y - 10} label={`${BP.w}`} />
-        <PadGuide
-          x={BP.x + 14 + 4}
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame x={BP.x} y={BP.y} w={BP.w} h={totalH} style={beat(DRAFT_BEAT.handle)} />
+        <MeasureH
+          x1={BP.x}
+          x2={BP.x + BP.w}
+          y={BP.y - 10}
+          label={`${BP.w}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <InsetGuide
+          x={BP.x + BP.indent + 4}
           y={rowY(0) + 4}
-          w={BP.w - 18 - 8}
-          h={BP.rowH - 8}
+          w={44}
+          h={24}
           offset={0.8}
-          boxX={BP.x + 14}
+          boxX={BP.x + BP.indent}
           boxY={rowY(0)}
-          boxW={BP.w - 18}
+          boxW={BP.w - BP.indent}
           boxH={BP.rowH}
           boxRx={6}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={BP.x + 14 + 2} y={rowY(0) + BP.rowH / 2 + 2} anchor="middle">
+        <MeasureNote
+          x={BP.x + BP.indent - 4}
+          y={rowY(0) + BP.rowH / 2 + 2}
+          anchor="end"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        >
           4
-        </DimLabel>
-        <DimV x={BP.x - 12} y1={BP.y} y2={BP.y + totalH} label={`${totalH}`} labelXOffset={-6} />
+        </MeasureNote>
+        <MeasureV
+          x={BP.x - 12}
+          y1={BP.y}
+          y2={BP.y + totalH}
+          label={`${totalH}`}
+          labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        />
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
@@ -105,22 +140,36 @@ export function BounceSidebarWireframe() {
           <line x1={BP.x} y1={rowY(0) + BP.rowH} x2={BP.x + BP.w + 16} y2={rowY(0) + BP.rowH} />
           <line x1={BP.x} y1={rowY(1)} x2={BP.x + BP.w + 16} y2={rowY(1)} />
         </g>
-        <DimV
+        <MeasureV
           x={BP.x + BP.w + 10}
           y1={rowY(0) + BP.rowH}
           y2={rowY(1)}
           label={`${BP.gap}`}
           labelXOffset={10}
           labelAnchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
         />
-        <DimLabel x={BP.x + BP.w + 24} y={rowY(0) + BP.rowH / 2 + 3} anchor="start">
+        <MeasureNote
+          x={BP.x + BP.w + 24}
+          y={rowY(0) + BP.rowH / 2 + 3}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
           {`dot ${BP.dot}`}
-        </DimLabel>
-        <DimLabel x={BP.x} y={BP.y + totalH + 14} anchor="start">
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x}
+          y={BP.y + totalH + 14}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(5))}
+        >
           spring overshoot
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -129,18 +178,17 @@ const AN = {
   listX: 24,
   listY: 16,
   listW: 136,
-  listH: 136,
-  listRx: 10,
   padL: 24,
   padV: 8,
-  itemH: 36,
-  itemGap: 6,
+  itemH: 32,
+  itemGap: 4,
   itemRx: 6,
   dotR: 3,
 } as const
+const AN_LIST_H = AN_ITEMS.length * AN.itemH + (AN_ITEMS.length - 1) * AN.itemGap
 
 function itemY(i: number) {
-  return AN.listY + AN.padV + i * (AN.itemH + AN.itemGap)
+  return AN.listY + i * (AN.itemH + AN.itemGap)
 }
 
 function ContainerShape() {
@@ -151,12 +199,12 @@ function ContainerShape() {
       x={AN.listX}
       y={AN.listY}
       width={AN.listW}
-      height={AN.listH}
-      rx={AN.listRx}
+      height={AN_LIST_H}
       stroke="currentColor"
       strokeWidth={hovered === 'container' ? 2 : 1.25}
       fill={hovered === 'container' ? 'currentColor' : 'transparent'}
       fillOpacity={hovered === 'container' ? 0.03 : 0}
+      strokeDasharray="3 3"
       className={`cursor-pointer ${spotlight.className}`}
       style={{ ...spotlight.style, pointerEvents: 'all' }}
       onMouseEnter={() => setHovered('container')}
@@ -182,7 +230,7 @@ function ItemShape({ index, label }: { index: number; label: string }) {
       <rect
         x={AN.listX + AN.padL}
         y={y}
-        width={AN.listW - AN.padL - AN.padV}
+        width={AN.listW - AN.padL}
         height={AN.itemH}
         rx={AN.itemRx}
         stroke="currentColor"
@@ -192,9 +240,9 @@ function ItemShape({ index, label }: { index: number; label: string }) {
         className={spotlight.className}
       />
       <text
-        x={AN.listX + AN.padL + 12}
-        y={y + AN.itemH / 2 + 4}
-        fontSize={14}
+        x={AN.listX + AN.padL + 4}
+        y={y + AN.itemH / 2 + 6}
+        fontSize={16}
         fontFamily="var(--font-sans)"
         className={`fill-current ${spotlight.className}`}
       >
@@ -219,7 +267,7 @@ function ActiveShape() {
       <rect
         x={AN.listX + AN.padL}
         y={y}
-        width={AN.listW - AN.padL - AN.padV}
+        width={AN.listW - AN.padL}
         height={AN.itemH}
         rx={AN.itemRx}
         stroke="var(--bp-accent, var(--color-accent))"
@@ -240,7 +288,7 @@ function DotShape() {
 
   return (
     <circle
-      cx={AN.listX + 10}
+      cx={AN.listX + 11}
       cy={dotCY}
       r={AN.dotR}
       fill="var(--bp-accent, var(--color-accent))"
@@ -261,37 +309,37 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: isOthersHovered ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={AN.listX} y={AN.listY} w={AN.listW} h={AN.listH} />
-      <DimH x1={AN.listX} x2={AN.listX + AN.listW} y={AN.listY - 10} label={`${AN.listW}`} />
-      <DimV
+      <GripFrame x={AN.listX} y={AN.listY} w={AN.listW} h={AN_LIST_H} />
+      <MeasureH x1={AN.listX} x2={AN.listX + AN.listW} y={AN.listY - 10} label={`${AN.listW}`} />
+      <MeasureV
         x={AN.listX - 12}
         y1={AN.listY}
-        y2={AN.listY + AN.listH}
-        label={`${AN.listH}`}
+        y2={AN.listY + AN_LIST_H}
+        label={`${AN_LIST_H}`}
         labelXOffset={-6}
       />
 
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line
           x1={AN.listX + AN.padL}
           y1={AN.listY + 6}
           x2={AN.listX + AN.padL}
-          y2={AN.listY + AN.listH - 6}
+          y2={AN.listY + AN_LIST_H - 6}
         />
       </g>
-      <DimLabel x={AN.listX + AN.padL / 2} y={AN.listY + AN.listH / 2 + 2} anchor="middle">
+      <MeasureNote x={AN.listX + AN.padL / 2} y={AN.listY + AN_LIST_H / 2 + 2} anchor="middle">
         {`${AN.padL}`}
-      </DimLabel>
+      </MeasureNote>
 
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
-        opacity={blueprintTheme.guide.structOpacity}
+        strokeWidth={draftTheme.guide.strokeWidth}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line
           x1={AN.listX + AN.padL}
@@ -301,7 +349,7 @@ function AnnotationsLayer() {
         />
         <line x1={AN.listX + AN.padL} y1={itemY(1)} x2={AN.listX + AN.listW + 16} y2={itemY(1)} />
       </g>
-      <DimV
+      <MeasureV
         x={AN.listX + AN.listW + 10}
         y1={itemY(0) + AN.itemH}
         y2={itemY(1)}
@@ -323,7 +371,7 @@ export function BounceSidebarBreakdown() {
       <ActiveShape />
       <DotShape />
       <AnnotationsLayer />
-      <OverlayLine id="container" x1={160} y1={140} x2={210} y2={140} />
+      <OverlayLine id="container" x1={160} y1={100} x2={210} y2={100} />
       <OverlayLine
         id="item-0"
         x1={AN.listX + AN.listW - AN.padV}
@@ -347,7 +395,7 @@ export function BounceSidebarBreakdown() {
       />
       <foreignObject
         x={210}
-        y={128}
+        y={88}
         width={80}
         height={24}
         className="overflow-visible pointer-events-none"

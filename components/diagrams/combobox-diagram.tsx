@@ -6,18 +6,24 @@
 // This file is NOT covered by the repository's root MIT LICENSE.
 
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_FILL_PANEL,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
   AnatomyTag,
@@ -55,21 +61,25 @@ function bpItemY(i: number) {
 }
 
 export function ComboboxBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   const clearCx = BP.x + BP.w - BP.padEnd / 2 - 2
   const clearCy = BP.y + BP.inputH / 2
 
   return (
-    <Blueprint>
+    <DraftSurface>
       <rect
         x={BP.x}
         y={BP.y}
         width={BP.w}
         height={BP.inputH}
         rx={BP.inputRx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_PANEL}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
       <text
         x={BP.x + BP.padStart}
@@ -77,12 +87,15 @@ export function ComboboxBlueprint() {
         fontSize={12}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
         Search city…
       </text>
 
-      <g className={`${BP_MORPH} opacity-0 group-hover:opacity-70 group-focus-visible:opacity-70`}>
+      <g
+        className={`${DRAFT_INK_MORPH} opacity-0 group-hover:opacity-70 group-focus-visible:opacity-70`}
+      >
         <circle
           cx={clearCx}
           cy={clearCy}
@@ -99,50 +112,57 @@ export function ComboboxBlueprint() {
         />
       </g>
 
-      <rect
-        x={BP.x}
-        y={BP_PANEL_Y}
-        width={BP.w}
-        height={BP_PANEL_H}
-        rx={BP.inputRx}
-        strokeWidth={theme.wireframe.strokeWidth}
-        className={`${BP_MORPH} fill-transparent stroke-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-popover group-focus-visible:fill-popover group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
-      />
-      <rect
-        x={BP.x + BP.panelPad}
-        y={bpItemY(BP_ACTIVE_INDEX)}
-        width={BP.w - BP.panelPad * 2}
-        height={BP.itemH}
-        rx={BP.itemRx}
-        fill="var(--bp-accent, var(--color-accent))"
-        className={`${BP_MORPH} opacity-0 group-hover:opacity-15 group-focus-visible:opacity-15`}
-      />
-      {BP_ITEMS.map((opt, i) => (
-        <g key={opt.label}>
-          <text
-            x={BP.x + BP.panelPad + 10}
-            y={bpItemY(i) + (opt.desc ? BP.itemH / 2 - 3 : BP.itemH / 2) + 4}
-            fontSize={11}
-            fontFamily="var(--font-sans)"
-            className={`${BP_MORPH} fill-current opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100`}
-          >
-            {opt.label}
-          </text>
-          {opt.desc && (
+      <g
+        style={{ transformOrigin: `${BP.x + BP.w / 2}px ${BP_PANEL_Y}px` }}
+        className="transition-transform duration-(--motion-dur-showcase) ease-(--motion-ease-out) group-hover:translate-y-[6px] group-hover:delay-[320ms] group-focus-visible:translate-y-[6px] group-focus-visible:delay-[320ms] motion-reduce:transition-none"
+      >
+        <rect
+          x={BP.x}
+          y={BP_PANEL_Y}
+          width={BP.w}
+          height={BP_PANEL_H}
+          rx={BP.inputRx}
+          strokeWidth={theme.wireframe.strokeWidth}
+          className={`${DRAFT_INK_MORPH} fill-transparent stroke-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-popover group-focus-visible:fill-popover group-hover:stroke-(--color-border-strong) group-focus-visible:stroke-(--color-border-strong) group-hover:drop-shadow-md group-focus-visible:drop-shadow-md`}
+        />
+        <rect
+          x={BP.x + BP.panelPad}
+          y={bpItemY(BP_ACTIVE_INDEX)}
+          width={BP.w - BP.panelPad * 2}
+          height={BP.itemH}
+          rx={BP.itemRx}
+          fill="var(--bp-accent, var(--color-accent))"
+          className={`${DRAFT_INK_MORPH} opacity-0 group-hover:opacity-15 group-focus-visible:opacity-15`}
+        />
+        {BP_ITEMS.map((opt, i) => (
+          <g key={opt.label}>
             <text
               x={BP.x + BP.panelPad + 10}
-              y={bpItemY(i) + BP.itemH / 2 + 8}
-              fontSize={8}
+              y={bpItemY(i) + (opt.desc ? BP.itemH / 2 - 3 : BP.itemH / 2) + 4}
+              fontSize={11}
               fontFamily="var(--font-sans)"
-              className={`${BP_MORPH} fill-current opacity-0 group-hover:opacity-60 group-focus-visible:opacity-60`}
+              style={beat(`${450 + i * 70}ms`)}
+              className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-30 group-hover:opacity-100 group-focus-visible:opacity-100`}
             >
-              {opt.desc}
+              {opt.label}
             </text>
-          )}
-        </g>
-      ))}
+            {opt.desc && (
+              <text
+                x={BP.x + BP.panelPad + 10}
+                y={bpItemY(i) + BP.itemH / 2 + 8}
+                fontSize={8}
+                fontFamily="var(--font-sans)"
+                style={beat(`${520 + i * 70}ms`)}
+                className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-20 group-hover:opacity-60 group-focus-visible:opacity-60`}
+              >
+                {opt.desc}
+              </text>
+            )}
+          </g>
+        ))}
+      </g>
 
-      <g className={BP_HIDE_ON_MORPH}>
+      <g className={DRAFT_SCAFFOLD_FADE}>
         <rect
           x={BP.x}
           y={BP_PANEL_Y}
@@ -154,8 +174,10 @@ export function ComboboxBlueprint() {
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="3 3"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <PadGuide
+        <InsetGuide
           x={BP.x + BP.panelPad}
           y={BP_PANEL_Y + BP.panelPad}
           w={BP.w - BP.panelPad * 2}
@@ -167,58 +189,66 @@ export function ComboboxBlueprint() {
           boxH={BP_PANEL_H}
           boxRx={BP.inputRx}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <Selection x={BP.x} y={BP.y} w={BP.w} h={BP.inputH} />
-        <DimH x1={BP.x} x2={BP.x + BP.w} y={BP.y - 8} label={`${BP.w}`} />
-        <DimV
+        <GripFrame x={BP.x} y={BP.y} w={BP.w} h={BP.inputH} style={beat(DRAFT_BEAT.handle)} />
+        <MeasureH
+          x1={BP.x}
+          x2={BP.x + BP.w}
+          y={BP.y - 8}
+          label={`${BP.w}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
           x={BP.x - 12}
           y1={BP.y}
           y2={BP.y + BP.inputH}
           label={`${BP.inputH}`}
           labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
         />
-        <DimV
+        <MeasureV
           x={BP.x - 12}
           y1={BP.y + BP.inputH}
           y2={BP_PANEL_Y}
           label={`${BP.gap}`}
           labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
         />
-        <DimLabel x={BP.x} y={BP.y - 4} anchor="start">
+        <MeasureNote
+          x={BP.x}
+          y={BP.y - 4}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           {`r${BP.inputRx}`}
-        </DimLabel>
+        </MeasureNote>
 
-        <PadGuide
-          x={BP.x + BP.padStart}
-          y={BP.y + BP.padY}
-          w={BP.w - BP.padStart - BP.padEnd}
-          h={BP.inputH - BP.padY * 2}
-          offset={0.8}
-          boxX={BP.x}
-          boxY={BP.y}
-          boxW={BP.w}
-          boxH={BP.inputH}
-          boxRx={BP.inputRx}
-          clipOffset={0.8}
-        />
-
-        <DimLabel x={BP.x + 8} y={BP.y + BP.inputH - 4} anchor="middle">
-          {`${BP.padStart}`}
-        </DimLabel>
-        <DimLabel x={BP.x + BP.w - 20} y={BP.y + BP.inputH - 4} anchor="middle">
-          {`${BP.padEnd}`}
-        </DimLabel>
-        <DimLabel x={BP.x + BP.w / 2} y={BP.y + 6} anchor="middle">
-          {`${BP.padY}`}
-        </DimLabel>
-        <DimLabel x={BP.x + BP.w / 2} y={BP.y + BP.inputH - 2} anchor="middle">
-          {`${BP.padY}`}
-        </DimLabel>
-        <DimLabel x={BP.x + BP.panelPad / 2} y={BP_PANEL_Y + BP_PANEL_H / 2 + 2} anchor="middle">
-          {`${BP.panelPad}`}
-        </DimLabel>
+        <MeasureNote
+          x={BP.x + BP.w + 8}
+          y={BP_PANEL_Y + BP_PANEL_H / 2 + 2}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
+          {`pad ${BP.panelPad}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x}
+          y={BP_PANEL_Y + BP_PANEL_H + 12}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(5))}
+        >
+          {`inset ${BP.padStart}/${BP.padEnd} · py ${BP.padY}`}
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -386,10 +416,10 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={AN.x} y={AN.y} w={AN.w} h={AN.inputH} />
-      <Selection x={AN.x} y={AN_PANEL_Y} w={AN.w} h={AN_PANEL_H} />
-      <DimH x1={AN.x} x2={AN.x + AN.w} y={AN.y - 14} label={`${AN.w}`} />
-      <DimV
+      <GripFrame x={AN.x} y={AN.y} w={AN.w} h={AN.inputH} />
+      <GripFrame x={AN.x} y={AN_PANEL_Y} w={AN.w} h={AN_PANEL_H} />
+      <MeasureH x1={AN.x} x2={AN.x + AN.w} y={AN.y - 14} label={`${AN.w}`} />
+      <MeasureV
         x={AN.x + AN.w + 14}
         y1={AN.y}
         y2={AN.y + AN.inputH}
@@ -397,14 +427,14 @@ function AnnotationsLayer() {
         labelXOffset={5}
         labelAnchor="start"
       />
-      <DimLabel x={AN.x} y={AN.y - 4} anchor="start">
+      <MeasureNote x={AN.x} y={AN.y - 4} anchor="start">
         {`r${AN.inputRx}`}
-      </DimLabel>
-      <DimLabel x={AN.x} y={AN_PANEL_Y - 4} anchor="start">
+      </MeasureNote>
+      <MeasureNote x={AN.x} y={AN_PANEL_Y - 4} anchor="start">
         {`r${AN.inputRx}`}
-      </DimLabel>
+      </MeasureNote>
 
-      <PadGuide
+      <InsetGuide
         x={AN.x + AN.padStart}
         y={AN.y + AN.padY}
         w={AN.w - AN.padStart - AN.padEnd}
@@ -418,19 +448,19 @@ function AnnotationsLayer() {
         clipOffset={0.8}
       />
 
-      <DimLabel x={AN.x + 8} y={AN.y + AN.inputH - 4} anchor="middle">
+      <MeasureNote x={AN.x + 8} y={AN.y + AN.inputH - 4} anchor="middle">
         {`${AN.padStart}`}
-      </DimLabel>
-      <DimLabel x={AN.x + AN.w - 18} y={AN.y + AN.inputH - 4} anchor="middle">
+      </MeasureNote>
+      <MeasureNote x={AN.x + AN.w - 18} y={AN.y + AN.inputH - 4} anchor="middle">
         {`${AN.padEnd}`}
-      </DimLabel>
-      <DimLabel x={AN.x + AN.w / 2} y={AN.y + 7} anchor="middle">
+      </MeasureNote>
+      <MeasureNote x={AN.x + AN.w / 2} y={AN.y + 7} anchor="middle">
         {`${AN.padY}`}
-      </DimLabel>
-      <DimLabel x={AN.x + AN.w / 2} y={AN.y + AN.inputH - 3} anchor="middle">
+      </MeasureNote>
+      <MeasureNote x={AN.x + AN.w / 2} y={AN.y + AN.inputH - 3} anchor="middle">
         {`${AN.padY}`}
-      </DimLabel>
-      <PadGuide
+      </MeasureNote>
+      <InsetGuide
         x={AN.x + AN.panelPad}
         y={AN_PANEL_Y + AN.panelPad}
         w={AN.w - AN.panelPad * 2}
@@ -443,12 +473,12 @@ function AnnotationsLayer() {
         boxRx={AN.inputRx}
         clipOffset={0.8}
       />
-      <DimLabel x={AN.x + AN.panelPad / 2} y={AN_PANEL_Y + AN_PANEL_H / 2 + 2} anchor="middle">
+      <MeasureNote x={AN.x + AN.panelPad / 2} y={AN_PANEL_Y + AN_PANEL_H / 2 + 2} anchor="middle">
         {`${AN.panelPad}`}
-      </DimLabel>
-      <DimLabel x={AN.x} y={AN_PANEL_Y + AN_PANEL_H + 14} anchor="start">
+      </MeasureNote>
+      <MeasureNote x={AN.x} y={AN_PANEL_Y + AN_PANEL_H + 14} anchor="start">
         {`r${AN.itemRx}`}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }

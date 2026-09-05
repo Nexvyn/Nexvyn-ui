@@ -13,18 +13,24 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_FILL_SOLID,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_FILL_PANEL,
+  DRAFT_FILL_SOLID,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 
 const IM = {
   pad: 8,
@@ -42,13 +48,13 @@ const IM_H = IM.pad * 2 + IM.textareaH + IM.rowGap + IM_BOTTOM_H
 const ARROW_PATH = 'M0 5.3V-5.3M-4.7 -0.7L0 -5.3L4.7 -0.7'
 
 const ICON_MORPH =
-  'stroke-current group-hover:stroke-background group-focus-visible:stroke-background transition-[stroke] duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) motion-reduce:transition-none'
+  'stroke-current group-hover:stroke-background group-focus-visible:stroke-background transition-[stroke] duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:delay-(--motion-dur-base) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none'
 
 const BP_X = (220 - IM_W) / 2
 const BP_Y = (140 - IM_H) / 2
 
 export function InputMessageBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   const leftX = BP_X + IM.pad
   const bottomY = BP_Y + IM.pad + IM.textareaH + IM.rowGap
   const leftY = bottomY + (IM_BOTTOM_H - IM.leftSize) / 2
@@ -57,27 +63,41 @@ export function InputMessageBlueprint() {
   const sendCy = bottomY + IM.sendSize / 2
 
   return (
-    <Blueprint>
+    <DraftSurface>
       <rect
         x={BP_X}
         y={BP_Y}
         width={IM_W}
         height={IM_H}
         rx={IM.r}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_PANEL}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
       <text
         x={leftX}
         y={BP_Y + IM.pad + IM.textareaH / 2 + 2.5}
         fontSize={7}
         fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
         Ask me anything…
       </text>
-      <g className={BP_HIDE_ON_MORPH}>
+      <text
+        x={BP_X + IM.pad}
+        y={BP_Y + IM_H + 14}
+        fontSize={8}
+        fontFamily="var(--font-sans)"
+        className={`fill-(--color-error) opacity-0 translate-y-[2px] transition-[opacity,translate] duration-(--motion-dur-slow) ease-(--motion-ease-out) group-hover:opacity-100 group-hover:translate-y-0 group-hover:delay-[400ms] group-focus-visible:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:delay-[400ms] motion-reduce:transition-none`}
+      >
+        Message is required
+      </text>
+      <g className={DRAFT_SCAFFOLD_FADE}>
         <rect
           x={leftX}
           y={leftY}
@@ -88,14 +108,20 @@ export function InputMessageBlueprint() {
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="2 2"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
       </g>
       <g transform={`translate(${sendCx}, ${sendCy})`}>
         <circle
           r={IM.sendSize / 2}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
           strokeWidth={theme.wireframe.strokeWidth}
           strokeOpacity={theme.wireframe.strokeOpacity}
-          className={BP_FILL_SOLID}
+          style={beat(DRAFT_BEAT.outline)}
+          className={`ink-draw ${DRAFT_FILL_SOLID}`}
         />
         <path
           d={ARROW_PATH}
@@ -103,14 +129,32 @@ export function InputMessageBlueprint() {
           strokeWidth={1.4}
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={ICON_MORPH}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
+          style={beat(DRAFT_BEAT.anatomy)}
+          className={`ink-draw ${ICON_MORPH}`}
         />
       </g>
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_X} y={BP_Y} w={IM_W} h={IM_H} />
-        <DimH x1={BP_X} x2={BP_X + IM_W} y={BP_Y - 14} label={`${IM_W}`} />
-        <DimV x={BP_X - 12} y1={BP_Y} y2={BP_Y + IM_H} label={`${IM_H}`} />
-        <PadGuide
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame x={BP_X} y={BP_Y} w={IM_W} h={IM_H} style={beat(DRAFT_BEAT.handle)} />
+        <MeasureH
+          x1={BP_X}
+          x2={BP_X + IM_W}
+          y={BP_Y - 14}
+          label={`${IM_W}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
+          x={BP_X - 12}
+          y1={BP_Y}
+          y2={BP_Y + IM_H}
+          label={`${IM_H}`}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <InsetGuide
           x={BP_X + IM.pad}
           y={BP_Y + IM.pad}
           w={IM_W - IM.pad * 2}
@@ -122,26 +166,47 @@ export function InputMessageBlueprint() {
           boxH={IM_H}
           boxRx={IM.r}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={BP_X + IM.pad} y={BP_Y + IM_H - 2} anchor="start">
+        <MeasureNote
+          x={BP_X + IM.pad}
+          y={BP_Y + IM_H - 2}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           {`${IM.pad}`}
-        </DimLabel>
+        </MeasureNote>
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="2 2"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         >
           <line x1={leftX + 4} y1={BP_Y + IM.pad + IM.textareaH} x2={leftX + 4} y2={bottomY} />
         </g>
-        <DimLabel x={leftX + 8} y={BP_Y + IM.pad + IM.textareaH + IM.rowGap / 2 + 2.5}>
+        <MeasureNote
+          x={leftX + 8}
+          y={BP_Y + IM.pad + IM.textareaH + IM.rowGap / 2 + 2.5}
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           {`${IM.rowGap}`}
-        </DimLabel>
-        <DimLabel x={sendCx} y={BP_Y + IM_H + 12} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={sendCx}
+          y={BP_Y + IM_H + 12}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
           {`r${IM.sendSize / 2}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -293,8 +358,8 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={CONTAINER.x} y={CONTAINER.y} w={CONTAINER.w} h={CONTAINER.h} />
-      <PadGuide
+      <GripFrame x={CONTAINER.x} y={CONTAINER.y} w={CONTAINER.w} h={CONTAINER.h} />
+      <InsetGuide
         x={TEXTAREA.x}
         y={TEXTAREA.y}
         w={CONTAINER.w - IM.pad * 2}
@@ -307,27 +372,27 @@ function AnnotationsLayer() {
         boxRx={CONTAINER.rx}
         clipOffset={0.8}
       />
-      <DimLabel x={CONTAINER.x + IM.pad} y={CONTAINER.y + CONTAINER.h - 2} anchor="start">
+      <MeasureNote x={CONTAINER.x + IM.pad} y={CONTAINER.y + CONTAINER.h - 2} anchor="start">
         {`${IM.pad}`}
-      </DimLabel>
-      <DimLabel
+      </MeasureNote>
+      <MeasureNote
         x={CONTAINER.x + CONTAINER.w - 30}
         y={CONTAINER.y + CONTAINER.h + 14}
         anchor="start"
       >
         {`r${CONTAINER.rx}`}
-      </DimLabel>
+      </MeasureNote>
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line x1={TEXTAREA.x + 4} y1={TEXTAREA.y + TEXTAREA.h} x2={TEXTAREA.x + 4} y2={BOTTOM_Y} />
       </g>
-      <DimLabel x={TEXTAREA.x + 10} y={TEXTAREA.y + TEXTAREA.h + IM.rowGap / 2 + 2.5}>
+      <MeasureNote x={TEXTAREA.x + 10} y={TEXTAREA.y + TEXTAREA.h + IM.rowGap / 2 + 2.5}>
         {`${IM.rowGap}`}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }

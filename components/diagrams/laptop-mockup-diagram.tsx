@@ -6,18 +6,24 @@
 // This file is NOT covered by the repository's root MIT LICENSE.
 
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_FILL_SOLID,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_FILL_PANEL,
+  DRAFT_FILL_SOLID,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 
 const LID = { x: 35, y: 18, w: 150, rx: 5.4 } as const
 const SCALE = LID.w / 280
@@ -43,7 +49,7 @@ function bottomRoundedRectPath(x: number, y: number, w: number, h: number, r: nu
 }
 
 export function LaptopMockupWireframe() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   const baseX = LID.x - BASE_OVERHANG
   const baseW = LID.w + BASE_OVERHANG * 2
   const lidH = LID_BORDER + BEZEL + SCREEN_H
@@ -53,7 +59,7 @@ export function LaptopMockupWireframe() {
   const screenW = LID.w - BEZEL * 2
 
   return (
-    <Blueprint className="h-auto w-80 sm:w-105 lg:w-95">
+    <DraftSurface className="h-auto w-80 sm:w-105 lg:w-95">
       <defs>
         <pattern
           id="bp-hatch-laptop-screen"
@@ -75,28 +81,41 @@ export function LaptopMockupWireframe() {
       </defs>
       <path
         d={topRoundedRectPath(LID.x, LID.y, LID.w, lidH, LID.rx)}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_PANEL}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
 
       <path
         d={topRoundedRectPath(screenX, screenY, screenW, SCREEN_H, SCREEN_RX)}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_SOLID}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`ink-draw ${DRAFT_FILL_SOLID}`}
       />
       <path
         d={topRoundedRectPath(screenX, screenY, screenW, SCREEN_H, SCREEN_RX)}
         fill="url(#bp-hatch-laptop-screen)"
-        className={BP_HIDE_ON_MORPH}
+        style={beat(DRAFT_BEAT.hatch)}
+        className={`${DRAFT_SCAFFOLD_FADE} fade-note`}
       />
 
       <path
         d={bottomRoundedRectPath(baseX, lidBottom, baseW, BASE_H, LID.rx)}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_PANEL}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
 
       <rect
@@ -105,17 +124,45 @@ export function LaptopMockupWireframe() {
         width={NOTCH.w}
         height={NOTCH.h}
         rx={NOTCH.rx / 2}
-        className={`${BP_MORPH} fill-current opacity-30 group-hover:opacity-60 group-focus-visible:opacity-60`}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-30 group-hover:opacity-60 group-focus-visible:opacity-60`}
+        style={beat(DRAFT_BEAT.hatch)}
       />
 
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={baseX} y={LID.y} w={baseW} h={lidBottom + BASE_H - LID.y} />
-        <DimH x1={LID.x} x2={LID.x + LID.w} y={LID.y - 8} label="280" />
-        <DimV x={baseX - 7} y1={LID.y} y2={lidBottom} label="184" labelXOffset={-6} />
-        <DimLabel x={LID.x} y={LID.y - 12} anchor="start">
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
+          x={baseX}
+          y={LID.y}
+          w={baseW}
+          h={lidBottom + BASE_H - LID.y}
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <MeasureH
+          x1={LID.x}
+          x2={LID.x + LID.w}
+          y={LID.y - 8}
+          label="280"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
+          x={baseX - 7}
+          y1={LID.y}
+          y2={lidBottom}
+          label="184"
+          labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <MeasureNote
+          x={LID.x}
+          y={LID.y - 12}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           r10
-        </DimLabel>
-        <PadGuide
+        </MeasureNote>
+        <InsetGuide
           x={screenX}
           y={screenY}
           w={screenW}
@@ -127,14 +174,28 @@ export function LaptopMockupWireframe() {
           boxH={lidH}
           boxRx={LID.rx}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={LID.x + LID.w + 6} y={screenY + 4} anchor="start">
+        <MeasureNote
+          x={LID.x + LID.w + 6}
+          y={screenY + 4}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           6
-        </DimLabel>
-        <DimLabel x={LID.x + LID.w / 2} y={lidBottom + BASE_H + 10} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={LID.x + LID.w / 2}
+          y={lidBottom + BASE_H + 10}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
           base +35
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }

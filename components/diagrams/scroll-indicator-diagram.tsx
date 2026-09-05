@@ -5,14 +5,22 @@
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
 // This file is NOT covered by the repository's root MIT LICENSE.
 
+import { type CSSProperties } from 'react'
+
 import {
-  Blueprint,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  DimLabel,
-  DimV,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  MeasureNote,
+  MeasureV,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
   AnatomyTag,
@@ -28,11 +36,14 @@ const BP_TICK_COUNT = 16
 const BP_ACTIVE_INDEX = 6
 const BP_HEADING_INDICES = [0, 6, 11] as const
 
+const BP_ACTIVE_Y = BP_RAIL_Y1 + (BP_ACTIVE_INDEX / (BP_TICK_COUNT - 1)) * (BP_RAIL_Y2 - BP_RAIL_Y1)
+const BP_THUMB_SLIDE = Math.round(BP_RAIL_Y2 - BP_ACTIVE_Y)
+
 export function ScrollIndicatorWireframe() {
   const ticks = Array.from({ length: BP_TICK_COUNT })
-  const activeY = BP_RAIL_Y1 + (BP_ACTIVE_INDEX / (BP_TICK_COUNT - 1)) * (BP_RAIL_Y2 - BP_RAIL_Y1)
+  const activeY = BP_ACTIVE_Y
   return (
-    <Blueprint>
+    <DraftSurface>
       <g>
         {ticks.map((_, i) => {
           const y = BP_RAIL_Y1 + (i / (BP_TICK_COUNT - 1)) * (BP_RAIL_Y2 - BP_RAIL_Y1)
@@ -45,48 +56,71 @@ export function ScrollIndicatorWireframe() {
               y1={y}
               x2={BP_RAIL_X}
               y2={y}
+              pathLength={1}
+              strokeDasharray={1}
+              strokeDashoffset={1}
               stroke={isPast && isMajor ? 'var(--color-accent)' : 'currentColor'}
               strokeWidth={isMajor ? 1.25 : 1}
-              className={`${BP_MORPH} ${isPast ? 'opacity-90 group-hover:opacity-100' : 'opacity-30 group-hover:opacity-50'}`}
+              style={beat(DRAFT_BEAT.outline)}
+              className={`ink-draw ${DRAFT_INK_MORPH} ${isPast ? 'opacity-90 group-hover:opacity-100' : 'opacity-30 group-hover:opacity-50'}`}
             />
           )
         })}
       </g>
-      <line
-        x1={BP_RAIL_X - 16}
-        y1={activeY}
-        x2={BP_RAIL_X}
-        y2={activeY}
-        stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={2}
-        strokeLinecap="round"
-      />
-      <text
-        x={BP_RAIL_X - 22}
-        y={activeY + 3}
-        textAnchor="end"
-        fontSize={11}
-        fontFamily="var(--font-mono)"
-        fontWeight={500}
-        className={`${BP_MORPH} fill-current opacity-40 group-hover:opacity-100 group-focus-visible:opacity-100`}
+      <g
+        className="translate-y-0 transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-y-(--bp-thumb-travel) group-hover:delay-(--motion-dur-base) group-focus-visible:translate-y-(--bp-thumb-travel) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
+        style={{ '--bp-thumb-travel': `${BP_THUMB_SLIDE}px` } as CSSProperties}
       >
-        Design
-      </text>
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_RAIL_X - 16} y={BP_RAIL_Y1} w={16} h={BP_RAIL_Y2 - BP_RAIL_Y1} />
-        <DimV
+        <line
+          x1={BP_RAIL_X - 16}
+          y1={activeY}
+          x2={BP_RAIL_X}
+          y2={activeY}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
+          stroke="var(--bp-accent, var(--color-accent))"
+          strokeWidth={2}
+          strokeLinecap="round"
+          style={beat(DRAFT_BEAT.anatomy)}
+          className="ink-draw"
+        />
+        <text
+          x={BP_RAIL_X - 22}
+          y={activeY + 3}
+          textAnchor="end"
+          fontSize={11}
+          fontFamily="var(--font-mono)"
+          fontWeight={500}
+          style={beat(DRAFT_LABEL_BEAT)}
+          className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-40 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        >
+          Design
+        </text>
+      </g>
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
+          x={BP_RAIL_X - 16}
+          y={BP_RAIL_Y1}
+          w={16}
+          h={BP_RAIL_Y2 - BP_RAIL_Y1}
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <MeasureV
           x={BP_RAIL_X + 14}
           y1={BP_RAIL_Y1}
           y2={BP_RAIL_Y2}
           label={`${BP_RAIL_Y2 - BP_RAIL_Y1}`}
           labelXOffset={5}
           labelAnchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
         />
-        <DimLabel x={10} y={18} anchor="start">
+        <MeasureNote x={10} y={18} anchor="start" className="note-stamp" style={beat(stampBeat(1))}>
           ticks · hover reveals labels
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -272,8 +306,8 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={RAIL_X - 16} y={RAIL_Y1} w={16} h={RAIL_Y2 - RAIL_Y1} />
-      <DimV
+      <GripFrame x={RAIL_X - 16} y={RAIL_Y1} w={16} h={RAIL_Y2 - RAIL_Y1} />
+      <MeasureV
         x={RAIL_X + 90}
         y1={RAIL_Y1}
         y2={RAIL_Y2}

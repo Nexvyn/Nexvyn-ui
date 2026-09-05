@@ -1,18 +1,24 @@
 'use client'
 
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_BEAT,
+  DRAFT_FILL_PANEL,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  beat,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
   AnatomyTag,
@@ -22,57 +28,63 @@ import {
 } from '@/components/diagrams/lib/anatomy-parts'
 
 const BP = {
-  x: 30,
-  y: 14,
-  w: 160,
-  triggerH: 40,
-  triggerRx: 6,
+  x: 36,
+  y: 8,
+  w: 148,
+  triggerH: 44,
+  triggerRx: 11,
   triggerPadX: 16,
-  triggerPadY: 11,
-  gap: 6,
+  triggerPadY: 12,
+  gap: 8,
   panelPad: 6,
-  itemH: 22,
-  itemRx: 4,
+  itemH: 44,
+  itemRx: 9,
 } as const
 
 const BP_PANEL_Y = BP.y + BP.triggerH + BP.gap
-const BP_PANEL_H = BP.panelPad * 2 + 3 * BP.itemH
-const BP_ITEMS = ['Small', 'Medium', 'Large'] as const
+// The 144px panel exceeds the 140px sheet, so only its final two rows are visible.
+const BP_ROWS = ['Medium', 'Large'] as const
+const BP_SELECTED_INDEX = 1
 
 function bpItemY(i: number) {
   return BP_PANEL_Y + BP.panelPad + i * BP.itemH
 }
 
 export function SelectBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <Blueprint>
+    <DraftSurface>
       <rect
         x={BP.x}
         y={BP.y}
         width={BP.w}
         height={BP.triggerH}
         rx={BP.triggerRx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_PANEL}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_PANEL} supports-[corner-shape:squircle]:corner-squircle`}
       />
       <text
         x={BP.x + BP.triggerPadX}
-        y={BP.y + BP.triggerH / 2 + 4}
-        fontSize={13}
+        y={BP.y + BP.triggerH / 2 + 5}
+        fontSize={14}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
-        Select...
+        Choose size
       </text>
 
       <g
         style={{
           transformOrigin: `${BP.x + BP.w - BP.triggerPadX - 4}px ${BP.y + BP.triggerH / 2}px`,
         }}
-        className="transition-transform duration-(--motion-dur-base) ease-(--motion-ease-in-out) group-hover:rotate-180 group-focus-visible:rotate-180 motion-reduce:transition-none motion-reduce:transform-none"
+        className="transition-transform duration-(--motion-dur-base) ease-(--motion-ease-in-out) group-hover:rotate-180 group-focus-visible:rotate-180 motion-reduce:transition-none motion-reduce:rotate-none"
       >
         <path
           d={`M${BP.x + BP.w - BP.triggerPadX - 8} ${BP.y + BP.triggerH / 2 - 3} l4 4 4-4`}
@@ -81,19 +93,19 @@ export function SelectBlueprint() {
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={`${BP_MORPH} opacity-55 group-hover:opacity-100 group-focus-visible:opacity-100`}
+          className={`${DRAFT_INK_MORPH} opacity-55 group-hover:opacity-100 group-focus-visible:opacity-100`}
         />
       </g>
       <rect
         x={BP.x}
         y={BP_PANEL_Y}
         width={BP.w}
-        height={BP_PANEL_H}
+        height={BP.panelPad * 2 + BP.itemH * 2}
         rx={BP.triggerRx}
         strokeWidth={theme.wireframe.strokeWidth}
-        className={`${BP_MORPH} fill-transparent stroke-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-popover group-focus-visible:fill-popover group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
+        className={`${DRAFT_INK_MORPH} supports-[corner-shape:squircle]:corner-squircle fill-transparent stroke-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-popover group-focus-visible:fill-popover group-hover:stroke-(--color-border-strong) group-focus-visible:stroke-(--color-border-strong) group-hover:drop-shadow-md group-focus-visible:drop-shadow-md`}
       />
-      <g className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-out) delay-0 group-hover:translate-y-5.5 group-focus-visible:translate-y-5.5 group-hover:delay-150 group-focus-visible:delay-150 motion-reduce:transition-none motion-reduce:transform-none">
+      <g className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-out) delay-0 group-hover:translate-y-11 group-focus-visible:translate-y-11 group-hover:delay-[350ms] group-focus-visible:delay-[350ms] motion-reduce:transition-none">
         <rect
           x={BP.x + BP.panelPad}
           y={bpItemY(0)}
@@ -101,69 +113,112 @@ export function SelectBlueprint() {
           height={BP.itemH}
           rx={BP.itemRx}
           fill="var(--bp-accent, var(--color-accent))"
-          className={`${BP_MORPH} opacity-0 group-hover:opacity-15 group-focus-visible:opacity-15`}
+          className={`${DRAFT_INK_MORPH} opacity-0 group-hover:opacity-15 group-focus-visible:opacity-15`}
         />
       </g>
-      {BP_ITEMS.map((label, i) => (
-        <text
-          key={label}
-          x={BP.x + BP.panelPad + 10}
-          y={bpItemY(i) + BP.itemH / 2 + 4}
-          fontSize={12}
-          fontFamily="var(--font-sans)"
-          className={`${BP_MORPH} fill-current opacity-40 group-hover:opacity-100 group-focus-visible:opacity-100`}
-        >
-          {label}
-        </text>
+      {BP_ROWS.map((label, i) => (
+        <g key={label}>
+          {i === BP_SELECTED_INDEX && (
+            <rect
+              x={BP.x + BP.panelPad}
+              y={bpItemY(i)}
+              width={BP.w - BP.panelPad * 2}
+              height={BP.itemH}
+              rx={BP.itemRx}
+              fill="var(--bp-accent, var(--color-accent))"
+              className={`${DRAFT_INK_MORPH} opacity-0 group-hover:opacity-15 group-focus-visible:opacity-15`}
+            />
+          )}
+          <text
+            x={BP.x + BP.panelPad + 12}
+            y={bpItemY(i) + BP.itemH / 2 + 5}
+            fontSize={14}
+            fontFamily="var(--font-sans)"
+            className={`${DRAFT_INK_MORPH} fill-current opacity-40 group-hover:opacity-100 group-focus-visible:opacity-100`}
+          >
+            {label}
+          </text>
+          {i === BP_SELECTED_INDEX && (
+            <path
+              d={`M ${BP.x + BP.w - BP.panelPad - 21} ${bpItemY(i) + BP.itemH / 2} l3.5 3.5 l7 -7`}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.75}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`${DRAFT_INK_MORPH} opacity-45 group-hover:opacity-95 group-focus-visible:opacity-95`}
+            />
+          )}
+        </g>
       ))}
 
-      <g className={BP_HIDE_ON_MORPH}>
+      <g className={DRAFT_SCAFFOLD_FADE}>
         <rect
           x={BP.x}
           y={BP_PANEL_Y}
           width={BP.w}
-          height={BP_PANEL_H}
+          height={BP.panelPad * 2 + BP.itemH * 2}
           rx={BP.triggerRx}
           fill="none"
           stroke="currentColor"
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="3 3"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <PadGuide
+        <InsetGuide
           x={BP.x + BP.panelPad}
           y={BP_PANEL_Y + BP.panelPad}
           w={BP.w - BP.panelPad * 2}
-          h={BP_PANEL_H - BP.panelPad * 2}
+          h={BP.itemH * 2}
           offset={0.8}
           boxX={BP.x}
           boxY={BP_PANEL_Y}
           boxW={BP.w}
-          boxH={BP_PANEL_H}
+          boxH={BP.panelPad * 2 + BP.itemH * 2}
           boxRx={BP.triggerRx}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <Selection x={BP.x} y={BP.y} w={BP.w} h={BP.triggerH} />
-        <DimH x1={BP.x} x2={BP.x + BP.w} y={BP.y - 8} label={`${BP.w}`} />
-        <DimV
+        <GripFrame
+          x={BP.x}
+          y={BP.y}
+          w={BP.w}
+          h={BP.triggerH}
+          className="note-stamp"
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <MeasureV
           x={BP.x - 12}
           y1={BP.y}
           y2={BP.y + BP.triggerH}
           label={`${BP.triggerH}`}
           labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
         />
-        <DimV
+        <MeasureV
           x={BP.x - 12}
           y1={BP.y + BP.triggerH}
           y2={BP_PANEL_Y}
           label={`${BP.gap}`}
           labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
         />
-        <DimLabel x={BP.x} y={BP.y - 4} anchor="start">
+        <MeasureNote
+          x={BP.x}
+          y={BP.y - 2}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           {`r${BP.triggerRx}`}
-        </DimLabel>
+        </MeasureNote>
 
-        <PadGuide
+        <InsetGuide
           x={BP.x + BP.triggerPadX}
           y={BP.y + BP.triggerPadY}
           w={BP.w - BP.triggerPadX * 2}
@@ -175,25 +230,76 @@ export function SelectBlueprint() {
           boxH={BP.triggerH}
           boxRx={BP.triggerRx}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
 
-        <DimLabel x={BP.x + 7} y={BP.y + BP.triggerH - 4} anchor="middle">
+        <MeasureNote
+          x={BP.x + 7}
+          y={BP.y + BP.triggerH - 4}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           {`${BP.triggerPadX}`}
-        </DimLabel>
-        <DimLabel x={BP.x + BP.w - 7} y={BP.y + BP.triggerH - 4} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x + BP.w - 7}
+          y={BP.y + BP.triggerH - 4}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           {`${BP.triggerPadX}`}
-        </DimLabel>
-        <DimLabel x={BP.x + BP.w / 2} y={BP.y + 6} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x + BP.w / 2}
+          y={BP.y + 7}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           {`${BP.triggerPadY}`}
-        </DimLabel>
-        <DimLabel x={BP.x + BP.w / 2} y={BP.y + BP.triggerH - 2} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x + BP.w / 2}
+          y={BP.y + BP.triggerH - 3}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           {`${BP.triggerPadY}`}
-        </DimLabel>
-        <DimLabel x={BP.x + BP.panelPad / 2} y={BP_PANEL_Y + BP_PANEL_H / 2 + 2} anchor="middle">
+        </MeasureNote>
+        <MeasureV
+          x={BP.x + BP.w + 12}
+          y1={bpItemY(0)}
+          y2={bpItemY(0) + BP.itemH}
+          label={`${BP.itemH}`}
+          labelXOffset={5}
+          labelAnchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <MeasureNote
+          x={BP.x - 4}
+          y={bpItemY(1) + 10}
+          anchor="end"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
+          {`r${BP.itemRx}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x + BP.panelPad / 2}
+          y={BP_PANEL_Y + BP.panelPad + BP.itemH}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           {`${BP.panelPad}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -201,14 +307,14 @@ const AN = {
   x: 60,
   y: 20,
   w: 130,
-  triggerH: 36,
-  triggerRx: 6,
+  triggerH: 44,
+  triggerRx: 11,
   triggerPadX: 16,
   triggerPadY: 12,
   gap: 8,
   panelPad: 6,
-  itemH: 32,
-  itemRx: 4,
+  itemH: 44,
+  itemRx: 9,
 } as const
 
 const AN_PANEL_Y = AN.y + AN.triggerH + AN.gap
@@ -241,12 +347,12 @@ function TriggerShape() {
         strokeWidth={hovered === 'trigger' ? 2 : 1.25}
         fill={hovered === 'trigger' ? 'currentColor' : 'transparent'}
         fillOpacity={hovered === 'trigger' ? 0.05 : 0}
-        className={spotlight.className}
+        className={`supports-[corner-shape:squircle]:corner-squircle ${spotlight.className}`}
       />
       <text
         x={AN.x + 14}
-        y={AN.y + AN.triggerH / 2 + 4}
-        fontSize={13}
+        y={AN.y + AN.triggerH / 2 + 5}
+        fontSize={14}
         fontFamily="var(--font-sans)"
         className={`fill-current pointer-events-none ${spotlight.className}`}
       >
@@ -281,7 +387,7 @@ function ContentShape() {
       strokeWidth={hovered === 'content' ? 2 : 1.25}
       fill={hovered === 'content' ? 'currentColor' : 'var(--color-bg)'}
       fillOpacity={hovered === 'content' ? 0.04 : 1}
-      className={`cursor-pointer ${spotlight.className}`}
+      className={`cursor-pointer supports-[corner-shape:squircle]:corner-squircle ${spotlight.className}`}
       style={{ ...spotlight.style, pointerEvents: 'all' }}
       onMouseEnter={() => setHovered('content')}
       onMouseLeave={() => setHovered(null)}
@@ -323,17 +429,28 @@ function ItemShape({ index, label }: { index: number; label: string }) {
         rx={AN.itemRx}
         fill="currentColor"
         fillOpacity={hovered === partId ? 0.06 : 0}
-        className={spotlight.className}
+        className={`supports-[corner-shape:squircle]:corner-squircle ${spotlight.className}`}
       />
       <text
         x={AN.x + AN.panelPad + 12}
-        y={y + AN.itemH / 2 + 4}
-        fontSize={13}
+        y={y + AN.itemH / 2 + 5}
+        fontSize={14}
         fontFamily="var(--font-sans)"
         className={`fill-current pointer-events-none ${spotlight.className}`}
       >
         {label}
       </text>
+      {isSelected && (
+        <path
+          d={`M ${AN.x + AN.w - AN.panelPad - 21} ${y + AN.itemH / 2} l3.5 3.5 l7 -7`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.75}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="pointer-events-none"
+        />
+      )}
     </g>
   )
 }
@@ -347,10 +464,10 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={AN.x} y={AN.y} w={AN.w} h={AN.triggerH} />
-      <Selection x={AN.x} y={AN_PANEL_Y} w={AN.w} h={AN_PANEL_H} />
-      <DimH x1={AN.x} x2={AN.x + AN.w} y={AN.y - 14} label={`${AN.w}`} />
-      <DimV
+      <GripFrame x={AN.x} y={AN.y} w={AN.w} h={AN.triggerH} />
+      <GripFrame x={AN.x} y={AN_PANEL_Y} w={AN.w} h={AN_PANEL_H} />
+      <MeasureH x1={AN.x} x2={AN.x + AN.w} y={AN.y - 14} label={`${AN.w}`} />
+      <MeasureV
         x={AN.x + AN.w + 14}
         y1={AN.y}
         y2={AN.y + AN.triggerH}
@@ -358,14 +475,14 @@ function AnnotationsLayer() {
         labelXOffset={5}
         labelAnchor="start"
       />
-      <DimLabel x={AN.x} y={AN.y - 4} anchor="start">
+      <MeasureNote x={AN.x} y={AN.y - 4} anchor="start">
         {`r${AN.triggerRx}`}
-      </DimLabel>
-      <DimLabel x={AN.x} y={AN_PANEL_Y - 4} anchor="start">
+      </MeasureNote>
+      <MeasureNote x={AN.x} y={AN_PANEL_Y - 4} anchor="start">
         {`r${AN.triggerRx}`}
-      </DimLabel>
+      </MeasureNote>
 
-      <PadGuide
+      <InsetGuide
         x={AN.x + AN.triggerPadX}
         y={AN.y + AN.triggerPadY}
         w={AN.w - AN.triggerPadX * 2}
@@ -379,19 +496,19 @@ function AnnotationsLayer() {
         clipOffset={0.8}
       />
 
-      <DimLabel x={AN.x + 7} y={AN.y + AN.triggerH - 4} anchor="middle">
+      <MeasureNote x={AN.x + 7} y={AN.y + AN.triggerH - 4} anchor="middle">
         {`${AN.triggerPadX}`}
-      </DimLabel>
-      <DimLabel x={AN.x + AN.w - 7} y={AN.y + AN.triggerH - 4} anchor="middle">
+      </MeasureNote>
+      <MeasureNote x={AN.x + AN.w - 7} y={AN.y + AN.triggerH - 4} anchor="middle">
         {`${AN.triggerPadX}`}
-      </DimLabel>
-      <DimLabel x={AN.x + AN.w / 2} y={AN.y + 7} anchor="middle">
+      </MeasureNote>
+      <MeasureNote x={AN.x + AN.w / 2} y={AN.y + 7} anchor="middle">
         {`${AN.triggerPadY}`}
-      </DimLabel>
-      <DimLabel x={AN.x + AN.w / 2} y={AN.y + AN.triggerH - 3} anchor="middle">
+      </MeasureNote>
+      <MeasureNote x={AN.x + AN.w / 2} y={AN.y + AN.triggerH - 3} anchor="middle">
         {`${AN.triggerPadY}`}
-      </DimLabel>
-      <PadGuide
+      </MeasureNote>
+      <InsetGuide
         x={AN.x + AN.panelPad}
         y={AN_PANEL_Y + AN.panelPad}
         w={AN.w - AN.panelPad * 2}
@@ -404,12 +521,12 @@ function AnnotationsLayer() {
         boxRx={AN.triggerRx}
         clipOffset={0.8}
       />
-      <DimLabel x={AN.x + AN.panelPad / 2} y={AN_PANEL_Y + AN_PANEL_H / 2 + 2} anchor="middle">
+      <MeasureNote x={AN.x + AN.panelPad / 2} y={AN_PANEL_Y + AN_PANEL_H / 2 + 2} anchor="middle">
         {`${AN.panelPad}`}
-      </DimLabel>
-      <DimLabel x={AN.x} y={AN_PANEL_Y + AN_PANEL_H + 14} anchor="start">
+      </MeasureNote>
+      <MeasureNote x={AN.x} y={AN_PANEL_Y + AN_PANEL_H + 14} anchor="start">
         {`r${AN.itemRx}`}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }
@@ -491,7 +608,7 @@ function TagsLayer() {
 
 export function SelectBreakdown() {
   return (
-    <AnatomyFrame viewBox="-10 -10 350 220" maxWidthClassName="max-w-[440px]">
+    <AnatomyFrame viewBox="-10 -10 350 244" maxWidthClassName="max-w-[440px]">
       <TriggerShape />
       <ContentShape />
       {AN_ITEMS.map((label, index) => (

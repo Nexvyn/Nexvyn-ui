@@ -14,30 +14,36 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  blueprintTheme,
-  DimH,
-  DimV,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  draftTheme,
+  MeasureH,
+  MeasureV,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 
-const BP_FILL_ACCENT = `${BP_MORPH} fill-transparent stroke-current group-hover:fill-(--color-accent) group-focus-visible:fill-(--color-accent) group-hover:stroke-transparent group-focus-visible:stroke-transparent`
+const BP_FILL_ACCENT = `${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:fill-(--color-accent) group-focus-visible:fill-(--color-accent) group-hover:stroke-transparent group-focus-visible:stroke-transparent`
 
 const BP_CX = 110
 const BP_CY = 70
 const BP_R = 42
 
 export function FluidOrbBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   const blurId = useId()
   const wrapX = BP_CX - BP_R
   const wrapY = BP_CY - BP_R
   const wrapSide = BP_R * 2
 
   return (
-    <Blueprint>
+    <DraftSurface>
       <defs>
         <filter id={blurId}>
           <feGaussianBlur stdDeviation="4" />
@@ -47,35 +53,60 @@ export function FluidOrbBlueprint() {
         cx={BP_CX}
         cy={BP_CY}
         r={BP_R}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         filter={`url(#${blurId})`}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity * 0.6}
-        className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-(--color-surface-2) group-hover:stroke-transparent group-focus-visible:fill-(--color-surface-2) group-focus-visible:stroke-transparent`}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:fill-(--color-surface-2) group-hover:stroke-transparent group-focus-visible:fill-(--color-surface-2) group-focus-visible:stroke-transparent`}
       />
       <circle
         cx={BP_CX}
         cy={BP_CY}
         r={BP_R - 3}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_ACCENT}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${BP_FILL_ACCENT}`}
       />
       <circle
         cx={BP_CX - BP_R * 0.32}
         cy={BP_CY - BP_R * 0.32}
         r={5}
-        className="fill-(--color-accent) opacity-70 group-hover:opacity-100 transition-[opacity,transform] duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none"
-        style={{ transformOrigin: `${BP_CX - BP_R * 0.32}px ${BP_CY - BP_R * 0.32}px` }}
+        className="fill-(--color-accent) opacity-70 group-hover:opacity-100 group-hover:delay-(--motion-dur-base) group-focus-visible:delay-(--motion-dur-base) transition-[opacity,transform] duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none fade-note"
+        style={{
+          transformOrigin: `${BP_CX - BP_R * 0.32}px ${BP_CY - BP_R * 0.32}px`,
+          ...beat(DRAFT_BEAT.hatch),
+        }}
       />
       <g
-        className={`${BP_HIDE_ON_MORPH} transition-transform`}
+        className={`${DRAFT_SCAFFOLD_FADE} transition-transform`}
         style={{ transformOrigin: `${BP_CX}px ${BP_CY}px` }}
       >
-        <Selection x={wrapX} y={wrapY} w={wrapSide} h={wrapSide} />
-        <DimH x1={wrapX} x2={wrapX + wrapSide} y={wrapY - 14} label="size" />
-        <DimV x={wrapX - 12} y1={wrapY} y2={wrapY + wrapSide} label="size" />
+        <GripFrame x={wrapX} y={wrapY} w={wrapSide} h={wrapSide} style={beat(DRAFT_BEAT.handle)} />
+        <MeasureH
+          x1={wrapX}
+          x2={wrapX + wrapSide}
+          y={wrapY - 14}
+          label="size"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
+          x={wrapX - 12}
+          y1={wrapY}
+          y2={wrapY + wrapSide}
+          label="size"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -154,9 +185,9 @@ function WrapperAnnotation() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={x} y={y} w={side} h={side} />
-      <DimH x1={x} x2={x + side} y={y - 14} label="size" />
-      <DimV x={x - 12} y1={y} y2={y + side} label="size" />
+      <GripFrame x={x} y={y} w={side} h={side} />
+      <MeasureH x1={x} x2={x + side} y={y - 14} label="size" />
+      <MeasureV x={x - 12} y1={y} y2={y + side} label="size" />
     </g>
   )
 }

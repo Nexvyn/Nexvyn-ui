@@ -6,19 +6,25 @@
 // This file is NOT covered by the repository's root MIT LICENSE.
 
 import {
-  type BlueprintTheme,
-  Blueprint,
-  BP_FILL_MUTED,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  type DraftTheme,
+  DraftSurface,
+  DRAFT_FILL_MUTED,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
   AnatomyTag,
@@ -32,18 +38,22 @@ const BP_PANEL = { x: 60, y: 50, w: 100, h: 84, rx: 20 } as const
 const BP_ITEM_CYS = [68, 92, 116] as const
 
 export function GooDropdownWireframe() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <Blueprint>
+    <DraftSurface>
       <rect
         x={BP_TRIGGER.x}
         y={BP_TRIGGER.y}
         width={BP_TRIGGER.w}
         height={BP_TRIGGER.h}
         rx={BP_TRIGGER.rx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={`${BP_FILL_MUTED} stroke-current`}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_MUTED} stroke-current`}
       />
       <text
         x={BP_TRIGGER.x + BP_TRIGGER.w / 2}
@@ -51,34 +61,40 @@ export function GooDropdownWireframe() {
         textAnchor="middle"
         fontSize={15}
         fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
         Share
       </text>
-      <rect
-        x={BP_PANEL.x}
-        y={BP_PANEL.y}
-        width={BP_PANEL.w}
-        height={BP_PANEL.h}
-        rx={BP_PANEL.rx}
-        strokeWidth={theme.wireframe.strokeWidth}
-        className={`${BP_MORPH} fill-transparent stroke-current opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-card group-focus-visible:fill-card group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
-      />
-      {BP_ITEM_CYS.map((cy, i) => (
-        <text
-          key={cy}
-          x={BP_PANEL.x + 14}
-          y={cy + 4}
-          fontSize={11}
-          fontFamily="var(--font-sans)"
-          className={`${BP_MORPH} fill-transparent stroke-current opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-current group-focus-visible:fill-current group-hover:stroke-transparent group-focus-visible:stroke-transparent`}
-          strokeWidth={0.8}
-        >
-          {['Copy link', 'Embed', 'Share…'][i]}
-        </text>
-      ))}
+      <g
+        style={{ transformOrigin: `${BP_PANEL.x + BP_PANEL.w / 2}px ${BP_PANEL.y}px` }}
+        className="transition-transform duration-(--motion-dur-showcase) ease-(--motion-ease-out) group-hover:translate-y-[6px] group-hover:delay-[320ms] group-focus-visible:translate-y-[6px] group-focus-visible:delay-[320ms] motion-reduce:transition-none"
+      >
+        <rect
+          x={BP_PANEL.x}
+          y={BP_PANEL.y}
+          width={BP_PANEL.w}
+          height={BP_PANEL.h}
+          rx={BP_PANEL.rx}
+          strokeWidth={theme.wireframe.strokeWidth}
+          className={`${DRAFT_INK_MORPH} fill-transparent stroke-current opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:fill-popover group-focus-visible:fill-popover group-hover:stroke-(--color-border-strong) group-focus-visible:stroke-(--color-border-strong) group-hover:drop-shadow-md group-focus-visible:drop-shadow-md`}
+        />
+        {BP_ITEM_CYS.map((cy, i) => (
+          <text
+            key={cy}
+            x={BP_PANEL.x + 14}
+            y={cy + 4}
+            fontSize={11}
+            fontFamily="var(--font-sans)"
+            style={beat(`${450 + i * 70}ms`)}
+            className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-30 group-hover:opacity-100 group-focus-visible:opacity-100`}
+          >
+            {['Copy link', 'Embed', 'Share…'][i]}
+          </text>
+        ))}
+      </g>
 
-      <g className={BP_HIDE_ON_MORPH}>
+      <g className={DRAFT_SCAFFOLD_FADE}>
         <path
           d={`M${BP_TRIGGER.x + BP_TRIGGER.w / 2 - 6} ${BP_TRIGGER.y + BP_TRIGGER.h} q6 8 12 0`}
           fill="none"
@@ -86,6 +102,8 @@ export function GooDropdownWireframe() {
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="2 2"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
         <rect
           x={BP_PANEL.x}
@@ -98,18 +116,28 @@ export function GooDropdownWireframe() {
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="3 3"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
       </g>
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_TRIGGER.x} y={BP_TRIGGER.y} w={BP_TRIGGER.w} h={BP_TRIGGER.h} />
-        <DimLabel
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
+          x={BP_TRIGGER.x}
+          y={BP_TRIGGER.y}
+          w={BP_TRIGGER.w}
+          h={BP_TRIGGER.h}
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <MeasureNote
           x={BP_TRIGGER.x + BP_TRIGGER.w + 10}
           y={BP_TRIGGER.y + BP_TRIGGER.h / 2 + 3}
           anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
         >
           {`${BP_TRIGGER.w}x${BP_TRIGGER.h} r${BP_TRIGGER.rx}`}
-        </DimLabel>
-        <PadGuide
+        </MeasureNote>
+        <InsetGuide
           x={BP_PANEL.x + 6}
           y={BP_PANEL.y + 6}
           w={BP_PANEL.w - 12}
@@ -121,28 +149,44 @@ export function GooDropdownWireframe() {
           boxH={BP_PANEL.h}
           boxRx={BP_PANEL.rx}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={BP_PANEL.x + 3} y={BP_PANEL.y - 4} anchor="middle">
+        <MeasureNote
+          x={BP_PANEL.x + BP_PANEL.w - 3}
+          y={BP_PANEL.y - 4}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        >
           6
-        </DimLabel>
-        <DimV
+        </MeasureNote>
+        <MeasureV
           x={BP_TRIGGER.x - 12}
           y1={BP_TRIGGER.y + BP_TRIGGER.h}
           y2={BP_PANEL.y}
           label={`${BP_PANEL.y - (BP_TRIGGER.y + BP_TRIGGER.h)}`}
           labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
         />
-        <DimLabel x={BP_PANEL.x + BP_PANEL.w + 6} y={BP_ITEM_CYS[1] + 3} anchor="start">
+        <MeasureNote
+          x={BP_PANEL.x + BP_PANEL.w + 6}
+          y={BP_ITEM_CYS[1] + 3}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           goo gap
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
 const AN_ITEMS = ['Copy link', 'Share on X', 'Embed'] as const
 
-function TriggerShape({ theme }: { theme: BlueprintTheme }) {
+function TriggerShape({ theme }: { theme: DraftTheme }) {
   const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('trigger')
 
@@ -190,7 +234,7 @@ function TriggerTextShape() {
   )
 }
 
-function PanelShape({ theme }: { theme: BlueprintTheme }) {
+function PanelShape({ theme }: { theme: DraftTheme }) {
   const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('panel')
 
@@ -237,15 +281,7 @@ function GooBridgeShape() {
   )
 }
 
-function ItemShape({
-  theme,
-  index,
-  label,
-}: {
-  theme: BlueprintTheme
-  index: number
-  label: string
-}) {
+function ItemShape({ theme, index, label }: { theme: DraftTheme; index: number; label: string }) {
   const { hovered, setHovered } = useAnatomy()
   const partId = `item-${index}`
   const spotlight = useSpotlight(partId)
@@ -297,13 +333,13 @@ function AnnotationsLayer() {
     >
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line x1={49} y1={44} x2={49} y2={52} />
       </g>
-      <PadGuide
+      <InsetGuide
         x={16}
         y={58}
         w={66}
@@ -316,17 +352,17 @@ function AnnotationsLayer() {
         boxRx={20}
         clipOffset={0.8}
       />
-      <DimLabel x={57} y={51} anchor="start">
+      <MeasureNote x={57} y={51} anchor="start">
         8
-      </DimLabel>
-      <DimLabel x={16} y={135} anchor="middle">
+      </MeasureNote>
+      <MeasureNote x={16} y={135} anchor="middle">
         6
-      </DimLabel>
-      <Selection x={10} y={10} w={78} h={34} />
-      <Selection x={10} y={52} w={78} h={96} />
-      <DimH x1={10} x2={88} y={5} label="78" />
-      <DimV x={95} y1={10} y2={44} label="34" labelXOffset={5} labelAnchor="start" />
-      <DimV x={95} y1={52} y2={148} label="96" labelXOffset={5} labelAnchor="start" />
+      </MeasureNote>
+      <GripFrame x={10} y={10} w={78} h={34} />
+      <GripFrame x={10} y={52} w={78} h={96} />
+      <MeasureH x1={10} x2={88} y={5} label="78" />
+      <MeasureV x={95} y1={10} y2={44} label="34" labelXOffset={5} labelAnchor="start" />
+      <MeasureV x={95} y1={52} y2={148} label="96" labelXOffset={5} labelAnchor="start" />
     </g>
   )
 }
@@ -394,12 +430,12 @@ export function GooDropdownBreakdown() {
   return (
     <AnatomyFrame viewBox="-91 -8 400 214" maxWidthClassName="max-w-[480px]">
       <g transform="translate(60, 20)">
-        <TriggerShape theme={blueprintTheme} />
+        <TriggerShape theme={draftTheme} />
         <TriggerTextShape />
-        <PanelShape theme={blueprintTheme} />
+        <PanelShape theme={draftTheme} />
         <GooBridgeShape />
         {AN_ITEMS.map((label, index) => (
-          <ItemShape key={label} theme={blueprintTheme} index={index} label={label} />
+          <ItemShape key={label} theme={draftTheme} index={index} label={label} />
         ))}
         <AnnotationsLayer />
       </g>

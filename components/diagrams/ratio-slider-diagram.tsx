@@ -6,18 +6,23 @@
 // This file is NOT covered by the repository's root MIT LICENSE.
 
 import {
-  Blueprint,
-  BP_FILL_MUTED,
-  BP_FILL_SOLID,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_FILL_MUTED,
+  DRAFT_FILL_SOLID,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
   AnatomyTag,
@@ -44,20 +49,24 @@ const BP_DIV_X = BP.x + BP_LEFT_W + BP.gap / 2
 const BP_RIGHT_X = BP.x + BP_LEFT_W + BP.gap + BP.divW
 
 export function RatioSliderWireframe() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   const midY = BP.y + BP.h / 2
 
   return (
-    <Blueprint>
+    <DraftSurface>
       <rect
         x={BP.x}
         y={BP.y}
         width={BP_LEFT_W}
         height={BP.h}
         rx={BP.rx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_SOLID}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_SOLID}`}
       />
 
       <text
@@ -66,7 +75,8 @@ export function RatioSliderWireframe() {
         fontSize={9}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={`${BP_MORPH} fill-current opacity-35 group-hover:fill-(--color-bg) group-hover:opacity-100 group-focus-visible:fill-(--color-bg) group-focus-visible:opacity-100`}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-35 group-hover:fill-(--color-bg) group-hover:opacity-100 group-focus-visible:fill-(--color-bg) group-focus-visible:opacity-100`}
       >
         RICH <tspan fontWeight={700}>60%</tspan>
       </text>
@@ -80,9 +90,13 @@ export function RatioSliderWireframe() {
           width={BP.divW}
           height={BP.divH}
           rx={3}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
           stroke="var(--color-fg)"
           strokeWidth={1.5}
-          className={`${BP_MORPH} fill-transparent group-hover:fill-(--color-accent) group-focus-visible:fill-(--color-accent)`}
+          style={beat(DRAFT_BEAT.anatomy)}
+          className={`ink-draw ${DRAFT_INK_MORPH} fill-transparent group-hover:fill-(--color-accent) group-focus-visible:fill-(--color-accent)`}
         />
       </g>
       <rect
@@ -91,9 +105,13 @@ export function RatioSliderWireframe() {
         width={BP_RIGHT_W}
         height={BP.h}
         rx={BP.rx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={`${BP_FILL_MUTED} stroke-current`}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_MUTED} stroke-current`}
       />
       <text
         x={BP_RIGHT_X + BP_RIGHT_W - 12}
@@ -102,85 +120,106 @@ export function RatioSliderWireframe() {
         fontSize={9}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={`${BP_MORPH} fill-current opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
       >
         <tspan fontWeight={700}>40%</tspan> LIGHT
       </text>
 
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP.x} y={BP.y} w={BP.w} h={BP.h} />
-        <DimH x1={BP.x} x2={BP.x + BP.w} y={BP.y + BP.h + 14} label={`${BP.w}`} />
-        <DimV x={BP.x - 12} y1={BP.y} y2={BP.y + BP.h} label={`${BP.h}`} labelXOffset={-6} />
-        <DimLabel x={BP_DIV_X + BP.divW / 2} y={BP.y - 6}>
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame x={BP.x} y={BP.y} w={BP.w} h={BP.h} style={beat(DRAFT_BEAT.handle)} />
+        <MeasureH
+          x1={BP.x}
+          x2={BP.x + BP.w}
+          y={BP.y + BP.h + 14}
+          label={`${BP.w}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
+          x={BP.x - 12}
+          y1={BP.y}
+          y2={BP.y + BP.h}
+          label={`${BP.h}`}
+          labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <MeasureNote
+          x={BP_DIV_X + BP.divW / 2}
+          y={BP.y - 6}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           {`${BP.divW}`}
-        </DimLabel>
-        <DimLabel x={BP.x} y={BP.y - 6} anchor="start">
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x}
+          y={BP.y - 6}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           {`r${BP.rx}`}
-        </DimLabel>
+        </MeasureNote>
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
-          strokeDasharray="2 2"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         >
           <line
             x1={BP.x + BP_LEFT_W}
-            y1={BP.y + BP.h + 16}
+            y1={BP.y + BP.h + 4}
             x2={BP.x + BP_LEFT_W}
             y2={BP.y + BP.h + 21}
           />
-          <line x1={BP_RIGHT_X} y1={BP.y + BP.h + 16} x2={BP_RIGHT_X} y2={BP.y + BP.h + 21} />
+          <line x1={BP_RIGHT_X} y1={BP.y + BP.h + 4} x2={BP_RIGHT_X} y2={BP.y + BP.h + 21} />
           <line
             x1={BP.x + BP_LEFT_W}
-            y1={BP.y + BP.h + 18.5}
-            x2={BP_DIV_X}
-            y2={BP.y + BP.h + 18.5}
-          />
-          <line
-            x1={BP_DIV_X + BP.divW}
             y1={BP.y + BP.h + 18.5}
             x2={BP_RIGHT_X}
             y2={BP.y + BP.h + 18.5}
           />
         </g>
-        <DimLabel x={BP.x + BP_LEFT_W + BP.gap / 2} y={BP.y + BP.h + 30} anchor="middle">
+        <MeasureNote
+          x={BP.x + BP_LEFT_W + BP.gap / 2}
+          y={BP.y + BP.h + 30}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
           gap 8
-        </DimLabel>
+        </MeasureNote>
 
-        <PadGuide
-          x={BP.x + 12}
-          y={BP.y + 4}
-          w={BP_LEFT_W - 24}
-          h={BP.h - 8}
-          offset={0.8}
-          boxX={BP.x}
-          boxY={BP.y}
-          boxW={BP_LEFT_W}
-          boxH={BP.h}
-          boxRx={BP.rx}
-          clipOffset={0.8}
-        />
-        <DimLabel x={BP.x + 6} y={BP.y + 8 - 3} anchor="middle">
+        <g
+          stroke="var(--bp-accent, var(--color-accent))"
+          strokeWidth={theme.guide.strokeWidth}
+          strokeDasharray="2 2"
+          opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
+        >
+          <line x1={BP.x + 12} y1={BP.y} x2={BP.x + 12} y2={BP.y + 7} />
+          <line
+            x1={BP_RIGHT_X + BP_RIGHT_W - 12}
+            y1={BP.y}
+            x2={BP_RIGHT_X + BP_RIGHT_W - 12}
+            y2={BP.y + 7}
+          />
+        </g>
+        <MeasureNote
+          x={BP.x + 12 + 4}
+          y={BP.y + 8}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(5))}
+        >
           12
-        </DimLabel>
-        <PadGuide
-          x={BP_RIGHT_X + 12}
-          y={BP.y + 4}
-          w={BP_RIGHT_W - 24}
-          h={BP.h - 8}
-          offset={0.8}
-          boxX={BP_RIGHT_X}
-          boxY={BP.y}
-          boxW={BP_RIGHT_W}
-          boxH={BP.h}
-          boxRx={BP.rx}
-          clipOffset={0.8}
-        />
-        <DimLabel x={BP_RIGHT_X + BP_RIGHT_W - 6} y={BP.y + 8 - 3} anchor="middle">
-          12
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -361,9 +400,9 @@ function AnnotationsLayer() {
       }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={AN.x} y={AN.y} w={AN.w} h={AN.h} />
-      <DimH x1={AN.x} x2={AN.x + AN.w} y={AN.y - 14} label={`${AN.w}`} />
-      <DimV
+      <GripFrame x={AN.x} y={AN.y} w={AN.w} h={AN.h} />
+      <MeasureH x1={AN.x} x2={AN.x + AN.w} y={AN.y - 14} label={`${AN.w}`} />
+      <MeasureV
         x={AN.x + AN.w + 14}
         y1={AN.y}
         y2={AN.y + AN.h}
@@ -371,15 +410,15 @@ function AnnotationsLayer() {
         labelXOffset={5}
         labelAnchor="start"
       />
-      <DimLabel x={AN.x} y={AN.y - 4} anchor="start">
+      <MeasureNote x={AN.x} y={AN.y - 4} anchor="start">
         {`r${AN.rx}`}
-      </DimLabel>
+      </MeasureNote>
 
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line
           x1={AN.x + AN_LEFT_W}
@@ -391,18 +430,18 @@ function AnnotationsLayer() {
         <line x1={AN.x + AN_LEFT_W} y1={AN.y + AN.h + 7} x2={AN_DIV_X} y2={AN.y + AN.h + 7} />
         <line x1={AN_DIV_X + AN.divW} y1={AN.y + AN.h + 7} x2={AN_RIGHT_X} y2={AN.y + AN.h + 7} />
       </g>
-      <DimLabel x={AN.x + AN_LEFT_W + AN.gap / 2} y={AN.y + AN.h + 20} anchor="middle">
+      <MeasureNote x={AN.x + AN_LEFT_W + AN.gap / 2} y={AN.y + AN.h + 20} anchor="middle">
         gap 8
-      </DimLabel>
-      <DimLabel x={AN_DIV_X + AN.divW / 2} y={AN.y - 12} anchor="middle">
+      </MeasureNote>
+      <MeasureNote x={AN_DIV_X + AN.divW / 2} y={AN.y - 12} anchor="middle">
         handle 6
-      </DimLabel>
+      </MeasureNote>
 
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line x1={AN.x} y1={AN.y + 12} x2={AN.x + 12} y2={AN.y + 12} />
         <line
@@ -412,12 +451,12 @@ function AnnotationsLayer() {
           y2={AN.y + 12}
         />
       </g>
-      <DimLabel x={AN.x + 6} y={AN.y + 12 - 4} anchor="middle">
+      <MeasureNote x={AN.x + 6} y={AN.y + 12 - 4} anchor="middle">
         12
-      </DimLabel>
-      <DimLabel x={AN_RIGHT_X + AN_RIGHT_W - 6} y={AN.y + 12 - 4} anchor="middle">
+      </MeasureNote>
+      <MeasureNote x={AN_RIGHT_X + AN_RIGHT_W - 6} y={AN.y + 12 - 4} anchor="middle">
         12
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }

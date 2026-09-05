@@ -13,18 +13,26 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_FILL_SOLID,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_BEAT,
+  DRAFT_FILL_PANEL,
+  DRAFT_FILL_SOLID,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  beat,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  squircleRectPath,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 
 const BP = {
   triggerR: 15,
@@ -35,7 +43,7 @@ const BP = {
   panelPad: 5,
   itemH: 22,
   itemGap: 0,
-  itemRx: 3,
+  itemRx: 4,
 } as const
 
 const BP_PANEL_H = BP.panelPad * 2 + BP.itemH * 3
@@ -44,7 +52,7 @@ const BP_TRIGGER_CY = BP.panelY + BP_PANEL_H / 2
 const BP_ITEM_LABELS = ['Dashboard', 'Automations', 'Settings'] as const
 
 export function MorphNavBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   const itemsX = BP.panelX + BP.panelPad
   const itemsW = BP.panelW - BP.panelPad * 2
   const item0Y = BP.panelY + BP.panelPad
@@ -52,53 +60,57 @@ export function MorphNavBlueprint() {
   const item2Y = item1Y + BP.itemH
 
   return (
-    <Blueprint>
+    <DraftSurface>
       <circle
         cx={BP.triggerCx}
         cy={BP_TRIGGER_CY}
         r={BP.triggerR}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_SOLID}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_SOLID}`}
       />
       <g
         stroke="var(--color-bg)"
-        strokeWidth={1.4}
+        strokeWidth={1.5}
         strokeLinecap="round"
-        className="opacity-0 transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
+        className="opacity-0 transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:opacity-100 group-hover:delay-(--motion-dur-base) group-focus-visible:opacity-100 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
       >
         <line
-          x1={BP.triggerCx - 6}
-          y1={BP_TRIGGER_CY - 4}
-          x2={BP.triggerCx + 6}
-          y2={BP_TRIGGER_CY - 4}
+          x1={BP.triggerCx - 5}
+          y1={BP_TRIGGER_CY - 3}
+          x2={BP.triggerCx + 5}
+          y2={BP_TRIGGER_CY - 3}
         />
-        <line x1={BP.triggerCx - 6} y1={BP_TRIGGER_CY} x2={BP.triggerCx + 6} y2={BP_TRIGGER_CY} />
+        <line x1={BP.triggerCx - 5} y1={BP_TRIGGER_CY} x2={BP.triggerCx + 5} y2={BP_TRIGGER_CY} />
         <line
-          x1={BP.triggerCx - 6}
-          y1={BP_TRIGGER_CY + 4}
-          x2={BP.triggerCx + 6}
-          y2={BP_TRIGGER_CY + 4}
+          x1={BP.triggerCx - 5}
+          y1={BP_TRIGGER_CY + 3}
+          x2={BP.triggerCx + 5}
+          y2={BP_TRIGGER_CY + 3}
         />
       </g>
       <g
         stroke="currentColor"
-        strokeWidth={1.4}
+        strokeWidth={1.5}
         strokeLinecap="round"
-        className="opacity-70 transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none"
+        className="opacity-70 transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:opacity-0 group-hover:delay-(--motion-dur-base) group-focus-visible:opacity-0 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
       >
         <line
-          x1={BP.triggerCx - 6}
-          y1={BP_TRIGGER_CY - 4}
-          x2={BP.triggerCx + 6}
-          y2={BP_TRIGGER_CY - 4}
+          x1={BP.triggerCx - 5}
+          y1={BP_TRIGGER_CY - 3}
+          x2={BP.triggerCx + 5}
+          y2={BP_TRIGGER_CY - 3}
         />
-        <line x1={BP.triggerCx - 6} y1={BP_TRIGGER_CY} x2={BP.triggerCx + 6} y2={BP_TRIGGER_CY} />
+        <line x1={BP.triggerCx - 5} y1={BP_TRIGGER_CY} x2={BP.triggerCx + 5} y2={BP_TRIGGER_CY} />
         <line
-          x1={BP.triggerCx - 6}
-          y1={BP_TRIGGER_CY + 4}
-          x2={BP.triggerCx + 6}
-          y2={BP_TRIGGER_CY + 4}
+          x1={BP.triggerCx - 5}
+          y1={BP_TRIGGER_CY + 3}
+          x2={BP.triggerCx + 5}
+          y2={BP_TRIGGER_CY + 3}
         />
       </g>
 
@@ -110,29 +122,34 @@ export function MorphNavBlueprint() {
         rx={5}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_PANEL}
+        className={DRAFT_FILL_PANEL}
       />
+
+      <g className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-y-[22px] group-hover:delay-(--motion-dur-base) group-focus-visible:translate-y-[22px] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none">
+        <path
+          d={squircleRectPath(itemsX, item0Y, itemsW, BP.itemH, BP.itemRx)}
+          fill="var(--bp-accent, var(--color-accent))"
+          className={`${DRAFT_INK_MORPH} opacity-0 group-hover:opacity-12 group-focus-visible:opacity-12`}
+        />
+      </g>
 
       {BP_ITEM_LABELS.map((label, i) => {
         const y = [item0Y, item1Y, item2Y][i]
         return (
           <g key={label}>
-            <rect
-              x={itemsX}
-              y={y}
-              width={itemsW}
-              height={BP.itemH}
-              rx={BP.itemRx}
+            <path
+              d={squircleRectPath(itemsX, y, itemsW, BP.itemH, BP.itemRx)}
               fill="currentColor"
               fillOpacity={0.08}
-              className={BP_HIDE_ON_MORPH}
+              className={DRAFT_SCAFFOLD_FADE}
             />
             <text
               x={itemsX + 8}
               y={y + BP.itemH / 2 + 3.5}
               fontSize={9}
               fontFamily="var(--font-sans)"
-              className={BP_TEXT_SOFT}
+              style={beat(DRAFT_LABEL_BEAT)}
+              className={`fade-note ${DRAFT_TEXT_SOFT}`}
             >
               {label}
             </text>
@@ -144,23 +161,39 @@ export function MorphNavBlueprint() {
                 strokeWidth={1.2}
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={BP_TEXT_SOFT}
+                className={DRAFT_TEXT_SOFT}
               />
             )}
           </g>
         )
       })}
 
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP.panelX} y={BP.panelY} w={BP.panelW} h={BP_PANEL_H} />
-        <DimH x1={BP.panelX} x2={BP.panelX + BP.panelW} y={BP.panelY - 10} label={`${BP.panelW}`} />
-        <DimV
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
+          x={BP.panelX}
+          y={BP.panelY}
+          w={BP.panelW}
+          h={BP_PANEL_H}
+          className="note-stamp"
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <MeasureH
+          x1={BP.panelX}
+          x2={BP.panelX + BP.panelW}
+          y={BP.panelY - 10}
+          label={`${BP.panelW}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
           x={BP.panelX - 10}
           y1={BP.panelY}
           y2={BP.panelY + BP_PANEL_H}
           label={`${BP_PANEL_H}`}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
         />
-        <PadGuide
+        <InsetGuide
           x={itemsX}
           y={item0Y}
           w={itemsW}
@@ -172,15 +205,29 @@ export function MorphNavBlueprint() {
           boxH={BP_PANEL_H}
           boxRx={5}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={BP.panelX + BP.panelPad / 2} y={BP.panelY + BP.panelPad + 8} anchor="middle">
+        <MeasureNote
+          x={BP.panelX + BP.panelPad / 2}
+          y={BP.panelY + BP.panelPad + 8}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        >
           {`${BP.panelPad}`}
-        </DimLabel>
-        <DimLabel x={BP.triggerCx} y={BP_TRIGGER_CY + BP.triggerR + 12} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP.triggerCx}
+          y={BP_TRIGGER_CY + BP.triggerR + 12}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           {`r${BP.triggerR}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -221,10 +268,10 @@ function TriggerShape() {
         className={spotlight.className}
         style={spotlight.style}
       />
-      <g stroke="var(--color-bg)" strokeWidth={1.6} strokeLinecap="round" className="opacity-90">
-        <line x1={TRIGGER_CX - 6} y1={TRIGGER_CY - 5} x2={TRIGGER_CX + 6} y2={TRIGGER_CY - 5} />
-        <line x1={TRIGGER_CX - 6} y1={TRIGGER_CY} x2={TRIGGER_CX + 6} y2={TRIGGER_CY} />
-        <line x1={TRIGGER_CX - 6} y1={TRIGGER_CY + 5} x2={TRIGGER_CX + 6} y2={TRIGGER_CY + 5} />
+      <g stroke="var(--color-bg)" strokeWidth={1.5} strokeLinecap="round" className="opacity-90">
+        <line x1={TRIGGER_CX - 5} y1={TRIGGER_CY - 3} x2={TRIGGER_CX + 5} y2={TRIGGER_CY - 3} />
+        <line x1={TRIGGER_CX - 5} y1={TRIGGER_CY} x2={TRIGGER_CX + 5} y2={TRIGGER_CY} />
+        <line x1={TRIGGER_CX - 5} y1={TRIGGER_CY + 3} x2={TRIGGER_CX + 5} y2={TRIGGER_CY + 3} />
       </g>
     </g>
   )
@@ -287,8 +334,8 @@ function ItemShape({
       />
       <text
         x={x}
-        y={midY + 4}
-        fontSize={13}
+        y={midY + 5}
+        fontSize={14}
         fontFamily="var(--font-sans)"
         className={`fill-current ${spotlight.className}`}
       >
@@ -332,10 +379,10 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={PANEL_X} y={PANEL_Y} w={MN.panelW} h={PANEL_H} />
-      <DimH x1={PANEL_X} x2={PANEL_X + MN.panelW} y={PANEL_Y - 14} label={`${MN.panelW}`} />
-      <DimV x={PANEL_X - 12} y1={PANEL_Y} y2={PANEL_Y + PANEL_H} label={`${PANEL_H}`} />
-      <PadGuide
+      <GripFrame x={PANEL_X} y={PANEL_Y} w={MN.panelW} h={PANEL_H} />
+      <MeasureH x1={PANEL_X} x2={PANEL_X + MN.panelW} y={PANEL_Y - 14} label={`${MN.panelW}`} />
+      <MeasureV x={PANEL_X - 12} y1={PANEL_Y} y2={PANEL_Y + PANEL_H} label={`${PANEL_H}`} />
+      <InsetGuide
         x={PANEL_X + MN.panelPad}
         y={PANEL_Y + MN.panelPad}
         w={MN.panelW - MN.panelPad * 2}
@@ -348,10 +395,10 @@ function AnnotationsLayer() {
         boxRx={MN.panelRadius}
         clipOffset={0.8}
       />
-      <DimLabel x={PANEL_X + MN.panelPad / 2} y={PANEL_Y + MN.panelPad + 10} anchor="middle">
+      <MeasureNote x={PANEL_X + MN.panelPad / 2} y={PANEL_Y + MN.panelPad + 10} anchor="middle">
         {`${MN.panelPad}`}
-      </DimLabel>
-      <Selection
+      </MeasureNote>
+      <GripFrame
         x={TRIGGER_CX - MN.triggerSize / 2}
         y={TRIGGER_CY - MN.triggerSize / 2}
         w={MN.triggerSize}

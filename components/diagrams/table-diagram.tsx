@@ -13,17 +13,23 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 
 const TABLE = {
   colW: [62, 54, 58] as const,
@@ -45,29 +51,34 @@ const HEADERS = ['Name', 'Role', 'Status']
 const ROW_1 = ['Ada', 'Eng', 'Active']
 const ROW_2 = ['Alan', 'Res', 'Active']
 
-const BODY_FILL = `${BP_MORPH} fill-transparent group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2)`
+const BODY_FILL = `${DRAFT_INK_MORPH} fill-transparent group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2)`
+
+const ROW_SWEEP_DELAYS = [
+  'group-hover:[transition-delay:0ms]',
+  'group-hover:[transition-delay:60ms]',
+] as const
 
 const BP_X = (220 - TABLE_W) / 2
 const BP_Y = (140 - TABLE_H) / 2
 
 export function TableBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   const row1Y = BP_Y + TABLE.rowH
   const row2Y = BP_Y + TABLE.rowH * 2
   const padCellX = BP_X + COL_X[0]
   const padCellY = row2Y
 
   return (
-    <Blueprint>
+    <DraftSurface>
       <g transform={`translate(${BP_X}, ${BP_Y})`}>
-        {[row1Y, row2Y].map((y) => (
+        {[row1Y, row2Y].map((y, i) => (
           <rect
             key={y}
             x={0}
             y={y - BP_Y}
             width={TABLE_W}
             height={TABLE.rowH}
-            className={BODY_FILL}
+            className={`${BODY_FILL} ${ROW_SWEEP_DELAYS[i]}`}
           />
         ))}
         {HEADERS.map((label, i) => (
@@ -78,7 +89,8 @@ export function TableBlueprint() {
             fontSize={TABLE.headerFont}
             fontWeight={600}
             fontFamily="var(--font-sans)"
-            className="fill-current"
+            style={beat(DRAFT_LABEL_BEAT)}
+            className="fade-note fill-current"
           >
             {label}
           </text>
@@ -90,7 +102,8 @@ export function TableBlueprint() {
             y={TABLE.rowH + TABLE.rowH / 2 + 3}
             fontSize={TABLE.font}
             fontFamily="var(--font-sans)"
-            className={BP_TEXT_SOFT}
+            style={beat(DRAFT_LABEL_ALT_BEAT)}
+            className={`fade-note ${DRAFT_TEXT_SOFT}`}
           >
             {label}
           </text>
@@ -102,22 +115,67 @@ export function TableBlueprint() {
             y={TABLE.rowH * 2 + TABLE.rowH / 2 + 3}
             fontSize={TABLE.font}
             fontFamily="var(--font-sans)"
-            className={BP_TEXT_SOFT}
+            style={beat(stampBeat(0))}
+            className={`fade-note ${DRAFT_TEXT_SOFT}`}
           >
             {label}
           </text>
         ))}
         <g stroke="currentColor" strokeWidth={theme.wireframe.strokeWidth} strokeOpacity={0.4}>
-          <line x1={0} y1={TABLE.rowH} x2={TABLE_W} y2={TABLE.rowH} />
-          <line x1={0} y1={TABLE.rowH * 2} x2={TABLE_W} y2={TABLE.rowH * 2} />
-          <line x1={0} y1={TABLE.rowH * 3} x2={TABLE_W} y2={TABLE.rowH * 3} />
+          <line
+            x1={0}
+            y1={TABLE.rowH}
+            x2={TABLE_W}
+            y2={TABLE.rowH}
+            pathLength={1}
+            strokeDasharray={1}
+            strokeDashoffset={1}
+            style={beat(DRAFT_BEAT.outline)}
+            className="ink-draw"
+          />
+          <line
+            x1={0}
+            y1={TABLE.rowH * 2}
+            x2={TABLE_W}
+            y2={TABLE.rowH * 2}
+            pathLength={1}
+            strokeDasharray={1}
+            strokeDashoffset={1}
+            style={beat(DRAFT_DETAIL_BEAT.b)}
+            className="ink-draw"
+          />
+          <line
+            x1={0}
+            y1={TABLE.rowH * 3}
+            x2={TABLE_W}
+            y2={TABLE.rowH * 3}
+            pathLength={1}
+            strokeDasharray={1}
+            strokeDashoffset={1}
+            style={beat(DRAFT_DETAIL_BEAT.c)}
+            className="ink-draw"
+          />
         </g>
       </g>
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_X} y={BP_Y} w={TABLE_W} h={TABLE_H} />
-        <DimH x1={BP_X} x2={BP_X + TABLE_W} y={BP_Y - 14} label={`${TABLE_W}`} />
-        <DimV x={BP_X - 12} y1={BP_Y} y2={BP_Y + TABLE_H} label={`${TABLE_H}`} />
-        <PadGuide
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame x={BP_X} y={BP_Y} w={TABLE_W} h={TABLE_H} style={beat(DRAFT_BEAT.handle)} />
+        <MeasureH
+          x1={BP_X}
+          x2={BP_X + TABLE_W}
+          y={BP_Y - 14}
+          label={`${TABLE_W}`}
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        />
+        <MeasureV
+          x={BP_X - 12}
+          y1={BP_Y}
+          y2={BP_Y + TABLE_H}
+          label={`${TABLE_H}`}
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        />
+        <InsetGuide
           x={padCellX + TABLE.pad.x}
           y={padCellY + TABLE.pad.y}
           w={TABLE.colW[0] - TABLE.pad.x * 2}
@@ -128,14 +186,28 @@ export function TableBlueprint() {
           boxW={TABLE.colW[0]}
           boxH={TABLE.rowH}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_LABEL_ALT_BEAT)}
         />
-        <DimLabel x={padCellX + TABLE.pad.x} y={padCellY + TABLE.rowH + 12} anchor="start">
+        <MeasureNote
+          x={padCellX + TABLE.pad.x}
+          y={padCellY + TABLE.rowH + 12}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        >
           {`${TABLE.pad.x}`}
-        </DimLabel>
-        <DimLabel x={padCellX - 4} y={padCellY + TABLE.rowH / 2 + 2} anchor="end">
+        </MeasureNote>
+        <MeasureNote
+          x={padCellX - 4}
+          y={padCellY + TABLE.rowH / 2 + 2}
+          anchor="end"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           {`${TABLE.pad.y}`}
-        </DimLabel>
-        <PadGuide
+        </MeasureNote>
+        <InsetGuide
           x={padCellX + TABLE.pad.x}
           y={BP_Y + TABLE.pad.y}
           w={TABLE.colW[0] - TABLE.pad.x * 2}
@@ -146,12 +218,20 @@ export function TableBlueprint() {
           boxW={TABLE.colW[0]}
           boxH={TABLE.rowH}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={padCellX - 4} y={BP_Y + TABLE.rowH / 2 + 2} anchor="end">
+        <MeasureNote
+          x={padCellX - 4}
+          y={BP_Y + TABLE.rowH / 2 + 2}
+          anchor="end"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        >
           {`${TABLE.pad.y}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -304,10 +384,10 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={0} y={0} w={TABLE_W} h={TABLE_H} />
-      <DimH x1={0} x2={TABLE_W} y={-14} label={`${TABLE_W}`} />
-      <DimV x={-12} y1={0} y2={TABLE_H} label={`${TABLE_H}`} labelXOffset={-6} />
-      <PadGuide
+      <GripFrame x={0} y={0} w={TABLE_W} h={TABLE_H} />
+      <MeasureH x1={0} x2={TABLE_W} y={-14} label={`${TABLE_W}`} />
+      <MeasureV x={-12} y1={0} y2={TABLE_H} label={`${TABLE_H}`} labelXOffset={-6} />
+      <InsetGuide
         x={TABLE.pad.x}
         y={cellY + TABLE.pad.y}
         w={TABLE.colW[0] - TABLE.pad.x * 2}
@@ -319,12 +399,12 @@ function AnnotationsLayer() {
         boxH={TABLE.rowH}
         clipOffset={0.8}
       />
-      <DimLabel x={TABLE.pad.x} y={cellY + TABLE.rowH + 12} anchor="start">
+      <MeasureNote x={TABLE.pad.x} y={cellY + TABLE.rowH + 12} anchor="start">
         {`${TABLE.pad.x}`}
-      </DimLabel>
-      <DimLabel x={-4} y={cellY + TABLE.rowH / 2 + 2} anchor="end">
+      </MeasureNote>
+      <MeasureNote x={-4} y={cellY + TABLE.rowH / 2 + 2} anchor="end">
         {`${TABLE.pad.y}`}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }

@@ -39,7 +39,7 @@ export function Header() {
 
   return (
     <header
-      className="max-w-6xl mx-auto w-full px-4 sm:px-6 md:px-12 pt-4 pb-2 md:pt-12 md:pb-4 flex items-center justify-between text-sm tracking-tight bg-transparent relative z-10"
+      className="relative z-10 mx-auto flex w-full max-w-325 items-center justify-between bg-transparent px-4 pb-2 pt-4 text-sm tracking-tight md:px-12 md:pb-4 md:pt-12"
       style={{ color: 'var(--color-muted)' }}
     >
       <div className="flex-1 pointer-events-auto">

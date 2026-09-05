@@ -5,7 +5,7 @@ import { Button } from '@/components/layout/button'
 export function Footer() {
   return (
     <footer
-      className="max-w-6xl mx-auto w-full px-4 sm:px-6 md:px-12 py-4 flex items-baseline justify-between text-sm"
+      className="mx-auto flex w-full max-w-325 items-baseline justify-between px-4 py-4 text-sm sm:px-6 md:px-12"
       style={{ color: 'var(--color-muted)' }}
     >
       <span>© {new Date().getFullYear()}</span>

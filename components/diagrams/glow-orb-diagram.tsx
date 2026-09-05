@@ -13,15 +13,21 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_FILL_SOLID,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_FILL_SOLID,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 
 const RATIO = 0.55
 
@@ -38,9 +44,9 @@ const BP_HIT = {
 }
 
 export function GlowOrbBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <Blueprint>
+    <DraftSurface>
       <circle
         cx={BP_CX}
         cy={BP_CY}
@@ -48,19 +54,23 @@ export function GlowOrbBlueprint() {
         fill="none"
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={1.5}
-        className="opacity-0 transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:opacity-70 group-focus-visible:opacity-70 motion-reduce:transition-none"
+        className="opacity-0 transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:opacity-70 group-hover:delay-(--motion-dur-base) group-focus-visible:opacity-70 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
       />
       <g
         style={{ transformOrigin: `${BP_CX}px ${BP_CY}px` }}
-        className="transition-transform duration-(--motion-dur-base) ease-(--motion-ease-out) group-hover:scale-105 group-focus-visible:scale-105 motion-reduce:transition-none motion-reduce:transform-none"
+        className="transition-transform duration-(--motion-dur-base) ease-(--motion-ease-out) group-hover:scale-105 group-hover:delay-(--motion-dur-base) group-focus-visible:scale-105 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none"
       >
         <circle
           cx={BP_CX}
           cy={BP_CY}
           r={BP_D / 2}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
           strokeWidth={theme.wireframe.strokeWidth}
           strokeOpacity={theme.wireframe.strokeOpacity}
-          className={BP_FILL_SOLID}
+          style={beat(DRAFT_BEAT.outline)}
+          className={`ink-draw ${DRAFT_FILL_SOLID}`}
         />
       </g>
       <text
@@ -70,11 +80,12 @@ export function GlowOrbBlueprint() {
         fontSize={11}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
         listening
       </text>
-      <g className={BP_HIDE_ON_MORPH}>
+      <g className={DRAFT_SCAFFOLD_FADE}>
         <rect
           x={BP_HIT.x}
           y={BP_HIT.y}
@@ -84,19 +95,35 @@ export function GlowOrbBlueprint() {
           stroke="currentColor"
           strokeDasharray="2 2"
           strokeOpacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <Selection x={BP_CX - BP_D / 2} y={BP_CY - BP_D / 2} w={BP_D} h={BP_D} />
-        <DimH
+        <GripFrame
+          x={BP_CX - BP_D / 2}
+          y={BP_CY - BP_D / 2}
+          w={BP_D}
+          h={BP_D}
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <MeasureH
           x1={BP_CX - BP_D / 2}
           x2={BP_CX + BP_D / 2}
           y={BP_CY - BP_D / 2 - 14}
           label={`d${BP_D.toFixed(0)}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
         />
-        <DimLabel x={BP_HIT.x} y={BP_HIT.y - 22} anchor="start">
+        <MeasureNote
+          x={BP_HIT.x}
+          y={BP_HIT.y - 22}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        >
           {`${BP_REF_SIZE} × ${BP_REF_SIZE} hit area`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -196,16 +223,16 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={AN_CX - AN_D / 2} y={ORB_TOP} w={AN_D} h={AN_D} />
-      <DimH
+      <GripFrame x={AN_CX - AN_D / 2} y={ORB_TOP} w={AN_D} h={AN_D} />
+      <MeasureH
         x1={AN_CX - AN_D / 2}
         x2={AN_CX + AN_D / 2}
         y={ORB_TOP - 14}
         label={`d${AN_D.toFixed(0)}`}
       />
-      <DimLabel x={AN_HIT.x} y={AN_HIT.y - 8} anchor="start">
+      <MeasureNote x={AN_HIT.x} y={AN_HIT.y - 8} anchor="start">
         {`${AN_REF_SIZE} × ${AN_REF_SIZE} hit area`}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }

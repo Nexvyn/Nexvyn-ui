@@ -118,6 +118,7 @@ function ComponentsPageContent() {
   })
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIllustrationSlots(() => {
       const slots: Record<string, number> = {}
       for (const item of NORMAL_COMPONENTS) {
@@ -125,7 +126,6 @@ function ComponentsPageContent() {
       }
       return slots
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const normalSorted = useMemo(
@@ -162,7 +162,7 @@ function ComponentsPageContent() {
     >
       <Header />
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-2 pt-4 sm:px-6 md:px-12 md:pb-4 md:pt-12">
+      <main className="mx-auto w-full max-w-325 flex-1 px-4 pb-2 pt-4 sm:px-6 md:px-12 md:pb-4 md:pt-12">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-2">
           <AnimatedTitle
             title="Components"
@@ -205,9 +205,9 @@ function ComponentsPageContent() {
                     className="text-lg font-normal tracking-tight"
                   />
                 </div>
-                <div className="grid grid-flow-dense grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {items.map((item) => (
-                    <ComponentCard key={item.id} item={item} />
+                <div className="components-grid">
+                  {items.map((item, i) => (
+                    <ComponentCard key={item.id} item={item} index={i} />
                   ))}
                 </div>
               </div>
@@ -221,9 +221,9 @@ function ComponentsPageContent() {
                     className="text-lg font-normal tracking-tight"
                   />
                 </div>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {basicSorted.map((item) => (
-                    <ComponentCard key={item.id} item={item} />
+                <div className="components-grid">
+                  {basicSorted.map((item, i) => (
+                    <ComponentCard key={item.id} item={item} index={i} />
                   ))}
                 </div>
               </div>
@@ -231,9 +231,9 @@ function ComponentsPageContent() {
           </div>
         ) : (
           <div className="space-y-10">
-            <div className="grid grid-flow-dense grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {normalSorted.map((item) => (
-                <ComponentCard key={item.id} item={item} />
+            <div className="components-grid">
+              {normalSorted.map((item, i) => (
+                <ComponentCard key={item.id} item={item} index={i} />
               ))}
             </div>
             {basicSorted.length > 0 && (
@@ -245,9 +245,9 @@ function ComponentsPageContent() {
                     className="text-lg font-normal tracking-tight"
                   />
                 </div>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {basicSorted.map((item) => (
-                    <ComponentCard key={item.id} item={item} />
+                <div className="components-grid">
+                  {basicSorted.map((item, i) => (
+                    <ComponentCard key={item.id} item={item} index={i} />
                   ))}
                 </div>
               </div>

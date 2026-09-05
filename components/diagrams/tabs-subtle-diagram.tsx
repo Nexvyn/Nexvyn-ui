@@ -13,17 +13,23 @@ import {
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
-  Blueprint,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 
 const TABS = {
   pad: 4,
@@ -50,16 +56,16 @@ const BP_X = (220 - CONTAINER_W) / 2
 const BP_Y = (140 - CONTAINER_H) / 2
 
 const PILL_MORPH_CLASS =
-  `${BP_MORPH} transition-transform duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) ` +
+  `${DRAFT_INK_MORPH} transition-transform duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) ` +
   'fill-transparent stroke-current group-hover:fill-(--color-bg) group-hover:stroke-transparent ' +
   'group-focus-visible:fill-(--color-bg) group-focus-visible:stroke-transparent ' +
   'group-hover:translate-x-[62px] group-focus-visible:translate-x-[62px] ' +
   'motion-reduce:transition-none motion-reduce:transform-none'
 
 export function TabsSubtleBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <Blueprint>
+    <DraftSurface>
       <g transform={`translate(${BP_X}, ${BP_Y})`}>
         <rect
           x={0}
@@ -67,9 +73,13 @@ export function TabsSubtleBlueprint() {
           width={CONTAINER_W}
           height={CONTAINER_H}
           rx={TABS.radiusContainer}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
           strokeWidth={theme.wireframe.strokeWidth}
           strokeOpacity={theme.wireframe.strokeOpacity}
-          className="fill-(--color-surface-2) stroke-current"
+          style={beat(DRAFT_BEAT.outline)}
+          className="ink-draw fill-(--color-surface-2) stroke-current"
         />
         <rect
           x={ITEM_X[0]}
@@ -77,15 +87,22 @@ export function TabsSubtleBlueprint() {
           width={TABS.itemW}
           height={TABS.itemH}
           rx={TABS.radiusItem}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
           strokeWidth={theme.wireframe.strokeWidth}
-          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
-          className={PILL_MORPH_CLASS}
+          style={{
+            transformBox: 'fill-box',
+            transformOrigin: 'center',
+            ...beat(DRAFT_BEAT.anatomy),
+          }}
+          className={`ink-draw ${PILL_MORPH_CLASS}`}
         />
         {LABELS.map((label, i) => {
           const isFirst = i === 0
           const textClass = isFirst
-            ? `${BP_MORPH} fill-current opacity-100 group-hover:opacity-60 group-focus-visible:opacity-60`
-            : BP_TEXT_SOFT
+            ? `fade-note ${DRAFT_INK_MORPH} fill-current opacity-100 group-hover:opacity-60 group-focus-visible:opacity-60`
+            : `fade-note ${DRAFT_TEXT_SOFT}`
           return (
             <text
               key={label}
@@ -95,6 +112,7 @@ export function TabsSubtleBlueprint() {
               fontSize={9}
               fontWeight={500}
               fontFamily="var(--font-sans)"
+              style={beat(`${400 + i * 70}ms`)}
               className={textClass}
             >
               {label}
@@ -102,11 +120,31 @@ export function TabsSubtleBlueprint() {
           )
         })}
       </g>
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_X} y={BP_Y} w={CONTAINER_W} h={CONTAINER_H} />
-        <DimH x1={BP_X} x2={BP_X + CONTAINER_W} y={BP_Y - 14} label={`${CONTAINER_W}`} />
-        <DimV x={BP_X - 12} y1={BP_Y} y2={BP_Y + CONTAINER_H} label={`${CONTAINER_H}`} />
-        <PadGuide
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
+          x={BP_X}
+          y={BP_Y}
+          w={CONTAINER_W}
+          h={CONTAINER_H}
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <MeasureH
+          x1={BP_X}
+          x2={BP_X + CONTAINER_W}
+          y={BP_Y - 14}
+          label={`${CONTAINER_W}`}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <MeasureV
+          x={BP_X - 12}
+          y1={BP_Y}
+          y2={BP_Y + CONTAINER_H}
+          label={`${CONTAINER_H}`}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        />
+        <InsetGuide
           x={BP_X + TABS.pad}
           y={BP_Y + TABS.pad}
           w={CONTAINER_W - TABS.pad * 2}
@@ -118,11 +156,19 @@ export function TabsSubtleBlueprint() {
           boxH={CONTAINER_H}
           boxRx={TABS.radiusContainer}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={BP_X + TABS.pad} y={BP_Y - 4} anchor="start">
+        <MeasureNote
+          x={BP_X + TABS.pad}
+          y={BP_Y - 4}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        >
           {`${TABS.pad}`}
-        </DimLabel>
-        <PadGuide
+        </MeasureNote>
+        <InsetGuide
           x={BP_X + ITEM_X[0] + TABS.itemPad.x}
           y={BP_Y + TABS.pad + TABS.itemPad.y}
           w={TABS.itemW - TABS.itemPad.x * 2}
@@ -134,15 +180,25 @@ export function TabsSubtleBlueprint() {
           boxH={TABS.itemH}
           boxRx={TABS.radiusItem}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_LABEL_ALT_BEAT)}
         />
-        <DimLabel x={BP_X + ITEM_X[0] + TABS.itemPad.x} y={BP_Y + CONTAINER_H + 12} anchor="start">
+        <MeasureNote
+          x={BP_X + ITEM_X[0] + TABS.itemPad.x}
+          y={BP_Y + CONTAINER_H + 12}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           {`${TABS.itemPad.x}`}
-        </DimLabel>
+        </MeasureNote>
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="2 2"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(stampBeat(0))}
         >
           <line
             x1={BP_X + ITEM_X[0] + TABS.itemW}
@@ -163,15 +219,17 @@ export function TabsSubtleBlueprint() {
             y2={BP_Y + TABS.pad + TABS.itemH + 4.5}
           />
         </g>
-        <DimLabel
+        <MeasureNote
           x={BP_X + ITEM_X[0] + TABS.itemW + TABS.gap / 2}
           y={BP_Y + TABS.pad + TABS.itemH + 18}
           anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
         >
           {`${TABS.gap}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -273,10 +331,10 @@ function AnnotationsLayer() {
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <Selection x={0} y={0} w={CONTAINER_W} h={CONTAINER_H} />
-      <DimH x1={0} x2={CONTAINER_W} y={-14} label={`${CONTAINER_W}`} />
-      <DimV x={-12} y1={0} y2={CONTAINER_H} label={`${CONTAINER_H}`} labelXOffset={-6} />
-      <PadGuide
+      <GripFrame x={0} y={0} w={CONTAINER_W} h={CONTAINER_H} />
+      <MeasureH x1={0} x2={CONTAINER_W} y={-14} label={`${CONTAINER_W}`} />
+      <MeasureV x={-12} y1={0} y2={CONTAINER_H} label={`${CONTAINER_H}`} labelXOffset={-6} />
+      <InsetGuide
         x={TABS.pad}
         y={TABS.pad}
         w={CONTAINER_W - TABS.pad * 2}
@@ -289,10 +347,10 @@ function AnnotationsLayer() {
         boxRx={TABS.radiusContainer}
         clipOffset={0.8}
       />
-      <DimLabel x={TABS.pad} y={-4} anchor="start">
+      <MeasureNote x={TABS.pad} y={-4} anchor="start">
         {`${TABS.pad}`}
-      </DimLabel>
-      <PadGuide
+      </MeasureNote>
+      <InsetGuide
         x={ITEM_X[0] + TABS.itemPad.x}
         y={TABS.pad + TABS.itemPad.y}
         w={TABS.itemW - TABS.itemPad.x * 2}
@@ -305,14 +363,14 @@ function AnnotationsLayer() {
         boxRx={TABS.radiusItem}
         clipOffset={0.8}
       />
-      <DimLabel x={ITEM_X[0] + TABS.itemPad.x} y={CONTAINER_H + 12} anchor="start">
+      <MeasureNote x={ITEM_X[0] + TABS.itemPad.x} y={CONTAINER_H + 12} anchor="start">
         {`${TABS.itemPad.x}`}
-      </DimLabel>
+      </MeasureNote>
       <g
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={blueprintTheme.guide.strokeWidth}
+        strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
-        opacity={blueprintTheme.guide.structOpacity}
+        opacity={draftTheme.guide.structOpacity}
       >
         <line
           x1={ITEM_X[0] + TABS.itemW}
@@ -333,13 +391,13 @@ function AnnotationsLayer() {
           y2={TABS.pad + TABS.itemH + 4.5}
         />
       </g>
-      <DimLabel
+      <MeasureNote
         x={ITEM_X[0] + TABS.itemW + TABS.gap / 2}
         y={TABS.pad + TABS.itemH + 18}
         anchor="middle"
       >
         {`${TABS.gap}`}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }

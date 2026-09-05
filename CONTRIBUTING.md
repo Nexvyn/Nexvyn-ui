@@ -2,6 +2,8 @@
 
 Thanks for your interest in contributing. This guide covers everything you need to add a new component to the library.
 
+By participating, you agree to follow the [Nexvyn UI Code of Conduct](CODE_OF_CONDUCT.md).
+
 ---
 
 ## Prerequisites

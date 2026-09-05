@@ -70,6 +70,8 @@ const LIVE: Record<string, () => ReactNode> = {
 const STAGE =
   'absolute inset-0 flex items-center justify-center contain-[layout_paint_size] transform-[translateZ(0)]'
 
+const MORPH_BEAT_MS = 200
+
 function afterPaint(callback: () => void) {
   requestAnimationFrame(() => {
     requestAnimationFrame(callback)
@@ -83,6 +85,7 @@ export function BlueprintReveal({ id, children }: { id: string; children: ReactN
   const mountedRef = useRef(false)
   const swappedRef = useRef(false)
   const liveReadyRef = useRef(false)
+  const beatTimerRef = useRef<number | null>(null)
 
   const [mounted, setMounted] = useState(false)
   const [showLive, setShowLive] = useState(false)
@@ -90,7 +93,17 @@ export function BlueprintReveal({ id, children }: { id: string; children: ReactN
   const trySwap = useCallback(() => {
     if (swappedRef.current || !liveReadyRef.current) return
     swappedRef.current = true
-    afterPaint(() => setShowLive(true))
+    afterPaint(() => {
+      if (!activeRef.current) return
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        setShowLive(true)
+        return
+      }
+      beatTimerRef.current = window.setTimeout(() => {
+        beatTimerRef.current = null
+        setShowLive(true)
+      }, MORPH_BEAT_MS)
+    })
   }, [])
 
   const onLiveReady = useCallback(() => {
@@ -101,6 +114,10 @@ export function BlueprintReveal({ id, children }: { id: string; children: ReactN
   const reset = useCallback(() => {
     activeRef.current = false
     swappedRef.current = false
+    if (beatTimerRef.current !== null) {
+      clearTimeout(beatTimerRef.current)
+      beatTimerRef.current = null
+    }
     setShowLive(false)
   }, [])
 
@@ -128,6 +145,13 @@ export function BlueprintReveal({ id, children }: { id: string; children: ReactN
     group.addEventListener('focusin', onFocusIn)
     return () => group.removeEventListener('focusin', onFocusIn)
   }, [startSequence])
+
+  useEffect(
+    () => () => {
+      if (beatTimerRef.current !== null) clearTimeout(beatTimerRef.current)
+    },
+    [],
+  )
 
   if (!live) {
     return <>{children}</>

@@ -3,43 +3,74 @@
 // from the rest of this repository under CC BY-NC 4.0.
 // See components/diagrams/LICENSE. NOT covered by the root MIT LICENSE.
 
-import { type ReactNode, useId } from 'react'
+import { type CSSProperties, type ReactNode, useId } from 'react'
 const MONO = 'var(--font-mono)'
 
-export const BP_MORPH =
-  'transition-[fill,stroke,fill-opacity,stroke-opacity,opacity] duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) motion-reduce:transition-none'
+export const DRAFT_INK_MORPH =
+  'transition-[fill,stroke,fill-opacity,stroke-opacity,opacity] duration-(--motion-dur-slow) group-hover:duration-(--motion-dur-showcase) group-focus-visible:duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:delay-(--motion-dur-base) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none'
 
-export const BP_HIDE_ON_MORPH =
-  'transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none'
+export const DRAFT_SCAFFOLD_FADE =
+  'transition-opacity duration-(--motion-dur-slow) group-hover:duration-(--motion-dur-showcase) group-focus-visible:duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) delay-(--motion-dur-base) group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none'
 
-function morphSurface(hoverFill: string, hoverStroke: string) {
-  return `${BP_MORPH} fill-transparent stroke-current ${hoverFill} ${hoverStroke}`
+export const DRAFT_BEAT = {
+  outline: '0ms',
+  anatomy: '200ms',
+  guide: '350ms',
+  hatch: '500ms',
+  note: '550ms',
+  handle: '600ms',
+} as const
+
+export const DRAFT_STAMP_STAGGER = '70ms' as const
+
+export function stampBeat(n: number): string {
+  const base = Number.parseInt(DRAFT_BEAT.note, 10)
+  return `${base + n * Number.parseInt(DRAFT_STAMP_STAGGER, 10)}ms`
 }
 
-export const BP_FILL_SOLID = morphSurface(
+export const DRAFT_LABEL_BEAT = '400ms' as const
+
+export const DRAFT_LABEL_ALT_BEAT = '460ms' as const
+
+export const DRAFT_DETAIL_BEAT = {
+  a: '200ms',
+  b: '260ms',
+  c: '300ms',
+  d: '350ms',
+} as const
+
+export function beat(v: string): CSSProperties {
+  return { '--beat': v } as CSSProperties
+}
+
+function morphSurface(hoverFill: string, hoverStroke: string) {
+  return `${DRAFT_INK_MORPH} fill-transparent stroke-current ${hoverFill} ${hoverStroke}`
+}
+
+export const DRAFT_FILL_SOLID = morphSurface(
   'group-hover:fill-(--color-fg) group-focus-visible:fill-(--color-fg)',
   'group-hover:stroke-transparent group-focus-visible:stroke-transparent',
 )
 
-export const BP_FILL_PANEL = morphSurface(
-  'group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2)',
-  'group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)',
+export const DRAFT_FILL_PANEL = morphSurface(
+  'group-hover:fill-(--color-popover) group-focus-visible:fill-(--color-popover)',
+  'group-hover:stroke-(--color-border-strong) group-focus-visible:stroke-(--color-border-strong)',
 )
 
-export const BP_FILL_MUTED = morphSurface(
+export const DRAFT_FILL_MUTED = morphSurface(
   'group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2)',
   'group-hover:stroke-transparent group-focus-visible:stroke-transparent',
 )
 
-export const BP_TEXT_HOLLOW = `${BP_MORPH} fill-transparent stroke-current group-hover:fill-current group-focus-visible:fill-current group-hover:stroke-transparent group-focus-visible:stroke-transparent`
+export const DRAFT_TEXT_HOLLOW = `${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:fill-current group-focus-visible:fill-current group-hover:stroke-transparent group-focus-visible:stroke-transparent`
 
-export const BP_TEXT_ON_SOLID = `${BP_MORPH} fill-transparent stroke-current group-hover:fill-(--color-bg) group-focus-visible:fill-(--color-bg) group-hover:stroke-transparent group-focus-visible:stroke-transparent`
+export const DRAFT_TEXT_ON_SOLID = `${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:fill-(--color-bg) group-focus-visible:fill-(--color-bg) group-hover:stroke-transparent group-focus-visible:stroke-transparent`
 
-export const BP_TEXT_ON_PANEL = BP_TEXT_HOLLOW
+export const DRAFT_TEXT_ON_PANEL = DRAFT_TEXT_HOLLOW
 
-export const BP_TEXT_SOFT = `${BP_MORPH} fill-current opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`
+export const DRAFT_TEXT_SOFT = `${DRAFT_INK_MORPH} fill-current opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`
 
-export type BlueprintTheme = {
+export type DraftTheme = {
   wireframe: {
     strokeWidth: number
     textStrokeWidth: number
@@ -60,7 +91,7 @@ export type BlueprintTheme = {
   }
 }
 
-export const blueprintTheme: BlueprintTheme = {
+export const draftTheme: DraftTheme = {
   wireframe: {
     strokeWidth: 1.25,
     textStrokeWidth: 0.9,
@@ -81,7 +112,7 @@ export const blueprintTheme: BlueprintTheme = {
   },
 }
 
-export function Blueprint({ children, className }: { children: ReactNode; className?: string }) {
+export function DraftSurface({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <svg
       aria-hidden="true"
@@ -89,25 +120,30 @@ export function Blueprint({ children, className }: { children: ReactNode; classN
       width={220}
       height={140}
       fill="none"
-      className={`text-(--color-fg)/80 ${className ?? ''}`}
+      overflow="visible"
+      className={`blueprint overflow-visible text-(--color-fg)/80 ${className ?? ''}`}
     >
       {children}
     </svg>
   )
 }
 
-export function DimLabel({
+export function MeasureNote({
   x,
   y,
   anchor = 'middle',
+  className,
+  style,
   children,
 }: {
   x: number
   y: number
   anchor?: 'start' | 'middle' | 'end'
+  className?: string
+  style?: CSSProperties
   children: string
 }) {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
     <text
       x={x}
@@ -117,51 +153,61 @@ export function DimLabel({
       fontFamily={MONO}
       fill="currentColor"
       opacity={theme.guide.labelOpacity}
+      className={`note-lift note-measure ${className ?? ''}`}
+      style={style}
     >
       {children}
     </text>
   )
 }
 
-export function DimH({
+export function MeasureH({
   x1,
   x2,
   y,
   label,
   labelYOffset = -3,
+  className,
+  style,
 }: {
   x1: number
   x2: number
   y: number
   label: string
   labelYOffset?: number
+  className?: string
+  style?: CSSProperties
 }) {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <g>
+    <g className={className} style={style}>
       <g
         stroke="currentColor"
         strokeWidth={theme.guide.strokeWidth}
         opacity={theme.guide.dimOpacity}
+        // dim-draw — tape-measure unroll on hover, defined in globals.css.
+        className="dim-draw"
       >
-        <line x1={x1} y1={y - 3} x2={x1} y2={y + 3} />
-        <line x1={x2} y1={y - 3} x2={x2} y2={y + 3} />
-        <line x1={x1} y1={y} x2={x2} y2={y} />
+        <line pathLength={1} x1={x1} y1={y - 3} x2={x1} y2={y + 3} />
+        <line pathLength={1} x1={x2} y1={y - 3} x2={x2} y2={y + 3} />
+        <line pathLength={1} x1={x1} y1={y} x2={x2} y2={y} />
       </g>
-      <DimLabel x={(x1 + x2) / 2} y={y + labelYOffset}>
+      <MeasureNote x={(x1 + x2) / 2} y={y + labelYOffset}>
         {label}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }
 
-export function DimV({
+export function MeasureV({
   x,
   y1,
   y2,
   label,
   labelXOffset = -5,
   labelAnchor = 'end',
+  className,
+  style,
 }: {
   x: number
   y1: number
@@ -169,27 +215,31 @@ export function DimV({
   label: string
   labelXOffset?: number
   labelAnchor?: 'start' | 'middle' | 'end'
+  className?: string
+  style?: CSSProperties
 }) {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <g>
+    <g className={className} style={style}>
       <g
         stroke="currentColor"
         strokeWidth={theme.guide.strokeWidth}
         opacity={theme.guide.dimOpacity}
+        // dim-draw — tape-measure unroll on hover, defined in globals.css.
+        className="dim-draw"
       >
-        <line x1={x - 3} y1={y1} x2={x + 3} y2={y1} />
-        <line x1={x - 3} y1={y2} x2={x + 3} y2={y2} />
-        <line x1={x} y1={y1} x2={x} y2={y2} />
+        <line pathLength={1} x1={x - 3} y1={y1} x2={x + 3} y2={y1} />
+        <line pathLength={1} x1={x - 3} y1={y2} x2={x + 3} y2={y2} />
+        <line pathLength={1} x1={x} y1={y1} x2={x} y2={y2} />
       </g>
-      <DimLabel x={x + labelXOffset} y={(y1 + y2) / 2 + 2.5} anchor={labelAnchor}>
+      <MeasureNote x={x + labelXOffset} y={(y1 + y2) / 2 + 2.5} anchor={labelAnchor}>
         {label}
-      </DimLabel>
+      </MeasureNote>
     </g>
   )
 }
 
-export function PadGuide({
+export function InsetGuide({
   x,
   y,
   w,
@@ -201,6 +251,8 @@ export function PadGuide({
   boxH,
   boxRx = 0,
   clipOffset = 0,
+  className,
+  style,
 }: {
   x: number
   y: number
@@ -213,9 +265,11 @@ export function PadGuide({
   boxH?: number
   boxRx?: number
   clipOffset?: number
+  className?: string
+  style?: CSSProperties
 }) {
   const clipId = useId()
-  const theme = blueprintTheme
+  const theme = draftTheme
 
   const stroke = 'var(--color-accent)'
   const strokeDasharray = '2 2'
@@ -233,7 +287,7 @@ export function PadGuide({
     const crx = Math.max(0, boxRx - clipOffset)
 
     return (
-      <g>
+      <g className={className} style={style}>
         <defs>
           <clipPath id={clipId}>
             <rect x={cx} y={cy} width={cw} height={ch} rx={crx} />
@@ -265,12 +319,28 @@ export function PadGuide({
       strokeWidth={theme.guide.strokeWidth}
       strokeDasharray={strokeDasharray}
       opacity={theme.guide.structOpacity}
+      className={className}
+      style={style}
     />
   )
 }
 
-export function Selection({ x, y, w, h }: { x: number; y: number; w: number; h: number }) {
-  const theme = blueprintTheme
+export function GripFrame({
+  x,
+  y,
+  w,
+  h,
+  className,
+  style,
+}: {
+  x: number
+  y: number
+  w: number
+  h: number
+  className?: string
+  style?: CSSProperties
+}) {
+  const theme = draftTheme
 
   const offset = 1
   const sx = x - offset
@@ -286,7 +356,7 @@ export function Selection({ x, y, w, h }: { x: number; y: number; w: number; h: 
     [sx + sw, sy + sh],
   ]
   return (
-    <g>
+    <g className={className} style={style}>
       <rect
         x={sx}
         y={sy}
@@ -307,6 +377,8 @@ export function Selection({ x, y, w, h }: { x: number; y: number; w: number; h: 
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.selection.handleStrokeWidth}
           opacity={theme.selection.handleOpacity}
+          className="handle-pop"
+          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
         />
       ))}
     </g>
@@ -324,6 +396,31 @@ export function squirclePillPath(x: number, y: number, w: number, h: number) {
     `H ${x + r}`,
     `C ${x + r - k * r} ${y + h}, ${x} ${y + r + k * r}, ${x} ${y + r}`,
     `C ${x} ${y + r - k * r}, ${x + r - k * r} ${y}, ${x + r} ${y}`,
+    'Z',
+  ].join(' ')
+}
+
+export function squircleRectPath(
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number,
+  rBottom = r,
+) {
+  const rt = Math.min(r, h / 2)
+  const rb = Math.min(rBottom, h / 2)
+  const k = 0.92
+  return [
+    `M ${x + rt} ${y}`,
+    `H ${x + w - rt}`,
+    `C ${x + w - rt + k * rt} ${y}, ${x + w} ${y + rt - k * rt}, ${x + w} ${y + rt}`,
+    `V ${y + h - rb}`,
+    `C ${x + w} ${y + h - rb + k * rb}, ${x + w - rb + k * rb} ${y + h}, ${x + w - rb} ${y + h}`,
+    `H ${x + rb}`,
+    `C ${x + rb - k * rb} ${y + h}, ${x} ${y + h - rb + k * rb}, ${x} ${y + h - rb}`,
+    `V ${y + rt}`,
+    `C ${x} ${y + rt - k * rt}, ${x + rt - k * rt} ${y}, ${x + rt} ${y}`,
     'Z',
   ].join(' ')
 }

@@ -1,17 +1,23 @@
 'use client'
 
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_FILL_PANEL,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
   AnatomyTag,
@@ -36,7 +42,7 @@ const BP = {
 } as const
 
 export function ClipboardFieldBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   const midY = BP.y + FIELD.h / 2
   const promptX = BP.x + FIELD.padX
   const commandX = promptX + 9 + FIELD.gap
@@ -45,7 +51,7 @@ export function ClipboardFieldBlueprint() {
   const commandClipRight = iconX - 8
 
   return (
-    <Blueprint>
+    <DraftSurface>
       <defs>
         <clipPath id="bp-clipboard-command-clip">
           <rect x={commandX} y={BP.y} width={commandClipRight - commandX} height={FIELD.h} />
@@ -57,16 +63,21 @@ export function ClipboardFieldBlueprint() {
         width={FIELD.w}
         height={FIELD.h}
         rx={FIELD.r}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_PANEL}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
       <text
         x={promptX}
         y={midY + 4}
         fontSize={FIELD.font}
         fontFamily="var(--font-mono)"
-        className={`${BP_MORPH} fill-(--color-muted) opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-(--color-muted) opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
       >
         $
       </text>
@@ -76,27 +87,57 @@ export function ClipboardFieldBlueprint() {
         fontSize={FIELD.font}
         fontFamily="var(--font-mono)"
         clipPath="url(#bp-clipboard-command-clip)"
-        className={`${BP_MORPH} fill-(--color-muted) opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        style={beat(DRAFT_LABEL_ALT_BEAT)}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-(--color-muted) opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
       >
         npx shadcn@latest add …
       </text>
       <g
-        stroke="currentColor"
-        strokeWidth={1.4}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-        className={`${BP_MORPH} opacity-55 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:stroke-(--color-fg) group-focus-visible:stroke-(--color-fg)`}
+        style={{ transformOrigin: `${iconX + FIELD.icon / 2}px ${midY}px` }}
+        className="transition-transform duration-(--motion-dur-base) ease-(--motion-ease-out) group-active:scale-[0.9] motion-reduce:transition-none"
       >
-        <rect x={iconX + 3.5} y={iconY + 3.5} width={8} height={8} rx={1.4} />
+        <g
+          stroke="currentColor"
+          strokeWidth={1.4}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+          style={beat(DRAFT_BEAT.anatomy)}
+          className={`opacity-55 transition-[opacity,stroke] duration-(--motion-dur-fast) ease-(--motion-ease-out) group-hover:opacity-0 group-focus-visible:opacity-0 group-hover:stroke-(--color-fg) group-focus-visible:stroke-(--color-fg) group-hover:delay-(--motion-dur-base) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none`}
+        >
+          <rect
+            x={iconX + 3.5}
+            y={iconY + 3.5}
+            width={8}
+            height={8}
+            rx={1.4}
+            pathLength={1}
+            strokeDasharray={1}
+            strokeDashoffset={1}
+            className="ink-draw"
+          />
+          <path
+            d={`M${iconX + 1.5} ${iconY + 9.5} V${iconY + 2.5} a1.5 1.5 0 0 1 1.5-1.5 H${iconX + 9.5}`}
+            pathLength={1}
+            strokeDasharray={1}
+            strokeDashoffset={1}
+            className="ink-draw"
+          />
+        </g>
         <path
-          d={`M${iconX + 1.5} ${iconY + 9.5} V${iconY + 2.5} a1.5 1.5 0 0 1 1.5-1.5 H${iconX + 9.5}`}
+          d={`M${iconX + FIELD.icon / 2 - 3} ${midY}l2.5 2.5L${iconX + FIELD.icon / 2 + 3.5} ${midY - 3}`}
+          stroke="var(--color-accent)"
+          strokeWidth={1.5}
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="opacity-0 transition-opacity duration-(--motion-dur-fast) delay-0 group-hover:opacity-100 group-hover:delay-[350ms] group-focus-visible:opacity-100 group-focus-visible:delay-[350ms] motion-reduce:transition-none"
         />
       </g>
 
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP.x} y={BP.y} w={FIELD.w} h={FIELD.h} />
-        <PadGuide
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame x={BP.x} y={BP.y} w={FIELD.w} h={FIELD.h} style={beat(DRAFT_BEAT.handle)} />
+        <InsetGuide
           x={BP.x + FIELD.padX}
           y={BP.y + FIELD.padY}
           w={FIELD.w - FIELD.padX * 2}
@@ -108,26 +149,73 @@ export function ClipboardFieldBlueprint() {
           boxH={FIELD.h}
           boxRx={FIELD.r}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={BP.x + FIELD.padX / 2} y={midY + 2} anchor="middle">
+        <MeasureNote
+          x={BP.x + FIELD.padX / 2}
+          y={midY + 2}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
           12
-        </DimLabel>
-        <DimLabel x={BP.x + FIELD.w - FIELD.padX / 2} y={BP.y - 6} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x + FIELD.w - FIELD.padX / 2}
+          y={BP.y - 6}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        >
           12
-        </DimLabel>
-        <DimLabel x={BP.x + FIELD.w / 2} y={BP.y + 7} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x + FIELD.w / 2}
+          y={BP.y + 7}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           10
-        </DimLabel>
-        <DimLabel x={BP.x + FIELD.w / 2} y={BP.y + FIELD.h - 3} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x + FIELD.w / 2}
+          y={BP.y + FIELD.h - 3}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(5))}
+        >
           10
-        </DimLabel>
-        <DimH x1={BP.x} x2={BP.x + FIELD.w} y={BP.y + FIELD.h + 16} label={`${FIELD.w}`} />
-        <DimV x={BP.x - 14} y1={BP.y} y2={BP.y + FIELD.h} label={`${FIELD.h}`} labelXOffset={-6} />
-        <DimLabel x={BP.x} y={BP.y - 6} anchor="start">
+        </MeasureNote>
+        <MeasureH
+          x1={BP.x}
+          x2={BP.x + FIELD.w}
+          y={BP.y + FIELD.h + 16}
+          label={`${FIELD.w}`}
+          className="note-stamp"
+          style={beat(stampBeat(6))}
+        />
+        <MeasureV
+          x={BP.x - 14}
+          y1={BP.y}
+          y2={BP.y + FIELD.h}
+          label={`${FIELD.h}`}
+          labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        />
+        <MeasureNote
+          x={BP.x}
+          y={BP.y - 6}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        >
           {`r${FIELD.r}`}
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 

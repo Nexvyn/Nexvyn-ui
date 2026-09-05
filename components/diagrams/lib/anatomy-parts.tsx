@@ -13,6 +13,8 @@ type HoverState = string | null
 interface AnatomyContextType {
   hovered: HoverState
   setHovered: (id: HoverState) => void
+  pinned: HoverState
+  togglePinned: (id: string) => void
 }
 
 const AnatomyContext = createContext<AnatomyContextType | null>(null)
@@ -59,11 +61,12 @@ export function useSpotlight(
   partIds: string | string[],
   options?: { isInteraction?: boolean; defaultOpacity?: number },
 ) {
-  const { hovered } = useAnatomy()
+  const { hovered, pinned } = useAnatomy()
   const ids = Array.isArray(partIds) ? partIds : [partIds]
 
-  const isHovered = hovered !== null && ids.includes(hovered)
-  const isOthersHovered = hovered !== null && !isHovered
+  const engaged = hovered ?? pinned
+  const isHovered = engaged !== null && ids.includes(engaged)
+  const isOthersHovered = engaged !== null && !isHovered
   const idleOpacity = options?.defaultOpacity ?? (options?.isInteraction ? 40 : 70)
 
   const opacityClass = isHovered
@@ -83,9 +86,10 @@ export function useSpotlight(
 }
 
 export function useSpotlightBadge(partId: string) {
-  const { hovered } = useAnatomy()
-  const isHovered = hovered === partId
-  const isOthersHovered = hovered !== null && !isHovered
+  const { hovered, pinned } = useAnatomy()
+  const engaged = hovered ?? pinned
+  const isHovered = engaged === partId
+  const isOthersHovered = engaged !== null && !isHovered
 
   return {
     isHovered,
@@ -105,7 +109,7 @@ export function AnatomyTag({
   isAccent?: boolean
   className?: string
 }) {
-  const { setHovered } = useAnatomy()
+  const { setHovered, togglePinned } = useAnatomy()
   const { isHovered, wrapperClassName, wrapperStyle } = useSpotlightBadge(part)
 
   return (
@@ -119,6 +123,10 @@ export function AnatomyTag({
         onMouseLeave={() => setHovered(null)}
         onFocus={() => setHovered(part)}
         onBlur={() => setHovered(null)}
+        onClick={(event) => {
+          event.stopPropagation()
+          togglePinned(part)
+        }}
         style={{ pointerEvents: 'all' }}
         className={cn(
           'cursor-pointer squircle-corners rounded-md border bg-(--color-bg) px-2 py-1 text-[10px] font-medium leading-tight whitespace-nowrap shadow-sm outline-none',
@@ -149,21 +157,22 @@ export function OverlayLine({
   x2: number
   y2: number
 }) {
-  const { hovered } = useAnatomy()
+  const { hovered, pinned } = useAnatomy()
   const spotlight = useSpotlight(id, { defaultOpacity: 80 })
+  const engaged = hovered ?? pinned
   return (
     <line
       x1={x1}
       y1={y1}
       x2={x2}
       y2={y2}
-      className={`${hovered === id ? 'stroke-(--color-fg)' : 'stroke-(--color-border)'} ${spotlight.className}`}
+      className={`${engaged === id ? 'stroke-(--color-fg)' : 'stroke-(--color-border)'} ${spotlight.className}`}
       style={spotlight.style}
     />
   )
 }
 
-export { squirclePillPath } from '@/components/diagrams/lib/parts'
+export { squirclePillPath } from '@/components/diagrams/lib/diagram-parts'
 
 export function AnatomyDefs() {
   return (
@@ -196,19 +205,37 @@ export function AnatomyDefs() {
 export function AnatomyFrame({
   viewBox,
   maxWidthClassName = 'max-w-xl',
+  ariaLabel,
   children,
 }: {
   viewBox: string
   maxWidthClassName?: string
+  ariaLabel?: string
   children: ReactNode
 }) {
   const [hovered, setHovered] = useState<HoverState>(null)
+  const [pinned, setPinned] = useState<HoverState>(null)
+
+  const togglePinned = (id: string) => setPinned((current) => (current === id ? null : id))
 
   return (
-    <AnatomyContext.Provider value={{ hovered, setHovered }}>
-      <div className="flex w-full items-center justify-center overflow-visible px-2 py-8">
+    <AnatomyContext.Provider value={{ hovered, setHovered, pinned, togglePinned }}>
+      <div
+        className="flex w-full items-center justify-center overflow-visible px-2 py-8"
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') {
+            setPinned(null)
+            setHovered(null)
+          }
+        }}
+        onMouseDown={(event) => {
+          if (event.target === event.currentTarget) setPinned(null)
+        }}
+      >
         <svg
-          aria-hidden="true"
+          aria-hidden={ariaLabel ? undefined : true}
+          role={ariaLabel ? 'img' : undefined}
+          aria-label={ariaLabel}
           viewBox={viewBox}
           fill="none"
           overflow="visible"

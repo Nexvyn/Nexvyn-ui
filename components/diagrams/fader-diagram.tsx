@@ -7,16 +7,22 @@
 
 import { useId } from 'react'
 import {
-  Blueprint,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
   AnatomyTag,
@@ -31,7 +37,7 @@ const BP_BAR = { w: 4, h: 20 } as const
 const BP_PAD_X = 14
 
 export function FaderBlueprint() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   const midY = BP_TRACK.y + BP_TRACK.h / 2
   const uid = useId().replace(/:/g, '')
   const hatchId = `bp-fader-hatch-${uid}`
@@ -40,7 +46,7 @@ export function FaderBlueprint() {
   const valOutCls = `bp-fader-val-out-${uid}`
   const valInCls = `bp-fader-val-in-${uid}`
   return (
-    <Blueprint>
+    <DraftSurface>
       <defs>
         <pattern
           id={hatchId}
@@ -80,8 +86,8 @@ export function FaderBlueprint() {
             .group:hover .${fillCls}, .group:focus-visible .${fillCls} {
               width: ${BP_FILL_IDLE * 1.3333}px;
               transition:
-                width var(--motion-dur-slow) var(--motion-ease-in-out) 0ms,
-                opacity var(--motion-dur-fast) var(--motion-ease-out);
+                width var(--motion-dur-slow) var(--motion-ease-in-out) var(--motion-dur-base),
+                opacity var(--motion-dur-fast) var(--motion-ease-out) var(--motion-dur-base);
             }
             .${barCls} {
               transition:
@@ -91,21 +97,21 @@ export function FaderBlueprint() {
             }
             .group:hover .${barCls}, .group:focus-visible .${barCls} {
               transition:
-                translate var(--motion-dur-slow) var(--motion-ease-in-out) 0ms,
-                scale var(--motion-dur-slow) var(--motion-ease-in-out) 0ms,
-                opacity var(--motion-dur-slow) var(--motion-ease-out) 0ms;
+                translate var(--motion-dur-slow) var(--motion-ease-in-out) var(--motion-dur-base),
+                scale var(--motion-dur-slow) var(--motion-ease-in-out) var(--motion-dur-base),
+                opacity var(--motion-dur-slow) var(--motion-ease-out) var(--motion-dur-base);
             }
             .${valOutCls} {
               transition: opacity var(--motion-dur-fast) var(--motion-ease-out) 120ms;
             }
             .group:hover .${valOutCls}, .group:focus-visible .${valOutCls} {
-              transition: opacity var(--motion-dur-fast) var(--motion-ease-out) 0ms;
+              transition: opacity var(--motion-dur-fast) var(--motion-ease-out) var(--motion-dur-base);
             }
             .${valInCls} {
               transition: opacity var(--motion-dur-fast) var(--motion-ease-out) 0ms;
             }
             .group:hover .${valInCls}, .group:focus-visible .${valInCls} {
-              transition: opacity var(--motion-dur-fast) var(--motion-ease-out) 120ms;
+              transition: opacity var(--motion-dur-fast) var(--motion-ease-out) 320ms;
             }
             @media (prefers-reduced-motion: reduce) {
               .${fillCls}, .${barCls}, .${valOutCls}, .${valInCls} {
@@ -121,9 +127,13 @@ export function FaderBlueprint() {
         width={BP_TRACK.w}
         height={BP_TRACK.h}
         rx={BP_TRACK.rx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2) group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2) group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
       />
       <rect
         x={BP_TRACK.x}
@@ -131,7 +141,8 @@ export function FaderBlueprint() {
         height={BP_TRACK.h}
         rx={BP_TRACK.rx}
         fill={`url(#${hatchId})`}
-        className={`${fillCls} opacity-70 group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none`}
+        style={beat(DRAFT_BEAT.hatch)}
+        className={`fade-note ${fillCls} opacity-70 group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none`}
       />
       <rect
         x={BP_TRACK.x}
@@ -141,7 +152,7 @@ export function FaderBlueprint() {
         className={`${fillCls} fill-current opacity-0 group-hover:opacity-40 group-focus-visible:opacity-40 motion-reduce:transition-none`}
       />
       <g
-        className={`${barCls} group-hover:translate-x-7.5 group-focus-visible:translate-x-7.5 motion-reduce:transition-none motion-reduce:transform-none`}
+        className={`${barCls} group-hover:translate-x-7.5 group-focus-visible:translate-x-7.5 motion-reduce:transition-none`}
         style={{ transformOrigin: `${BP_TRACK.x + BP_FILL_IDLE}px ${midY}px` }}
       >
         <rect
@@ -150,8 +161,11 @@ export function FaderBlueprint() {
           width={BP_BAR.w}
           height={BP_BAR.h}
           rx={BP_BAR.w / 2}
-          className={`${barCls} fill-current opacity-85 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:scale-y-[1.35] group-focus-visible:scale-y-[1.35] motion-reduce:transition-none motion-reduce:transform-none`}
-          style={{ transformOrigin: `${BP_TRACK.x + BP_FILL_IDLE}px ${midY}px` }}
+          style={{
+            transformOrigin: `${BP_TRACK.x + BP_FILL_IDLE}px ${midY}px`,
+            ...beat(DRAFT_DETAIL_BEAT.c),
+          }}
+          className={`fade-note ${barCls} fill-current opacity-85 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:scale-y-[1.35] group-focus-visible:scale-y-[1.35] motion-reduce:transition-none motion-reduce:transform-none`}
         />
       </g>
       <text
@@ -160,7 +174,8 @@ export function FaderBlueprint() {
         fontSize={14}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={`${BP_MORPH} fill-current opacity-90`}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-90`}
       >
         Volume
       </text>
@@ -170,7 +185,8 @@ export function FaderBlueprint() {
         textAnchor="end"
         fontSize={14}
         fontFamily="var(--font-sans)"
-        className={`${valOutCls} fill-current opacity-90 tabular-nums group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none`}
+        style={beat(DRAFT_LABEL_ALT_BEAT)}
+        className={`fade-note ${valOutCls} fill-current opacity-90 tabular-nums group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none`}
       >
         50%
       </text>
@@ -184,8 +200,8 @@ export function FaderBlueprint() {
       >
         67%
       </text>
-      <g className={BP_HIDE_ON_MORPH}>
-        <PadGuide
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <InsetGuide
           x={BP_TRACK.x + BP_PAD_X}
           y={BP_TRACK.y + 10}
           w={BP_TRACK.w - BP_PAD_X * 2}
@@ -197,33 +213,80 @@ export function FaderBlueprint() {
           boxH={BP_TRACK.h}
           boxRx={BP_TRACK.rx}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={BP_TRACK.x + 7} y={midY + 2} anchor="middle">
+        <MeasureNote
+          x={BP_TRACK.x + 7}
+          y={midY + 2}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        >
           14
-        </DimLabel>
-        <DimLabel x={BP_TRACK.x + BP_TRACK.w - 7} y={midY + 2} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP_TRACK.x + BP_TRACK.w - 7}
+          y={midY + 2}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        >
           14
-        </DimLabel>
-        <DimLabel x={BP_TRACK.x + BP_TRACK.w / 2} y={BP_TRACK.y + 7} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP_TRACK.x + BP_TRACK.w / 2}
+          y={BP_TRACK.y + 7}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           10
-        </DimLabel>
-        <DimLabel x={BP_TRACK.x + BP_TRACK.w / 2} y={BP_TRACK.y + BP_TRACK.h - 3} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP_TRACK.x + BP_TRACK.w / 2}
+          y={BP_TRACK.y + BP_TRACK.h - 3}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           10
-        </DimLabel>
-        <Selection x={BP_TRACK.x} y={BP_TRACK.y} w={BP_TRACK.w} h={BP_TRACK.h} />
-        <DimH x1={BP_TRACK.x} x2={BP_TRACK.x + BP_TRACK.w} y={BP_TRACK.y - 10} label="180" />
-        <DimV
+        </MeasureNote>
+        <GripFrame
+          x={BP_TRACK.x}
+          y={BP_TRACK.y}
+          w={BP_TRACK.w}
+          h={BP_TRACK.h}
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <MeasureH
+          x1={BP_TRACK.x}
+          x2={BP_TRACK.x + BP_TRACK.w}
+          y={BP_TRACK.y - 10}
+          label="180"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        />
+        <MeasureV
           x={BP_TRACK.x - 12}
           y1={BP_TRACK.y}
           y2={BP_TRACK.y + BP_TRACK.h}
           label="40"
           labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(5))}
         />
-        <DimLabel x={BP_TRACK.x} y={BP_TRACK.y - 4} anchor="start">
+        <MeasureNote
+          x={BP_TRACK.x}
+          y={BP_TRACK.y - 4}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(6))}
+        >
           r4
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 
@@ -253,7 +316,7 @@ function AnatomyTrack() {
       height={AN.h}
       rx={AN.rx}
       stroke="currentColor"
-      strokeWidth={hovered === 'root' ? 2 : blueprintTheme.wireframe.strokeWidth}
+      strokeWidth={hovered === 'root' ? 2 : draftTheme.wireframe.strokeWidth}
       fill={active ? 'currentColor' : 'transparent'}
       fillOpacity={hovered === 'root' ? 0.03 : hovered === 'track' ? 0.1 : 0}
       className={`cursor-pointer ${spotlight.className}`}
@@ -307,7 +370,7 @@ function AnatomyThumb() {
         height={AN.barH}
         rx={2}
         stroke="currentColor"
-        strokeWidth={hovered === 'thumb' ? 1.25 : blueprintTheme.wireframe.strokeWidth}
+        strokeWidth={hovered === 'thumb' ? 1.25 : draftTheme.wireframe.strokeWidth}
         fill={hovered === 'thumb' ? 'currentColor' : 'transparent'}
         className={`${hovered === 'thumb' ? 'text-(--color-fg)' : ''} ${spotlight.className}`}
       />
@@ -362,7 +425,7 @@ function AnatomyBackground() {
       }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <PadGuide
+      <InsetGuide
         x={AN.x + AN.padX}
         y={AN.y + AN.padY}
         w={AN.w - AN.padX * 2}
@@ -406,9 +469,9 @@ function AnatomyBackground() {
       >
         r4
       </text>
-      <Selection x={AN.x} y={AN.y} w={AN.w} h={AN.h} />
-      <DimH x1={AN.x} x2={AN.x + AN.w} y={AN.y - 15} label="200" />
-      <DimV
+      <GripFrame x={AN.x} y={AN.y} w={AN.w} h={AN.h} />
+      <MeasureH x1={AN.x} x2={AN.x + AN.w} y={AN.y - 15} label="200" />
+      <MeasureV
         x={AN.x + AN.w + 15}
         y1={AN.y}
         y2={AN.y + AN.h}

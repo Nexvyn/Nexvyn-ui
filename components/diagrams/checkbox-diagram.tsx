@@ -5,15 +5,23 @@
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
 // This file is NOT covered by the repository's root MIT LICENSE.
 
+import { useState } from 'react'
 import {
-  Blueprint,
-  BP_FILL_SOLID,
-  BP_HIDE_ON_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  PadGuide,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_BEAT,
+  DRAFT_FILL_SOLID,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  beat,
+  MeasureH,
+  InsetGuide,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
   AnatomyTag,
@@ -28,91 +36,128 @@ const BP_CENTER = { x: 88, y: 70 } as const
 const WRAP = { x: 58, y: 47, w: 148, h: 46, rx: 8 } as const
 
 export function CheckboxBlueprint() {
-  const theme = blueprintTheme
+  const [on, setOn] = useState(false)
+  const theme = draftTheme
   const bx = BP_CENTER.x - BOX.size / 2
   const by = BP_CENTER.y - BOX.size / 2
 
   return (
-    <Blueprint>
-      <defs>
-        <pattern
-          id="bp-hatch-checkbox"
-          width="4"
-          height="4"
-          patternTransform="rotate(45)"
-          patternUnits="userSpaceOnUse"
+    <div className="relative inline-block">
+      <DraftSurface>
+        <defs>
+          <pattern
+            id="bp-hatch-checkbox"
+            width="4"
+            height="4"
+            patternTransform="rotate(45)"
+            patternUnits="userSpaceOnUse"
+          >
+            <line
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="4"
+              stroke="currentColor"
+              strokeWidth="0.75"
+              opacity="0.35"
+            />
+          </pattern>
+        </defs>
+        <rect
+          x={bx}
+          y={by}
+          width={BOX.size}
+          height={BOX.size}
+          rx={BOX.r}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
+          strokeWidth={theme.wireframe.strokeWidth}
+          strokeOpacity={theme.wireframe.strokeOpacity}
+          style={beat(DRAFT_BEAT.outline)}
+          className={`ink-draw ${
+            on ? `${DRAFT_INK_MORPH} fill-(--color-fg) stroke-transparent` : DRAFT_FILL_SOLID
+          }`}
+        />
+        <rect
+          x={bx}
+          y={by}
+          width={BOX.size}
+          height={BOX.size}
+          rx={BOX.r}
+          fill="url(#bp-hatch-checkbox)"
+          style={beat(DRAFT_BEAT.hatch)}
+          className={`fade-note ${on ? 'opacity-0' : DRAFT_SCAFFOLD_FADE}`}
+        />
+        <path
+          d={`M${bx + 4.38} ${by + 10.62}L${bx + 8.75} ${by + 15}L${bx + 15.62} ${by + 6.88}`}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={on ? 0 : 1}
+          stroke="var(--color-bg)"
+          strokeWidth={1.6}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+          style={beat(DRAFT_DETAIL_BEAT.a)}
+          className={`fade-note transition-[stroke-dashoffset] duration-(--motion-dur-slow) ease-(--motion-ease-out) group-hover:[stroke-dashoffset:0] group-focus-visible:[stroke-dashoffset:0] motion-reduce:transition-none`}
+        />
+        <text
+          x={bx + BOX.size + ROW.labelGap}
+          y={BP_CENTER.y + 4}
+          fontSize={ROW.labelFont}
+          fontWeight={500}
+          fontFamily="var(--font-sans)"
+          style={beat(DRAFT_LABEL_BEAT)}
+          className={`fade-note ${DRAFT_TEXT_SOFT}`}
         >
-          <line
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="4"
-            stroke="currentColor"
-            strokeWidth="0.75"
-            opacity="0.35"
+          Label
+        </text>
+        <g className={DRAFT_SCAFFOLD_FADE}>
+          <InsetGuide
+            x={bx - 1}
+            y={by - 1}
+            w={BOX.size + 2}
+            h={BOX.size + 2}
+            boxX={WRAP.x}
+            boxY={WRAP.y}
+            boxW={WRAP.w}
+            boxH={WRAP.h}
+            boxRx={WRAP.rx}
+            className="dash-march"
+            style={beat(DRAFT_BEAT.guide)}
           />
-        </pattern>
-      </defs>
-      <rect
-        x={bx}
-        y={by}
-        width={BOX.size}
-        height={BOX.size}
-        rx={BOX.r}
-        strokeWidth={theme.wireframe.strokeWidth}
-        strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_SOLID}
+          <MeasureH
+            x1={bx}
+            x2={bx + BOX.size}
+            y={by - 14}
+            label={`${BOX.size}`}
+            className="note-stamp"
+            style={beat(stampBeat(0))}
+          />
+          <MeasureH
+            x1={bx + BOX.size}
+            x2={bx + BOX.size + ROW.labelGap}
+            y={by + BOX.size + 18}
+            label={`${ROW.labelGap}`}
+            className="note-stamp"
+            style={beat(stampBeat(1))}
+          />
+        </g>
+      </DraftSurface>
+      <button
+        type="button"
+        aria-pressed={on}
+        aria-label="Toggle checkbox"
+        onClick={(event) => {
+          event.preventDefault()
+          event.stopPropagation()
+          setOn((value) => !value)
+        }}
+        className="pointer-events-auto absolute cursor-pointer rounded-md outline-none transition-shadow duration-(--motion-dur-fast) focus-visible:ring-2 focus-visible:ring-(--color-accent) motion-reduce:transition-none"
+        style={{ left: bx - 12, top: by - 12, width: 44, height: 44 }}
       />
-      <rect
-        x={bx}
-        y={by}
-        width={BOX.size}
-        height={BOX.size}
-        rx={BOX.r}
-        fill="url(#bp-hatch-checkbox)"
-        className={BP_HIDE_ON_MORPH}
-      />
-      <path
-        d={`M${bx + 4.38} ${by + 10.62}L${bx + 8.75} ${by + 15}L${bx + 15.62} ${by + 6.88}`}
-        pathLength={1}
-        stroke="var(--color-bg)"
-        strokeWidth={1.6}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-        className="[stroke-dasharray:1] [stroke-dashoffset:1] transition-[stroke-dashoffset] duration-(--motion-dur-slow) ease-(--motion-ease-out) group-hover:[stroke-dashoffset:0] group-focus-visible:[stroke-dashoffset:0] motion-reduce:transition-none"
-      />
-      <text
-        x={bx + BOX.size + ROW.labelGap}
-        y={BP_CENTER.y + 4}
-        fontSize={ROW.labelFont}
-        fontWeight={500}
-        fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
-      >
-        Label
-      </text>
-      <g className={BP_HIDE_ON_MORPH}>
-        <PadGuide
-          x={bx - 1}
-          y={by - 1}
-          w={BOX.size + 2}
-          h={BOX.size + 2}
-          boxX={WRAP.x}
-          boxY={WRAP.y}
-          boxW={WRAP.w}
-          boxH={WRAP.h}
-          boxRx={WRAP.rx}
-        />
-        <DimH x1={bx} x2={bx + BOX.size} y={by - 14} label={`${BOX.size}`} />
-        <DimH
-          x1={bx + BOX.size}
-          x2={bx + BOX.size + ROW.labelGap}
-          y={by + BOX.size + 18}
-          label={`${ROW.labelGap}`}
-        />
-      </g>
-    </Blueprint>
+    </div>
   )
 }
 
@@ -131,7 +176,7 @@ function BoxShape() {
       height={BOX.size}
       rx={BOX.r}
       stroke="currentColor"
-      strokeWidth={hovered === 'box' ? 2 : blueprintTheme.wireframe.strokeWidth}
+      strokeWidth={hovered === 'box' ? 2 : draftTheme.wireframe.strokeWidth}
       fill={hovered === 'box' ? 'currentColor' : 'transparent'}
       fillOpacity={hovered === 'box' ? 0.15 : 0}
       className={`cursor-pointer ${spotlight.className}`}
@@ -250,7 +295,7 @@ function TouchTargetShape() {
       height={ROW.h}
       rx={4}
       stroke="currentColor"
-      strokeWidth={hovered === 'touch-target' ? 1.5 : blueprintTheme.guide.strokeWidth}
+      strokeWidth={hovered === 'touch-target' ? 1.5 : draftTheme.guide.strokeWidth}
       strokeDasharray="4 3"
       fill={hovered === 'touch-target' ? 'currentColor' : 'transparent'}
       fillOpacity={hovered === 'touch-target' ? 0.04 : 0}

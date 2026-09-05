@@ -6,18 +6,24 @@
 // This file is NOT covered by the repository's root MIT LICENSE.
 
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  BP_TEXT_SOFT,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_FILL_PANEL,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
   AnatomyTag,
@@ -30,17 +36,27 @@ const BP_FIELD = { x: 30, y: 52, w: 160, h: 44, rx: 6 } as const
 const BP_DOT_XS = [46, 58, 70, 82, 94, 106] as const
 const BP_EYE = { cx: 168, cy: 74 } as const
 
+const BP_DOT_STAGGER = [
+  'opacity-0 transition-opacity duration-300 delay-0 group-hover:opacity-100 group-hover:duration-0 group-hover:delay-[450ms] group-focus-visible:opacity-100 group-focus-visible:duration-0 group-focus-visible:delay-[450ms] motion-reduce:transition-none',
+  'opacity-0 transition-opacity duration-300 delay-0 group-hover:opacity-100 group-hover:duration-0 group-hover:delay-[540ms] group-focus-visible:opacity-100 group-focus-visible:duration-0 group-focus-visible:delay-[540ms] motion-reduce:transition-none',
+  'opacity-0 transition-opacity duration-300 delay-0 group-hover:opacity-100 group-hover:duration-0 group-hover:delay-[630ms] group-focus-visible:opacity-100 group-focus-visible:duration-0 group-focus-visible:delay-[630ms] motion-reduce:transition-none',
+  'opacity-0 transition-opacity duration-300 delay-0 group-hover:opacity-100 group-hover:duration-0 group-hover:delay-[720ms] group-focus-visible:opacity-100 group-focus-visible:duration-0 group-focus-visible:delay-[720ms] motion-reduce:transition-none',
+  'opacity-0 transition-opacity duration-300 delay-0 group-hover:opacity-100 group-hover:duration-0 group-hover:delay-[810ms] group-focus-visible:opacity-100 group-focus-visible:duration-0 group-focus-visible:delay-[810ms] motion-reduce:transition-none',
+  'opacity-0 transition-opacity duration-300 delay-0 group-hover:opacity-100 group-hover:duration-0 group-hover:delay-[900ms] group-focus-visible:opacity-100 group-focus-visible:duration-0 group-focus-visible:delay-[900ms] motion-reduce:transition-none',
+] as const
+
 export function PasswordInputWireframe() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   return (
-    <Blueprint>
+    <DraftSurface>
       <text
         x={BP_FIELD.x}
         y={BP_FIELD.y - 12}
         fontSize={14}
         fontWeight={500}
         fontFamily="var(--font-sans)"
-        className={BP_TEXT_SOFT}
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
         Password
       </text>
@@ -51,36 +67,51 @@ export function PasswordInputWireframe() {
         width={BP_FIELD.w}
         height={BP_FIELD.h}
         rx={BP_FIELD.rx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_PANEL}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
-      {BP_DOT_XS.map((x) => (
+      {BP_DOT_XS.map((x, i) => (
         <circle
           key={x}
           cx={x}
           cy={BP_FIELD.y + BP_FIELD.h / 2}
           r={2.5}
-          className={`${BP_MORPH} fill-transparent stroke-current group-hover:fill-(--color-fg) group-focus-visible:fill-(--color-fg) group-hover:stroke-transparent group-focus-visible:stroke-transparent`}
           strokeWidth={1}
-          opacity={theme.wireframe.strokeOpacity}
+          className={`fill-transparent stroke-current group-hover:fill-(--color-fg) group-focus-visible:fill-(--color-fg) group-hover:stroke-transparent group-focus-visible:stroke-transparent ${BP_DOT_STAGGER[i]}`}
         />
       ))}
       <g
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={`${BP_MORPH} opacity-55 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        className="origin-center transition-transform duration-(--motion-dur-base) ease-(--motion-ease-in-out) group-hover:scale-110 group-hover:delay-(--motion-dur-base) group-focus-visible:scale-110 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:scale-100"
+        style={{ transformBox: 'fill-box' }}
       >
-        <path d={`M${BP_EYE.cx - 9} ${BP_EYE.cy} q9 -8 18 0 q-9 8 -18 0`} />
-        <circle cx={BP_EYE.cx} cy={BP_EYE.cy} r={2.5} className="fill-current stroke-none" />
+        <g
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={beat(DRAFT_BEAT.anatomy)}
+          className={`fade-note ${DRAFT_INK_MORPH} opacity-55 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        >
+          <path d={`M${BP_EYE.cx - 9} ${BP_EYE.cy} q9 -8 18 0 q-9 8 -18 0`} />
+          <circle cx={BP_EYE.cx} cy={BP_EYE.cy} r={2.5} className="fill-current stroke-none" />
+        </g>
       </g>
 
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP_FIELD.x} y={BP_FIELD.y} w={BP_FIELD.w} h={BP_FIELD.h} />
-        <PadGuide
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame
+          x={BP_FIELD.x}
+          y={BP_FIELD.y}
+          w={BP_FIELD.w}
+          h={BP_FIELD.h}
+          style={beat(DRAFT_BEAT.handle)}
+        />
+        <InsetGuide
           x={BP_FIELD.x + 14}
           y={BP_FIELD.y + 10}
           w={BP_FIELD.w - 14 - 48}
@@ -92,6 +123,8 @@ export function PasswordInputWireframe() {
           boxH={BP_FIELD.h}
           boxRx={BP_FIELD.rx}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
         <circle
           cx={BP_EYE.cx}
@@ -102,25 +135,37 @@ export function PasswordInputWireframe() {
           strokeWidth={theme.guide.strokeWidth}
           strokeDasharray="2 2"
           opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimH
+        <MeasureH
           x1={BP_FIELD.x}
           x2={BP_FIELD.x + BP_FIELD.w}
           y={BP_FIELD.y + BP_FIELD.h + 14}
           label="160"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
         />
-        <DimV
+        <MeasureV
           x={BP_FIELD.x - 12}
           y1={BP_FIELD.y}
           y2={BP_FIELD.y + BP_FIELD.h}
           label="44"
           labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
         />
-        <DimLabel x={BP_FIELD.x} y={BP_FIELD.y - 4} anchor="start">
+        <MeasureNote
+          x={BP_FIELD.x + BP_FIELD.w}
+          y={BP_FIELD.y - 4}
+          anchor="end"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           r6
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
 

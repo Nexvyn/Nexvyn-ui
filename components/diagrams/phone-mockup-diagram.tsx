@@ -6,18 +6,24 @@
 // This file is NOT covered by the repository's root MIT LICENSE.
 
 import {
-  Blueprint,
-  BP_FILL_PANEL,
-  BP_FILL_SOLID,
-  BP_HIDE_ON_MORPH,
-  BP_MORPH,
-  blueprintTheme,
-  DimH,
-  DimLabel,
-  DimV,
-  PadGuide,
-  Selection,
-} from '@/components/diagrams/lib/parts'
+  DraftSurface,
+  DRAFT_FILL_PANEL,
+  DRAFT_FILL_SOLID,
+  DRAFT_SCAFFOLD_FADE,
+  DRAFT_INK_MORPH,
+  draftTheme,
+  MeasureH,
+  MeasureNote,
+  MeasureV,
+  InsetGuide,
+  GripFrame,
+  beat,
+  DRAFT_BEAT,
+  DRAFT_DETAIL_BEAT,
+  DRAFT_LABEL_BEAT,
+  DRAFT_LABEL_ALT_BEAT,
+  stampBeat,
+} from '@/components/diagrams/lib/diagram-parts'
 
 const BP = { x: 84, y: 12, w: 53, h: 110, rx: 9 } as const
 const SCALE = BP.w / 256
@@ -43,14 +49,14 @@ const SIDE_BUTTONS = [
 ] as const
 
 export function PhoneMockupWireframe() {
-  const theme = blueprintTheme
+  const theme = draftTheme
   const screenX = BP.x + SCREEN_INSET
   const screenY = BP.y + SCREEN_INSET
   const screenW = BP.w - SCREEN_INSET * 2
   const screenH = BP.h - SCREEN_INSET * 2
 
   return (
-    <Blueprint className="h-auto w-90 sm:w-110">
+    <DraftSurface className="h-auto w-90 sm:w-110">
       <defs>
         <pattern
           id="bp-hatch-phone-screen"
@@ -85,6 +91,8 @@ export function PhoneMockupWireframe() {
             strokeWidth={theme.wireframe.strokeWidth}
             strokeOpacity={theme.wireframe.strokeOpacity}
             strokeLinecap="round"
+            className="fade-note"
+            style={beat(DRAFT_LABEL_ALT_BEAT)}
           />
         )
       })}
@@ -95,9 +103,13 @@ export function PhoneMockupWireframe() {
         width={BP.w}
         height={BP.h}
         rx={BP.rx}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_PANEL}
+        style={beat(DRAFT_BEAT.outline)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
 
       <rect
@@ -106,9 +118,13 @@ export function PhoneMockupWireframe() {
         width={screenW}
         height={screenH}
         rx={SCREEN_RX}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
-        className={BP_FILL_SOLID}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`ink-draw ${DRAFT_FILL_SOLID}`}
       />
       <rect
         x={screenX}
@@ -117,7 +133,8 @@ export function PhoneMockupWireframe() {
         height={screenH}
         rx={SCREEN_RX}
         fill="url(#bp-hatch-phone-screen)"
-        className={BP_HIDE_ON_MORPH}
+        style={beat(DRAFT_BEAT.hatch)}
+        className={`${DRAFT_SCAFFOLD_FADE} fade-note`}
       />
 
       <rect
@@ -126,7 +143,8 @@ export function PhoneMockupWireframe() {
         width={ISLAND.w}
         height={ISLAND.h}
         rx={ISLAND.h / 2}
-        className={`${BP_MORPH} fill-current opacity-60 group-hover:fill-(--color-bg) group-hover:opacity-90 group-focus-visible:fill-(--color-bg) group-focus-visible:opacity-90`}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-60 group-hover:fill-(--color-bg) group-hover:opacity-90 group-focus-visible:fill-(--color-bg) group-focus-visible:opacity-90`}
+        style={beat(DRAFT_BEAT.hatch)}
       />
 
       <rect
@@ -135,17 +153,39 @@ export function PhoneMockupWireframe() {
         width={HOME.w}
         height={HOME.h}
         rx={HOME.h / 2}
-        className={`${BP_MORPH} fill-current opacity-30 group-hover:opacity-60 group-focus-visible:opacity-60`}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-30 group-hover:opacity-60 group-focus-visible:opacity-60`}
+        style={beat(DRAFT_LABEL_ALT_BEAT)}
       />
 
-      <g className={BP_HIDE_ON_MORPH}>
-        <Selection x={BP.x} y={BP.y} w={BP.w} h={BP.h} />
-        <DimH x1={BP.x} x2={BP.x + BP.w} y={BP.y + BP.h + 14} label="256" />
-        <DimV x={BP.x - 14} y1={BP.y} y2={BP.y + BP.h} label="532" labelXOffset={-6} />
-        <DimLabel x={BP.x} y={BP.y - 4} anchor="start">
+      <g className={DRAFT_SCAFFOLD_FADE}>
+        <GripFrame x={BP.x} y={BP.y} w={BP.w} h={BP.h} style={beat(DRAFT_BEAT.handle)} />
+        <MeasureH
+          x1={BP.x}
+          x2={BP.x + BP.w}
+          y={BP.y + BP.h + 14}
+          label="256"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
+          x={BP.x - 14}
+          y1={BP.y}
+          y2={BP.y + BP.h}
+          label="532"
+          labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <MeasureNote
+          x={BP.x}
+          y={BP.y - 4}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
           r42
-        </DimLabel>
-        <PadGuide
+        </MeasureNote>
+        <InsetGuide
           x={screenX}
           y={screenY}
           w={screenW}
@@ -157,14 +197,28 @@ export function PhoneMockupWireframe() {
           boxH={BP.h}
           boxRx={BP.rx}
           clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
         />
-        <DimLabel x={BP.x + BP.w + 6} y={screenY + 4} anchor="start">
+        <MeasureNote
+          x={BP.x + BP.w + 6}
+          y={screenY + 4}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
           3.5
-        </DimLabel>
-        <DimLabel x={BP.x + BP.w / 2} y={screenY + ISLAND.top - 3} anchor="middle">
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x + BP.w / 2}
+          y={screenY + ISLAND.top - 3}
+          anchor="middle"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
           66x20
-        </DimLabel>
+        </MeasureNote>
       </g>
-    </Blueprint>
+    </DraftSurface>
   )
 }
