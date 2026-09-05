@@ -9,7 +9,7 @@ By participating, you agree to follow the [Nexvyn UI Code of Conduct](CODE_OF_CO
 ## Prerequisites
 
 - Node.js 18+
-  -bun
+- pnpm (via `corepack enable` or `npm install -g pnpm`)
 
 ---
 
@@ -77,17 +77,11 @@ Add an entry to `registry.json` for shadcn CLI installation:
 }
 ```
 
-Then run `bun run build:registry` to generate the `public/r/my-component.json` file automatically.
+Then run `pnpm build:registry` to generate the `public/r/my-component.json` file automatically.
 
-### 7. Add to source map
+### 7. Verify the registry JSON
 
-Add to `app/api/source/route.ts` in the `SOURCE_MAP` object so the code drawer can serve the source:
-
-```ts
-const SOURCE_MAP: Record<string, string[]> = {
-  'my-component': ['components', 'ui', 'my-component.tsx'],
-}
-```
+Run `pnpm build:registry` to generate the `public/r/my-component.json` file automatically. The code drawer fetches this static file for "view source" — no source-map registration needed.
 
 ### 8. Set collection category
 
@@ -95,14 +89,14 @@ Set the `collection` field in metadata to one of: `'navigation'`, `'inputs'`, `'
 
 ### 9. Test locally
 
-Run `bun run dev` and navigate to `/components/my-component` to verify it works.
+Run `pnpm dev` and navigate to `/components/my-component` to verify it works.
 
 ### 10. Format and lint
 
 ```bash
-bun run format       # Format code with Prettier
-bun run lint         # Run ESLint
-bun run build        # Verify production build
+pnpm format       # Format code with Prettier
+pnpm lint         # Run ESLint
+pnpm build        # Verify production build
 ```
 
 ---
@@ -115,7 +109,7 @@ bun run build        # Verify production build
 - Use design tokens (`var(--color-*)`) instead of hardcoded colors
 - No comments in component files
 - Add `"use client"` directive for client components
-- Run `bun run format` before committing
+- Run `pnpm format` before committing
 - Respect `prefers-reduced-motion` for accessibility
 
 ---
