@@ -1,9 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft, Star } from 'lucide-react'
 import { COMPONENTS } from '@/lib/components-registry'
 import { ComponentDemo } from '@/app/components/[component]/page'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
@@ -13,25 +10,6 @@ export default function PreviewPage() {
   const params = useParams()
   const componentId = typeof params.component === 'string' ? params.component : ''
   const component = COMPONENTS.find((item) => item.id === componentId)
-
-  const [stars, setStars] = useState('1')
-
-  useEffect(() => {
-    fetch('https://api.github.com/repos/Nexvyn/Nexvyn-ui')
-      .then((res) => res.json())
-      .then((json) => {
-        if (json && typeof json.stargazers_count === 'number') {
-          const formattedCount =
-            json.stargazers_count >= 1000
-              ? json.stargazers_count % 1000 === 0
-                ? `${Math.floor(json.stargazers_count / 1000)}k`
-                : `${(json.stargazers_count / 1000).toFixed(1)}k`
-              : json.stargazers_count.toLocaleString()
-          setStars(formattedCount.replace('.0k', 'k'))
-        }
-      })
-      .catch(() => {})
-  }, [])
 
   if (!component) {
     return (

@@ -2,7 +2,6 @@
 
 import { useParams } from 'next/navigation'
 import { motion } from 'motion/react'
-import { Button } from '@/components/layout/button'
 import { GooeyFilter } from '@/components/layout/gooey-filter'
 import { PixelTrail } from '@/components/layout/pixel-trail'
 import { ThemeToggle } from '@/components/layout/theme-toggle'

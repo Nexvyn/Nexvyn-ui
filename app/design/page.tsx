@@ -152,7 +152,7 @@ export default function DesignPage() {
                 <div>
                   <p className="text-[11px] font-mono text-(--color-subtle) mb-1">--font-sans</p>
                   <p className="font-sans text-lg text-(--color-fg)">
-                    Segoe UI, ui-sans-serif, system-ui
+                    Instrument Sans, ui-sans-serif, system-ui
                   </p>
                 </div>
                 <div>
