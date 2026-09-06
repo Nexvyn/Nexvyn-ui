@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, type RefObject } from 'react'
+import { useState, useEffect, useRef, type RefObject } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { playHoverSound, playClickSound } from '@/lib/sound'
@@ -103,26 +103,23 @@ export function TableOfContents({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const scrollToSection = useCallback(
-    (id: string) => {
-      playClickSound()
-      const element = document.getElementById(id)
-      if (!element) return
+  const scrollToSection = (id: string) => {
+    playClickSound()
+    const element = document.getElementById(id)
+    if (!element) return
 
-      const el = scrollContainer?.current
-      if (el) {
-        const containerTop = el.getBoundingClientRect().top
-        const elementTop = element.getBoundingClientRect().top
-        const scrollTop = el.scrollTop + (elementTop - containerTop) - scrollOffset
-        el.scrollTo({ top: scrollTop, behavior: 'smooth' })
-      } else {
-        const elementPosition = element.getBoundingClientRect().top + window.scrollY
-        window.scrollTo({ top: elementPosition - scrollOffset, behavior: 'smooth' })
-      }
-      setIsExpanded(false)
-    },
-    [scrollOffset],
-  )
+    const el = scrollContainer?.current
+    if (el) {
+      const containerTop = el.getBoundingClientRect().top
+      const elementTop = element.getBoundingClientRect().top
+      const scrollTop = el.scrollTop + (elementTop - containerTop) - scrollOffset
+      el.scrollTo({ top: scrollTop, behavior: 'smooth' })
+    } else {
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY
+      window.scrollTo({ top: elementPosition - scrollOffset, behavior: 'smooth' })
+    }
+    setIsExpanded(false)
+  }
 
   const activeSection = sections.find((s) => s.id === activeId) || sections[0]
 

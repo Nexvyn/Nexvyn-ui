@@ -273,12 +273,21 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuConten
       }
 
       const frame = requestAnimationFrame(measure)
-      window.addEventListener('resize', measure)
-      window.addEventListener('scroll', measure, true)
+      let raf = 0
+      const scheduleMeasure = () => {
+        if (raf) return
+        raf = requestAnimationFrame(() => {
+          raf = 0
+          measure()
+        })
+      }
+      window.addEventListener('resize', scheduleMeasure, { passive: true })
+      window.addEventListener('scroll', scheduleMeasure, { passive: true, capture: true })
       return () => {
         cancelAnimationFrame(frame)
-        window.removeEventListener('resize', measure)
-        window.removeEventListener('scroll', measure, true)
+        if (raf) cancelAnimationFrame(raf)
+        window.removeEventListener('resize', scheduleMeasure)
+        window.removeEventListener('scroll', scheduleMeasure, true)
       }
     }, [open, align, side, sideOffset, triggerId, setItemsWidth])
     useEffect(() => {

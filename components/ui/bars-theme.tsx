@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { AriaAttributes, CSSProperties } from 'react'
 import { useReducedMotion } from 'motion/react'
 import { useCssColorRgb } from '@/lib/hooks/use-css-color-rgb'
@@ -71,6 +71,18 @@ export function BarsTheme({
 
   const reduceMotion = useReducedMotion()
 
+  const [visible, setVisible] = useState(true)
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting && entry.intersectionRatio >= 0.2),
+      { threshold: [0, 0.2] },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
   const foregroundRgb = useCssColorRgb('--color-fg', FALLBACK_FOREGROUND)
   const destructiveRgb = useCssColorRgb('--color-destructive', FALLBACK_DESTRUCTIVE)
   const foregroundRgbRef = useRef(foregroundRgb)
@@ -103,6 +115,7 @@ export function BarsTheme({
   }, [volume])
 
   useEffect(() => {
+    if (!visible) return
     const maxH = size * 0.55
     const minH = size * 0.06
     const hoverBoostMax = size * 0.08
@@ -251,7 +264,7 @@ export function BarsTheme({
     }
     rafRef.current = requestAnimationFrame(animateStatic)
     return () => cancelAnimationFrame(rafRef.current)
-  }, [state, size, reduceMotion])
+  }, [state, size, reduceMotion, visible])
 
   const barW = size * 0.055
   const gap = size * 0.035

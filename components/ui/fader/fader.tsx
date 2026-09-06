@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import { springs } from '@/lib/motion-tokens'
 import { BAR_BOX, barCenterFor, fillEdgePx } from './geometry'
 import { type UseFaderOptions, useFader } from './use-fader'
-import { playHoverSound, playClickSound, playTickSound } from '@/lib/sound'
+import { playHoverSound, playClickSound } from '@/lib/sound'
 
 const MARK_HIDE_RADIUS = 10
 const MARK_HIDE_FADE = 6

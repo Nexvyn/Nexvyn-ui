@@ -274,7 +274,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
         setActiveIndex(flat.length > 0 ? firstEnabledIndex(flat) : null)
       })
       return () => cancelAnimationFrame(frame)
-    }, [flat, open, measureItems, setActiveIndex])
+    }, [flat, open, measureItems, setActiveIndex, itemRefsMap])
 
     const performAction = useCallback(
       (action: CommandAction | undefined) => {
@@ -306,7 +306,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
         setActiveIndex(next)
         itemRefsMap.get(next)?.scrollIntoView({ block: 'nearest' })
       },
-      [activeIndex, flat, setActiveIndex],
+      [activeIndex, flat, setActiveIndex, itemRefsMap],
     )
 
     const onInputKeyDown = useCallback(
@@ -346,7 +346,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
             break
         }
       },
-      [activeIndex, flat, moveActive, performAction, setActiveIndex],
+      [activeIndex, flat, moveActive, performAction, setActiveIndex, itemRefsMap],
     )
 
     if (!mounted) return null

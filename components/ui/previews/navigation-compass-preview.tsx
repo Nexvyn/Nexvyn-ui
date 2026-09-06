@@ -5,7 +5,7 @@ import {
   type CompassNavLink,
 } from '@/components/illustration/navigation-compass'
 
-const LINKS: CompassNavLink[] = [
+export const LINKS: CompassNavLink[] = [
   { angle: 0, label: 'Home', href: '#' },
   { angle: 45, label: 'Work', href: '#' },
   { angle: 90, label: 'Studio', href: '#' },

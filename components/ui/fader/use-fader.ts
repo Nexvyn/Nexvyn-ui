@@ -175,6 +175,7 @@ export function useFader(options: UseFaderOptions) {
   }, [overdrag.dragging, fillPercent])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: keyed on points content via join(",") — literal arrays get a new identity every render
+  const pointsKey = points?.join(',')
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') return
     if (min >= max) {
@@ -192,7 +193,9 @@ export function useFader(options: UseFaderOptions) {
     if (outside.length > 0) {
       console.warn(`Fader "${label}": points outside [${min}, ${max}]: ${outside.join(', ')}.`)
     }
-  }, [points?.join(','), min, max, label])
+    // points identity changes every render; pointsKey (joined values) is the stable signal
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pointsKey, min, max, label])
 
   function measureZones() {
     const control = controlRef.current
@@ -212,6 +215,8 @@ export function useFader(options: UseFaderOptions) {
 
   useLayoutEffect(() => {
     measureZones()
+    // measureZones is stable (reads refs + motion values only)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formatted.length, label, unit, remeasureKey])
 
   useEffect(() => {
@@ -220,6 +225,8 @@ export function useFader(options: UseFaderOptions) {
     const observer = new ResizeObserver(() => measureZones())
     observer.observe(control)
     return () => observer.disconnect()
+    // measureZones is stable (reads refs + motion values only)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function stopSettle() {

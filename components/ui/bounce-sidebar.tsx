@@ -8,17 +8,9 @@ import {
   useSyncExternalStore,
   type KeyboardEvent,
 } from 'react'
-import {
-  motion,
-  stagger,
-  useAnimate,
-  useMotionValue,
-  useReducedMotion,
-  type Transition,
-  type Variants,
-} from 'motion/react'
+import { motion, useAnimate, useMotionValue, useReducedMotion, type Transition } from 'motion/react'
 import { cn } from '@/lib/utils'
-import { playHoverSound, playClickSound, playBounceSound } from '@/lib/sound'
+import { playHoverSound, playBounceSound } from '@/lib/sound'
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const
 
@@ -97,6 +89,8 @@ export function BounceSidebar({
       cancelAnimationFrame(raf)
       ro.disconnect()
     }
+    // mount-only: snap reads refs/motion values, not reactive deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

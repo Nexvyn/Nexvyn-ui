@@ -121,10 +121,14 @@ const BlossomPickerInner = forwardRef<HTMLDivElement, Omit<BlossomPickerProps, '
         pickerRef.current?.destroy()
         pickerRef.current = null
       }
+      // mount-only: the picker instance is created once and updated via setOptions below
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
       pickerRef.current?.setOptions(propsToOptions(props))
+      // props is read via propsToOptions; individual fields below drive updates
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       props.value,
       props.defaultValue,

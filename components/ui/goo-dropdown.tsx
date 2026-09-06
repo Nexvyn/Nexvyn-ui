@@ -176,7 +176,6 @@ export function GooDropdown({
       window.removeEventListener('pointerdown', onPointerDown)
       window.removeEventListener('keydown', onKey)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
   const select = (item: DropdownItem) => {
@@ -257,7 +256,11 @@ export function GooDropdown({
           onMouseEnter={() => playHoverSound()}
           onClick={() => {
             playClickSound()
-            open ? closeMenu() : openMenu()
+            if (open) {
+              closeMenu()
+            } else {
+              openMenu()
+            }
           }}
           aria-expanded={open}
           aria-haspopup="menu"

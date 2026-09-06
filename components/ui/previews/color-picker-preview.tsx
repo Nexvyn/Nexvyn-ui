@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { BlossomPicker } from '@/components/ui/color-picker-standalone'
 
 export function ColorPickerPreview() {
-  const [showArc, setShowArc] = useState(true)
+  const [showArc] = useState(true)
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-5 p-6">

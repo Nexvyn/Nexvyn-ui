@@ -1,4 +1,3 @@
-import { BLOOM_EASING } from '../constants'
 import { createElement, setStyles } from '../dom-helpers'
 import { playHoverSound, playClickSound } from '@/lib/sound'
 
