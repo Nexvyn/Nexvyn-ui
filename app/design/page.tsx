@@ -1,10 +1,11 @@
-import type { Metadata } from 'next'
 import { AnimatedTitle } from '@/components/showcase/animated-title'
+import { pageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Design',
   description: 'Color, radius, typography, spacing, shape, and motion tokens for Nexvyn/UI.',
-}
+  path: '/design',
+})
 
 function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (

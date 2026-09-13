@@ -1,11 +1,12 @@
-import type { Metadata } from 'next'
 import { AnimatedTitle } from '@/components/showcase/animated-title'
+import { pageMetadata } from '@/lib/seo'
 import { parseChangelog, type ChangelogSegment } from '@/lib/parse-changelog'
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: 'Changelog',
   description: 'Notable changes to Nexvyn/UI, release by release.',
-}
+  path: '/changelog',
+})
 
 const CATEGORY_TONE: Record<string, string> = {
   Added: 'text-(--color-accent)',
