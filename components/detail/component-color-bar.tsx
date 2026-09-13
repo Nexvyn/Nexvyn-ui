@@ -16,13 +16,6 @@ function getThemeSnapshot() {
     : 'light'
 }
 
-const DEFAULT_COLORS = {
-  bg: '#ffffff',
-  fg: '#0a0a0a',
-  accent: '#7AA7C7',
-  radius: '45px',
-}
-
 const BG_PRESETS = ['#ffffff', '#0a0a0a', '#171717', '#fafafa', '#f5f5f5', '#f3f4f6', '#fdf2f8']
 const FG_PRESETS = ['#0a0a0a', '#ffffff', '#737373', '#3b82f6', '#ec4899', '#e11d48', '#16a34a']
 const AC_PRESETS = ['#7AA7C7', '#3b82f6', '#10b981', '#f59e0b', '#ec4899', '#7c3aed', '#ef4444']

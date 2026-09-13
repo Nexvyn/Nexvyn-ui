@@ -128,12 +128,21 @@ function Tooltip({
     if (!open) return
 
     updateCoords()
-    window.addEventListener('resize', updateCoords)
-    window.addEventListener('scroll', updateCoords, true)
+    let raf = 0
+    const scheduleCoords = () => {
+      if (raf) return
+      raf = requestAnimationFrame(() => {
+        raf = 0
+        updateCoords()
+      })
+    }
+    window.addEventListener('resize', scheduleCoords, { passive: true })
+    window.addEventListener('scroll', scheduleCoords, { passive: true, capture: true })
 
     return () => {
-      window.removeEventListener('resize', updateCoords)
-      window.removeEventListener('scroll', updateCoords, true)
+      window.removeEventListener('resize', scheduleCoords)
+      window.removeEventListener('scroll', scheduleCoords, true)
+      if (raf) cancelAnimationFrame(raf)
     }
   }, [open, updateCoords])
 

@@ -15,11 +15,24 @@ export function StarsCount() {
     mountedRef.current = true
     let cancelled = false
 
+    const cached = sessionStorage.getItem('gh-stars')
+    if (cached) {
+      const id = setTimeout(() => {
+        if (!cancelled && mountedRef.current) setStars(Number(cached))
+      }, 0)
+      return () => {
+        cancelled = true
+        mountedRef.current = false
+        clearTimeout(id)
+      }
+    }
+
     fetch('https://api.github.com/repos/Nexvyn/Nexvyn-ui')
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         if (cancelled || !mountedRef.current) return
         if (json && typeof json.stargazers_count === 'number') {
+          sessionStorage.setItem('gh-stars', String(json.stargazers_count))
           setStars(json.stargazers_count)
         }
       })

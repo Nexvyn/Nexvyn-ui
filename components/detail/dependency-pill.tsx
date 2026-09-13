@@ -72,6 +72,7 @@ export default function DependencyPill({ name, icon }: DependencyPillProps) {
       {resolvedIcon != null && resolvedIcon !== '' && (
         <span className="flex h-5 w-auto items-center justify-center">
           {typeof resolvedIcon === 'string' ? (
+            // eslint-disable-next-line @next/next/no-img-element -- icon URLs are external strings, not static imports
             <img src={resolvedIcon} alt="" className="h-5 w-5" />
           ) : (
             resolvedIcon

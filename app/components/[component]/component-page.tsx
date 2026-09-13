@@ -1,0 +1,444 @@
+'use client'
+
+import { useParams } from 'next/navigation'
+import { motion } from 'motion/react'
+import { GooeyFilter } from '@/components/layout/gooey-filter'
+import { PixelTrail } from '@/components/layout/pixel-trail'
+import { ThemeToggle } from '@/components/layout/theme-toggle'
+import { AnimatedTitle } from '@/components/showcase/animated-title'
+import { ScrollFade } from '@/components/detail/scroll-fade'
+import { NotFoundCard } from '@/components/layout/not-found-card'
+import { useScreenSize } from '@/hooks/use-screen-size'
+import { COMPONENTS } from '@/lib/components-registry'
+import { cn } from '@/lib/utils'
+import {
+  AccordionDemo,
+  ActionButtonDemo,
+  AdaptiveActionsDemo,
+  AiInputDemo,
+  BadgeDemo,
+  ButtonDemo,
+  BounceSidebarDemo,
+  BreadcrumbsDemo,
+  CheckboxDemo,
+  ComboboxDemo,
+  ContextMenuDemo,
+  MorphNavDemo,
+  MobileDrawerDemo,
+  ClipboardFieldDemo,
+  DropdownMenuDemo,
+  ColorPickerDemo,
+  FaderDemo,
+  GooDropdownDemo,
+  IconBarDemo,
+  InputDemo,
+  NavMenuDemo,
+  PasswordInputDemo,
+  RadioGroupDemo,
+  RatioSliderDemo,
+  ScrollIndicatorDemo,
+  SelectDemo,
+  SwitchDemo,
+  TableDemo,
+  TableOfContentsDemo,
+  TabsSubtleDemo,
+  InputCopyDemo,
+  InputMessageDemo,
+  BarsThemeDemo,
+  GlowOrbDemo,
+  FluidOrbDemo,
+  PhoneMockupDemo,
+  LaptopMockupDemo,
+  RocketLaunchDemo,
+  DiaTextDemo,
+  NavigationCompassDemo,
+} from '@/components/ui/previews'
+
+function DemoFrame({
+  children,
+  className,
+  style,
+}: {
+  children: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
+}) {
+  return (
+    <div className={cn('h-full w-full flex items-center justify-center', className)} style={style}>
+      {children}
+    </div>
+  )
+}
+
+function PixelTrailDemo() {
+  const screenSize = useScreenSize()
+
+  return (
+    <DemoFrame className="relative">
+      <GooeyFilter id="gooey-filter-demo" strength={8} />
+      <div className="absolute inset-0" style={{ filter: 'url(#gooey-filter-demo)' }}>
+        <PixelTrail
+          pixelSize={screenSize.lessThan('md') ? 20 : 28}
+          fadeDuration={800}
+          delay={200}
+          pixelClassName="bg-[var(--color-fg)] opacity-60"
+        />
+      </div>
+      <p
+        className="absolute inset-x-0 bottom-6 text-center text-sm pointer-events-none"
+        style={{ color: 'var(--color-muted)' }}
+      >
+        Move your cursor to paint pixels
+      </p>
+    </DemoFrame>
+  )
+}
+
+function GooeyFilterDemo() {
+  return (
+    <DemoFrame className="flex items-center justify-center bg-(--color-surface-2)">
+      <GooeyFilter id="gooey-demo-filter" strength={10} />
+      <div
+        className="relative flex w-48 h-24 items-center justify-center"
+        style={{ filter: 'url(#gooey-demo-filter)' }}
+      >
+        <motion.div
+          animate={{ x: [-30, 30, -30] }}
+          transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+          className="absolute size-16 rounded-full bg-sky-400"
+        />
+        <motion.div
+          animate={{ x: [30, -30, 30] }}
+          transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+          className="absolute size-16 rounded-full bg-sky-500"
+        />
+      </div>
+    </DemoFrame>
+  )
+}
+
+function ScrollFadeDemo() {
+  return (
+    <DemoFrame className="flex items-center justify-center p-6">
+      <div className="relative h-48 w-64 overflow-hidden rounded-xl border border-border/60 bg-(--color-bg)">
+        <ScrollFade side="top" background="var(--color-bg)" className="z-10" />
+        <ScrollFade side="bottom" background="var(--color-bg)" className="z-10" />
+        <div className="h-full overflow-y-auto p-4 space-y-3 no-scrollbar">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <div
+              key={i}
+              className="h-8 w-full rounded-md border border-border/40 flex items-center px-3 text-xs text-(--color-muted)"
+            >
+              Scroll Item {i + 1}
+            </div>
+          ))}
+        </div>
+      </div>
+    </DemoFrame>
+  )
+}
+
+export function ComponentDemo({ id }: { id: string }) {
+  switch (id) {
+    case 'accordion':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <AccordionDemo />
+        </DemoFrame>
+      )
+    case 'action-button':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ActionButtonDemo />
+        </DemoFrame>
+      )
+    case 'adaptive-actions':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <AdaptiveActionsDemo />
+        </DemoFrame>
+      )
+    case 'ai-input':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <AiInputDemo />
+        </DemoFrame>
+      )
+    case 'badge':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <BadgeDemo />
+        </DemoFrame>
+      )
+    case 'button':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ButtonDemo />
+        </DemoFrame>
+      )
+    case 'breadcrumbs':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <BreadcrumbsDemo />
+        </DemoFrame>
+      )
+    case 'checkbox':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <CheckboxDemo />
+        </DemoFrame>
+      )
+    case 'combobox':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ComboboxDemo />
+        </DemoFrame>
+      )
+    case 'context-menu':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ContextMenuDemo />
+        </DemoFrame>
+      )
+    case 'morph-nav':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <MorphNavDemo />
+        </DemoFrame>
+      )
+    case 'mobile-drawer':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <MobileDrawerDemo />
+        </DemoFrame>
+      )
+    case 'clipboard-field':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ClipboardFieldDemo />
+        </DemoFrame>
+      )
+    case 'dropdown-menu':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <DropdownMenuDemo />
+        </DemoFrame>
+      )
+    case 'nav-menu':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <NavMenuDemo />
+        </DemoFrame>
+      )
+    case 'icon-bar':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <IconBarDemo />
+        </DemoFrame>
+      )
+    case 'input':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <InputDemo />
+        </DemoFrame>
+      )
+    case 'bounce-sidebar':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <BounceSidebarDemo />
+        </DemoFrame>
+      )
+    case 'color-picker':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ColorPickerDemo />
+        </DemoFrame>
+      )
+    case 'fader':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <FaderDemo />
+        </DemoFrame>
+      )
+    case 'goo-dropdown':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <GooDropdownDemo />
+        </DemoFrame>
+      )
+    case 'password-input':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <PasswordInputDemo />
+        </DemoFrame>
+      )
+    case 'radio-group':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <RadioGroupDemo />
+        </DemoFrame>
+      )
+    case 'ratio-slider':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <RatioSliderDemo />
+        </DemoFrame>
+      )
+    case 'scroll-indicator':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <ScrollIndicatorDemo />
+        </DemoFrame>
+      )
+    case 'switch':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <SwitchDemo />
+        </DemoFrame>
+      )
+    case 'table':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <TableDemo />
+        </DemoFrame>
+      )
+    case 'select':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <SelectDemo />
+        </DemoFrame>
+      )
+    case 'table-of-contents':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <TableOfContentsDemo />
+        </DemoFrame>
+      )
+    case 'tabs-subtle':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <TabsSubtleDemo />
+        </DemoFrame>
+      )
+    case 'input-copy':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <InputCopyDemo />
+        </DemoFrame>
+      )
+    case 'input-message':
+      return (
+        <DemoFrame className="flex h-full min-h-72 w-full items-stretch justify-center">
+          <InputMessageDemo />
+        </DemoFrame>
+      )
+    case 'bars-theme':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <BarsThemeDemo />
+        </DemoFrame>
+      )
+    case 'glow-orb':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <GlowOrbDemo />
+        </DemoFrame>
+      )
+    case 'fluid-orb':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <FluidOrbDemo />
+        </DemoFrame>
+      )
+    case 'theme-toggle':
+      return (
+        <DemoFrame className="flex items-center justify-center">
+          <ThemeToggle />
+        </DemoFrame>
+      )
+    case 'animated-title':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <AnimatedTitle
+            title="Nexvyn/UI"
+            right="Staggered"
+            className="text-2xl sm:text-3xl font-normal tracking-tight"
+          />
+        </DemoFrame>
+      )
+    case 'pixel-trail':
+      return <PixelTrailDemo />
+    case 'gooey-filter':
+      return <GooeyFilterDemo />
+    case 'scroll-fade':
+      return <ScrollFadeDemo />
+    case 'phone-mockup':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <PhoneMockupDemo />
+        </DemoFrame>
+      )
+    case 'laptop-mockup':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <LaptopMockupDemo />
+        </DemoFrame>
+      )
+    case 'rocket-launch':
+      return (
+        <DemoFrame>
+          <RocketLaunchDemo />
+        </DemoFrame>
+      )
+    case 'dia-text':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <DiaTextDemo />
+        </DemoFrame>
+      )
+    case 'navigation-compass':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <NavigationCompassDemo />
+        </DemoFrame>
+      )
+    case 'not-found-card':
+      return (
+        <DemoFrame className="flex items-center justify-center p-6">
+          <NotFoundCard />
+        </DemoFrame>
+      )
+    default:
+      return (
+        <DemoFrame
+          className="flex items-center justify-center text-sm"
+          style={{ color: 'var(--color-muted)' }}
+        >
+          Coming soon
+        </DemoFrame>
+      )
+  }
+}
+
+export default function ComponentPage() {
+  const params = useParams()
+  const componentId = typeof params.component === 'string' ? params.component : ''
+  const component = COMPONENTS.find((item) => item.id === componentId)
+
+  if (!component) {
+    return (
+      <div
+        className="flex h-full items-center justify-center"
+        style={{ color: 'var(--color-muted)' }}
+      >
+        Component not found
+      </div>
+    )
+  }
+
+  return (
+    <div className="detail-preview-enter h-full w-full">
+      <ComponentDemo id={component.id} />
+    </div>
+  )
+}

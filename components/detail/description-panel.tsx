@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion } from 'motion/react'
 import { Maximize, Minimize, ExternalLink, Copy, Check, MessageSquare, Frame } from 'lucide-react'
-import { activeComponent, installCommand, PANEL_INFO } from '@/lib/components-registry'
+import { activeComponent, PANEL_INFO } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
@@ -131,7 +131,6 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
   const pathname = usePathname()
   const router = useRouter()
   const item = activeComponent(pathname)
-  const command = item ? installCommand(item) : null
   const screenSize = useScreenSize()
   const isMobile = screenSize.lessThan('md')
   const { showSidebar } = useSidebar()
@@ -177,6 +176,8 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
+    // toggleCode changes identity every render; effect keys off the state it reads
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item?.id, router, setOpen, codeOpen])
 
   return (
@@ -243,6 +244,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
         {item?.id && (
           <Tooltip content="Standalone preview (P)" side="bottom">
             <Link
+              prefetch={false}
               href={`/preview/${item.id}`}
               target="_blank"
               rel="noopener noreferrer"

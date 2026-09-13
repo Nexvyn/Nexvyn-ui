@@ -62,9 +62,7 @@ export function GitHubMascot({
         const dy = startRect.bottom - selfRect.bottom
         if (dx < -120) {
           journeyed = true
-          // Starts near the logo text, behind it in z-order — softened with a
-          // slight blur so the overlap reads as depth rather than a hard clip.
-          await animate('.gh-traveler', { x: dx, y: dy, filter: 'blur(0.5px)' }, { duration: 0 })
+          await animate('.gh-traveler', { x: dx, y: dy }, { duration: 0 })
           await wait(3000)
           if (!isPlaying) return
 
@@ -87,14 +85,7 @@ export function GitHubMascot({
           const strideOpts = { duration: strideDur, repeat: strides - 1 }
           isWalkingRef.current = true
           await Promise.all([
-            animate(
-              '.gh-traveler',
-              { x: walkEnd, filter: 'blur(0px)' },
-              {
-                x: { duration: walkDur, ease: 'linear' },
-                filter: { duration: Math.min(0.4, walkDur * 0.3), ease: 'easeOut' },
-              },
-            ),
+            animate('.gh-traveler', { x: walkEnd }, { duration: walkDur, ease: 'linear' }),
             animate('.gh-coin', stride, { ...strideOpts, times: strideTimes, ease: 'easeInOut' }),
             animate('.gh-front-view', { opacity: 0 }, { duration: 0.25, ease: 'easeOut' }),
             animate('.gh-side-view', { opacity: 1 }, { duration: 0.25, ease: 'easeOut' }),
@@ -208,7 +199,14 @@ export function GitHubMascot({
   }, [])
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    let raf = 0
+    let lastX = 0
+    let lastY = 0
+    let hasPending = false
+    const flush = () => {
+      raf = 0
+      if (!hasPending) return
+      hasPending = false
       if (isWalkingRef.current) return
       const moveEye = (eye: SVGGElement | null, cx: number, cy: number) => {
         if (!eye) return
@@ -217,8 +215,8 @@ export function GitHubMascot({
         const rect = svg.getBoundingClientRect()
         const eyeCenterX = rect.left + (cx / 120) * rect.width
         const eyeCenterY = rect.top + ((cy - 35) / 120) * rect.height
-        const dx = e.clientX - eyeCenterX
-        const dy = e.clientY - eyeCenterY
+        const dx = lastX - eyeCenterX
+        const dy = lastY - eyeCenterY
         const dist = Math.sqrt(dx * dx + dy * dy)
         const maxMove = 2
         const moveX = dist > 0 ? (dx / dist) * Math.min(maxMove, dist * 0.05) : 0
@@ -228,9 +226,18 @@ export function GitHubMascot({
       moveEye(leftEyeRef.current, 40, 92)
       moveEye(rightEyeRef.current, 76, 92)
     }
+    const handleMouseMove = (e: MouseEvent) => {
+      lastX = e.clientX
+      lastY = e.clientY
+      hasPending = true
+      if (!raf) raf = requestAnimationFrame(flush)
+    }
 
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      if (raf) cancelAnimationFrame(raf)
+    }
   }, [])
 
   return (
