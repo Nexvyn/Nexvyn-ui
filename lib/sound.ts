@@ -151,8 +151,44 @@ export function playTickSound(volume = 0.1, pitch = 1.5) {
   } catch {}
 }
 
-export function playBounceSound(volume = 0.3, pitch = 1.0) {
+export function playTileNote(frequency = 440, volume = 0.08) {
   if (muted) return
+  try {
+    const ctx = getAudioContext()
+    if (!ctx) return
+    const now = ctx.currentTime
+    const dur = 1.1
+
+    const osc = ctx.createOscillator()
+    const shimmer = ctx.createOscillator()
+    const shimmerGain = ctx.createGain()
+    const gain = ctx.createGain()
+
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(frequency, now)
+    shimmer.type = 'sine'
+    shimmer.frequency.setValueAtTime(frequency * 2, now)
+
+    shimmerGain.gain.setValueAtTime(0.22, now)
+    shimmerGain.gain.exponentialRampToValueAtTime(0.0001, now + dur * 0.5)
+
+    gain.gain.setValueAtTime(0.0001, now)
+    gain.gain.exponentialRampToValueAtTime(volume, now + 0.015)
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + dur)
+
+    shimmer.connect(shimmerGain)
+    shimmerGain.connect(gain)
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+
+    osc.start(now)
+    osc.stop(now + dur)
+    shimmer.start(now)
+    shimmer.stop(now + dur)
+  } catch {}
+}
+
+export function playBounceSound(volume = 0.3, pitch = 1.0) {
   try {
     const ctx = getAudioContext()
     if (!ctx) return

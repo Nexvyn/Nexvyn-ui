@@ -42,6 +42,8 @@ export interface NavigationCompassProps {
   /** Accessible name for the navigation landmark. */
   label?: string
   className?: string
+  transparentFace?: boolean
+  scrollTracking?: boolean
 }
 
 function toAngleRad(angleDeg: number): number {
@@ -56,6 +58,10 @@ interface Point {
 function polarToCartesian(center: number, radius: number, angleDeg: number): Point {
   const rad = toAngleRad(angleDeg)
   return { x: center + Math.cos(rad) * radius, y: center + Math.sin(rad) * radius }
+}
+
+function round2(n: number) {
+  return Math.round(n * 100) / 100
 }
 
 function angularDistance(a: number, b: number): number {
@@ -129,12 +135,16 @@ interface CompassRotation {
   onPanEnd: () => void
 }
 
-function useCompassRotation(): CompassRotation {
+function useCompassRotation({
+  scrollTracking = true,
+}: {
+  scrollTracking?: boolean
+} = {}): CompassRotation {
   const manualOffset = useMotionValue(0)
   const springOffset = useSpring(manualOffset, PAN_SPRING)
 
   const { scrollY } = useScroll()
-  const scrollRotation = useTransform(scrollY, (v) => -15 + v * 0.05)
+  const scrollRotation = useTransform(scrollY, (v) => (scrollTracking ? -15 + v * 0.05 : 0))
   const smoothScrollRotation = useSpring(scrollRotation, SCROLL_SPRING)
 
   const totalRotation = useTransform(() => smoothScrollRotation.get() + springOffset.get())
@@ -174,30 +184,46 @@ function useCompassRotation(): CompassRotation {
 }
 
 /** Static concentric guide rings. Rotating these would be invisible, so they stay put. */
-function CompassRose({ center }: { center: number }) {
+function CompassRose({
+  center,
+  transparentFace = false,
+}: {
+  center: number
+  transparentFace?: boolean
+}) {
   const filterId = useId()
 
   return (
     <g>
-      <defs>
-        <filter
-          id={filterId}
-          filterUnits="userSpaceOnUse"
-          x="0"
-          y="0"
-          width={center * 2}
-          height={center * 2}
-        >
-          <feOffset dx="0" dy="6" />
-          <feGaussianBlur stdDeviation="12" result="offset-blur" />
-          <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
-          <feFlood floodColor="black" floodOpacity="0.25" result="color" />
-          <feComposite operator="in" in="color" in2="inverse" result="shadow" />
-          <feComposite operator="over" in="shadow" in2="SourceGraphic" />
-        </filter>
-      </defs>
+      {!transparentFace && (
+        <>
+          <defs>
+            <filter
+              id={filterId}
+              filterUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width={center * 2}
+              height={center * 2}
+            >
+              <feOffset dx="0" dy="6" />
+              <feGaussianBlur stdDeviation="12" result="offset-blur" />
+              <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
+              <feFlood floodColor="black" floodOpacity="0.25" result="color" />
+              <feComposite operator="in" in="color" in2="inverse" result="shadow" />
+              <feComposite operator="over" in="shadow" in2="SourceGraphic" />
+            </filter>
+          </defs>
 
-      <circle cx={center} cy={center} r="254" fill="var(--color-bg)" filter={`url(#${filterId})`} />
+          <circle
+            cx={center}
+            cy={center}
+            r="254"
+            fill="var(--color-bg)"
+            filter={`url(#${filterId})`}
+          />
+        </>
+      )}
       <circle
         cx={center}
         cy={center}
@@ -232,10 +258,12 @@ function CompassSpikes({
   center,
   roseRotation,
   prefersReducedMotion,
+  transparentFace = false,
 }: {
   center: number
   roseRotation: number
   prefersReducedMotion: boolean
+  transparentFace?: boolean
 }) {
   return (
     <motion.g
@@ -286,7 +314,10 @@ function CompassSpikes({
           cx={0}
           cy={0}
           r={DIAL_R}
-          className="fill-(--color-bg) stroke-(--color-fg)/25"
+          className={cn(
+            transparentFace ? 'fill-(--color-surface)' : 'fill-(--color-bg)',
+            'stroke-(--color-fg)/25',
+          )}
           strokeWidth="1"
           vectorEffect="non-scaling-stroke"
         />
@@ -335,9 +366,11 @@ function CompassTick({
     return baseRadius - progress * 25
   })
 
-  const x1 = useTransform(innerRadius, (r) => center + Math.cos(angleRad) * r)
-  const y1 = useTransform(innerRadius, (r) => center + Math.sin(angleRad) * r)
-  const { x: x2, y: y2 } = polarToCartesian(center, outerRadius, angleDeg)
+  const x1 = useTransform(innerRadius, (r) => round2(center + Math.cos(angleRad) * r))
+  const y1 = useTransform(innerRadius, (r) => round2(center + Math.sin(angleRad) * r))
+  const { x: rawX2, y: rawY2 } = polarToCartesian(center, outerRadius, angleDeg)
+  const x2 = round2(rawX2)
+  const y2 = round2(rawY2)
 
   return (
     <motion.line
@@ -416,7 +449,7 @@ function CompassLinkItem({
                 ? 'fill-(--color-accent)'
                 : 'fill-(--color-fg)/50 font-medium hover:fill-(--color-fg)/80',
             )}
-            style={{ fontFamily: 'var(--font-sans)', fontSize: '16px' }}
+            style={{ fontFamily: 'var(--font-sans)', fontSize: '15px' }}
           >
             {link.label}
           </text>
@@ -566,6 +599,8 @@ export function NavigationCompass({
   showDetails = false,
   label = 'Navigation compass',
   className,
+  transparentFace = false,
+  scrollTracking = true,
 }: NavigationCompassProps) {
   const center = size / 2
 
@@ -578,7 +613,7 @@ export function NavigationCompass({
   const numberRadius = Math.round(size * 0.4497)
 
   const containerRef = useRef<HTMLDivElement>(null)
-  const { totalRotation, onPan, onPanEnd } = useCompassRotation()
+  const { totalRotation, onPan, onPanEnd } = useCompassRotation({ scrollTracking })
   const prefersReducedMotion = useReducedMotion()
 
   return (
@@ -606,13 +641,14 @@ export function NavigationCompass({
         onPan={(_e, info) => onPan(containerRef, info)}
         onPanEnd={onPanEnd}
       >
-        <CompassRose center={center} />
+        <CompassRose center={center} transparentFace={transparentFace} />
 
         {/* Fixed pointer: stays put while the dial turns beneath it. */}
         <CompassSpikes
           center={center}
           roseRotation={roseRotation}
           prefersReducedMotion={!!prefersReducedMotion}
+          transparentFace={transparentFace}
         />
 
         {showDetails && (

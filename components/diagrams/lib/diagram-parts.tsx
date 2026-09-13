@@ -1,16 +1,27 @@
+'use client'
+
 // SPDX-License-Identifier: CC-BY-NC-4.0
 // Shared drawing primitives for components/diagrams/* — licensed separately
 // from the rest of this repository under CC BY-NC 4.0.
 // See components/diagrams/LICENSE. NOT covered by the root MIT LICENSE.
 
-import { type CSSProperties, type ReactNode, useId } from 'react'
+import { type CSSProperties, type ReactNode, createContext, useContext, useId } from 'react'
 const MONO = 'var(--font-mono)'
+const DraftQuietContext = createContext(false)
+
+export function DraftQuiet({ children }: { children: ReactNode }) {
+  return <DraftQuietContext.Provider value={true}>{children}</DraftQuietContext.Provider>
+}
+
+function useDraftQuiet() {
+  return useContext(DraftQuietContext)
+}
 
 export const DRAFT_INK_MORPH =
   'transition-[fill,stroke,fill-opacity,stroke-opacity,opacity] duration-(--motion-dur-slow) group-hover:duration-(--motion-dur-showcase) group-focus-visible:duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:delay-(--motion-dur-base) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none'
 
 export const DRAFT_SCAFFOLD_FADE =
-  'transition-opacity duration-(--motion-dur-slow) group-hover:duration-(--motion-dur-showcase) group-focus-visible:duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) delay-(--motion-dur-base) group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none'
+  'draft-scaffold transition-opacity duration-(--motion-dur-slow) group-hover:duration-(--motion-dur-showcase) group-focus-visible:duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) delay-(--motion-dur-base) group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none'
 
 export const DRAFT_BEAT = {
   outline: '0ms',
@@ -143,7 +154,9 @@ export function MeasureNote({
   style?: CSSProperties
   children: string
 }) {
+  const quiet = useDraftQuiet()
   const theme = draftTheme
+  if (quiet) return null
   return (
     <text
       x={x}
@@ -178,6 +191,8 @@ export function MeasureH({
   className?: string
   style?: CSSProperties
 }) {
+  const quiet = useDraftQuiet()
+  if (quiet) return null
   const theme = draftTheme
   return (
     <g className={className} style={style}>
@@ -218,6 +233,8 @@ export function MeasureV({
   className?: string
   style?: CSSProperties
 }) {
+  const quiet = useDraftQuiet()
+  if (quiet) return null
   const theme = draftTheme
   return (
     <g className={className} style={style}>
@@ -269,6 +286,8 @@ export function InsetGuide({
   style?: CSSProperties
 }) {
   const clipId = useId()
+  const quiet = useDraftQuiet()
+  if (quiet) return null
   const theme = draftTheme
 
   const stroke = 'var(--color-accent)'
@@ -340,6 +359,7 @@ export function GripFrame({
   className?: string
   style?: CSSProperties
 }) {
+  if (useDraftQuiet()) return null
   const theme = draftTheme
 
   const offset = 1
