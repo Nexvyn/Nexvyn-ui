@@ -6,6 +6,14 @@ Before designing or building ANY component, read **`REBUILD_PLAN.md`** (repo roo
 
 You are an expert React UI library engineer. Your objective is to build production-ready, highly accessible, and fully typed UI components. You adhere strictly to the hybrid architecture pattern: combining headless logic (Radix UI / Base UI patterns) with composable, token-driven styling (shadcn/ui pattern).
 
+# Comments
+
+Default to NO comments. Code should explain itself through clear names and structure. Only write a comment when the code genuinely cannot say it:
+
+- Allowed: legal/license headers (e.g. the diagrams' SPDX block), `TODO`/`FIXME` with context, and one-liners for non-obvious constraints or gotchas (e.g. "24 = 6 × dash period 4", hydration/SSR hazards, browser quirks).
+- Never: narration of what the next lines do, restating the JSX, change logs in comments, big banner blocks, or design-decision essays. If a decision matters that much, put it in the PR description or docs — not the source.
+- Keep any surviving comment under ~2 lines.
+
 # Core Architecture & File Organization
 
 - **Colocation**: Group all component files (logic, styling, tests, stories) into a single directory named after the component (e.g., `src/components/Dialog/`).
@@ -89,6 +97,8 @@ You are an expert React UI library engineer. Your objective is to build producti
 
 # Forms, Testing, and Documentation
 
+- **No em-dashes in user-facing copy**: Never use "—" in READMEs, site text, labels, docs, or metadata. Use commas, colons, or parentheses instead.
+
 - **Native Form Integration**: Custom selects/inputs MUST expose a hidden native `<input>` or properly forward refs so libraries like `react-hook-form` can register them.
 - **Validation Support**: Inputs must accept `aria-invalid` and `aria-describedby` to link error messages. If `aria-invalid` is true, apply visual error states (e.g., `border-destructive`).
 - **Behavioral Testing**: Write tests using `@testing-library/react` and `jest-axe`. Test user behavior (clicks, keyboard nav), NOT implementation details (state variables).
@@ -102,18 +112,17 @@ You are an expert React UI library engineer. Your objective is to build producti
 
 # Shipping a New Component in This Repo
 
-The sections above describe how a component should be _built_. Building it is not enough to make it appear anywhere — this repo wires each component through 10 separate files. Verified against existing shipped components (`ratio-slider`, `password-input`, `table-of-contents`, `goo-dropdown`); follow this order:
+The sections above describe how a component should be _built_. Building it is not enough to make it appear anywhere — this repo wires each component through 9 separate files. Verified against existing shipped components (`ratio-slider`, `password-input`, `table-of-contents`, `goo-dropdown`); follow this order:
 
 1. **`components/ui/<name>.tsx`** — the component itself (single file, not a folder in this repo). Export the component, its `<Name>Props` interface, and by convention a `<Name>Preview` function at the bottom for fallback preview use.
 2. **`components/ui/previews/<name>-preview.tsx`** — standalone client preview wrapper (imports the component, centers it in a `div`), re-exported from **`components/ui/previews/index.ts`**. Used by the detail page.
 3. **`components/ui/Doc/<name>-metadata.ts`** — a `ComponentItem` object: `id`, `name`, `collection`, `previewType`, `description`, `registry`, `dependencies`, `interaction`, `props[]`, `usage` (code string shown in docs).
 4. **`lib/components-registry.ts`** — import the metadata object and add it to the central registry array. This is the single source of truth every other file below reads from.
-5. **`components/blueprints/<name>-blueprint.tsx`** — wireframe/skeleton version for the blueprint gallery, registered by key in **`components/blueprints/preview-map.tsx`**.
-6. **`components/blueprints/blueprint-reveal.tsx`** — add a `dynamic()` import of the real component plus a `LIVE` map entry keyed `'<name>-blueprint'` so the blueprint reveals into the live component on hover/focus.
-7. **`components/showcase/component-preview.tsx`** — add to `LIVE_PREVIEW_IDS`, add a `dynamic()` import, add a `case '<name>':` in the `LivePreview` switch (grid/showcase card rendering).
-8. **`app/components/[component]/page.tsx`** — add a `case '<name>':` rendering `<DemoFrame><NamePreview /></DemoFrame>` (the component detail page).
-9. **`app/api/source/route.ts`** — add `'<name>': ['components', 'ui', '<name>.tsx']` to `SOURCE_MAP` (powers "view source").
-10. **`registry.json`** (root, hand-maintained) — add an item entry (`name`, `type`, `title`, `description`, `dependencies`, `files[].path`). If the component imports from `@/lib/sound`, also add `{"path": "lib/sound.ts", "type": "registry:lib"}` to its `files[]` (see `bounce-sidebar`/`ratio-slider`/`badge`/`fader` for the pattern — do not colocate a separate sound module, see "Repo-Specific Pitfalls"). Run `npm run build:registry` (also a `prebuild` hook) to auto-generate **`public/r/<name>.json`** and update **`public/r/registry.json`** — do not hand-write these two.
+5. **`components/diagrams/<name>-diagram.tsx`** — wireframe/skeleton version for the blueprint gallery, registered by key in the `BLUEPRINTS` map in **`components/diagrams/blueprints-bundle.tsx`** (which ships all blueprints as one lazily-loaded chunk via the single `dynamic()` in **`components/showcase/preview-map.tsx`** — do not add per-component `dynamic()` calls).
+6. **`components/showcase/component-preview.tsx`** — add to `LIVE_PREVIEW_IDS`, add a `dynamic()` import, add a `case '<name>':` in the `LivePreview` switch (grid/showcase card rendering).
+7. **`app/components/[component]/page.tsx`** — add a `case '<name>':` rendering `<DemoFrame><NamePreview /></DemoFrame>` (the component detail page).
+8. **Source for "view source"** — the code drawer fetches the static **`public/r/<name>.json`** files (generated, cached, no serverless function). Just make sure step 9 below is done; no source-map registration needed.
+9. **`registry.json`** (root, hand-maintained) — add an item entry (`name`, `type`, `title`, `description`, `dependencies`, `files[].path`). If the component imports from `@/lib/sound`, also add `{"path": "lib/sound.ts", "type": "registry:lib"}` to its `files[]` (see `bounce-sidebar`/`ratio-slider`/`badge`/`fader` for the pattern — do not colocate a separate sound module, see "Repo-Specific Pitfalls"). Run `npm run build:registry` (also a `prebuild` hook) to auto-generate **`public/r/<name>.json`** and update **`public/r/registry.json`** — do not hand-write these two.
 
 Optional, not required:
 
@@ -160,5 +169,5 @@ Last-mile details that separate "works" from production:
 20. [ ] Colors restricted to neutral tokens + accent, referenced via CSS variables (paren syntax `bg-(--token)`)?
 21. [ ] No CSS property set from both sides of an `asChild`/Slot merge?
 22. [ ] Focus ring appears only for keyboard focus (pointerdown `preventDefault()` on custom widgets)?
-23. [ ] All 10 registry/preview wiring files updated (see "Shipping a New Component in This Repo")?
+23. [ ] All 9 registry/preview wiring files updated (see "Shipping a New Component in This Repo")?
 24. [ ] Sound (if any) imported from shared `@/lib/sound`, not a colocated `AudioContext`, and `lib/sound.ts` added to the component's `registry.json` `files[]`?
