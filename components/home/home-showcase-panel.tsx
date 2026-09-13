@@ -115,6 +115,7 @@ export function HomeShowcasePanel({
       )}
       <div className="absolute bottom-3.5 start-6 z-30 backdrop-blur-[6px]">
         <Link
+          prefetch={false}
           href={href}
           className="text-[12px] font-normal tracking-tight text-(--color-muted)/70 transition-colors hover:text-(--color-fg) focus-visible:text-(--color-fg) outline-none"
         >
