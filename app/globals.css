@@ -44,7 +44,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-sans-loaded), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono-loaded), ui-monospace, 'Cascadia Code', 'Consolas', monospace;
   --font-serif: ui-serif, 'Georgia', serif;
 
@@ -67,31 +67,33 @@
   --motion-dur-slow: 320ms;
   --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --motion-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --motion-dur-showcase: 250ms;
+  --motion-dur-showcase: 700ms;
   --motion-dur-ambient: 1000ms;
+
+  --text-cta: 0.8125rem;
 }
 
 :root {
   color-scheme: light;
 
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.3211 0 0);
+  --background: oklch(0.985 0 0);
+  --foreground: oklch(0.205 0 0);
   --card: #ebebeb;
-  --card-foreground: oklch(0.3211 0 0);
+  --card-foreground: oklch(0.205 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.3211 0 0);
+  --popover-foreground: oklch(0.205 0 0);
   --primary: #000;
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.967 0.0029 264.5419);
   --secondary-foreground: oklch(0.4461 0.0263 256.8018);
-  --muted: oklch(0.9846 0.0017 247.8389);
-  --muted-foreground: oklch(0.551 0.0234 264.3637);
-  --accent: oklch(0.9514 0.025 236.8242);
-  --accent-foreground: oklch(0.3791 0.1378 265.5222);
+  --muted: oklch(0.94 0 0);
+  --muted-foreground: oklch(0.52 0 0);
+  --accent: oklch(0.62 0.11 265);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.6368 0.2078 25.3313);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.9276 0.0058 264.5313);
-  --input: oklch(0.9276 0.0058 264.5313);
+  --border: oklch(0.88 0 0);
+  --input: oklch(0.88 0 0);
   --ring: oklch(0.6231 0.188 259.8145);
   --chart-1: oklch(0.6231 0.188 259.8145);
   --chart-2: oklch(0.5461 0.2152 262.8809);
@@ -116,21 +118,33 @@
   --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 
-  --color-bg: #ffffff;
-  --color-surface: #fafafa;
-  --color-surface-2: #f5f5f5;
-  --color-fg: #0a0a0a;
-  --color-muted: #737373;
-  --color-subtle: #a3a3a3;
-  --color-border: #e5e5e5;
-  --color-border-strong: #d4d4d4;
-  --color-accent: #7aa7c7;
+  --color-bg: oklch(0.985 0 0);
+  --color-surface: oklch(0.97 0 0);
+  --color-surface-2: oklch(0.94 0 0);
+  --color-fg: oklch(0.205 0 0);
+  --color-muted: oklch(0.52 0 0);
+  --color-subtle: oklch(0.62 0 0);
+  --color-border: oklch(0.88 0 0);
+  --color-border-strong: oklch(0.84 0 0);
+  --color-accent: #3859fd;
   --color-error: #dc2626;
   --color-success: #16a34a;
   --color-new: #b8953a;
   --color-inspect: #6b97ff;
   --color-inspect-content: #7884e8;
   --color-inspect-label: #1e503c;
+
+  --panel-border: rgb(0 0 0 / 0.04);
+  --panel-border-hover: rgb(0 0 0 / 0.08);
+  --shadow-panel-ambient: 0 4px 24px -4px rgb(0 0 0 / 0.03);
+
+  --sponsor-mintlify-surface: radial-gradient(
+    circle at 50% 0%,
+    #e4fed9 0%,
+    #eeffe8 28%,
+    #f7fff5 58%,
+    #f6f8f7 100%
+  );
 
   --mascot-stop-1: #7aa6c6;
   --mascot-stop-2: #afc7dc;
@@ -277,8 +291,21 @@ html.dark,
   --color-subtle: #737373;
   --color-border: #333333;
   --color-border-strong: #404040;
-  --color-accent: #90bbdf;
+  --color-accent: #567eff;
   --color-new: #c9b06a;
+
+  --panel-border: rgb(255 255 255 / 0.06);
+  --panel-border-hover: rgb(255 255 255 / 0.12);
+  --shadow-panel-ambient: 0 4px 24px -4px rgb(0 0 0 / 0.25);
+
+  --sponsor-mintlify-surface:
+    radial-gradient(
+      circle at 50% 0%,
+      rgb(24 226 153 / 0.14) 0%,
+      rgb(24 226 153 / 0.06) 32%,
+      transparent 70%
+    ),
+    var(--color-surface);
 
   --mascot-stop-1: #ffffff;
   --mascot-stop-2: #eef4fa;
@@ -335,6 +362,7 @@ html.dark body {
 .squircle-corners {
   corner-shape: squircle;
 }
+
 .blueprint .ink-draw {
   animation: bp-ink-draw 0.5s var(--motion-ease-out) both;
   animation-delay: calc(var(--beat, 0ms) + var(--enter-delay, 0ms));
@@ -373,6 +401,12 @@ html.dark body {
 
 .blueprint {
   pointer-events: none;
+}
+[data-hero-diagram-rails] .blueprint,
+[data-hero-diagram-rails] .blueprint * {
+  animation: none !important;
+  stroke-dasharray: none !important;
+  stroke-dashoffset: 0 !important;
 }
 .blueprint .note-lift {
   pointer-events: all;
@@ -413,6 +447,14 @@ html.dark body {
     transform: scale(0);
   }
 }
+@keyframes bp-box-in {
+  from {
+    opacity: 0;
+  }
+}
+.bp-box-in {
+  animation: bp-box-in 150ms ease-out both;
+}
 
 @keyframes bp-measure-call {
   0% {
@@ -436,7 +478,6 @@ html.dark body {
   animation: bp-measure-call 0.22s var(--motion-ease-out) var(--motion-dur-fast, 120ms) both;
 }
 
-/* TODO: Evaluate the experimental blueprint cursor before v1. */
 .nxv-bp-pencil {
   --bp-cursor:
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><path d='M22 4 L26 8 L11 23 L7 27 L4 24 L8 20 Z' fill='%237aa7c7' stroke='%230a0a0a' stroke-width='1.2' stroke-linejoin='round'/><path d='M22 4 L26 8 L24 10 L20 6 Z' fill='%23fafafa' stroke='%230a0a0a' stroke-width='1'/><path d='M11 23 L8 27' stroke='%230a0a0a' stroke-width='1'/></svg>")
@@ -447,7 +488,67 @@ html.dark body {
   cursor: var(--bp-cursor, crosshair);
 }
 
-/* TODO: Evaluate the experimental resting pixel before v1. */
+/* Shimmery mosaic CTA tiles: small faceted tiles sampled directly from CTA.png */
+.nxv-tile {
+  box-sizing: border-box;
+  background-color: var(--tile-base-color, #4a94e8);
+  border: 0.5px solid rgba(255, 255, 255, calc(0.12 + 0.6 * var(--tile-glow, 0)));
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, calc(0.2 + 0.65 * var(--tile-glow, 0))),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.25),
+    0 0 calc(12px * var(--tile-glow, 0)) calc(1px * var(--tile-glow, 0))
+      rgba(255, 255, 255, calc(0.4 * var(--tile-glow, 0)));
+  background-image: linear-gradient(
+    var(--facet-angle, 135deg),
+    rgba(255, 255, 255, calc(0.12 + 0.45 * var(--tile-glow, 0))) 0%,
+    rgba(255, 255, 255, calc(0.02 + 0.15 * var(--tile-glow, 0))) 45%,
+    rgba(0, 0, 0, calc(0.15 - 0.12 * var(--tile-glow, 0))) 100%
+  );
+  opacity: calc(0.92 + 0.08 * var(--tile-glow, 0));
+  transition:
+    border-color 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: border-color, box-shadow, filter;
+  transform: translateZ(0);
+}
+
+.nxv-tile[data-glowing='true'] {
+  filter: brightness(1.45) saturate(1.25);
+  border-color: rgba(255, 255, 255, 0.95);
+  transition:
+    border-color 0.1s ease-out,
+    box-shadow 0.1s ease-out,
+    filter 0.1s ease-out;
+}
+
+/* Reduced-motion: blueprints render fully-formed (no draw/stamp/parallax). */
+@media (prefers-reduced-motion: reduce) {
+  .nxv-tile,
+  .nxv-tile[data-glowing='true'] {
+    transition: none;
+  }
+  .blueprint .ink-draw,
+  .blueprint .fade-note,
+  .blueprint .note-stamp,
+  .blueprint .handle-pop,
+  .blueprint .dash-march {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+  .blueprint [style*='--depth'] {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Touch / no-hover devices: skip the idle march so it doesn't churn. */
+@media (hover: none) {
+  .blueprint .dash-march {
+    animation-name: bp-dash-march, bp-fade-note;
+  }
+}
+
 @keyframes bp-rest-breath {
   0%,
   100% {
@@ -506,6 +607,10 @@ html.dark body {
   grid-template-columns: 1fr;
   gap: 1rem;
 }
+.components-grid > * {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 420px;
+}
 
 @media (min-width: 640px) {
   .components-grid {
@@ -527,5 +632,12 @@ html.dark body {
     grid-column: span 2;
     grid-row: span 2;
     min-height: 480px;
+  }
+}
+
+@media (max-width: 639px) {
+  .hero-rail-vertical-mask {
+    -webkit-mask-image: linear-gradient(to bottom, black 76%, transparent 98%);
+    mask-image: linear-gradient(to bottom, black 76%, transparent 98%);
   }
 }

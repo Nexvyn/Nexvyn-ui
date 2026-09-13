@@ -1,11 +1,17 @@
 import { NextResponse } from 'next/server'
 
+const MAX_MESSAGE_LENGTH = 2000
+
 export async function POST(request: Request) {
   try {
     const { message, component } = await request.json()
 
-    if (!message) {
+    if (typeof message !== 'string' || !message.trim()) {
       return NextResponse.json({ error: 'Message is required.' }, { status: 400 })
+    }
+
+    if (message.length > MAX_MESSAGE_LENGTH || (component && typeof component !== 'string')) {
+      return NextResponse.json({ error: 'Invalid feedback payload.' }, { status: 400 })
     }
 
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL

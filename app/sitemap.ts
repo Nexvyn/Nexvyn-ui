@@ -1,54 +1,31 @@
 import type { MetadataRoute } from 'next'
+import { COMPONENTS, getComponentHref } from '@/lib/components-registry'
+import { SITE_URL } from '@/lib/seo'
+
+const STATIC_ROUTES: { path: string; priority: number }[] = [
+  { path: '', priority: 1 },
+  { path: '/components', priority: 0.9 },
+  { path: '/illustration', priority: 0.7 },
+  { path: '/design', priority: 0.6 },
+  { path: '/mcp', priority: 0.6 },
+  { path: '/changelog', priority: 0.5 },
+]
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const lastModified = new Date()
+
   return [
-    {
-      url: 'https://ui.nexvyn.dev',
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: 'https://ui.nexvyn.dev/components',
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: 'https://ui.nexvyn.dev/components/bounce-sidebar',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
+    ...STATIC_ROUTES.map(({ path, priority }) => ({
+      url: `${SITE_URL}${path}`,
+      lastModified,
+      changeFrequency: 'weekly' as const,
+      priority,
+    })),
+    ...COMPONENTS.map((item) => ({
+      url: `${SITE_URL}${getComponentHref(item.id)}`,
+      lastModified,
+      changeFrequency: 'monthly' as const,
       priority: 0.8,
-    },
-    {
-      url: 'https://ui.nexvyn.dev/components/color-picker',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: 'https://ui.nexvyn.dev/components/goo-dropdown',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: 'https://ui.nexvyn.dev/components/password-input',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: 'https://ui.nexvyn.dev/components/ratio-slider',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: 'https://ui.nexvyn.dev/components/scroll-indicator',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
+    })),
   ]
 }
