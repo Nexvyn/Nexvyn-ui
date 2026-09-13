@@ -45,3 +45,5 @@ next-env.d.ts
 
 .claude
 .mimocode
+.hermes
+.kilo
