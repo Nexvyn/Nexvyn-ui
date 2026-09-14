@@ -13,33 +13,51 @@ import {
 import { CommandPalette, type CommandAction } from '@/components/ui/command-palette'
 import { COMPONENTS, getComponentHref, type ComponentItem } from '@/lib/components-registry'
 
-const PAGES: { id: string; label: string; detail: string; href: string }[] = [
+const PAGES: { id: string; label: string; detail: string; href: string; keywords: string[] }[] = [
+  { id: 'page-home', label: 'Home', detail: 'Start page', href: '/', keywords: ['index', 'start'] },
   {
     id: 'page-components',
-    label: 'All components',
-    detail: 'Browse the full showcase',
+    label: 'Components',
+    detail: 'Browse the full library',
     href: '/components',
+    keywords: ['library', 'showcase', 'all'],
   },
-  { id: 'page-mcp', label: 'MCP', detail: 'Model Context Protocol server', href: '/mcp' },
-  { id: 'page-changelog', label: 'Changelog', detail: 'What shipped recently', href: '/changelog' },
-  { id: 'page-stars', label: 'Stars', detail: 'Community and supporters', href: '/stars' },
-  { id: 'page-design', label: 'Design', detail: 'The Nexvyn design language', href: '/design' },
+  {
+    id: 'page-illustration',
+    label: 'Illustration',
+    detail: 'Illustrations and artwork',
+    href: '/illustration',
+    keywords: ['art', 'images'],
+  },
+  {
+    id: 'page-design',
+    label: 'Design',
+    detail: 'The Nexvyn design language',
+    href: '/design',
+    keywords: ['tokens', 'language', 'system'],
+  },
+  {
+    id: 'page-mcp',
+    label: 'MCP',
+    detail: 'Model Context Protocol server',
+    href: '/mcp',
+    keywords: ['ai', 'agent', 'server'],
+  },
+  {
+    id: 'page-changelog',
+    label: 'Changelog',
+    detail: 'What shipped recently',
+    href: '/changelog',
+    keywords: ['releases', 'updates', 'news'],
+  },
 ]
-
-function collectionHeading(collection: string): string {
-  return collection
-    .split(/[-_\s]+/)
-    .filter(Boolean)
-    .map((word) => word[0].toUpperCase() + word.slice(1))
-    .join(' ')
-}
 
 function componentAction(item: ComponentItem, navigate: (href: string) => void): CommandAction {
   return {
     id: item.id,
     label: item.name,
     detail: item.description,
-    section: collectionHeading(item.collection),
+    section: 'Components',
     keywords: [item.id, item.collection, ...(item.isNew ? ['new'] : [])],
     perform: () => navigate(getComponentHref(item.id)),
   }
@@ -67,7 +85,19 @@ export function useComponentSearch(): ComponentSearchValue | null {
   return useContext(ComponentSearchContext)
 }
 
-export function ComponentSearchProvider({ children }: { children: ReactNode }) {
+export interface ComponentSearchProviderProps {
+  children: ReactNode
+  placeholder?: string
+  emptyState?: ReactNode
+  title?: string
+}
+
+function SearchRoot({
+  children,
+  placeholder = 'Search pages and components…',
+  emptyState = 'Nothing matches that search.',
+  title = 'Search',
+}: ComponentSearchProviderProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
 
@@ -80,6 +110,7 @@ export function ComponentSearchProvider({ children }: { children: ReactNode }) {
         label: page.label,
         detail: page.detail,
         section: 'Pages',
+        keywords: page.keywords,
         perform: () => navigate(page.href),
       })),
       ...COMPONENTS.map((item) => componentAction(item, navigate)),
@@ -96,12 +127,18 @@ export function ComponentSearchProvider({ children }: { children: ReactNode }) {
         actions={actions}
         open={open}
         onOpenChange={setOpen}
-        placeholder="Search components…"
-        emptyState="No components match that search."
-        title="Search components"
+        placeholder={placeholder}
+        emptyState={emptyState}
+        title={title}
         ungroupedHeading="Components"
         recentLimit={0}
       />
     </ComponentSearchContext.Provider>
   )
+}
+
+export function ComponentSearchProvider(props: ComponentSearchProviderProps) {
+  const parent = useContext(ComponentSearchContext)
+  if (parent) return <>{props.children}</>
+  return <SearchRoot {...props} />
 }
