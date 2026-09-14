@@ -24,7 +24,7 @@ export function GlowOrbPreview() {
     <div className="flex flex-col items-center gap-4">
       <GlowOrb state={state} volume={volume} size={200} />
       <div
-        className="text-xs font-medium tracking-wide uppercase"
+        className="text-xs font-normal tracking-wide uppercase"
         style={{ color: 'var(--color-muted)' }}
       >
         {state}

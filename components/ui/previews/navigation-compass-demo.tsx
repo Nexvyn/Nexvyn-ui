@@ -1,11 +1,17 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { usePreviewControl } from '@/components/detail/preview-controls'
-import { NavigationCompassAnatomy } from '@/components/diagrams/navigation-compass-diagram'
 import {
   NavigationCompass,
   type CompassNavLink,
 } from '@/components/illustration/navigation-compass'
+
+const NavigationCompassAnatomy = dynamic(() =>
+  import('@/components/diagrams/navigation-compass-diagram').then(
+    (mod) => mod.NavigationCompassAnatomy,
+  ),
+)
 
 const LINKS: CompassNavLink[] = [
   { angle: 0, label: 'Home', href: '#' },

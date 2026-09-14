@@ -8,10 +8,10 @@ const librarySections = [
     title: 'Philosophy',
     blocks: [
       {
-        text: 'Philosophy is a core pillar of Nexvyn/UI, designed from the ground up to focus on visual clarity, premium micro-interactions, and developer experience. We believe that components should not only be accessible and functional but should also provide a tactile, high-fidelity user experience through organic physics-based animations that delight the user at first touch. Every decision we make prioritizes the end user, ensuring that each interaction feels intentional and rewarding.',
+        text: 'Nexvyn/UI is a small set of components built around one idea: each one gets a single moment of motion, and everything else stays quiet. Layout, type and color do the structural work, so the one animated detail reads as intentional rather than busy. When a component needs more than that to feel finished, the design is usually wrong, not the animation.',
       },
       {
-        text: 'Our approach combines rigorous engineering with thoughtful design to create components that developers love to use and end users love to interact with. We study UI patterns we admire and craft our own versions, often with added features and improvements. The result is a library that feels both familiar and fresh.',
+        text: 'Most components start from a pattern that already works well somewhere else. We rebuild it from scratch, strip what does not earn its place, and keep the API close to what you would expect from Radix or shadcn/ui. The goal is that nothing here surprises you on first read.',
       },
     ],
   },
@@ -19,10 +19,10 @@ const librarySections = [
     title: 'Design System',
     blocks: [
       {
-        text: 'Built on top of modern CSS custom properties and tailwind utility cascades, Nexvyn uses a highly curated, contrast-balanced color palette. Our theme variables adapt dynamically to light and dark modes with zero latency, providing consistent layout elevation, outline borders, and typography ratios across all viewports.',
+        text: 'Color comes from a short list of CSS variables: a background, two surfaces, a foreground, two muted text tones, borders, and one accent. The accent is reserved for focus, selection and the signature motion, which keeps it meaningful. Light and dark themes redefine the same variables, so components never branch on the theme.',
       },
       {
-        text: 'The design system is built to scale, supporting everything from small embeds to large dashboard interfaces. Each token is carefully chosen to maintain visual harmony while providing enough flexibility for customization. The color system uses semantic naming that makes theme switching intuitive.',
+        text: 'Spacing sits on a 4px grid and radii come from one base value. Because every component reads the same tokens, retuning a theme is a matter of editing a few variables in one stylesheet rather than hunting through component files.',
       },
     ],
   },
@@ -30,10 +30,10 @@ const librarySections = [
     title: 'Animations',
     blocks: [
       {
-        text: 'Animations are computed using Framer Motion and spring physics so that motion transitions feel snappy, organic, and natural. By avoiding linear transitions and customizing spring coefficients (stiffness, damping, mass), we emulate real-world materials that stretch, compress, and slide smoothly to improve cognitive continuity.',
+        text: 'Motion uses a handful of shared duration and easing tokens. Elements entering or leaving the screen ease out, elements already on screen ease in and out, and hover changes stay under 150ms. Only transform, opacity, clip-path and filter are animated, so the browser can keep the work off the main thread.',
       },
       {
-        text: 'Motion is information, not decoration — every animation communicates state changes, guides attention, and provides feedback. Our spring presets are tuned for different use cases: press interactions, panel transitions, and layout shifts. The result is a cohesive motion language that users instinctively understand.',
+        text: 'When the operating system asks for reduced motion, transitions are switched off in CSS and JavaScript-driven animation takes a static path. The component still communicates its state change; it just does it without movement.',
       },
     ],
   },
@@ -41,10 +41,10 @@ const librarySections = [
     title: 'Performance',
     blocks: [
       {
-        text: 'Performance is a core pillar of the library. We optimize transitions using hardware-accelerated CSS properties (like transforms and opacity) and boost selector specificity to avoid style recalculation delays. Components only re-render when state changes, maintaining fast initial load speeds.',
+        text: 'Components render only when their own state changes, and heavier pieces such as canvas renderers load lazily. Every timer, listener and animation frame is released on unmount, which matters on pages like this one where many components are mounted at once.',
       },
       {
-        text: 'Lazy loading and code splitting are built in. Each component is tree-shakeable, ensuring you only ship the code you actually use. We continuously monitor bundle sizes and runtime performance to keep the library lean and fast across all devices and network conditions.',
+        text: 'Each component ships as a single file with its own dependencies declared, so installing one does not pull in the rest. Shared helpers such as the class merger and the sound module are copied once and reused.',
       },
     ],
   },
@@ -52,10 +52,10 @@ const librarySections = [
     title: 'Accessibility',
     blocks: [
       {
-        text: 'Accessibility is never an afterthought. Every component is built using semantic HTML elements, complete ARIA attribute specifications (roles, tablists, keyboard focus indicators), and conforms fully to WCAG 2.1 AA color contrast guidelines on both dark and light backgrounds.',
+        text: 'Interactive parts use native elements where they exist and the matching ARIA roles where they do not. Composite widgets like tabs and menus use roving focus, so arrow keys move between items and Tab moves past the group. Overlays trap focus while open and return it to the trigger on close.',
       },
       {
-        text: 'Screen reader testing is part of our CI pipeline. We support keyboard navigation, focus management, and reduced motion preferences. Each component includes proper labeling, descriptions, and live region updates for dynamic content, ensuring an inclusive experience for all users.',
+        text: 'Touch targets are at least 44 pixels square, icon-only buttons carry an accessible label, and decorative icons are hidden from assistive technology. Focus rings show for keyboard users and stay out of the way for pointer clicks.',
       },
     ],
   },
@@ -63,10 +63,10 @@ const librarySections = [
     title: 'Developer Experience',
     blocks: [
       {
-        text: 'Developer experience (DX) is at the heart of our engineering. With fully typed components, clean named exports, and intuitive React hooks, integrating Nexvyn/UI into any modern codebase is seamless. We eliminate boilerplate, provide helpful TypeScript interfaces, and ensure compilation is warning-free to accelerate your feature delivery.',
+        text: 'Every component is typed, forwards its ref, merges a className prop, and supports both controlled and uncontrolled state. Visual variants are enums rather than boolean flags, so autocomplete tells you what is available. User-facing strings are props with defaults, so you can localize them.',
       },
       {
-        text: 'Our documentation includes interactive examples, prop tables, and copy-paste code snippets. The shadcn registry integration means installing components is a single command. We prioritize developer ergonomics so you can focus on building features, not fighting with the toolchain.',
+        text: 'Installation goes through the shadcn registry: one command copies the source into your project, where it is yours to read and change. There is no runtime package to keep in sync.',
       },
     ],
   },
@@ -74,10 +74,10 @@ const librarySections = [
     title: 'Customization',
     blocks: [
       {
-        text: "While we offer a premium default aesthetic, customization is fully supported. By utilizing semantic CSS variables (--color-accent, --color-bg, and custom scoping variables), you can easily override themes, radius coordinates, and animation springs to match your brand's unique identity without touching the core source files.",
+        text: 'Override the theme by redefining the color, radius and motion variables in your own stylesheet. Because components reference the variables rather than literal values, the change applies everywhere at once, in both light and dark mode.',
       },
       {
-        text: 'Every token is overridable. The component system supports CSS-in-JS, Tailwind classes, and inline styles, giving you complete control over the visual output while maintaining the underlying behavior and accessibility guarantees.',
+        text: 'For one-off adjustments, pass a className. Classes you pass are merged after the internal ones, so your utilities win without needing important flags or deeper selectors.',
       },
     ],
   },
@@ -141,14 +141,12 @@ export function BounceSidebarPreview() {
 
   return (
     <div className="flex flex-col h-full w-full">
-      {/* Mobile disclaimer */}
       <div className="md:hidden shrink-0 bg-(--color-surface) border-b border-(--color-border) px-3 py-1.5 text-center">
         <p className="text-[10px] font-sans text-(--color-fg)/50">
           For best experience, open in browser on a wider screen
         </p>
       </div>
 
-      {/* Mobile: sidebar on top as horizontal strip */}
       <div className="md:hidden shrink-0 border-b border-(--color-border) ps-4 pe-2 py-2">
         <p className="mb-1.5 text-[10px] font-sans uppercase tracking-wider text-(--color-fg)/45">
           Library Guide
@@ -159,7 +157,7 @@ export function BounceSidebarPreview() {
               key={section.title}
               type="button"
               onClick={() => goTo(index)}
-              className={`shrink-0 px-2 py-1 rounded-md text-[11px] font-medium transition-colors ${
+              className={`shrink-0 px-2 py-1 rounded-md text-[11px] font-normal transition-colors ${
                 active === index
                   ? 'bg-(--color-accent) text-(--color-bg)'
                   : 'text-(--color-fg)/55 hover:text-(--color-fg) hover:bg-(--color-surface)'
@@ -172,7 +170,6 @@ export function BounceSidebarPreview() {
       </div>
 
       <div className="flex flex-col md:flex-row gap-0 md:gap-4 text-left w-full min-h-0 flex-1 max-w-4xl mx-auto">
-        {/* Desktop: vertical sidebar on left */}
         <aside className="hidden md:block w-40 shrink-0 h-full ps-4 pe-2">
           <p className="mb-3 ps-2 text-sm font-sans uppercase tracking-wider text-(--color-fg)/45">
             Library Guide

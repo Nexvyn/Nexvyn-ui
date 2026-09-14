@@ -6,31 +6,31 @@ import { ScrollIndicator } from '@/components/ui/scroll-indicator'
 const docSections = [
   {
     title: 'Philosophy',
-    text: 'Philosophy is a core pillar of Nexvyn/UI, designed from the ground up to focus on visual clarity, premium micro-interactions, and developer experience. We believe that components should not only be accessible and functional but should also provide a tactile, high-fidelity user experience through organic physics-based animations that delight the user at first touch. Every decision we make prioritizes the end user, ensuring that each interaction feels intentional and rewarding.',
+    text: 'Nexvyn UI focuses on clarity and restraint. Each component has one signature motion moment, the accent appears only on focus, selection, or that signature, and everything else stays neutral. The goal is interfaces that feel built with care rather than assembled from parts. Components are small, readable, and meant to be copied into your project and owned by you.',
   },
   {
     title: 'Design System',
-    text: 'Built on top of modern CSS custom properties and tailwind utility cascades, Nexvyn uses a highly curated, contrast-balanced color palette. Our theme variables adapt dynamically to light and dark modes with zero latency, providing consistent layout elevation, outline borders, and typography ratios across all viewports. The design system is built to scale, supporting everything from small embeds to large dashboard interfaces.',
+    text: 'Colors come from a short list of semantic tokens: background, foreground, muted, border, surface, and a single accent. Every token has a light and a dark value, so components follow the theme without any component-level dark mode code. Radii use rounded-md, spacing sits on a 4px grid, and type uses a small set of sizes at regular weight.',
   },
   {
     title: 'Animations',
-    text: 'Animations are computed using Framer Motion and spring physics so that motion transitions feel snappy, organic, and natural. By avoiding linear transitions and customizing spring coefficients (stiffness, damping, mass), we emulate real-world materials that stretch, compress, and slide smoothly to improve cognitive continuity. Motion is information, not decoration — every animation communicates state changes.',
+    text: 'Motion uses spring physics and a small set of duration and easing tokens. Elements entering or leaving use ease-out, elements already on screen use ease-in-out, and hovers use plain ease. Only transform, opacity, clip-path, and filter are animated, and every animation respects the reduced motion setting by turning itself off.',
   },
   {
     title: 'Performance',
-    text: 'Performance is a core pillar of the library. We optimize transitions using hardware-accelerated CSS properties (like transforms and opacity) and boost selector specificity to avoid style recalculation delays. Components only re-render when state changes, maintaining fast initial load speeds. Lazy loading and code splitting are built in. Each component is tree-shakeable.',
+    text: 'Components animate hardware-friendly properties, clean up every timer, listener, and observer on unmount, and avoid reading layout during render. The documentation site is prerendered as static pages, heavy views such as anatomy diagrams load only when opened, and each component installs as its own file so you ship only what you use.',
   },
   {
     title: 'Accessibility',
-    text: 'Accessibility is never an afterthought. Every component is built using semantic HTML elements, complete ARIA attribute specifications (roles, tablists, keyboard focus indicators), and conforms fully to WCAG 2.1 AA color contrast guidelines on both dark and light backgrounds. Screen reader testing is part of our CI pipeline. We support keyboard navigation and focus management.',
+    text: 'Components use semantic elements, keyboard support, visible focus rings for keyboard users, and ARIA attributes where native semantics are not enough. Composite widgets use roving focus, overlays trap and restore focus, and touch targets aim for 44 by 44 pixels. Contrast is checked by hand in both themes.',
   },
   {
     title: 'Developer Experience',
-    text: 'Developer experience (DX) is at the heart of our engineering. With fully typed components, clean named exports, and intuitive React hooks, integrating Nexvyn/UI into any modern codebase is seamless. We eliminate boilerplate, provide helpful TypeScript interfaces, and ensure compilation is warning-free. The shadcn registry integration means installing components is a single command.',
+    text: 'Everything is typed with TypeScript, props follow a consistent naming pattern, and components support both controlled and uncontrolled use. Styling merges through a cn helper, so your className always wins. Install any component with a single shadcn command, then read and change the source like your own code.',
   },
   {
     title: 'Customization',
-    text: 'While we offer a premium default aesthetic, customization is fully supported. By utilizing semantic CSS variables (--color-accent, --color-bg, and custom scoping variables), you can easily override themes, radius coordinates, and animation springs to match your brand identity without touching the core source files. Every token is overridable.',
+    text: 'Override the design tokens to match your brand, pass className to adjust layout, and swap icons, since icons are accepted as React nodes. User-facing strings such as labels and placeholders are props with sensible defaults, so the components are easy to localize without editing their source.',
   },
 ]
 
@@ -53,7 +53,7 @@ export function ScrollIndicatorPreview() {
     }, 800)
     const top =
       el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop
-    container.scrollTo({ top: top - 8, behavior: 'smooth' })
+    container.scrollTo({ top: Math.max(0, top - 16), behavior: 'smooth' })
   }
 
   useEffect(() => {

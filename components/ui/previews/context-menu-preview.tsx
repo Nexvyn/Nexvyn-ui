@@ -12,7 +12,7 @@ export function ContextMenuPreview() {
           { label: 'Delete', destructive: true },
         ]}
       >
-        <div className="flex h-32 w-48 items-center justify-center rounded-lg squircle-corners border border-(--color-border) bg-(--color-bg) text-sm text-(--color-muted)">
+        <div className="flex h-32 w-48 items-center justify-center rounded-md squircle-corners border border-(--color-border) bg-(--color-bg) text-sm text-(--color-muted)">
           Right-click me
         </div>
       </ContextMenu>

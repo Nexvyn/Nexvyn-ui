@@ -1,8 +1,12 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { usePreviewControl } from '@/components/detail/preview-controls'
-import { GooDropdownBreakdown } from '@/components/diagrams/goo-dropdown-diagram'
 import { GooDropdownPreview } from './goo-dropdown-preview'
+
+const GooDropdownBreakdown = dynamic(() =>
+  import('@/components/diagrams/goo-dropdown-diagram').then((mod) => mod.GooDropdownBreakdown),
+)
 
 export function GooDropdownDemo() {
   const [view] = usePreviewControl('goo-dropdown-view', 'preview')

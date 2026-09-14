@@ -8,9 +8,7 @@
       "type": "registry:ui",
       "title": "Accordion",
       "description": "A vertically stacked set of interactive headings that each reveal a section of content, with a grid-rows unfold animation and full keyboard support.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/accordion.tsx",
@@ -23,11 +21,7 @@
       "type": "registry:ui",
       "title": "Action Button",
       "description": "An async-aware button with an idle → pending → success/error state machine, promise tracking, abort support, and live screen-reader announcements.",
-      "dependencies": [
-        "motion",
-        "@radix-ui/react-slot",
-        "class-variance-authority"
-      ],
+      "dependencies": ["motion", "@radix-ui/react-slot", "class-variance-authority"],
       "files": [
         {
           "path": "components/ui/action-button.tsx",
@@ -52,9 +46,7 @@
       "type": "registry:ui",
       "title": "Adaptive Actions",
       "description": "A responsive action toolbar that measures its available inline size and moves overflowed items into an accessible dropdown menu, with priority and pinned flags to control what stays visible.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion", "@hugeicons/react", "@hugeicons/core-free-icons"],
       "files": [
         {
           "path": "components/ui/adaptive-actions.tsx",
@@ -67,9 +59,7 @@
       "type": "registry:ui",
       "title": "AI Input",
       "description": "AI composer textarea with auto-grow, send/stop button morph, attachment slots, and Enter-to-send.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/ai-input.tsx",
@@ -77,6 +67,22 @@
         },
         {
           "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/switch.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/sound.ts",
           "type": "registry:lib"
         }
       ]
@@ -86,10 +92,7 @@
       "type": "registry:ui",
       "title": "Badge",
       "description": "A compact status label with solid, muted, and dot variants for tagging content inline.",
-      "dependencies": [
-        "class-variance-authority",
-        "@radix-ui/react-slot"
-      ],
+      "dependencies": ["@radix-ui/react-slot", "class-variance-authority", "motion"],
       "files": [
         {
           "path": "components/ui/badge.tsx",
@@ -105,7 +108,7 @@
       "name": "clipboard-field",
       "type": "registry:ui",
       "title": "Clipboard Field",
-      "description": "A one-click install/copy field that morphs between the command and a success label using CSS grid fr tracks — JS only copies and toggles state.",
+      "description": "A one-click install/copy field that morphs between the command and a success label using CSS grid fr tracks. JS only copies and toggles state.",
       "dependencies": [],
       "files": [
         {
@@ -123,10 +126,7 @@
       "type": "registry:ui",
       "title": "Fader",
       "description": "A mixing-console-style parameter fader where the control IS the display, with continuous and detent value grammars, elastic overdrag, and spring-animated settle.",
-      "dependencies": [
-        "@base-ui/react",
-        "motion"
-      ],
+      "dependencies": ["@base-ui/react", "motion"],
       "files": [
         {
           "path": "components/ui/fader/fader.tsx",
@@ -147,6 +147,14 @@
         {
           "path": "lib/sound.ts",
           "type": "registry:lib"
+        },
+        {
+          "path": "hooks/use-elastic-overdrag.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -155,9 +163,7 @@
       "type": "registry:ui",
       "title": "Bounce Sidebar",
       "description": "A sidebar navigation with a bouncing dot indicator that smoothly animates between items using spring physics.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/bounce-sidebar.tsx",
@@ -247,9 +253,7 @@
       "type": "registry:ui",
       "title": "Gooey Dropdown",
       "description": "A dropdown menu with a gooey SVG filter effect that morphs a trigger pill into the panel using spring physics and CSS shape interpolation.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/goo-dropdown.tsx",
@@ -266,9 +270,7 @@
       "type": "registry:ui",
       "title": "Password Input",
       "description": "A password input with an animated eye toggle that follows your cursor and blinks periodically.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/password-input.tsx",
@@ -285,9 +287,7 @@
       "type": "registry:ui",
       "title": "Ratio Slider",
       "description": "A split ratio slider with two color bars, a draggable divider, and responsive labels that collapse when space is tight.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/ratio-slider.tsx",
@@ -295,6 +295,10 @@
         },
         {
           "path": "lib/sound.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
           "type": "registry:lib"
         }
       ]
@@ -304,7 +308,7 @@
       "type": "registry:ui",
       "title": "Scroll Indicator",
       "description": "A vertical scroll progress indicator with tick marks, section labels, and a floating position readout.",
-      "dependencies": [],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/scroll-indicator.tsx",
@@ -321,9 +325,7 @@
       "type": "registry:ui",
       "title": "Table of Contents",
       "description": "A fixed bottom-left floating block that tracks scroll position, shows the active section, and expands into a navigable section list.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/table-of-contents.tsx",
@@ -344,9 +346,7 @@
       "type": "registry:ui",
       "title": "Breadcrumbs",
       "description": "A horizontal trail of links that auto-collapses into an ellipsis button when the trail exceeds maxItems.",
-      "dependencies": [
-        "class-variance-authority"
-      ],
+      "dependencies": ["class-variance-authority"],
       "files": [
         {
           "path": "components/ui/breadcrumbs.tsx",
@@ -363,13 +363,19 @@
       "type": "registry:ui",
       "title": "Morph Nav",
       "description": "A floating action button that morphs through states with SVG path-morphing trigger icon.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/morph-nav.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -378,9 +384,7 @@
       "type": "registry:ui",
       "title": "Context Menu",
       "description": "A right-click menu with proximity highlight and keyboard navigation.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/context-menu.tsx",
@@ -388,6 +392,10 @@
         },
         {
           "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
           "type": "registry:lib"
         }
       ]
@@ -397,9 +405,7 @@
       "type": "registry:ui",
       "title": "Checkbox",
       "description": "A checkbox with drawn check animation, indeterminate state, and hidden native input for forms.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/checkbox.tsx",
@@ -420,9 +426,7 @@
       "type": "registry:ui",
       "title": "Icon Bar",
       "description": "A horizontal toolbar of icon buttons with bloom-open label reveal on hover/selection, accent dot indicator, and roving tabindex.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/icon-bar.tsx",
@@ -443,10 +447,7 @@
       "type": "registry:ui",
       "title": "Nav Menu",
       "description": "A vertical navigation list with two-layer proximity highlight (active route + hover), weight-shift labels, and status dots for new/updated items.",
-      "dependencies": [
-        "motion",
-        "@radix-ui/react-slot"
-      ],
+      "dependencies": ["motion", "@radix-ui/react-slot"],
       "files": [
         {
           "path": "components/ui/nav-menu.tsx",
@@ -471,9 +472,7 @@
       "type": "registry:ui",
       "title": "Dropdown Menu",
       "description": "A popover action menu with a proximity-driven morphing highlight. The muted hover highlight springs between items as the pointer moves, giving the menu a fluid, alive feel.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/dropdown-menu.tsx",
@@ -486,6 +485,10 @@
         {
           "path": "lib/sound.ts",
           "type": "registry:lib"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -494,9 +497,7 @@
       "type": "registry:ui",
       "title": "Select",
       "description": "A form select with a two-layer proximity highlight (selected accent tint + muted hover), drawn check animation, and a trigger label morph on selection change.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/select.tsx",
@@ -509,6 +510,14 @@
         {
           "path": "lib/sound.ts",
           "type": "registry:lib"
+        },
+        {
+          "path": "hooks/use-mounted.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -517,9 +526,7 @@
       "type": "registry:ui",
       "title": "Radio Group",
       "description": "A radio group with roving tabindex and a dot morph selection indicator.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/radio-group.tsx",
@@ -527,6 +534,10 @@
         },
         {
           "path": "lib/sound.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
           "type": "registry:lib"
         }
       ]
@@ -536,11 +547,19 @@
       "type": "registry:ui",
       "title": "Switch",
       "description": "A toggle switch with thumb travel animation and hidden checkbox for forms.",
-      "dependencies": [],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/switch.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -549,9 +568,7 @@
       "type": "registry:ui",
       "title": "Tabs Subtle",
       "description": "A pill-style tab list where the selected indicator springs between tabs, built on the WAI-ARIA tabs pattern with full roving-focus keyboard support.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/tabs-subtle.tsx",
@@ -568,9 +585,7 @@
       "type": "registry:ui",
       "title": "Input Copy",
       "description": "A copy-to-clipboard field that shows a monospace value with an icon or button trigger, animating a checkmark on copy.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/input-copy.tsx",
@@ -591,9 +606,7 @@
       "type": "registry:ui",
       "title": "Bars Theme",
       "description": "A traveling-wave bars visualization with 5 vertical bars sharing a sine-wave frequency, evenly phase-shifted left to right so the wave appears to travel across. Volume scales bar heights with a diamond-shaped idle boost.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/bars-theme.tsx",
@@ -614,9 +627,7 @@
       "type": "registry:ui",
       "title": "Glow Orb",
       "description": "A WebGL fbm-noise glow orb with state-driven colors, volume-responsive scale and glow, idle and connecting pulse animations, and a settle-back transition.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/glow-orb.tsx",
@@ -662,10 +673,8 @@
       "name": "navigation-compass",
       "type": "registry:ui",
       "title": "Navigation Compass",
-      "description": "A draggable compass dial that doubles as a nav menu — scroll rotates it with physical lag, and links entering the active zone scale up and light with the accent.",
-      "dependencies": [
-        "motion"
-      ],
+      "description": "A draggable compass dial that doubles as a nav menu: scroll rotates it with physical lag, and links entering the active zone scale up and light with the accent.",
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/illustration/navigation-compass.tsx",
@@ -691,21 +700,11 @@
       "type": "registry:ui",
       "title": "Fluid Orb",
       "description": "A WebGL fluid orb in muted/neutral design tokens with sphere normals, fBm noise, and audio-reactive pulse.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/fluid-orb.tsx",
           "type": "registry:ui"
-        },
-        {
-          "path": "lib/hooks/use-css-color-rgb.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "lib/resolve-css-color.ts",
-          "type": "registry:lib"
         }
       ]
     },
@@ -714,9 +713,7 @@
       "type": "registry:ui",
       "title": "Dia Text",
       "description": "Diagonal clip-path reveal for bold display typography. Text sweeps into view with an angled edge as the component enters the viewport.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "components/ui/dia-text.tsx",

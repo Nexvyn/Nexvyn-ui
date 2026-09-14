@@ -10,7 +10,7 @@ export function DiaTextPreview() {
         repeat
         repeatDelay={0.6}
         once={false}
-        className="text-2xl font-semibold tracking-tight"
+        className="text-2xl font-normal tracking-tight"
       >
         {['Fluid Precision', 'Editorial Restraint', 'Signature Motion']}
       </DiaText>

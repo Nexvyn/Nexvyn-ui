@@ -24,7 +24,7 @@ export function BarsThemePreview() {
     <div className="flex flex-col items-center gap-4">
       <BarsTheme state={state} volume={volume} size={180} />
       <div
-        className="text-xs font-medium tracking-wide uppercase"
+        className="text-xs font-normal tracking-wide uppercase"
         style={{ color: 'var(--color-muted)' }}
       >
         {state}
