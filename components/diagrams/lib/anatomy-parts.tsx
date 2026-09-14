@@ -1,20 +1,38 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Shared drawing primitives for components/diagrams/* — licensed separately
+// Shared drawing primitives for components/diagrams/*, licensed separately
 // from the rest of this repository under CC BY-NC 4.0.
-// See components/diagrams/LICENSE. NOT covered by the root MIT LICENSE.
+// See components/diagrams/LICENSE. NOT covered by the root LICENSE.
 
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react'
 import { cn } from '@/lib/utils'
 
 type HoverState = string | null
+
+export interface AnatomyPartInfo {
+  label: string
+  measure?: string
+  caption?: string
+}
 
 interface AnatomyContextType {
   hovered: HoverState
   setHovered: (id: HoverState) => void
   pinned: HoverState
   togglePinned: (id: string) => void
+  registerPart: (id: string, info: AnatomyPartInfo) => () => void
+  infoId: string
 }
 
 const AnatomyContext = createContext<AnatomyContextType | null>(null)
@@ -109,7 +127,7 @@ export function AnatomyTag({
   isAccent?: boolean
   className?: string
 }) {
-  const { setHovered, togglePinned } = useAnatomy()
+  const { setHovered, togglePinned, pinned, infoId } = useAnatomy()
   const { isHovered, wrapperClassName, wrapperStyle } = useSpotlightBadge(part)
 
   return (
@@ -119,8 +137,10 @@ export function AnatomyTag({
     >
       <button
         type="button"
-        onMouseEnter={() => setHovered(part)}
-        onMouseLeave={() => setHovered(null)}
+        aria-pressed={pinned === part}
+        aria-describedby={infoId}
+        onPointerEnter={() => setHovered(part)}
+        onPointerLeave={() => setHovered(null)}
         onFocus={() => setHovered(part)}
         onBlur={() => setHovered(null)}
         onClick={(event) => {
@@ -129,7 +149,7 @@ export function AnatomyTag({
         }}
         style={{ pointerEvents: 'all' }}
         className={cn(
-          'cursor-pointer squircle-corners rounded-md border bg-(--color-bg) px-2 py-1 text-[10px] font-medium leading-tight whitespace-nowrap shadow-sm outline-none',
+          'cursor-pointer squircle-corners rounded-md border bg-(--color-bg) px-2 py-1 text-[10px] font-normal leading-tight whitespace-nowrap shadow-sm outline-none',
           'transition-colors duration-(--motion-dur-fast) ease focus-visible:ring-2 focus-visible:ring-(--color-accent) motion-reduce:transition-none',
           isHovered
             ? 'border-(--color-fg) bg-(--color-fg) text-(--color-bg)'
@@ -141,6 +161,80 @@ export function AnatomyTag({
         {label}
       </button>
     </div>
+  )
+}
+
+const TAG_HEIGHT = 22
+const TAG_CHAR_WIDTH = 6
+const TAG_CHROME = 18
+
+export function estimateTagWidth(label: string): number {
+  return Math.ceil(label.length * TAG_CHAR_WIDTH + TAG_CHROME)
+}
+
+export type CalloutSide = 'top' | 'bottom' | 'start' | 'end'
+
+export interface AnatomyCalloutProps extends Partial<Omit<AnatomyPartInfo, 'label'>> {
+  part: string
+  label: string
+  anchor: [number, number]
+  side: CalloutSide
+  distance?: number
+  isAccent?: boolean
+}
+
+export function AnatomyCallout({
+  part,
+  label,
+  anchor,
+  side,
+  distance = 24,
+  isAccent = false,
+  measure,
+  caption,
+}: AnatomyCalloutProps) {
+  const { registerPart } = useAnatomy()
+
+  useLayoutEffect(
+    () => registerPart(part, { label, measure, caption }),
+    [registerPart, part, label, measure, caption],
+  )
+
+  const [ax, ay] = anchor
+  const width = estimateTagWidth(label)
+  const end: [number, number] =
+    side === 'top'
+      ? [ax, ay - distance]
+      : side === 'bottom'
+        ? [ax, ay + distance]
+        : side === 'start'
+          ? [ax - distance, ay]
+          : [ax + distance, ay]
+
+  const box =
+    side === 'top'
+      ? { x: end[0] - width / 2, y: end[1] - TAG_HEIGHT, align: 'items-end justify-center' }
+      : side === 'bottom'
+        ? { x: end[0] - width / 2, y: end[1], align: 'items-start justify-center' }
+        : side === 'start'
+          ? { x: end[0] - width, y: end[1] - TAG_HEIGHT / 2, align: 'items-center justify-end' }
+          : { x: end[0], y: end[1] - TAG_HEIGHT / 2, align: 'items-center justify-start' }
+
+  return (
+    <>
+      <g strokeWidth="1" className="pointer-events-none">
+        <OverlayLine id={part} x1={ax} y1={ay} x2={end[0]} y2={end[1]} />
+      </g>
+      <foreignObject
+        x={box.x}
+        y={box.y}
+        width={width}
+        height={TAG_HEIGHT}
+        className="pointer-events-none overflow-visible"
+      >
+        <AnatomyTag part={part} label={label} isAccent={isAccent} className={box.align} />
+      </foreignObject>
+    </>
   )
 }
 
@@ -202,51 +296,108 @@ export function AnatomyDefs() {
   )
 }
 
+const RENDER_SCALE = 1.2
+
+function viewBoxWidth(viewBox: string): number {
+  const width = Number(viewBox.trim().split(/[\s,]+/)[2])
+  return Number.isFinite(width) ? width : 360
+}
+
 export function AnatomyFrame({
   viewBox,
-  maxWidthClassName = 'max-w-xl',
   ariaLabel,
+  hint = 'Hover or Tab to a part. Enter pins it, Esc clears.',
   children,
 }: {
   viewBox: string
-  maxWidthClassName?: string
-  ariaLabel?: string
+  ariaLabel: string
+  hint?: string
   children: ReactNode
 }) {
   const [hovered, setHovered] = useState<HoverState>(null)
   const [pinned, setPinned] = useState<HoverState>(null)
+  const [parts, setParts] = useState<Record<string, AnatomyPartInfo>>({})
+  const [isTouchDevice, setIsTouchDevice] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(hover: none)').matches : false,
+  )
+  const infoId = useId()
 
-  const togglePinned = (id: string) => setPinned((current) => (current === id ? null : id))
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(hover: none)')
+    const handler = (e: MediaQueryListEvent) => setIsTouchDevice(e.matches)
+    mediaQuery.addEventListener('change', handler)
+    return () => mediaQuery.removeEventListener('change', handler)
+  }, [])
+
+  const togglePinned = useCallback(
+    (id: string) => setPinned((current) => (current === id ? null : id)),
+    [],
+  )
+
+  const registerPart = useCallback((id: string, info: AnatomyPartInfo) => {
+    setParts((current) => ({ ...current, [id]: info }))
+    return () =>
+      setParts((current) => {
+        const next = { ...current }
+        delete next[id]
+        return next
+      })
+  }, [])
+
+  const context = useMemo(
+    () => ({ hovered, setHovered, pinned, togglePinned, registerPart, infoId }),
+    [hovered, pinned, togglePinned, registerPart, infoId],
+  )
+
+  const engaged = hovered ?? pinned
+  const info = engaged ? parts[engaged] : undefined
+  const detail = info ? [info.measure, info.caption].filter(Boolean).join(' · ') : ''
+  const displayHint = isTouchDevice ? 'Tap a part to pin it. Esc clears.' : hint
 
   return (
-    <AnatomyContext.Provider value={{ hovered, setHovered, pinned, togglePinned }}>
+    <AnatomyContext.Provider value={context}>
       <div
-        className="flex w-full items-center justify-center overflow-visible px-2 py-8"
+        className="flex w-full flex-col items-center justify-center gap-4 overflow-visible px-2 py-8"
         onKeyDown={(event) => {
           if (event.key === 'Escape') {
             setPinned(null)
             setHovered(null)
           }
         }}
-        onMouseDown={(event) => {
-          if (event.target === event.currentTarget) setPinned(null)
+        onPointerDown={(event) => {
+          const target = event.target as Element
+          if (target === event.currentTarget || target.tagName.toLowerCase() === 'svg') {
+            setPinned(null)
+            setHovered(null)
+          }
         }}
       >
         <svg
-          aria-hidden={ariaLabel ? undefined : true}
-          role={ariaLabel ? 'img' : undefined}
+          role="group"
           aria-label={ariaLabel}
           viewBox={viewBox}
           fill="none"
           overflow="visible"
-          className={cn(
-            'mx-auto block h-auto w-full max-w-full overflow-visible font-mono text-xs text-(--color-fg)/80',
-            maxWidthClassName,
-          )}
+          style={{ maxWidth: viewBoxWidth(viewBox) * RENDER_SCALE }}
+          className="mx-auto block h-auto w-full overflow-visible font-mono text-xs text-(--color-fg)/80"
         >
           <AnatomyDefs />
           {children}
         </svg>
+        <p
+          id={infoId}
+          aria-live="polite"
+          className="line-clamp-2 h-10 w-full max-w-md shrink-0 overflow-hidden text-center font-mono text-[11px] leading-5 text-(--color-muted)"
+        >
+          {info ? (
+            <>
+              <span className="text-(--color-fg)">{info.label}</span>
+              {detail ? <span> · {detail}</span> : null}
+            </>
+          ) : (
+            displayHint
+          )}
+        </p>
       </div>
     </AnatomyContext.Provider>
   )

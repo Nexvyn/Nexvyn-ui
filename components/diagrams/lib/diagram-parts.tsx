@@ -1,9 +1,9 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Shared drawing primitives for components/diagrams/* — licensed separately
+// Shared drawing primitives for components/diagrams/*, licensed separately
 // from the rest of this repository under CC BY-NC 4.0.
-// See components/diagrams/LICENSE. NOT covered by the root MIT LICENSE.
+// See components/diagrams/LICENSE. NOT covered by the root LICENSE.
 
 import { type CSSProperties, type ReactNode, createContext, useContext, useId } from 'react'
 const MONO = 'var(--font-mono)'
@@ -200,7 +200,7 @@ export function MeasureH({
         stroke="currentColor"
         strokeWidth={theme.guide.strokeWidth}
         opacity={theme.guide.dimOpacity}
-        // dim-draw — tape-measure unroll on hover, defined in globals.css.
+        // dim-draw, tape-measure unroll on hover, defined in globals.css.
         className="dim-draw"
       >
         <line pathLength={1} x1={x1} y1={y - 3} x2={x1} y2={y + 3} />
@@ -242,7 +242,7 @@ export function MeasureV({
         stroke="currentColor"
         strokeWidth={theme.guide.strokeWidth}
         opacity={theme.guide.dimOpacity}
-        // dim-draw — tape-measure unroll on hover, defined in globals.css.
+        // dim-draw, tape-measure unroll on hover, defined in globals.css.
         className="dim-draw"
       >
         <line pathLength={1} x1={x - 3} y1={y1} x2={x + 3} y2={y1} />

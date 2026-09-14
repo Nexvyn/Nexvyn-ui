@@ -1,14 +1,13 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   DraftSurface,
-  DRAFT_FILL_PANEL,
-  DRAFT_FILL_SOLID,
+  DRAFT_FILL_MUTED,
   DRAFT_SCAFFOLD_FADE,
   DRAFT_INK_MORPH,
   draftTheme,
@@ -23,21 +22,19 @@ import {
   stampBeat,
 } from '@/components/diagrams/lib/diagram-parts'
 
-const BP = { x: 84, y: 12, w: 53, h: 110, rx: 9 } as const
-const SCALE = BP.w / 256
-
-const SCREEN_INSET = Math.round(3.5 * SCALE * 100) / 100
-const SCREEN_RX = Math.round(36.8 * SCALE * 100) / 100
-const ISLAND = {
-  w: Math.round(66 * SCALE * 10) / 10,
-  h: Math.round(20 * SCALE * 10) / 10,
-  top: Math.round(9 * SCALE * 10) / 10,
-}
-const HOME = {
-  w: Math.round(0.32 * BP.w * 10) / 10,
-  h: 1,
-  bottom: Math.round(5.5 * SCALE * 10) / 10,
-}
+const REAL = { w: 256, h: 532, rx: 41.6, pad: 2, screenInset: 3.5, screenRx: 36.8 } as const
+const PH_H = 106
+const S = PH_H / REAL.h
+const PH_W = REAL.w * S
+const PH_X = (220 - PH_W) / 2
+const PH_Y = 26
+const PH_RX = REAL.rx * S
+const SCREEN_INSET = (REAL.pad + REAL.screenInset) * S
+const SCREEN_RX = REAL.screenRx * S
+const ISLAND = { w: 66 * S, h: 20 * S, top: 9 * S } as const
+const HOME = { h: 3 * S, bottom: 5.5 * S } as const
+const BUTTON_W = 2 * S
+const SCREEN_FONT = 10
 
 const SIDE_BUTTONS = [
   { side: 'left', top: 15.5, height: 3.2 },
@@ -48,10 +45,11 @@ const SIDE_BUTTONS = [
 
 export function PhoneMockupWireframe() {
   const theme = draftTheme
-  const screenX = BP.x + SCREEN_INSET
-  const screenY = BP.y + SCREEN_INSET
-  const screenW = BP.w - SCREEN_INSET * 2
-  const screenH = BP.h - SCREEN_INSET * 2
+  const screenX = PH_X + SCREEN_INSET
+  const screenY = PH_Y + SCREEN_INSET
+  const screenW = PH_W - SCREEN_INSET * 2
+  const screenH = PH_H - SCREEN_INSET * 2
+  const homeW = screenW * 0.32
 
   return (
     <DraftSurface className="h-auto w-90 sm:w-110">
@@ -75,9 +73,9 @@ export function PhoneMockupWireframe() {
         </pattern>
       </defs>
       {SIDE_BUTTONS.map((btn, i) => {
-        const x = btn.side === 'left' ? BP.x - 2 : BP.x + BP.w + 2
-        const y1 = BP.y + (btn.top / 100) * BP.h
-        const y2 = y1 + (btn.height / 100) * BP.h
+        const x = btn.side === 'left' ? PH_X - BUTTON_W : PH_X + PH_W + BUTTON_W
+        const y1 = PH_Y + (btn.top / 100) * PH_H
+        const y2 = y1 + (btn.height / 100) * PH_H
         return (
           <line
             key={i}
@@ -85,29 +83,28 @@ export function PhoneMockupWireframe() {
             x2={x}
             y1={y1}
             y2={y2}
-            stroke="currentColor"
             strokeWidth={theme.wireframe.strokeWidth}
             strokeOpacity={theme.wireframe.strokeOpacity}
             strokeLinecap="round"
-            className="fade-note"
+            className={`fade-note ${DRAFT_INK_MORPH} stroke-current group-hover:stroke-(--bp-accent,var(--color-accent)) group-focus-visible:stroke-(--bp-accent,var(--color-accent))`}
             style={beat(DRAFT_LABEL_ALT_BEAT)}
           />
         )
       })}
 
       <rect
-        x={BP.x}
-        y={BP.y}
-        width={BP.w}
-        height={BP.h}
-        rx={BP.rx}
+        x={PH_X}
+        y={PH_Y}
+        width={PH_W}
+        height={PH_H}
+        rx={PH_RX}
         pathLength={1}
         strokeDasharray={1}
         strokeDashoffset={1}
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
         style={beat(DRAFT_BEAT.outline)}
-        className={`ink-draw ${DRAFT_FILL_PANEL}`}
+        className={`ink-draw ${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:fill-(--bp-accent,var(--color-accent)) group-hover:stroke-transparent group-focus-visible:fill-(--bp-accent,var(--color-accent)) group-focus-visible:stroke-transparent`}
       />
 
       <rect
@@ -122,7 +119,7 @@ export function PhoneMockupWireframe() {
         strokeWidth={theme.wireframe.strokeWidth}
         strokeOpacity={theme.wireframe.strokeOpacity}
         style={beat(DRAFT_BEAT.anatomy)}
-        className={`ink-draw ${DRAFT_FILL_SOLID}`}
+        className={`ink-draw ${DRAFT_FILL_MUTED}`}
       />
       <rect
         x={screenX}
@@ -134,50 +131,59 @@ export function PhoneMockupWireframe() {
         style={beat(DRAFT_BEAT.hatch)}
         className={`${DRAFT_SCAFFOLD_FADE} fade-note`}
       />
+      <text
+        x={PH_X + PH_W / 2}
+        y={screenY + screenH / 2 + SCREEN_FONT * 0.35}
+        textAnchor="middle"
+        fontSize={SCREEN_FONT}
+        fontFamily="var(--font-sans)"
+        className={`${DRAFT_INK_MORPH} fill-(--color-muted) opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100`}
+      >
+        Screen
+      </text>
 
       <rect
-        x={BP.x + BP.w / 2 - ISLAND.w / 2}
+        x={PH_X + PH_W / 2 - ISLAND.w / 2}
         y={screenY + ISLAND.top}
         width={ISLAND.w}
         height={ISLAND.h}
         rx={ISLAND.h / 2}
-        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-60 group-hover:fill-(--color-bg) group-hover:opacity-90 group-focus-visible:fill-(--color-bg) group-focus-visible:opacity-90`}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-60 group-hover:opacity-100 group-focus-visible:opacity-100`}
         style={beat(DRAFT_BEAT.hatch)}
       />
 
       <rect
-        x={BP.x + BP.w / 2 - HOME.w / 2}
-        y={BP.y + BP.h - HOME.bottom - HOME.h}
-        width={HOME.w}
+        x={PH_X + PH_W / 2 - homeW / 2}
+        y={screenY + screenH - HOME.bottom - HOME.h}
+        width={homeW}
         height={HOME.h}
         rx={HOME.h / 2}
-        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-30 group-hover:opacity-60 group-focus-visible:opacity-60`}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-30 group-hover:opacity-20 group-focus-visible:opacity-20`}
         style={beat(DRAFT_LABEL_ALT_BEAT)}
       />
 
       <g className={DRAFT_SCAFFOLD_FADE}>
-        <GripFrame x={BP.x} y={BP.y} w={BP.w} h={BP.h} style={beat(DRAFT_BEAT.handle)} />
+        <GripFrame x={PH_X} y={PH_Y} w={PH_W} h={PH_H} style={beat(DRAFT_BEAT.handle)} />
         <MeasureH
-          x1={BP.x}
-          x2={BP.x + BP.w}
-          y={BP.y + BP.h + 14}
+          x1={PH_X}
+          x2={PH_X + PH_W}
+          y={PH_Y - 11}
           label="256"
           className="note-stamp"
           style={beat(stampBeat(0))}
         />
         <MeasureV
-          x={BP.x - 14}
-          y1={BP.y}
-          y2={BP.y + BP.h}
+          x={PH_X - 14}
+          y1={PH_Y}
+          y2={PH_Y + PH_H}
           label="532"
-          labelXOffset={-6}
           className="note-stamp"
           style={beat(stampBeat(1))}
         />
         <MeasureNote
-          x={BP.x}
-          y={BP.y - 4}
-          anchor="start"
+          x={PH_X - 20}
+          y={PH_Y + 6}
+          anchor="end"
           className="note-stamp"
           style={beat(stampBeat(2))}
         >
@@ -189,32 +195,32 @@ export function PhoneMockupWireframe() {
           w={screenW}
           h={screenH}
           offset={0.8}
-          boxX={BP.x}
-          boxY={BP.y}
-          boxW={BP.w}
-          boxH={BP.h}
-          boxRx={BP.rx}
+          boxX={PH_X}
+          boxY={PH_Y}
+          boxW={PH_W}
+          boxH={PH_H}
+          boxRx={PH_RX}
           clipOffset={0.8}
           className="dash-march"
           style={beat(DRAFT_BEAT.guide)}
         />
         <MeasureNote
-          x={BP.x + BP.w + 6}
-          y={screenY + 4}
+          x={PH_X + PH_W + 7}
+          y={screenY + ISLAND.top + ISLAND.h / 2 + 2.5}
           anchor="start"
           className="note-stamp"
           style={beat(stampBeat(3))}
         >
-          3.5
+          66x20
         </MeasureNote>
         <MeasureNote
-          x={BP.x + BP.w / 2}
-          y={screenY + ISLAND.top - 3}
-          anchor="middle"
+          x={PH_X + PH_W + 7}
+          y={PH_Y + 19}
+          anchor="start"
           className="note-stamp"
           style={beat(stampBeat(4))}
         >
-          66x20
+          2 + 3.5
         </MeasureNote>
       </g>
     </DraftSurface>

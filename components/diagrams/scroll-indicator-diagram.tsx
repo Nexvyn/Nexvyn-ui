@@ -1,9 +1,9 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import { type CSSProperties } from 'react'
 
@@ -21,100 +21,150 @@ import {
 } from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
-  AnatomyTag,
-  OverlayLine,
+  AnatomyCallout,
   useAnatomy,
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 
-const BP_RAIL_X = 150
-const BP_RAIL_Y1 = 26
-const BP_RAIL_Y2 = 128
-const BP_TICK_COUNT = 16
-const BP_ACTIVE_INDEX = 6
-const BP_HEADING_INDICES = [0, 6, 11] as const
+const BP_TOTAL_TICKS = 60
+const BP_LAST_TICK = BP_TOTAL_TICKS - 1
+const BP_TICK_GAP = 1.8
+const BP_RAIL_X = 132
+const BP_RAIL_Y1 = 22
+const BP_RAIL_Y2 = BP_RAIL_Y1 + BP_LAST_TICK * BP_TICK_GAP
+const BP_MAJOR_W = 12
+const BP_MINOR_W = 6
+const BP_MARK_W = 16
+const BP_LABEL_INSET = 20
+const BP_LABEL_SIZE = 11
+const BP_LABEL_TRACK = 0.55
+const BP_LABEL_SLIDE = 8
+const BP_READOUT_X = BP_RAIL_X - BP_MARK_W - 32
+const BP_READOUT_SIZE = 10
+const BP_SECTIONS = ['PHILOSOPHY', 'DESIGN', 'MOTION', 'SPEED', 'A11Y', 'DX', 'THEMING'] as const
+const BP_ACTIVE_INDEX = 2
 
-const BP_ACTIVE_Y = BP_RAIL_Y1 + (BP_ACTIVE_INDEX / (BP_TICK_COUNT - 1)) * (BP_RAIL_Y2 - BP_RAIL_Y1)
-const BP_THUMB_SLIDE = Math.round(BP_RAIL_Y2 - BP_ACTIVE_Y)
+const bpTickY = (tick: number) => BP_RAIL_Y1 + tick * BP_TICK_GAP
+const bpSectionTick = (index: number) =>
+  Math.round((index / Math.max(BP_SECTIONS.length - 1, 1)) * BP_LAST_TICK)
+const BP_ACTIVE_TICK = bpSectionTick(BP_ACTIVE_INDEX)
+const BP_ACTIVE_Y = bpTickY(BP_ACTIVE_TICK)
 
 export function ScrollIndicatorWireframe() {
-  const ticks = Array.from({ length: BP_TICK_COUNT })
-  const activeY = BP_ACTIVE_Y
   return (
     <DraftSurface>
       <g>
-        {ticks.map((_, i) => {
-          const y = BP_RAIL_Y1 + (i / (BP_TICK_COUNT - 1)) * (BP_RAIL_Y2 - BP_RAIL_Y1)
-          const isMajor = BP_HEADING_INDICES.includes(i as (typeof BP_HEADING_INDICES)[number])
-          const isPast = i <= BP_ACTIVE_INDEX
+        {Array.from({ length: BP_TOTAL_TICKS }).map((_, i) => {
+          const isMajor = i % 5 === 0
+          const isPast = i <= BP_ACTIVE_TICK
+          const tone = isPast
+            ? 'opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100'
+            : isMajor
+              ? 'opacity-35 group-hover:opacity-50 group-focus-visible:opacity-50'
+              : 'opacity-20 group-hover:opacity-25 group-focus-visible:opacity-25'
           return (
             <line
               key={i}
-              x1={BP_RAIL_X - (isMajor ? 14 : 8)}
+              x1={BP_RAIL_X - (isMajor ? BP_MAJOR_W : BP_MINOR_W)}
+              y1={bpTickY(i)}
+              x2={BP_RAIL_X}
+              y2={bpTickY(i)}
+              pathLength={1}
+              strokeDasharray={1}
+              strokeDashoffset={1}
+              stroke="currentColor"
+              strokeWidth={1}
+              style={beat(DRAFT_BEAT.outline)}
+              className={`ink-draw ${DRAFT_INK_MORPH} ${tone}`}
+            />
+          )
+        })}
+      </g>
+      <g>
+        {BP_SECTIONS.map((_, i) => {
+          const y = bpTickY(bpSectionTick(i))
+          const isActive = i === BP_ACTIVE_INDEX
+          return (
+            <line
+              key={i}
+              x1={BP_RAIL_X - BP_MARK_W}
               y1={y}
               x2={BP_RAIL_X}
               y2={y}
               pathLength={1}
               strokeDasharray={1}
               strokeDashoffset={1}
-              stroke={isPast && isMajor ? 'var(--color-accent)' : 'currentColor'}
-              strokeWidth={isMajor ? 1.25 : 1}
-              style={beat(DRAFT_BEAT.outline)}
-              className={`ink-draw ${DRAFT_INK_MORPH} ${isPast ? 'opacity-90 group-hover:opacity-100' : 'opacity-30 group-hover:opacity-50'}`}
+              stroke={isActive ? 'var(--bp-accent, var(--color-accent))' : 'currentColor'}
+              strokeWidth={isActive ? 2 : 1}
+              strokeLinecap={isActive ? 'round' : undefined}
+              style={beat(isActive ? DRAFT_BEAT.anatomy : DRAFT_BEAT.outline)}
+              className={`ink-draw ${DRAFT_INK_MORPH} ${isActive ? '' : 'opacity-45 group-hover:opacity-60 group-focus-visible:opacity-60'}`}
             />
           )
         })}
       </g>
-      <g
-        className="translate-y-0 transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-y-(--bp-thumb-travel) group-hover:delay-(--motion-dur-base) group-focus-visible:translate-y-(--bp-thumb-travel) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
-        style={{ '--bp-thumb-travel': `${BP_THUMB_SLIDE}px` } as CSSProperties}
+      <text
+        x={BP_READOUT_X}
+        y={BP_ACTIVE_Y + BP_READOUT_SIZE * 0.35}
+        fontSize={BP_READOUT_SIZE}
+        fontFamily="var(--font-mono)"
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note tabular-nums ${DRAFT_INK_MORPH} fill-(--bp-accent,var(--color-accent)) opacity-80 group-hover:opacity-0 group-focus-visible:opacity-0`}
       >
-        <line
-          x1={BP_RAIL_X - 16}
-          y1={activeY}
-          x2={BP_RAIL_X}
-          y2={activeY}
-          pathLength={1}
-          strokeDasharray={1}
-          strokeDashoffset={1}
-          stroke="var(--bp-accent, var(--color-accent))"
-          strokeWidth={2}
-          strokeLinecap="round"
-          style={beat(DRAFT_BEAT.anatomy)}
-          className="ink-draw"
-        />
-        <text
-          x={BP_RAIL_X - 22}
-          y={activeY + 3}
-          textAnchor="end"
-          fontSize={11}
-          fontFamily="var(--font-mono)"
-          fontWeight={500}
-          style={beat(DRAFT_LABEL_BEAT)}
-          className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-40 group-hover:opacity-100 group-focus-visible:opacity-100`}
-        >
-          Design
-        </text>
+        {`${BP_ACTIVE_INDEX + 1}/${BP_SECTIONS.length}`}
+      </text>
+      <g>
+        {BP_SECTIONS.map((label, i) => {
+          const isActive = i === BP_ACTIVE_INDEX
+          return (
+            <text
+              key={label}
+              x={BP_RAIL_X - BP_LABEL_INSET}
+              y={bpTickY(bpSectionTick(i)) + BP_LABEL_SIZE * 0.35}
+              textAnchor="end"
+              fontSize={BP_LABEL_SIZE}
+              fontFamily="var(--font-mono)"
+              letterSpacing={BP_LABEL_TRACK}
+              style={
+                {
+                  '--bp-label-slide': `${BP_LABEL_SLIDE}px`,
+                  '--bp-label-delay': `${i * 35}ms`,
+                } as CSSProperties
+              }
+              className={`translate-x-(--bp-label-slide) opacity-0 transition-[opacity,transform] duration-(--motion-dur-base) ease-(--motion-ease-out) group-hover:translate-x-0 group-hover:opacity-100 group-hover:delay-(--bp-label-delay) group-focus-visible:translate-x-0 group-focus-visible:delay-(--bp-label-delay) group-focus-visible:opacity-100 motion-reduce:transition-none motion-reduce:transform-none ${
+                isActive ? 'fill-(--bp-accent,var(--color-accent))' : 'fill-(--color-muted)'
+              }`}
+            >
+              {label}
+            </text>
+          )
+        })}
       </g>
       <g className={DRAFT_SCAFFOLD_FADE}>
         <GripFrame
-          x={BP_RAIL_X - 16}
+          x={BP_RAIL_X - BP_MARK_W}
           y={BP_RAIL_Y1}
-          w={16}
+          w={BP_MARK_W}
           h={BP_RAIL_Y2 - BP_RAIL_Y1}
           style={beat(DRAFT_BEAT.handle)}
         />
         <MeasureV
-          x={BP_RAIL_X + 14}
+          x={BP_RAIL_X + 12}
           y1={BP_RAIL_Y1}
           y2={BP_RAIL_Y2}
-          label={`${BP_RAIL_Y2 - BP_RAIL_Y1}`}
+          label={`${BP_TOTAL_TICKS} ticks`}
           labelXOffset={5}
           labelAnchor="start"
           className="note-stamp"
           style={beat(stampBeat(0))}
         />
-        <MeasureNote x={10} y={18} anchor="start" className="note-stamp" style={beat(stampBeat(1))}>
+        <MeasureNote
+          x={10}
+          y={BP_RAIL_Y1 - 9}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        >
           ticks · hover reveals labels
         </MeasureNote>
       </g>
@@ -282,7 +332,7 @@ function LabelsShape() {
             y={tickY(i) + 3.5}
             fontSize={11}
             fontFamily="var(--font-mono)"
-            fontWeight={isActive ? 600 : 500}
+            fontWeight={400}
             className={`uppercase tracking-wider ${
               isActive ? 'fill-(--color-accent)' : 'fill-current'
             } ${spotlight.className}`}
@@ -317,92 +367,70 @@ function AnnotationsLayer() {
   )
 }
 
-function LinesLayer() {
-  const leftEdge = RAIL_X - 16
-  return (
-    <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="ticks" x1={118} y1={RAIL_Y1 + 2} x2={leftEdge} y2={RAIL_Y1 + 2} />
-      <OverlayLine id="section-marks" x1={118} y1={SECTION_Y} x2={leftEdge} y2={SECTION_Y} />
-      <OverlayLine id="thumb" x1={118} y1={ACTIVE_Y + 28} x2={leftEdge} y2={ACTIVE_Y - 3} />
-      <OverlayLine id="counter" x1={118} y1={ACTIVE_Y + 56} x2={RAIL_X - 40} y2={ACTIVE_Y + 8} />
-      <OverlayLine
-        id="labels"
-        x1={RAIL_X + 36}
-        y1={RAIL_Y2 + 28}
-        x2={RAIL_X + 36}
-        y2={SECTION_Y + 4}
-      />
-    </g>
-  )
-}
-
-function TagsLayer() {
+function CalloutLayer() {
   return (
     <>
-      <foreignObject
-        x={4}
-        y={RAIL_Y1 - 10}
-        width={116}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="ticks" label="Tick Rail" isAccent className="items-center justify-end" />
-      </foreignObject>
-      <foreignObject
-        x={4}
-        y={SECTION_Y - 12}
-        width={116}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="section-marks"
-          label="Section Mark"
-          className="items-center justify-end"
-        />
-      </foreignObject>
-      <foreignObject
-        x={4}
-        y={ACTIVE_Y + 16}
-        width={100}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="thumb" label="Thumb" className="items-center justify-end" />
-      </foreignObject>
-      <foreignObject
-        x={4}
-        y={ACTIVE_Y + 44}
-        width={100}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="counter" label="Counter" className="items-center justify-end" />
-      </foreignObject>
-      <foreignObject
-        x={RAIL_X - 20}
-        y={RAIL_Y2 + 20}
-        width={120}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="labels" label="Section Label" className="items-start justify-center" />
-      </foreignObject>
+      <AnatomyCallout
+        part="ticks"
+        label="Tick Rail"
+        anchor={[RAIL_X - 16, RAIL_Y1]}
+        side="start"
+        distance={24}
+        isAccent
+        measure="60 ticks · major every 5"
+        caption="Rail with major and minor tick marks"
+      />
+      <AnatomyCallout
+        part="section-marks"
+        label="Section Mark"
+        anchor={[RAIL_X - 16, SECTION_Y]}
+        side="start"
+        distance={24}
+        measure="7 sections · accent on active"
+        caption="Section boundary markers aligned to ticks"
+      />
+      <AnatomyCallout
+        part="thumb"
+        label="Thumb"
+        anchor={[RAIL_X, ACTIVE_Y]}
+        side="end"
+        distance={24}
+        isAccent
+        measure="accent indicator · 2.25px"
+        caption="Current scroll position on the rail"
+      />
+      <AnatomyCallout
+        part="counter"
+        label="Counter"
+        anchor={[RAIL_X - 30, ACTIVE_Y]}
+        side="start"
+        distance={24}
+        measure="n/N readout · mono 10px"
+        caption="Current section index and total"
+      />
+      <AnatomyCallout
+        part="labels"
+        label="Section Label"
+        anchor={[RAIL_X + 36, SECTION_Y]}
+        side="end"
+        distance={24}
+        measure="section names · mono uppercase"
+        caption="Label reveals on hover, animated slide"
+      />
     </>
   )
 }
 
 export function ScrollIndicatorBreakdown() {
   return (
-    <AnatomyFrame viewBox="-10 -22 504 280" maxWidthClassName="max-w-[605px]">
+    <AnatomyFrame viewBox="-10 -22 504 280" ariaLabel="Scroll indicator anatomy">
       <TicksShape />
       <SectionMarksShape />
       <ThumbShape />
       <CounterShape />
       <LabelsShape />
       <AnnotationsLayer />
-      <LinesLayer />
-      <TagsLayer />
+      <CalloutLayer />
     </AnatomyFrame>
   )
 }

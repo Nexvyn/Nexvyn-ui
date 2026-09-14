@@ -1,9 +1,9 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   DraftSurface,
@@ -83,7 +83,7 @@ export function ComboboxBlueprint() {
         x={BP.x + BP.padStart}
         y={BP.y + BP.inputH / 2 + 4}
         fontSize={12}
-        fontWeight={500}
+        fontWeight={400}
         fontFamily="var(--font-sans)"
         style={beat(DRAFT_LABEL_BEAT)}
         className={`fade-note ${DRAFT_TEXT_SOFT}`}
@@ -553,7 +553,7 @@ function TagsLayer() {
 
 export function ComboboxAnatomy() {
   return (
-    <AnatomyFrame viewBox="-10 -10 350 210" maxWidthClassName="max-w-[440px]">
+    <AnatomyFrame viewBox="-10 -10 350 210" ariaLabel="Combobox anatomy">
       <InputShape />
       <PanelShape />
       {AN_ITEMS.map((opt, index) => (

@@ -1,14 +1,14 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
+import type { CSSProperties } from 'react'
 import {
+  AnatomyCallout,
   AnatomyFrame,
-  AnatomyTag,
-  OverlayLine,
   useAnatomy,
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
@@ -27,42 +27,70 @@ import {
   MeasureV,
   InsetGuide,
   GripFrame,
-  squircleRectPath,
   DRAFT_LABEL_BEAT,
   stampBeat,
 } from '@/components/diagrams/lib/diagram-parts'
 
-const BP = {
-  triggerR: 15,
-  triggerCx: 22,
-  panelX: 54,
-  panelY: 14,
-  panelW: 150,
-  panelPad: 5,
-  itemH: 22,
-  itemGap: 0,
+const MN = {
+  triggerSize: 44,
+  triggerIcon: 16,
+  panelGap: 8,
+  panelW: 192,
+  panelBorder: 1,
+  panelPad: 6,
+  panelRadius: 4,
+  itemH: 44,
+  itemPadX: 12,
   itemRx: 4,
+  chevronSize: 14,
 } as const
 
-const BP_PANEL_H = BP.panelPad * 2 + BP.itemH * 3
-const BP_TRIGGER_CY = BP.panelY + BP_PANEL_H / 2
-
+const S = 0.6
+const BP_TRIGGER = MN.triggerSize * S
+const BP_PANEL_W = MN.panelW * S
+const BP_PANEL_INSET = (MN.panelBorder + MN.panelPad) * S
+const BP_ITEM_H = MN.itemH * S
+const BP_PANEL_H = BP_PANEL_INSET * 2 + BP_ITEM_H * 3
+const BP_PANEL_RX = MN.panelRadius * S
+const BP_PANEL_RIGHT = 170
+const BP_PANEL_X = BP_PANEL_RIGHT - BP_PANEL_W
+const BP_TRIGGER_Y = 7
+const BP_TRIGGER_CX = BP_PANEL_RIGHT - BP_TRIGGER / 2
+const BP_TRIGGER_CY = BP_TRIGGER_Y + BP_TRIGGER / 2
+const BP_PANEL_Y = BP_TRIGGER_Y + BP_TRIGGER + MN.panelGap * S
+const BP_ITEM_X = BP_PANEL_X + BP_PANEL_INSET
+const BP_ITEM_W = BP_PANEL_W - BP_PANEL_INSET * 2
+const BP_ITEM_Y = [0, 1, 2].map((i) => BP_PANEL_Y + BP_PANEL_INSET + i * BP_ITEM_H)
+const BP_LABEL_SIZE = 14 * S
+const BP_CHEVRON = MN.chevronSize * S
+const BP_CHEVRON_X = BP_ITEM_X + BP_ITEM_W - MN.itemPadX * S - BP_CHEVRON
+const BP_WIDTH_DIM_Y = BP_PANEL_Y + BP_PANEL_H + 6
 const BP_ITEM_LABELS = ['Dashboard', 'Automations', 'Settings'] as const
+const BP_HAMBURGER_Y = [5, 8, 11].map((y) => BP_TRIGGER_CY + (y - 8) * S)
+const BP_HAMBURGER_X1 = BP_TRIGGER_CX + (4 - 8) * S
+const BP_HAMBURGER_X2 = BP_TRIGGER_CX + (14 - 8) * S
+
+function HamburgerLines({ className }: { className: string }) {
+  return (
+    <g strokeWidth={1.5 * S} strokeLinecap="round" className={className}>
+      {BP_HAMBURGER_Y.map((y) => (
+        <line key={y} x1={BP_HAMBURGER_X1} y1={y} x2={BP_HAMBURGER_X2} y2={y} />
+      ))}
+    </g>
+  )
+}
 
 export function MorphNavBlueprint() {
   const theme = draftTheme
-  const itemsX = BP.panelX + BP.panelPad
-  const itemsW = BP.panelW - BP.panelPad * 2
-  const item0Y = BP.panelY + BP.panelPad
-  const item1Y = item0Y + BP.itemH
-  const item2Y = item1Y + BP.itemH
+  const iconFade =
+    'transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:delay-(--motion-dur-base) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none'
 
   return (
     <DraftSurface>
       <circle
-        cx={BP.triggerCx}
+        cx={BP_TRIGGER_CX}
         cy={BP_TRIGGER_CY}
-        r={BP.triggerR}
+        r={BP_TRIGGER / 2}
         pathLength={1}
         strokeDasharray={1}
         strokeDashoffset={1}
@@ -71,80 +99,61 @@ export function MorphNavBlueprint() {
         style={beat(DRAFT_BEAT.outline)}
         className={`ink-draw ${DRAFT_FILL_SOLID}`}
       />
-      <g
-        stroke="var(--color-bg)"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        className="opacity-0 transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:opacity-100 group-hover:delay-(--motion-dur-base) group-focus-visible:opacity-100 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
-      >
-        <line
-          x1={BP.triggerCx - 5}
-          y1={BP_TRIGGER_CY - 3}
-          x2={BP.triggerCx + 5}
-          y2={BP_TRIGGER_CY - 3}
-        />
-        <line x1={BP.triggerCx - 5} y1={BP_TRIGGER_CY} x2={BP.triggerCx + 5} y2={BP_TRIGGER_CY} />
-        <line
-          x1={BP.triggerCx - 5}
-          y1={BP_TRIGGER_CY + 3}
-          x2={BP.triggerCx + 5}
-          y2={BP_TRIGGER_CY + 3}
-        />
-      </g>
-      <g
-        stroke="currentColor"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        className="opacity-70 transition-opacity duration-(--motion-dur-showcase) ease-(--motion-ease-in-out) group-hover:opacity-0 group-hover:delay-(--motion-dur-base) group-focus-visible:opacity-0 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
-      >
-        <line
-          x1={BP.triggerCx - 5}
-          y1={BP_TRIGGER_CY - 3}
-          x2={BP.triggerCx + 5}
-          y2={BP_TRIGGER_CY - 3}
-        />
-        <line x1={BP.triggerCx - 5} y1={BP_TRIGGER_CY} x2={BP.triggerCx + 5} y2={BP_TRIGGER_CY} />
-        <line
-          x1={BP.triggerCx - 5}
-          y1={BP_TRIGGER_CY + 3}
-          x2={BP.triggerCx + 5}
-          y2={BP_TRIGGER_CY + 3}
-        />
-      </g>
-
-      <rect
-        x={BP.panelX}
-        y={BP.panelY}
-        width={BP.panelW}
-        height={BP_PANEL_H}
-        rx={5}
-        strokeWidth={theme.wireframe.strokeWidth}
-        strokeOpacity={theme.wireframe.strokeOpacity}
-        className={DRAFT_FILL_PANEL}
+      <HamburgerLines
+        className={`stroke-(--color-bg) opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 ${iconFade}`}
+      />
+      <HamburgerLines
+        className={`stroke-current opacity-70 group-hover:opacity-0 group-focus-visible:opacity-0 ${iconFade}`}
       />
 
-      <g className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-y-[22px] group-hover:delay-(--motion-dur-base) group-focus-visible:translate-y-[22px] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none">
-        <path
-          d={squircleRectPath(itemsX, item0Y, itemsW, BP.itemH, BP.itemRx)}
-          fill="var(--bp-accent, var(--color-accent))"
-          className={`${DRAFT_INK_MORPH} opacity-0 group-hover:opacity-12 group-focus-visible:opacity-12`}
+      <rect
+        x={BP_PANEL_X}
+        y={BP_PANEL_Y}
+        width={BP_PANEL_W}
+        height={BP_PANEL_H}
+        rx={BP_PANEL_RX}
+        pathLength={1}
+        strokeDasharray={1}
+        strokeDashoffset={1}
+        strokeWidth={theme.wireframe.strokeWidth}
+        strokeOpacity={theme.wireframe.strokeOpacity}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`ink-draw ${DRAFT_FILL_PANEL}`}
+      />
+
+      <g
+        style={{ '--mn-travel': `${BP_ITEM_H}px` } as CSSProperties}
+        className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-y-(--mn-travel) group-hover:delay-(--motion-dur-base) group-focus-visible:translate-y-(--mn-travel) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none"
+      >
+        <rect
+          x={BP_ITEM_X}
+          y={BP_ITEM_Y[0]}
+          width={BP_ITEM_W}
+          height={BP_ITEM_H}
+          rx={MN.itemRx * S}
+          fill="currentColor"
+          className={`${DRAFT_INK_MORPH} opacity-0 group-hover:opacity-10 group-focus-visible:opacity-10`}
         />
       </g>
 
       {BP_ITEM_LABELS.map((label, i) => {
-        const y = [item0Y, item1Y, item2Y][i]
+        const y = BP_ITEM_Y[i]
         return (
           <g key={label}>
-            <path
-              d={squircleRectPath(itemsX, y, itemsW, BP.itemH, BP.itemRx)}
+            <rect
+              x={BP_ITEM_X}
+              y={y}
+              width={BP_ITEM_W}
+              height={BP_ITEM_H}
+              rx={MN.itemRx * S}
               fill="currentColor"
-              fillOpacity={0.08}
+              fillOpacity={0.06}
               className={DRAFT_SCAFFOLD_FADE}
             />
             <text
-              x={itemsX + 8}
-              y={y + BP.itemH / 2 + 3.5}
-              fontSize={9}
+              x={BP_ITEM_X + MN.itemPadX * S}
+              y={y + BP_ITEM_H / 2 + BP_LABEL_SIZE * 0.35}
+              fontSize={BP_LABEL_SIZE}
               fontFamily="var(--font-sans)"
               style={beat(DRAFT_LABEL_BEAT)}
               className={`fade-note ${DRAFT_TEXT_SOFT}`}
@@ -153,13 +162,13 @@ export function MorphNavBlueprint() {
             </text>
             {i === 1 && (
               <path
-                d={`M ${itemsX + itemsW - 12} ${y + BP.itemH / 2 - 3} l 4 3 l -4 3`}
+                d={`M ${BP_CHEVRON_X + (6 / 16) * BP_CHEVRON} ${y + BP_ITEM_H / 2 - BP_CHEVRON / 4} l ${BP_CHEVRON / 4} ${BP_CHEVRON / 4} l ${-BP_CHEVRON / 4} ${BP_CHEVRON / 4}`}
                 fill="none"
                 stroke="currentColor"
-                strokeWidth={1.2}
+                strokeWidth={1.5 * S}
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={DRAFT_TEXT_SOFT}
+                className={`${DRAFT_INK_MORPH} opacity-35 group-hover:opacity-60 group-focus-visible:opacity-60`}
               />
             )}
           </g>
@@ -168,88 +177,104 @@ export function MorphNavBlueprint() {
 
       <g className={DRAFT_SCAFFOLD_FADE}>
         <GripFrame
-          x={BP.panelX}
-          y={BP.panelY}
-          w={BP.panelW}
+          x={BP_PANEL_X}
+          y={BP_PANEL_Y}
+          w={BP_PANEL_W}
           h={BP_PANEL_H}
           className="note-stamp"
           style={beat(DRAFT_BEAT.handle)}
         />
-        <MeasureH
-          x1={BP.panelX}
-          x2={BP.panelX + BP.panelW}
-          y={BP.panelY - 10}
-          label={`${BP.panelW}`}
-          className="note-stamp"
-          style={beat(stampBeat(0))}
-        />
-        <MeasureV
-          x={BP.panelX - 10}
-          y1={BP.panelY}
-          y2={BP.panelY + BP_PANEL_H}
-          label={`${BP_PANEL_H}`}
-          className="note-stamp"
-          style={beat(stampBeat(1))}
-        />
         <InsetGuide
-          x={itemsX}
-          y={item0Y}
-          w={itemsW}
-          h={item2Y + BP.itemH - item0Y}
+          x={BP_ITEM_X}
+          y={BP_ITEM_Y[0]}
+          w={BP_ITEM_W}
+          h={BP_ITEM_H * 3}
           offset={0.8}
-          boxX={BP.panelX}
-          boxY={BP.panelY}
-          boxW={BP.panelW}
+          boxX={BP_PANEL_X}
+          boxY={BP_PANEL_Y}
+          boxW={BP_PANEL_W}
           boxH={BP_PANEL_H}
-          boxRx={5}
+          boxRx={BP_PANEL_RX}
           clipOffset={0.8}
           className="dash-march"
           style={beat(DRAFT_BEAT.guide)}
         />
         <MeasureNote
-          x={BP.panelX + BP.panelPad / 2}
-          y={BP.panelY + BP.panelPad + 8}
-          anchor="middle"
+          x={BP_PANEL_RIGHT + 5}
+          y={BP_ITEM_Y[0] + BP_ITEM_H / 2 + 2.5}
+          anchor="start"
           className="note-stamp"
           style={beat(stampBeat(1))}
         >
-          {`${BP.panelPad}`}
+          {`pad ${MN.panelPad}`}
         </MeasureNote>
         <MeasureNote
-          x={BP.triggerCx}
-          y={BP_TRIGGER_CY + BP.triggerR + 12}
-          anchor="middle"
+          x={BP_TRIGGER_CX - BP_TRIGGER / 2 - 6}
+          y={BP_TRIGGER_CY + 2.5}
+          anchor="end"
           className="note-stamp"
           style={beat(stampBeat(2))}
         >
-          {`r${BP.triggerR}`}
+          {`r${MN.triggerSize / 2}`}
         </MeasureNote>
+        <MeasureH
+          x1={BP_PANEL_X}
+          x2={BP_PANEL_RIGHT}
+          y={BP_WIDTH_DIM_Y}
+          label=""
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureNote
+          x={BP_PANEL_RIGHT + 5}
+          y={BP_WIDTH_DIM_Y + 2.5}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        >
+          {`${MN.panelW}`}
+        </MeasureNote>
+        <MeasureV
+          x={BP_PANEL_X - 12}
+          y1={BP_PANEL_Y}
+          y2={BP_PANEL_Y + BP_PANEL_H}
+          label={`${PANEL_H}`}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <MeasureV
+          x={BP_PANEL_RIGHT + 12}
+          y1={BP_TRIGGER_Y}
+          y2={BP_TRIGGER_Y + BP_TRIGGER}
+          label={`${MN.triggerSize}`}
+          labelXOffset={5}
+          labelAnchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        />
       </g>
     </DraftSurface>
   )
 }
 
-const MN = {
-  triggerSize: 44,
-  panelW: 192,
-  panelPad: 6,
-  panelRadius: 6,
-  itemH: 44,
-  itemPadX: 12,
-  itemGap: 12,
-  chevronSize: 14,
-} as const
-
-const PANEL_H = MN.panelPad * 2 + MN.itemH * 3
-const TRIGGER_CX = MN.triggerSize / 2
-const TRIGGER_CY = PANEL_H / 2
-const PANEL_X = MN.triggerSize + MN.itemGap * 2
-const PANEL_Y = 0
-const ITEM_Y = [0, 1, 2].map((i) => PANEL_Y + MN.panelPad + i * MN.itemH)
+const PANEL_INSET = MN.panelBorder + MN.panelPad
+const PANEL_H = PANEL_INSET * 2 + MN.itemH * 3
+const PANEL_X = 0
+const PANEL_Y = MN.triggerSize + MN.panelGap
+const TRIGGER_CX = PANEL_X + MN.panelW - MN.triggerSize / 2
+const TRIGGER_CY = MN.triggerSize / 2
+const ITEM_X = PANEL_X + PANEL_INSET
+const ITEM_W = MN.panelW - PANEL_INSET * 2
+const ITEM_Y = [0, 1, 2].map((i) => PANEL_Y + PANEL_INSET + i * MN.itemH)
+const ITEM_MID = ITEM_Y.map((y) => y + MN.itemH / 2)
+const CHEVRON_X = ITEM_X + ITEM_W - MN.itemPadX - MN.chevronSize
+const CHEVRON_CX = CHEVRON_X + MN.chevronSize / 2
+const CHEVRON_HALF = (MN.chevronSize / 16) * 4
 
 function TriggerShape() {
-  const { setHovered } = useAnatomy()
+  const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('trigger')
+  const half = MN.triggerIcon / 2 - 3
   return (
     <g
       onMouseEnter={() => setHovered('trigger')}
@@ -262,21 +287,27 @@ function TriggerShape() {
         cy={TRIGGER_CY}
         r={MN.triggerSize / 2}
         fill="currentColor"
-        fillOpacity={0.9}
+        fillOpacity={hovered === 'trigger' ? 1 : 0.85}
         className={spotlight.className}
         style={spotlight.style}
       />
       <g stroke="var(--color-bg)" strokeWidth={1.5} strokeLinecap="round" className="opacity-90">
-        <line x1={TRIGGER_CX - 5} y1={TRIGGER_CY - 3} x2={TRIGGER_CX + 5} y2={TRIGGER_CY - 3} />
-        <line x1={TRIGGER_CX - 5} y1={TRIGGER_CY} x2={TRIGGER_CX + 5} y2={TRIGGER_CY} />
-        <line x1={TRIGGER_CX - 5} y1={TRIGGER_CY + 3} x2={TRIGGER_CX + 5} y2={TRIGGER_CY + 3} />
+        {[-3, 0, 3].map((dy) => (
+          <line
+            key={dy}
+            x1={TRIGGER_CX - half}
+            y1={TRIGGER_CY + dy}
+            x2={TRIGGER_CX + half}
+            y2={TRIGGER_CY + dy}
+          />
+        ))}
       </g>
     </g>
   )
 }
 
 function PanelShape() {
-  const { setHovered } = useAnatomy()
+  const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('panel')
   return (
     <g
@@ -286,13 +317,13 @@ function PanelShape() {
       style={{ pointerEvents: 'all' }}
     >
       <rect
-        x={PANEL_X}
-        y={PANEL_Y}
-        width={MN.panelW}
-        height={PANEL_H}
+        x={PANEL_X + 0.5}
+        y={PANEL_Y + 0.5}
+        width={MN.panelW - 1}
+        height={PANEL_H - 1}
         rx={MN.panelRadius}
         stroke="currentColor"
-        strokeWidth={1}
+        strokeWidth={hovered === 'panel' ? 1.75 : 1}
         fill="transparent"
         className={spotlight.className}
         style={spotlight.style}
@@ -302,52 +333,57 @@ function PanelShape() {
 }
 
 function ItemShape({
-  y,
+  index,
   label,
   id,
   hasChildren,
 }: {
-  y: number
+  index: number
   label: string
   id: string
   hasChildren?: boolean
 }) {
-  const { setHovered } = useAnatomy()
+  const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight(id)
-  const x = PANEL_X + MN.itemPadX
-  const midY = y + MN.itemH / 2
+  const y = ITEM_Y[index]
   return (
-    <g
-      onMouseEnter={() => setHovered(id)}
-      onMouseLeave={() => setHovered(null)}
-      className="cursor-pointer"
-      style={{ pointerEvents: 'all' }}
-    >
-      <rect
-        x={PANEL_X + MN.panelPad}
-        y={y}
-        width={MN.panelW - MN.panelPad * 2}
-        height={MN.itemH}
-        fill="transparent"
-      />
-      <text
-        x={x}
-        y={midY + 5}
-        fontSize={14}
-        fontFamily="var(--font-sans)"
-        className={`fill-current ${spotlight.className}`}
+    <g>
+      <g
+        onMouseEnter={() => setHovered(id)}
+        onMouseLeave={() => setHovered(null)}
+        className="cursor-pointer"
+        style={{ pointerEvents: 'all' }}
       >
-        {label}
-      </text>
-      {hasChildren && <ChevronGlyph midY={midY} />}
+        <rect
+          x={ITEM_X}
+          y={y}
+          width={ITEM_W}
+          height={MN.itemH}
+          rx={MN.itemRx}
+          fill="currentColor"
+          fillOpacity={hovered === id ? 0.1 : 0}
+          className={spotlight.className}
+          style={spotlight.style}
+        />
+        <text
+          x={ITEM_X + MN.itemPadX}
+          y={ITEM_MID[index] + 5}
+          fontSize={14}
+          fontFamily="var(--font-sans)"
+          className={`fill-current ${spotlight.className}`}
+          style={spotlight.style}
+        >
+          {label}
+        </text>
+      </g>
+      {hasChildren && <ChevronGlyph midY={ITEM_MID[index]} />}
     </g>
   )
 }
 
 function ChevronGlyph({ midY }: { midY: number }) {
-  const { setHovered } = useAnatomy()
+  const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('chevron')
-  const cx = PANEL_X + MN.panelW - MN.panelPad - MN.chevronSize
   return (
     <g
       onMouseEnter={() => setHovered('chevron')}
@@ -355,8 +391,19 @@ function ChevronGlyph({ midY }: { midY: number }) {
       className="cursor-pointer"
       style={{ pointerEvents: 'all' }}
     >
+      <rect
+        x={CHEVRON_X}
+        y={midY - MN.chevronSize / 2}
+        width={MN.chevronSize}
+        height={MN.chevronSize}
+        rx={2}
+        fill="currentColor"
+        fillOpacity={hovered === 'chevron' ? 0.12 : 0}
+        className={spotlight.className}
+        style={spotlight.style}
+      />
       <path
-        d={`M ${cx} ${midY - 4} l 4 4 l -4 4`}
+        d={`M ${CHEVRON_CX - CHEVRON_HALF / 2} ${midY - CHEVRON_HALF} l ${CHEVRON_HALF} ${CHEVRON_HALF} l ${-CHEVRON_HALF} ${CHEVRON_HALF}`}
         fill="none"
         stroke="currentColor"
         strokeWidth={1.5}
@@ -378,13 +425,34 @@ function AnnotationsLayer() {
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
       <GripFrame x={PANEL_X} y={PANEL_Y} w={MN.panelW} h={PANEL_H} />
-      <MeasureH x1={PANEL_X} x2={PANEL_X + MN.panelW} y={PANEL_Y - 14} label={`${MN.panelW}`} />
+      <GripFrame
+        x={TRIGGER_CX - MN.triggerSize / 2}
+        y={TRIGGER_CY - MN.triggerSize / 2}
+        w={MN.triggerSize}
+        h={MN.triggerSize}
+      />
+      <MeasureH
+        x1={PANEL_X}
+        x2={PANEL_X + MN.panelW}
+        y={PANEL_Y + PANEL_H + 8}
+        label={`${MN.panelW}`}
+        labelYOffset={10}
+      />
       <MeasureV x={PANEL_X - 12} y1={PANEL_Y} y2={PANEL_Y + PANEL_H} label={`${PANEL_H}`} />
+      <MeasureNote x={PANEL_X + PANEL_INSET / 2} y={PANEL_Y + PANEL_INSET + 10} anchor="middle">
+        {`${MN.panelPad}`}
+      </MeasureNote>
+      <MeasureV
+        x={TRIGGER_CX - MN.triggerSize / 2 - 8}
+        y1={MN.triggerSize}
+        y2={PANEL_Y}
+        label={`${MN.panelGap}`}
+      />
       <InsetGuide
-        x={PANEL_X + MN.panelPad}
-        y={PANEL_Y + MN.panelPad}
-        w={MN.panelW - MN.panelPad * 2}
-        h={PANEL_H - MN.panelPad * 2}
+        x={ITEM_X}
+        y={PANEL_Y + PANEL_INSET}
+        w={ITEM_W}
+        h={PANEL_H - PANEL_INSET * 2}
         offset={0.8}
         boxX={PANEL_X}
         boxY={PANEL_Y}
@@ -393,151 +461,84 @@ function AnnotationsLayer() {
         boxRx={MN.panelRadius}
         clipOffset={0.8}
       />
-      <MeasureNote x={PANEL_X + MN.panelPad / 2} y={PANEL_Y + MN.panelPad + 10} anchor="middle">
-        {`${MN.panelPad}`}
-      </MeasureNote>
-      <GripFrame
-        x={TRIGGER_CX - MN.triggerSize / 2}
-        y={TRIGGER_CY - MN.triggerSize / 2}
-        w={MN.triggerSize}
-        h={MN.triggerSize}
-      />
     </g>
   )
 }
 
-function OverlayLines() {
-  const triggerTop = TRIGGER_CY - MN.triggerSize / 2
-  const panelTop = PANEL_Y
-  const item0MidY = ITEM_Y[0] + MN.itemH / 2
-  const item1MidY = ITEM_Y[1] + MN.itemH / 2
-  const item2MidY = ITEM_Y[2] + MN.itemH / 2
-  const chevronCx = PANEL_X + MN.panelW - MN.panelPad - MN.chevronSize + 2
-  return (
-    <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine
-        id="trigger"
-        x1={TRIGGER_CX}
-        y1={triggerTop}
-        x2={TRIGGER_CX}
-        y2={triggerTop - 26}
-      />
-      <OverlayLine
-        id="panel"
-        x1={PANEL_X + MN.panelW}
-        y1={panelTop}
-        x2={PANEL_X + MN.panelW}
-        y2={panelTop - 26}
-      />
-      <OverlayLine
-        id="item-1"
-        x1={PANEL_X + MN.panelW}
-        y1={item0MidY}
-        x2={PANEL_X + MN.panelW + 30}
-        y2={item0MidY}
-      />
-      <OverlayLine
-        id="item-2"
-        x1={PANEL_X + MN.panelW}
-        y1={item1MidY}
-        x2={PANEL_X + MN.panelW + 30}
-        y2={item1MidY}
-      />
-      <OverlayLine
-        id="item-3"
-        x1={PANEL_X + MN.panelW}
-        y1={item2MidY}
-        x2={PANEL_X + MN.panelW + 30}
-        y2={item2MidY}
-      />
-      <OverlayLine id="chevron" x1={chevronCx} y1={item1MidY} x2={chevronCx} y2={item1MidY - 30} />
-    </g>
-  )
-}
-
-function Tags() {
-  const triggerTop = TRIGGER_CY - MN.triggerSize / 2
-  const panelTop = PANEL_Y
-  const item0MidY = ITEM_Y[0] + MN.itemH / 2
-  const item1MidY = ITEM_Y[1] + MN.itemH / 2
-  const item2MidY = ITEM_Y[2] + MN.itemH / 2
-  const chevronCx = PANEL_X + MN.panelW - MN.panelPad - MN.chevronSize + 2
-  const tagX = PANEL_X + MN.panelW + 30
+function Callouts() {
+  const endX = ITEM_X + ITEM_W
+  const columnX = PANEL_X + MN.panelW + 24
   return (
     <>
-      <foreignObject
-        x={TRIGGER_CX - 55}
-        y={triggerTop - 26 - 24}
-        width={110}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="trigger" label="Trigger" className="items-end justify-center" isAccent />
-      </foreignObject>
-      <foreignObject
-        x={PANEL_X + MN.panelW - 45}
-        y={panelTop - 26 - 24}
-        width={90}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="panel" label="Panel" className="items-end justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={tagX}
-        y={item0MidY - 12}
-        width={110}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="item-1" label="MorphNavItem" className="items-center justify-start" />
-      </foreignObject>
-      <foreignObject
-        x={tagX}
-        y={item1MidY - 12}
-        width={140}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="item-2"
-          label="Item (has children)"
-          className="items-center justify-start"
-        />
-      </foreignObject>
-      <foreignObject
-        x={tagX}
-        y={item2MidY - 12}
-        width={110}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="item-3" label="MorphNavItem" className="items-center justify-start" />
-      </foreignObject>
-      <foreignObject
-        x={chevronCx - 55}
-        y={item1MidY - 30 - 24}
-        width={110}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="chevron" label="Submenu chevron" className="items-end justify-center" />
-      </foreignObject>
+      <AnatomyCallout
+        part="trigger"
+        label="Trigger"
+        anchor={[PANEL_X + MN.panelW, TRIGGER_CY]}
+        side="end"
+        distance={columnX - PANEL_X - MN.panelW}
+        isAccent
+        measure={`${MN.triggerSize}px circle, icon ${MN.triggerIcon}px`}
+        caption="Toggles the panel; icon morphs hamburger, minus, back arrow"
+      />
+      <AnatomyCallout
+        part="panel"
+        label="Panel"
+        anchor={[PANEL_X + 60, PANEL_Y]}
+        side="top"
+        distance={20}
+        measure={`${MN.panelW} × ${PANEL_H}px, p-1.5 (6px), 1px border`}
+        caption="Portaled menu placed 8px from the trigger, default bottom-end"
+      />
+      <AnatomyCallout
+        part="item-1"
+        label="MorphNavItem"
+        anchor={[endX, ITEM_MID[0]]}
+        side="end"
+        distance={columnX - endX}
+        measure={`${ITEM_W} × ${MN.itemH}px, px-3, text-sm`}
+        caption="Link item; selecting it navigates and closes the panel"
+      />
+      <AnatomyCallout
+        part="item-2"
+        label="Parent item"
+        anchor={[endX, ITEM_MID[1]]}
+        side="end"
+        distance={columnX - endX}
+        measure={`${ITEM_W} × ${MN.itemH}px, has children`}
+        caption="Item with children; slides the panel into its sub-view"
+      />
+      <AnatomyCallout
+        part="item-3"
+        label="MorphNavItem"
+        anchor={[endX, ITEM_MID[2]]}
+        side="end"
+        distance={columnX - endX}
+        measure={`${ITEM_W} × ${MN.itemH}px, px-3, text-sm`}
+        caption="Link item; selecting it navigates and closes the panel"
+      />
+      <AnatomyCallout
+        part="chevron"
+        label="Submenu chevron"
+        anchor={[CHEVRON_CX, ITEM_MID[1] + MN.chevronSize / 2]}
+        side="bottom"
+        distance={PANEL_Y + PANEL_H + 14 - ITEM_MID[1] - MN.chevronSize / 2}
+        measure={`${MN.chevronSize}px, muted`}
+        caption="Marks an item that opens a sub-menu"
+      />
     </>
   )
 }
 
 export function MorphNavAnatomy() {
   return (
-    <AnatomyFrame viewBox="-70 -70 520 280" maxWidthClassName="max-w-xl">
-      <TriggerShape />
+    <AnatomyFrame viewBox="-44 -14 364 262" ariaLabel="Morph nav anatomy">
       <PanelShape />
-      <ItemShape y={ITEM_Y[0]} label="Dashboard" id="item-1" />
-      <ItemShape y={ITEM_Y[1]} label="Automations" id="item-2" hasChildren />
-      <ItemShape y={ITEM_Y[2]} label="Settings" id="item-3" />
+      <ItemShape index={0} label="Dashboard" id="item-1" />
+      <ItemShape index={1} label="Automations" id="item-2" hasChildren />
+      <ItemShape index={2} label="Settings" id="item-3" />
+      <TriggerShape />
       <AnnotationsLayer />
-      <OverlayLines />
-      <Tags />
+      <Callouts />
     </AnatomyFrame>
   )
 }

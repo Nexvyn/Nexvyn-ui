@@ -1,6 +1,9 @@
 'use client'
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
-// This file is NOT covered by the repository's root MIT LICENSE.
+
+// SPDX-License-Identifier: CC-BY-NC-4.0
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
+// this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   AnatomyFrame,
@@ -97,7 +100,7 @@ export function MobileDrawerBlueprint() {
           x={BP.panelX + BP.padX}
           y={titleY}
           fontSize={10}
-          fontWeight={600}
+          fontWeight={400}
           fontFamily="var(--font-sans)"
           style={beat(DRAFT_LABEL_BEAT)}
           className={`fade-note ${DRAFT_TEXT_SOFT}`}
@@ -355,7 +358,7 @@ function TitleShape() {
         x={PANEL_X + MD.contentPadX}
         y={TITLE_BASELINE_Y}
         fontSize={16}
-        fontWeight={600}
+        fontWeight={400}
         fontFamily="var(--font-sans)"
         className={`fill-current ${spotlight.className}`}
       >
@@ -498,7 +501,7 @@ function Tags() {
 
 export function MobileDrawerAnatomy() {
   return (
-    <AnatomyFrame viewBox="-90 -66 516 306" maxWidthClassName="max-w-lg">
+    <AnatomyFrame viewBox="-90 -66 516 306" ariaLabel="Mobile drawer anatomy">
       <OverlayShape />
       <PanelShape />
       <HandleShape />

@@ -1,5 +1,10 @@
 'use client'
 
+// SPDX-License-Identifier: CC-BY-NC-4.0
+// Wireframe/anatomy diagram asset -- licensed separately from the rest of
+// this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
+
 import {
   DraftSurface,
   DRAFT_FILL_PANEL,
@@ -17,43 +22,44 @@ import {
   DRAFT_LABEL_ALT_BEAT,
   stampBeat,
 } from '@/components/diagrams/lib/diagram-parts'
-import {
-  AnatomyFrame,
-  AnatomyTag,
-  OverlayLine,
-  useSpotlight,
-} from '@/components/diagrams/lib/anatomy-parts'
+import { AnatomyCallout, AnatomyFrame, useSpotlight } from '@/components/diagrams/lib/anatomy-parts'
 
 const FIELD = {
-  w: 188,
-  h: 40,
-  r: 10,
+  w: 172,
+  h: 38,
+  r: 4,
   padX: 12,
   padY: 10,
   gap: 8,
-  icon: 14,
+  icon: 16,
+  glyph: 14,
   font: 13,
 } as const
 
+const DIM_LANE = 20.4
+
 const BP = {
-  x: (220 - FIELD.w) / 2,
-  y: (140 - FIELD.h) / 2,
+  x: Math.round((220 - FIELD.w - DIM_LANE) / 2 + DIM_LANE),
+  y: 43,
 } as const
+
+const MID_Y = BP.y + FIELD.h / 2
+const BASELINE = MID_Y + FIELD.font * 0.35
+const PROMPT_X = BP.x + FIELD.padX
+const COMMAND_X = PROMPT_X + FIELD.font * 0.6 + FIELD.gap
+const ICON_X = BP.x + FIELD.w - FIELD.padX - FIELD.icon
+const ICON_Y = MID_Y - FIELD.icon / 2
+const GLYPH_INSET = (FIELD.icon - FIELD.glyph) / 2
+const COMMAND_CLIP_END = ICON_X - FIELD.gap
 
 export function ClipboardFieldBlueprint() {
   const theme = draftTheme
-  const midY = BP.y + FIELD.h / 2
-  const promptX = BP.x + FIELD.padX
-  const commandX = promptX + 9 + FIELD.gap
-  const iconX = BP.x + FIELD.w - FIELD.padX - FIELD.icon
-  const iconY = midY - FIELD.icon / 2
-  const commandClipRight = iconX - 8
 
   return (
     <DraftSurface>
       <defs>
         <clipPath id="bp-clipboard-command-clip">
-          <rect x={commandX} y={BP.y} width={commandClipRight - commandX} height={FIELD.h} />
+          <rect x={COMMAND_X} y={BP.y} width={COMMAND_CLIP_END - COMMAND_X} height={FIELD.h} />
         </clipPath>
       </defs>
       <rect
@@ -71,8 +77,8 @@ export function ClipboardFieldBlueprint() {
         className={`ink-draw ${DRAFT_FILL_PANEL}`}
       />
       <text
-        x={promptX}
-        y={midY + 4}
+        x={PROMPT_X}
+        y={BASELINE}
         fontSize={FIELD.font}
         fontFamily="var(--font-mono)"
         style={beat(DRAFT_LABEL_BEAT)}
@@ -81,58 +87,55 @@ export function ClipboardFieldBlueprint() {
         $
       </text>
       <text
-        x={commandX}
-        y={midY + 4}
+        x={COMMAND_X}
+        y={BASELINE}
         fontSize={FIELD.font}
         fontFamily="var(--font-mono)"
         clipPath="url(#bp-clipboard-command-clip)"
         style={beat(DRAFT_LABEL_ALT_BEAT)}
         className={`fade-note ${DRAFT_INK_MORPH} fill-(--color-muted) opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
       >
-        npx shadcn@latest add …
+        npx shadcn@latest add @nexvyn/badge
       </text>
       <g
-        style={{ transformOrigin: `${iconX + FIELD.icon / 2}px ${midY}px` }}
-        className="transition-transform duration-(--motion-dur-base) ease-(--motion-ease-out) group-active:scale-[0.9] motion-reduce:transition-none"
+        transform={`translate(${ICON_X + GLYPH_INSET} ${ICON_Y + GLYPH_INSET}) scale(${FIELD.glyph / 24})`}
+        stroke="currentColor"
+        strokeWidth={1.75}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+        style={beat(DRAFT_BEAT.anatomy)}
+        className="opacity-55 transition-opacity duration-(--motion-dur-fast) ease-(--motion-ease-out) group-hover:opacity-0 group-focus-visible:opacity-0 group-hover:delay-(--motion-dur-base) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
       >
-        <g
-          stroke="currentColor"
-          strokeWidth={1.4}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-          style={beat(DRAFT_BEAT.anatomy)}
-          className={`opacity-55 transition-[opacity,stroke] duration-(--motion-dur-fast) ease-(--motion-ease-out) group-hover:opacity-0 group-focus-visible:opacity-0 group-hover:stroke-(--color-fg) group-focus-visible:stroke-(--color-fg) group-hover:delay-(--motion-dur-base) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none`}
-        >
-          <rect
-            x={iconX + 3.5}
-            y={iconY + 3.5}
-            width={8}
-            height={8}
-            rx={1.4}
-            pathLength={1}
-            strokeDasharray={1}
-            strokeDashoffset={1}
-            className="ink-draw"
-          />
-          <path
-            d={`M${iconX + 1.5} ${iconY + 9.5} V${iconY + 2.5} a1.5 1.5 0 0 1 1.5-1.5 H${iconX + 9.5}`}
-            pathLength={1}
-            strokeDasharray={1}
-            strokeDashoffset={1}
-            className="ink-draw"
-          />
-        </g>
+        <rect
+          x={9}
+          y={9}
+          width={12}
+          height={12}
+          rx={2}
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
+          className="ink-draw"
+        />
         <path
-          d={`M${iconX + FIELD.icon / 2 - 3} ${midY}l2.5 2.5L${iconX + FIELD.icon / 2 + 3.5} ${midY - 3}`}
-          stroke="var(--color-accent)"
-          strokeWidth={1.5}
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="opacity-0 transition-opacity duration-(--motion-dur-fast) delay-0 group-hover:opacity-100 group-hover:delay-[350ms] group-focus-visible:opacity-100 group-focus-visible:delay-[350ms] motion-reduce:transition-none"
+          d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
+          className="ink-draw"
         />
       </g>
+      <path
+        d="M20 6 9 17l-5-5"
+        transform={`translate(${ICON_X + GLYPH_INSET} ${ICON_Y + GLYPH_INSET}) scale(${FIELD.glyph / 24})`}
+        stroke="var(--color-fg)"
+        strokeWidth={2}
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="opacity-0 transition-opacity duration-(--motion-dur-fast) ease-(--motion-ease-out) group-hover:opacity-100 group-hover:delay-(--motion-dur-slow) group-focus-visible:opacity-100 group-focus-visible:delay-(--motion-dur-slow) motion-reduce:transition-none"
+      />
 
       <g className={DRAFT_SCAFFOLD_FADE}>
         <GripFrame x={BP.x} y={BP.y} w={FIELD.w} h={FIELD.h} style={beat(DRAFT_BEAT.handle)} />
@@ -152,59 +155,6 @@ export function ClipboardFieldBlueprint() {
           style={beat(DRAFT_BEAT.guide)}
         />
         <MeasureNote
-          x={BP.x + FIELD.padX / 2}
-          y={midY + 2}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(4))}
-        >
-          12
-        </MeasureNote>
-        <MeasureNote
-          x={BP.x + FIELD.w - FIELD.padX / 2}
-          y={BP.y - 6}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(1))}
-        >
-          12
-        </MeasureNote>
-        <MeasureNote
-          x={BP.x + FIELD.w / 2}
-          y={BP.y + 7}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(2))}
-        >
-          10
-        </MeasureNote>
-        <MeasureNote
-          x={BP.x + FIELD.w / 2}
-          y={BP.y + FIELD.h - 3}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(5))}
-        >
-          10
-        </MeasureNote>
-        <MeasureH
-          x1={BP.x}
-          x2={BP.x + FIELD.w}
-          y={BP.y + FIELD.h + 16}
-          label={`${FIELD.w}`}
-          className="note-stamp"
-          style={beat(stampBeat(6))}
-        />
-        <MeasureV
-          x={BP.x - 14}
-          y1={BP.y}
-          y2={BP.y + FIELD.h}
-          label={`${FIELD.h}`}
-          labelXOffset={-6}
-          className="note-stamp"
-          style={beat(stampBeat(3))}
-        />
-        <MeasureNote
           x={BP.x}
           y={BP.y - 6}
           anchor="start"
@@ -213,6 +163,55 @@ export function ClipboardFieldBlueprint() {
         >
           {`r${FIELD.r}`}
         </MeasureNote>
+        <MeasureNote
+          x={BP.x + FIELD.w / 2}
+          y={BP.y - 6}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        >
+          {`${FIELD.padY}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x + FIELD.w - FIELD.padX / 2}
+          y={BP.y - 6}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
+          {`${FIELD.padX}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x + FIELD.padX / 2}
+          y={BP.y + FIELD.h + 10}
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
+          {`${FIELD.padX}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x + FIELD.w / 2}
+          y={BP.y + FIELD.h + 10}
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
+          {`${FIELD.padY}`}
+        </MeasureNote>
+        <MeasureV
+          x={BP.x - 8}
+          y1={BP.y}
+          y2={BP.y + FIELD.h}
+          label={`${FIELD.h}`}
+          labelXOffset={-4}
+          className="note-stamp"
+          style={beat(stampBeat(5))}
+        />
+        <MeasureH
+          x1={BP.x}
+          x2={BP.x + FIELD.w}
+          y={BP.y + FIELD.h + 24}
+          label="auto"
+          className="note-stamp"
+          style={beat(stampBeat(6))}
+        />
       </g>
     </DraftSurface>
   )
@@ -222,12 +221,23 @@ const AN = {
   x: 120,
   y: 52,
   w: 280,
-  h: 40,
-  r: 12,
+  h: 38,
+  r: 4,
   padX: 12,
-  promptW: 12,
-  icon: 14,
+  gap: 8,
+  promptW: 8,
+  icon: 16,
+  font: 13,
 } as const
+
+const AN_MID_Y = AN.y + AN.h / 2
+const AN_BASELINE = AN_MID_Y + AN.font * 0.35
+const AN_TEXT_TOP = AN_BASELINE - AN.font * 0.72
+const AN_PROMPT_X = AN.x + AN.padX
+const AN_COMMAND_X = AN_PROMPT_X + AN.promptW + AN.gap
+const AN_COMMAND_W = 23 * AN.font * 0.6
+const AN_ICON_X = AN.x + AN.w - AN.padX - AN.icon
+const AN_ICON_Y = AN_MID_Y - AN.icon / 2
 
 function FieldShape() {
   const spotlight = useSpotlight('field')
@@ -249,9 +259,9 @@ function PromptShape() {
   const spotlight = useSpotlight('prompt')
   return (
     <text
-      x={AN.x + AN.padX}
-      y={AN.y + 25}
-      fontSize={13}
+      x={AN_PROMPT_X}
+      y={AN_BASELINE}
+      fontSize={AN.font}
       fontFamily="var(--font-mono)"
       className={`fill-(--color-muted) ${spotlight.className}`}
       style={spotlight.style}
@@ -265,9 +275,9 @@ function CommandShape() {
   const spotlight = useSpotlight('command')
   return (
     <text
-      x={AN.x + AN.padX + AN.promptW + 8}
-      y={AN.y + 25}
-      fontSize={13}
+      x={AN_COMMAND_X}
+      y={AN_BASELINE}
+      fontSize={AN.font}
       fontFamily="var(--font-mono)"
       className={`fill-(--color-muted) ${spotlight.className}`}
       style={spotlight.style}
@@ -279,126 +289,75 @@ function CommandShape() {
 
 function IconShape() {
   const spotlight = useSpotlight('icon')
-  const x = AN.x + AN.w - AN.padX - AN.icon
-  const y = AN.y + (AN.h - AN.icon) / 2
   return (
     <g
       className={spotlight.className}
       style={spotlight.style}
+      transform={`translate(${AN_ICON_X + 1} ${AN_ICON_Y + 1}) scale(${14 / 24})`}
       stroke="currentColor"
-      strokeWidth={1.4}
+      strokeWidth={1.75}
       fill="none"
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <rect
-        x={x + 3.5}
-        y={y + 3.5}
-        width={8}
-        height={8}
-        rx={1.4}
-        className="stroke-muted-foreground"
-      />
-      <path
-        d={`M${x + 1.5} ${y + 9.5} V${y + 2.5} a1.5 1.5 0 0 1 1.5-1.5 H${x + 9.5}`}
-        className="stroke-muted-foreground"
-      />
+      <rect x={9} y={9} width={12} height={12} rx={2} />
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
     </g>
   )
 }
 
-function LinesLayer() {
+function CalloutsLayer() {
   return (
     <>
-      <OverlayLine
-        id="prompt"
-        x1={AN.x + AN.padX + 4}
-        y1={AN.y + 25 - 13 * 0.72}
-        x2={AN.x + AN.padX + 4}
-        y2={AN.y - 22}
+      <AnatomyCallout
+        part="prompt"
+        label="Prompt"
+        anchor={[AN_PROMPT_X + AN.promptW / 2, AN_TEXT_TOP]}
+        side="top"
+        distance={24}
+        measure="13px mono · text-muted"
+        caption="Leading glyph from the prompt prop, $ by default."
       />
-      <OverlayLine
-        id="command"
-        x1={AN.x + AN.w / 2}
-        y1={AN.y + 25 - 13 * 0.72}
-        x2={AN.x + AN.w / 2}
-        y2={AN.y - 22}
+      <AnatomyCallout
+        part="command"
+        label="Command"
+        anchor={[AN_COMMAND_X + AN_COMMAND_W / 2, AN_TEXT_TOP]}
+        side="top"
+        distance={24}
+        measure="13px mono · truncates"
+        caption="The value prop, written to the clipboard on click."
       />
-      <OverlayLine
-        id="icon"
-        x1={AN.x + AN.w - AN.padX - AN.icon / 2}
-        y1={AN.y + (AN.h - AN.icon) / 2 + AN.icon}
-        x2={AN.x + AN.w - AN.padX - AN.icon / 2}
-        y2={AN.y + AN.h + 22}
+      <AnatomyCallout
+        part="icon"
+        label="Icon"
+        anchor={[AN_ICON_X + AN.icon / 2, AN_ICON_Y + AN.icon]}
+        side="bottom"
+        distance={24}
+        measure="16 × 16 · 14px glyph"
+        caption="Copy icon that crossfades to a check. hideIcon removes it."
       />
-      <OverlayLine
-        id="field"
-        x1={AN.x + AN.w}
-        y1={AN.y + AN.h / 2}
-        x2={AN.x + AN.w + 28}
-        y2={AN.y + AN.h / 2}
+      <AnatomyCallout
+        part="field"
+        label="ClipboardField"
+        anchor={[AN.x + AN.w, AN_MID_Y]}
+        side="end"
+        distance={24}
+        isAccent
+        measure="auto × 38 · rounded-md"
+        caption="Button root, px-3 py-2.5. Click or Enter copies, resets after 2s."
       />
-    </>
-  )
-}
-
-function TagsLayer() {
-  return (
-    <>
-      <foreignObject
-        x={AN.x + AN.padX - 30}
-        y={AN.y - 44}
-        width={80}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="prompt" label="Prompt" className="items-end justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={AN.x + AN.w / 2 - 44}
-        y={AN.y - 44}
-        width={100}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="command" label="Command" className="items-end justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={AN.x + AN.w - AN.padX - AN.icon / 2 - 28}
-        y={AN.y + AN.h + 22}
-        width={70}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="icon" label="Icon" className="items-start justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={AN.x + AN.w + 24}
-        y={AN.y + AN.h / 2 - 12}
-        width={120}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="field"
-          label="ClipboardField"
-          className="items-center justify-start"
-          isAccent
-        />
-      </foreignObject>
     </>
   )
 }
 
 export function ClipboardFieldAnatomy() {
   return (
-    <AnatomyFrame viewBox="-42 -8 604 160" maxWidthClassName="max-w-[725px]">
+    <AnatomyFrame viewBox="95 6 445 133" ariaLabel="Clipboard field anatomy">
       <FieldShape />
       <PromptShape />
       <CommandShape />
       <IconShape />
-      <LinesLayer />
-      <TagsLayer />
+      <CalloutsLayer />
     </AnatomyFrame>
   )
 }

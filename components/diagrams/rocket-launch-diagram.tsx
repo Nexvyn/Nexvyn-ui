@@ -1,9 +1,9 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   DraftSurface,
@@ -20,22 +20,21 @@ import {
   stampBeat,
 } from '@/components/diagrams/lib/diagram-parts'
 
-const SCALE = 0.71
-const OFFSET_X = 79.6
-const OFFSET_Y = 18.7
-
 const SRC = {
-  bodyLeft: 10.35,
-  bodyRight: 75.35,
-  bodyTop: 0,
-  bodyBottom: 165.9,
+  left: 0.35,
+  right: 85.35,
+  top: 0,
+  bottom: 165.9,
 } as const
 
-const BODY_LEFT = SRC.bodyLeft * SCALE + OFFSET_X
-const BODY_RIGHT = SRC.bodyRight * SCALE + OFFSET_X
-const BODY_TOP = SRC.bodyTop * SCALE + OFFSET_Y
-const BODY_BOTTOM = SRC.bodyBottom * SCALE + OFFSET_Y
-const NOSE_TIP_Y = -8 * SCALE + OFFSET_Y
+const SCALE = 0.67
+const OFFSET_X = (220 - (SRC.right - SRC.left) * SCALE) / 2 - SRC.left * SCALE
+const OFFSET_Y = 25
+
+const LEFT = SRC.left * SCALE + OFFSET_X
+const RIGHT = SRC.right * SCALE + OFFSET_X
+const TOP = SRC.top * SCALE + OFFSET_Y
+const BOTTOM = SRC.bottom * SCALE + OFFSET_Y
 
 export function RocketLaunchBlueprint() {
   const theme = draftTheme
@@ -158,33 +157,32 @@ export function RocketLaunchBlueprint() {
           stroke="currentColor"
           strokeWidth={theme.wireframe.strokeWidth / SCALE}
           strokeOpacity={theme.wireframe.strokeOpacity}
-          className={`fade-note ${DRAFT_INK_MORPH} fill-transparent group-hover:fill-(--color-accent) group-hover:fill-opacity-30`}
+          className={`fade-note ${DRAFT_INK_MORPH} fill-transparent group-hover:fill-(--color-accent)/30 group-focus-visible:fill-(--color-accent)/30`}
           style={beat(DRAFT_LABEL_ALT_BEAT)}
         />
       </g>
 
       <g className={DRAFT_SCAFFOLD_FADE}>
         <GripFrame
-          x={BODY_LEFT}
-          y={NOSE_TIP_Y}
-          w={BODY_RIGHT - BODY_LEFT}
-          h={BODY_BOTTOM - NOSE_TIP_Y}
+          x={LEFT}
+          y={TOP}
+          w={RIGHT - LEFT}
+          h={BOTTOM - TOP}
           style={beat(DRAFT_BEAT.handle)}
         />
         <MeasureV
-          x={BODY_LEFT - 16}
-          y1={BODY_TOP}
-          y2={BODY_BOTTOM}
-          label="166"
-          labelXOffset={-6}
+          x={LEFT - 12}
+          y1={TOP}
+          y2={BOTTOM}
+          label="193"
           className="note-stamp"
           style={beat(stampBeat(2))}
         />
         <MeasureH
-          x1={BODY_LEFT}
-          x2={BODY_RIGHT}
-          y={NOSE_TIP_Y - 10}
-          label="86"
+          x1={LEFT}
+          x2={RIGHT}
+          y={TOP - 10}
+          label="99"
           className="note-stamp"
           style={beat(stampBeat(3))}
         />

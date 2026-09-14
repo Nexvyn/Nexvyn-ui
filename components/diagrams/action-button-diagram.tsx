@@ -1,9 +1,9 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   DraftSurface,
@@ -19,57 +19,91 @@ import {
   InsetGuide,
   GripFrame,
   squircleRectPath,
-  DRAFT_DETAIL_BEAT,
   DRAFT_LABEL_BEAT,
   stampBeat,
 } from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
-  AnatomyTag,
-  OverlayLine,
+  AnatomyCallout,
   useAnatomy,
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 
 const BP_BTN = {
-  w: 130,
+  w: 112,
   h: 44,
-  r: 6,
+  r: 4,
   padX: 16,
-  padY: 14,
-  iconGap: 8,
+  gap: 8,
   iconSize: 16,
+  spinnerR: 6.67,
   font: 14,
 } as const
 const BP_X = (220 - BP_BTN.w) / 2
 const BP_Y = (140 - BP_BTN.h) / 2
+const BP_CX = BP_X + BP_BTN.w / 2
+const BP_CY = BP_Y + BP_BTN.h / 2
+const BP_TEXT_Y = BP_CY + BP_BTN.font * 0.35
+const BP_PENDING_X = BP_X + BP_BTN.padX
+const BP_LINE_H = 20
+const BP_CONTENT_INSET = (BP_BTN.h - BP_LINE_H) / 2
 
 export function ActionButtonBlueprint() {
   const theme = draftTheme
-  const cy = BP_Y + BP_BTN.h / 2
-  const iconX = BP_X + BP_BTN.padX
-  const labelX = iconX + BP_BTN.iconSize + BP_BTN.iconGap
+  const spinnerCx = BP_PENDING_X + BP_BTN.iconSize / 2
 
   return (
     <DraftSurface>
       <style>{`
         @keyframes bp-abtn-press {
-          0% { transform: scale(1) translateY(0); }
-          35% { transform: scale(0.97) translateY(1px); }
-          100% { transform: scale(1) translateY(0); }
+          0% { transform: scale(1); }
+          35% { transform: scale(0.97); }
+          100% { transform: scale(1); }
         }
-        .blueprint .bp-abtn-press {
+        .blueprint .bp-abtn-press,
+        .blueprint .bp-abtn-layer {
           transform-box: fill-box;
           transform-origin: center;
+        }
+        .blueprint .bp-abtn-layer {
+          transition-property: opacity, transform, filter;
+          transition-duration: var(--motion-dur-base);
+          transition-timing-function: var(--motion-ease-in-out);
+        }
+        .blueprint .bp-abtn-pending {
+          opacity: 0;
+          transform: scale(0.95);
+          filter: blur(1px);
         }
         .group:hover .blueprint .bp-abtn-press,
         .group:focus-visible .blueprint .bp-abtn-press {
           animation: bp-abtn-press 450ms var(--motion-ease-in-out) 550ms both;
         }
+        .group:hover .blueprint .bp-abtn-layer,
+        .group:focus-visible .blueprint .bp-abtn-layer {
+          transition-delay: var(--motion-dur-showcase);
+        }
+        .group:hover .blueprint .bp-abtn-idle,
+        .group:focus-visible .blueprint .bp-abtn-idle {
+          opacity: 0;
+          transform: scale(0.95);
+          filter: blur(1px);
+        }
+        .group:hover .blueprint .bp-abtn-pending,
+        .group:focus-visible .blueprint .bp-abtn-pending {
+          opacity: 1;
+          transform: scale(1);
+          filter: none;
+        }
         @media (prefers-reduced-motion: reduce) {
           .group:hover .blueprint .bp-abtn-press,
           .group:focus-visible .blueprint .bp-abtn-press {
             animation: none;
+          }
+          .blueprint .bp-abtn-layer {
+            transition: none;
+            transform: none;
+            filter: none;
           }
         }
       `}</style>
@@ -84,49 +118,61 @@ export function ActionButtonBlueprint() {
           style={beat(DRAFT_BEAT.outline)}
           className={`ink-draw ${DRAFT_FILL_SOLID}`}
         />
-        <rect
-          x={iconX}
-          y={cy - BP_BTN.iconSize / 2}
-          width={BP_BTN.iconSize}
-          height={BP_BTN.iconSize}
-          rx={2}
-          stroke="currentColor"
-          strokeWidth={1}
-          style={beat(DRAFT_DETAIL_BEAT.a)}
-          className="fade-note fill-current opacity-35 transition-opacity duration-(--motion-dur-base) ease-(--motion-ease-out) group-hover:opacity-0 group-hover:delay-(--motion-dur-base) group-focus-visible:opacity-0 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
-        />
-        <circle
-          cx={iconX + BP_BTN.iconSize / 2}
-          cy={cy}
-          r={6}
-          fill="none"
-          stroke="var(--color-bg)"
-          strokeWidth={1.5}
-          strokeLinecap="round"
-          strokeDasharray="4 3"
-          className="animate-spin opacity-0 transition-opacity duration-(--motion-dur-base) ease-(--motion-ease-out) group-hover:opacity-100 group-hover:delay-(--motion-dur-base) group-focus-visible:opacity-100 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:animate-none"
-          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
-        />
-        <text
-          x={labelX}
-          y={cy + 5}
-          fontSize={BP_BTN.font}
-          fontWeight={500}
-          fontFamily="var(--font-sans)"
-          style={beat(DRAFT_LABEL_BEAT)}
-          className={`fade-note ${DRAFT_TEXT_SOFT} group-hover:fill-(--color-bg) group-focus-visible:fill-(--color-bg)`}
-        >
-          Save
-        </text>
+        <g className="bp-abtn-layer bp-abtn-idle">
+          <text
+            x={BP_CX}
+            y={BP_TEXT_Y}
+            textAnchor="middle"
+            fontSize={BP_BTN.font}
+            fontFamily="var(--font-sans)"
+            style={beat(DRAFT_LABEL_BEAT)}
+            className={`fade-note ${DRAFT_TEXT_SOFT} group-hover:fill-(--color-bg) group-focus-visible:fill-(--color-bg)`}
+          >
+            Save
+          </text>
+        </g>
+        <g className="bp-abtn-layer bp-abtn-pending">
+          <circle
+            cx={spinnerCx}
+            cy={BP_CY}
+            r={BP_BTN.spinnerR}
+            fill="none"
+            stroke="var(--color-bg)"
+            strokeWidth={1.5}
+            strokeOpacity={0.25}
+          />
+          <circle
+            cx={spinnerCx}
+            cy={BP_CY}
+            r={BP_BTN.spinnerR}
+            fill="none"
+            stroke="var(--color-bg)"
+            strokeWidth={1.5}
+            strokeLinecap="round"
+            pathLength={4}
+            strokeDasharray="1 3"
+            className="animate-spin motion-reduce:animate-none"
+            style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
+          />
+          <text
+            x={BP_PENDING_X + BP_BTN.iconSize + BP_BTN.gap}
+            y={BP_TEXT_Y}
+            fontSize={BP_BTN.font}
+            fontFamily="var(--font-sans)"
+            fill="var(--color-bg)"
+          >
+            Saving…
+          </text>
+        </g>
       </g>
 
       <g className={DRAFT_SCAFFOLD_FADE}>
         <GripFrame x={BP_X} y={BP_Y} w={BP_BTN.w} h={BP_BTN.h} style={beat(DRAFT_BEAT.handle)} />
         <InsetGuide
           x={BP_X + BP_BTN.padX}
-          y={BP_Y + BP_BTN.padY}
+          y={BP_Y}
           w={BP_BTN.w - BP_BTN.padX * 2}
-          h={BP_BTN.h - BP_BTN.padY * 2}
+          h={BP_BTN.h}
           offset={0.8}
           boxX={BP_X}
           boxY={BP_Y}
@@ -137,33 +183,6 @@ export function ActionButtonBlueprint() {
           className="dash-march"
           style={beat(DRAFT_BEAT.guide)}
         />
-        <MeasureNote
-          x={BP_X + BP_BTN.padX / 2}
-          y={cy + 2}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(2))}
-        >
-          16
-        </MeasureNote>
-        <MeasureNote
-          x={iconX + BP_BTN.iconSize + BP_BTN.iconGap / 2}
-          y={cy + 2}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(3))}
-        >
-          8
-        </MeasureNote>
-        <MeasureNote
-          x={BP_X + BP_BTN.w / 2}
-          y={BP_Y + 8}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(4))}
-        >
-          {`${BP_BTN.padY}`}
-        </MeasureNote>
         <MeasureH
           x1={BP_X}
           x2={BP_X + BP_BTN.w}
@@ -177,9 +196,36 @@ export function ActionButtonBlueprint() {
           y1={BP_Y}
           y2={BP_Y + BP_BTN.h}
           label={`${BP_BTN.h}`}
-          labelXOffset={-6}
           className="note-stamp"
           style={beat(stampBeat(0))}
+        />
+        <MeasureH
+          x1={BP_X}
+          x2={BP_X + BP_BTN.padX}
+          y={BP_Y + BP_BTN.h + 10}
+          label={`${BP_BTN.padX}`}
+          labelYOffset={10}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        />
+        <MeasureH
+          x1={BP_PENDING_X + BP_BTN.iconSize}
+          x2={BP_PENDING_X + BP_BTN.iconSize + BP_BTN.gap}
+          y={BP_Y + BP_BTN.h + 10}
+          label={`${BP_BTN.gap}`}
+          labelYOffset={10}
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        />
+        <MeasureV
+          x={BP_X + BP_BTN.w + 12}
+          y1={BP_Y}
+          y2={BP_Y + BP_CONTENT_INSET}
+          label={`${BP_CONTENT_INSET}`}
+          labelXOffset={5}
+          labelAnchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
         />
       </g>
     </DraftSurface>
@@ -187,14 +233,20 @@ export function ActionButtonBlueprint() {
 }
 
 const BTN = {
-  w: 150,
+  w: 112,
   h: 44,
-  r: 6,
+  r: 4,
+  padX: 16,
+  lineH: 20,
+  spinnerR: 6.67,
 } as const
 
-const AN = { x: 100, y: 60 } as const
-const AN_MID_X = AN.x + BTN.w / 2
-const AN_MID_Y = AN.y + BTN.h / 2
+const MID_X = BTN.w / 2
+const MID_Y = BTN.h / 2
+const SIZER = { x: BTN.padX, y: MID_Y - BTN.lineH / 2, w: BTN.w - BTN.padX * 2, h: BTN.lineH }
+const PENDING_INSET = 2
+const LIVE = { x: 10, y: 80, w: BTN.w - 20, h: 18 }
+const LEFT_LANE = -14
 
 function RootShape() {
   const { hovered, setHovered } = useAnatomy()
@@ -202,8 +254,8 @@ function RootShape() {
 
   return (
     <rect
-      x={AN.x}
-      y={AN.y}
+      x={0}
+      y={0}
       width={BTN.w}
       height={BTN.h}
       rx={BTN.r}
@@ -211,7 +263,7 @@ function RootShape() {
       strokeWidth={hovered === 'root' ? 2 : draftTheme.wireframe.strokeWidth}
       fill={hovered === 'root' ? 'currentColor' : 'transparent'}
       fillOpacity={hovered === 'root' ? 0.1 : 0}
-      className={`cursor-pointer supports-[corner-shape:squircle]:corner-squircle ${spotlight.className}`}
+      className={`cursor-pointer squircle-corners ${spotlight.className}`}
       style={{ ...spotlight.style, pointerEvents: 'all' }}
       onMouseEnter={() => setHovered('root')}
       onMouseLeave={() => setHovered(null)}
@@ -230,25 +282,14 @@ function IdleLayerShape() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      <rect x={AN.x + 12} y={AN.y + 8} width={126} height={28} fill="transparent" />
-      <rect
-        x={AN.x + 16}
-        y={AN_MID_Y - 8}
-        width={16}
-        height={16}
-        rx={2}
-        stroke="currentColor"
-        strokeWidth={hovered === 'idle-layer' ? 1.5 : 1}
-        fill="none"
-        opacity={0.6}
-        className={spotlight.className}
-      />
+      <rect x={MID_X - 20} y={MID_Y - 8} width={40} height={16} fill="transparent" />
       <text
-        x={AN.x + 40}
-        y={AN_MID_Y + 5}
+        x={MID_X}
+        y={MID_Y + 5}
         fontSize={14}
-        fontWeight={500}
+        textAnchor="middle"
         fontFamily="var(--font-sans)"
+        opacity={hovered === 'idle-layer' ? 1 : 0.8}
         className={`fill-current ${spotlight.className}`}
       >
         Save
@@ -269,11 +310,11 @@ function PendingLayerShape() {
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
       <rect
-        x={AN.x + 4}
-        y={AN.y + 4}
-        width={BTN.w - 8}
-        height={BTN.h - 8}
-        rx={BTN.r - 2}
+        x={PENDING_INSET}
+        y={PENDING_INSET}
+        width={BTN.w - PENDING_INSET * 2}
+        height={BTN.h - PENDING_INSET * 2}
+        rx={BTN.r - 1}
         fill="var(--bp-accent, var(--color-accent))"
         fillOpacity={hovered === 'pending-layer' ? 0.15 : 0.06}
         stroke="var(--bp-accent, var(--color-accent))"
@@ -282,11 +323,11 @@ function PendingLayerShape() {
         className={spotlight.className}
       />
       <circle
-        cx={AN.x + 24}
-        cy={AN_MID_Y}
-        r={8}
+        cx={BTN.padX + 8}
+        cy={MID_Y}
+        r={BTN.spinnerR}
         stroke="var(--bp-accent, var(--color-accent))"
-        strokeWidth={1.5}
+        strokeWidth={1.67}
         strokeDasharray="8 6"
         fill="none"
         opacity={hovered === 'pending-layer' ? 0.9 : 0.5}
@@ -307,11 +348,11 @@ function LiveRegionShape() {
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
       <rect
-        x={AN.x + 20}
-        y={AN.y + BTN.h + 14}
-        width={110}
-        height={18}
-        rx={3}
+        x={LIVE.x}
+        y={LIVE.y}
+        width={LIVE.w}
+        height={LIVE.h}
+        rx={4}
         stroke="currentColor"
         strokeWidth={hovered === 'live-region' ? 1.5 : 1}
         strokeDasharray="2 2"
@@ -320,8 +361,8 @@ function LiveRegionShape() {
         className={spotlight.className}
       />
       <text
-        x={AN.x + 75}
-        y={AN.y + BTN.h + 26}
+        x={LIVE.x + LIVE.w / 2}
+        y={LIVE.y + 12}
         textAnchor="middle"
         fontSize={7}
         fontFamily="var(--font-mono)"
@@ -346,11 +387,11 @@ function SizingLayerShape() {
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
       <rect
-        x={AN.x + 6}
-        y={AN.y + 6}
-        width={BTN.w - 12}
-        height={BTN.h - 12}
-        rx={4}
+        x={SIZER.x}
+        y={SIZER.y}
+        width={SIZER.w}
+        height={SIZER.h}
+        rx={2}
         stroke="currentColor"
         strokeWidth={hovered === 'sizing' ? 1.2 : 0.8}
         strokeDasharray="6 2"
@@ -374,116 +415,90 @@ function AnnotationsLayer() {
       }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
     >
-      <GripFrame x={AN.x} y={AN.y} w={BTN.w} h={BTN.h} />
-      <MeasureH x1={AN.x} x2={AN.x + BTN.w} y={AN.y - 18} label={`${BTN.w}`} />
+      <GripFrame x={0} y={0} w={BTN.w} h={BTN.h} />
+      <MeasureH x1={0} x2={BTN.w} y={BTN.h + 12} label={`${BTN.w}`} labelYOffset={11} />
       <MeasureV
-        x={AN.x - 18}
-        y1={AN.y}
-        y2={AN.y + BTN.h}
+        x={BTN.w + 8}
+        y1={0}
+        y2={BTN.h}
         label={`${BTN.h}`}
-        labelXOffset={-6}
-        labelAnchor="end"
+        labelXOffset={5}
+        labelAnchor="start"
       />
-      <MeasureNote x={AN.x} y={AN.y - 8} anchor="start">
+      <MeasureNote x={0} y={-8} anchor="start">
         {`r${BTN.r}`}
       </MeasureNote>
     </g>
   )
 }
 
-function LinesLayer() {
-  return (
-    <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="root" x1={AN.x + BTN.w} y1={AN_MID_Y} x2={320} y2={AN_MID_Y} />
-      <OverlayLine id="idle-layer" x1={AN_MID_X} y1={AN.y + 6} x2={AN_MID_X} y2={22} />
-      <OverlayLine id="pending-layer" x1={AN.x + BTN.w} y1={AN.y + BTN.h - 8} x2={320} y2={128} />
-      <OverlayLine id="live-region" x1={AN.x + 75} y1={AN.y + BTN.h + 14} x2={40} y2={140} />
-      <OverlayLine id="sizing" x1={AN.x} y1={AN_MID_Y} x2={30} y2={AN_MID_Y} />
-    </g>
-  )
-}
-
-function TagsLayer() {
+function Callouts() {
   return (
     <>
-      <foreignObject
-        x={318}
-        y={AN_MID_Y - 12}
-        width={140}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="root"
-          label="Action.Root"
-          className="items-center justify-start"
-          isAccent
-        />
-      </foreignObject>
-      <foreignObject
-        x={AN_MID_X - 50}
-        y={2}
-        width={110}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="idle-layer"
-          label="Action.IdleLayer"
-          className="items-end justify-center"
-        />
-      </foreignObject>
-      <foreignObject
-        x={318}
-        y={116}
-        width={150}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="pending-layer"
-          label="Action.PendingLayer"
-          className="items-center justify-start"
-          isAccent
-        />
-      </foreignObject>
-      <foreignObject
-        x={-10}
-        y={128}
-        width={140}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="live-region"
-          label="Action.LiveRegion"
-          className="items-center justify-end"
-        />
-      </foreignObject>
-      <foreignObject
-        x={-10}
-        y={AN_MID_Y - 12}
-        width={130}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="sizing" label="Action.Sizer" className="items-center justify-end" />
-      </foreignObject>
+      <AnatomyCallout
+        part="idle-layer"
+        label="Idle layer"
+        anchor={[MID_X, MID_Y - 5]}
+        side="top"
+        distance={MID_Y - 5 + 24}
+        measure="inset 0 · gap 8 · text 14"
+        caption="Idle content. Shows idleLabel and idleIcon until clicked."
+      />
+      <AnatomyCallout
+        part="root"
+        label="Root"
+        anchor={[BTN.w, 8]}
+        side="end"
+        distance={24}
+        isAccent
+        measure={`${BTN.w} × ${BTN.h} · r${BTN.r} · px ${BTN.padX}`}
+        caption="Button root. Disabled and aria-busy while onAction is pending."
+      />
+      <AnatomyCallout
+        part="pending-layer"
+        label="Pending layer"
+        anchor={[BTN.w - PENDING_INSET, BTN.h - 6]}
+        side="end"
+        distance={24 + PENDING_INSET}
+        isAccent
+        measure="inset 0 · spinner 16 · scale 0.95 to 1"
+        caption="Crossfades in with opacity, scale and 1px blur while pending."
+      />
+      <AnatomyCallout
+        part="sizing"
+        label="Sizer"
+        anchor={[SIZER.x, MID_Y]}
+        side="start"
+        distance={SIZER.x - LEFT_LANE}
+        measure={`${SIZER.w} × ${SIZER.h} · invisible grid stack`}
+        caption="Stacks every state label so the widest one fixes the width."
+      />
+      <AnatomyCallout
+        part="live-region"
+        label="Live region"
+        anchor={[LIVE.x, LIVE.y + LIVE.h / 2]}
+        side="start"
+        distance={LIVE.x - LEFT_LANE}
+        measure="sr-only · role status · polite"
+        caption="Announces each state from the announcements prop."
+      />
     </>
   )
 }
 
 export function ActionButtonDiagram() {
   return (
-    <AnatomyFrame viewBox="-20 -4 510 170" maxWidthClassName="max-w-lg">
+    <AnatomyFrame
+      viewBox="-112 -60 358 174"
+      ariaLabel="Action button anatomy: root, sizer, idle layer, pending layer and live region"
+    >
       <RootShape />
       <SizingLayerShape />
       <IdleLayerShape />
       <PendingLayerShape />
       <LiveRegionShape />
       <AnnotationsLayer />
-      <LinesLayer />
-      <TagsLayer />
+      <Callouts />
     </AnatomyFrame>
   )
 }

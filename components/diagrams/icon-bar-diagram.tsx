@@ -1,20 +1,19 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
+  AnatomyCallout,
   AnatomyFrame,
-  AnatomyTag,
-  OverlayLine,
   useAnatomy,
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 import {
   DraftSurface,
-  DRAFT_FILL_PANEL,
+  DRAFT_FILL_MUTED,
   DRAFT_SCAFFOLD_FADE,
   DRAFT_INK_MORPH,
   DRAFT_TEXT_SOFT,
@@ -34,14 +33,17 @@ const IB = {
   btnH: 44,
   icon: 36,
   gap: 4,
+  iconGlyph: 18,
   itemRx: 4,
+  barRx: 4,
+  barPad: 4,
+  barBorder: 1,
   dotR: 2,
   dotInset: 6,
-  bloomLabelW: 24,
-  bloomPadEnd: 12,
+  bloomW: 48,
 } as const
 
-const BTN1_W = IB.icon + IB.bloomLabelW + IB.bloomPadEnd
+const BTN1_W = IB.icon + IB.bloomW
 const BTN2_W = IB.icon
 const BTN3_W = IB.icon
 
@@ -49,22 +51,19 @@ const BTN_X = [0, BTN1_W + IB.gap, BTN1_W + IB.gap + BTN2_W + IB.gap]
 const TOTAL_W = BTN_X[2] + BTN3_W
 const ICON_Y = (IB.btnH - IB.icon) / 2
 
-const BP = {
-  btnH: 26,
-  icon: 20,
-  gap: 4,
-  itemRx: 4,
-  bloomLabelW: 18,
-  bloomPadEnd: 7,
-} as const
-const BP_BTN1_W = BP.icon + BP.bloomLabelW + BP.bloomPadEnd
-const BP_BTN2_W = BP.icon
-const BP_BTN3_W = BP.icon
-const BP_BTN_X = [0, BP_BTN1_W + BP.gap, BP_BTN1_W + BP.gap + BP_BTN2_W + BP.gap]
-const BP_TOTAL_W = BP_BTN_X[2] + BP_BTN3_W
-const BP_ICON_Y = (BP.btnH - BP.icon) / 2
-const BP_X = (220 - BP_TOTAL_W) / 2
-const BP_Y = (140 - BP.btnH) / 2
+const LABEL_SIZE = 14
+const LABEL_PAD_END = 12
+const BP_X = (220 - TOTAL_W) / 2
+const BP_Y = (140 - IB.btnH) / 2
+const BP_BTN_Y = BP_Y + IB.btnH / 2 + LABEL_SIZE * 0.35
+const BP_DOT_CX = BP_X + BTN1_W - IB.dotInset - IB.dotR
+const BP_DOT_CY = BP_Y + IB.dotInset + IB.dotR
+const BP_PE_X = BP_X + BTN1_W - LABEL_PAD_END
+const BP_GAP_X = BP_X + BTN1_W
+const BP_CHAIN_Y = BP_Y + IB.btnH + 6
+const BP_CHAIN_NOTE_Y = BP_CHAIN_Y + 13
+
+const BORDERLESS_ITEM = `${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:stroke-transparent group-focus-visible:stroke-transparent`
 
 const PEN_PATHS = ['M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z', 'm15 5 4 4']
 const ERASER_PATHS = [
@@ -130,137 +129,130 @@ function IconGlyph({
 
 export function IconBarBlueprint() {
   const theme = draftTheme
+  const outline = {
+    pathLength: 1,
+    strokeDasharray: 1,
+    strokeDashoffset: 1,
+    strokeWidth: theme.wireframe.strokeWidth * 0.5,
+    y: BP_Y,
+    height: IB.btnH,
+    rx: IB.itemRx,
+  }
   return (
     <DraftSurface>
-      <g className="transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-x-[49px] group-hover:delay-(--motion-dur-base) group-focus-visible:translate-x-[49px] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none">
-        <rect
-          x={BP_X + BP_BTN_X[0]}
-          y={BP_Y}
-          width={BP_BTN1_W}
-          height={BP.btnH}
-          rx={BP.itemRx}
-          fill="currentColor"
-          fillOpacity={0.1}
-          style={beat(DRAFT_BEAT.hatch)}
-          className="fade-note"
-        />
-      </g>
       <rect
-        x={BP_X + BP_BTN_X[0]}
-        y={BP_Y}
-        width={BP_BTN1_W}
-        height={BP.btnH}
-        rx={BP.itemRx}
-        pathLength={1}
-        strokeDasharray={1}
-        strokeDashoffset={1}
-        strokeWidth={theme.wireframe.strokeWidth * 0.5}
-        strokeOpacity={theme.wireframe.strokeOpacity * 0.3}
+        {...outline}
+        x={BP_X + BTN_X[0]}
+        width={BTN1_W}
+        strokeOpacity={theme.wireframe.strokeOpacity * 0.4}
         style={beat(DRAFT_BEAT.outline)}
-        className={`ink-draw ${DRAFT_FILL_PANEL}`}
+        className={`ink-draw ${DRAFT_FILL_MUTED}`}
+      />
+      <rect
+        {...outline}
+        x={BP_X + BTN_X[1]}
+        width={BTN2_W}
+        strokeOpacity={theme.wireframe.strokeOpacity * 0.3}
+        style={beat(DRAFT_DETAIL_BEAT.b)}
+        className={`ink-draw ${BORDERLESS_ITEM}`}
+      />
+      <rect
+        {...outline}
+        x={BP_X + BTN_X[2]}
+        width={BTN3_W}
+        strokeOpacity={theme.wireframe.strokeOpacity * 0.15}
+        style={beat(DRAFT_DETAIL_BEAT.c)}
+        className={`ink-draw ${BORDERLESS_ITEM}`}
       />
 
       <IconGlyph
         paths={PEN_PATHS}
-        x={BP_X + BP_BTN_X[0]}
-        y={BP_Y + BP_ICON_Y}
-        cell={BP.icon}
-        size={BP.icon * 0.65}
-        strokeWidth={1.25}
+        x={BP_X + BTN_X[0]}
+        y={BP_Y + ICON_Y}
+        cell={IB.icon}
+        size={IB.iconGlyph}
         enterAt={DRAFT_BEAT.anatomy}
         className={`${DRAFT_INK_MORPH} opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100`}
       />
       <text
-        x={BP_X + BP.icon + 6}
-        y={BP_Y + BP.btnH / 2 + 3.5}
-        fontSize={9}
-        fontWeight={500}
+        x={BP_X + IB.icon}
+        y={BP_BTN_Y}
+        fontSize={LABEL_SIZE}
         fontFamily="var(--font-sans)"
         style={beat(DRAFT_LABEL_BEAT)}
         className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
         Pen
       </text>
-      <circle
-        cx={BP_X + BP_BTN1_W - 4}
-        cy={BP_Y + 4}
-        r={1.5}
-        fill="currentColor"
-        opacity={0.6}
-        style={beat(DRAFT_BEAT.hatch)}
-        className={`fade-note ${DRAFT_SCAFFOLD_FADE}`}
-      />
+      <g className="fade-note" style={beat(DRAFT_BEAT.handle)}>
+        <circle
+          cx={BP_DOT_CX}
+          cy={BP_DOT_CY}
+          r={IB.dotR}
+          fill="var(--bp-accent, var(--color-accent))"
+          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
+          className="scale-75 opacity-50 transition-[opacity,transform] duration-(--motion-dur-slow) ease-(--motion-ease-out) group-hover:scale-100 group-hover:opacity-100 group-hover:delay-(--motion-dur-base) group-focus-visible:scale-100 group-focus-visible:opacity-100 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transform-none motion-reduce:transition-none"
+        />
+      </g>
 
-      <rect
-        x={BP_X + BP_BTN_X[1]}
-        y={BP_Y}
-        width={BP_BTN2_W}
-        height={BP.btnH}
-        rx={BP.itemRx}
-        pathLength={1}
-        strokeDasharray={1}
-        strokeDashoffset={1}
-        strokeWidth={theme.wireframe.strokeWidth * 0.5}
-        strokeOpacity={theme.wireframe.strokeOpacity * 0.3}
-        style={beat(DRAFT_DETAIL_BEAT.b)}
-        className={`ink-draw ${DRAFT_FILL_PANEL}`}
-      />
       <IconGlyph
         paths={ERASER_PATHS}
-        x={BP_X + BP_BTN_X[1]}
-        y={BP_Y + BP_ICON_Y}
-        cell={BP.icon}
-        size={BP.icon * 0.65}
-        strokeWidth={1.25}
-        enterAt="260ms"
-        className={`${DRAFT_INK_MORPH} opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        x={BP_X + BTN_X[1]}
+        y={BP_Y + ICON_Y}
+        cell={IB.icon}
+        size={IB.iconGlyph}
+        enterAt={DRAFT_DETAIL_BEAT.b}
+        className="opacity-60"
       />
-
-      <rect
-        x={BP_X + BP_BTN_X[2]}
-        y={BP_Y}
-        width={BP_BTN3_W}
-        height={BP.btnH}
-        rx={BP.itemRx}
-        pathLength={1}
-        strokeDasharray={1}
-        strokeDashoffset={1}
-        strokeWidth={theme.wireframe.strokeWidth * 0.5}
-        strokeOpacity={theme.wireframe.strokeOpacity * 0.15}
-        style={beat(DRAFT_DETAIL_BEAT.c)}
-        className={`ink-draw ${DRAFT_FILL_PANEL}`}
-      />
-
       <IconGlyph
         paths={FILL_PATHS}
-        x={BP_X + BP_BTN_X[2]}
-        y={BP_Y + BP_ICON_Y}
-        cell={BP.icon}
-        size={BP.icon * 0.65}
-        strokeWidth={1.25}
-        enterAt="320ms"
+        x={BP_X + BTN_X[2]}
+        y={BP_Y + ICON_Y}
+        cell={IB.icon}
+        size={IB.iconGlyph}
+        enterAt={DRAFT_DETAIL_BEAT.c}
         className="opacity-30"
       />
 
       <g className={DRAFT_SCAFFOLD_FADE}>
-        <GripFrame x={BP_X} y={BP_Y} w={BP_TOTAL_W} h={BP.btnH} style={beat(DRAFT_BEAT.handle)} />
+        <GripFrame x={BP_X} y={BP_Y} w={TOTAL_W} h={IB.btnH} style={beat(DRAFT_BEAT.handle)} />
         <MeasureH
           x1={BP_X}
-          x2={BP_X + BP_TOTAL_W}
+          x2={BP_X + TOTAL_W}
           y={BP_Y - 12}
-          label={`${BP_TOTAL_W}`}
+          label={`${TOTAL_W}`}
           className="note-stamp"
           style={beat(stampBeat(0))}
         />
         <MeasureV
-          x={BP_X - 12}
+          x={BP_X - 10}
           y1={BP_Y}
-          y2={BP_Y + BP.btnH}
-          label={`${BP.btnH}`}
+          y2={BP_Y + IB.btnH}
+          label={`${IB.btnH}`}
           className="note-stamp"
           style={beat(stampBeat(1))}
         />
 
+        <line
+          x1={BP_PE_X}
+          y1={BP_Y}
+          x2={BP_PE_X}
+          y2={BP_Y + IB.btnH}
+          stroke="var(--bp-accent, var(--color-accent))"
+          strokeWidth={theme.guide.strokeWidth}
+          strokeDasharray="2 2"
+          opacity={theme.guide.structOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
+        />
+        <MeasureH
+          x1={BP_PE_X}
+          x2={BP_GAP_X}
+          y={BP_CHAIN_Y}
+          label=""
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        />
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
@@ -269,44 +261,48 @@ export function IconBarBlueprint() {
           className="dash-march"
           style={beat(DRAFT_BEAT.guide)}
         >
+          <line x1={BP_GAP_X} y1={BP_CHAIN_Y - 3} x2={BP_GAP_X} y2={BP_CHAIN_Y + 3} />
           <line
-            x1={BP_X + BP_BTN_X[1] - BP.gap}
-            y1={BP_Y + BP.btnH + 4}
-            x2={BP_X + BP_BTN_X[1] - BP.gap}
-            y2={BP_Y + BP.btnH + 9}
+            x1={BP_GAP_X + IB.gap}
+            y1={BP_CHAIN_Y - 3}
+            x2={BP_GAP_X + IB.gap}
+            y2={BP_CHAIN_Y + 3}
           />
-          <line
-            x1={BP_X + BP_BTN_X[1]}
-            y1={BP_Y + BP.btnH + 4}
-            x2={BP_X + BP_BTN_X[1]}
-            y2={BP_Y + BP.btnH + 9}
-          />
-          <line
-            x1={BP_X + BP_BTN_X[1] - BP.gap}
-            y1={BP_Y + BP.btnH + 6.5}
-            x2={BP_X + BP_BTN_X[1]}
-            y2={BP_Y + BP.btnH + 6.5}
-          />
+          <line x1={BP_GAP_X} y1={BP_CHAIN_Y} x2={BP_GAP_X + IB.gap} y2={BP_CHAIN_Y} />
         </g>
         <MeasureNote
-          x={BP_X + BP_BTN_X[1] - BP.gap / 2}
-          y={BP_Y + BP.btnH + 18}
-          anchor="middle"
+          x={BP_GAP_X - 6}
+          y={BP_CHAIN_NOTE_Y}
+          anchor="end"
           className="note-stamp"
-          style={beat(stampBeat(2))}
+          style={beat(stampBeat(3))}
         >
-          {`gap ${BP.gap}`}
+          {`pe ${LABEL_PAD_END}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP_GAP_X}
+          y={BP_CHAIN_NOTE_Y}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
+          {`gap ${IB.gap}`}
         </MeasureNote>
       </g>
     </DraftSurface>
   )
 }
 
-const TX = 50
-const TY = 40
+const BAR_INSET = IB.barBorder + IB.barPad
+const BAR_X = -BAR_INSET
+const BAR_Y = -BAR_INSET
+const BAR_W = TOTAL_W + BAR_INSET * 2
+const BAR_H = IB.btnH + BAR_INSET * 2
+const DOT_CX = BTN_X[0] + BTN1_W - IB.dotInset - IB.dotR
+const DOT_CY = IB.dotInset + IB.dotR
 
 function ToolbarShape() {
-  const { setHovered } = useAnatomy()
+  const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('toolbar')
   return (
     <g
@@ -316,14 +312,13 @@ function ToolbarShape() {
       style={{ pointerEvents: 'all' }}
     >
       <rect
-        x={0}
-        y={0}
-        width={TOTAL_W}
-        height={IB.btnH}
-        rx={6}
+        x={BAR_X + 0.5}
+        y={BAR_Y + 0.5}
+        width={BAR_W - 1}
+        height={BAR_H - 1}
+        rx={IB.barRx}
         stroke="currentColor"
-        strokeWidth={draftTheme.wireframe.strokeWidth}
-        strokeDasharray="3 3"
+        strokeWidth={hovered === 'toolbar' ? 1.5 : 1}
         fill="none"
         className={spotlight.className}
         style={spotlight.style}
@@ -333,7 +328,7 @@ function ToolbarShape() {
 }
 
 function SelectedFillShape() {
-  const { setHovered } = useAnatomy()
+  const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('selected')
   return (
     <g
@@ -349,7 +344,7 @@ function SelectedFillShape() {
         height={IB.btnH}
         rx={IB.itemRx}
         fill="currentColor"
-        fillOpacity={0.1}
+        fillOpacity={hovered === 'selected' ? 0.18 : 0.1}
         className={spotlight.className}
         style={spotlight.style}
       />
@@ -364,14 +359,14 @@ function Btn1IconShape() {
       x={BTN_X[0]}
       y={ICON_Y}
       cell={IB.icon}
-      size={IB.icon * 0.5}
+      size={IB.iconGlyph}
       className="opacity-70"
     />
   )
 }
 
 function BloomShape() {
-  const { setHovered } = useAnatomy()
+  const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('bloom')
   const x = BTN_X[0] + IB.icon
   return (
@@ -384,18 +379,17 @@ function BloomShape() {
       <rect
         x={x}
         y={ICON_Y}
-        width={IB.bloomLabelW + IB.bloomPadEnd}
+        width={IB.bloomW}
         height={IB.icon}
         fill="currentColor"
-        fillOpacity={0.05}
+        fillOpacity={hovered === 'bloom' ? 0.12 : 0.04}
         className={spotlight.className}
         style={spotlight.style}
       />
       <text
-        x={x + 2}
-        y={IB.btnH / 2 + 4}
-        fontSize={12}
-        fontWeight={500}
+        x={x}
+        y={IB.btnH / 2 + 5}
+        fontSize={14}
         fontFamily="var(--font-sans)"
         className={`fill-current ${spotlight.className}`}
       >
@@ -406,10 +400,8 @@ function BloomShape() {
 }
 
 function DotShape() {
-  const { setHovered } = useAnatomy()
+  const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('dot')
-  const cx = BTN_X[0] + BTN1_W - IB.dotInset - IB.dotR
-  const cy = IB.dotInset + IB.dotR
   return (
     <g
       onMouseEnter={() => setHovered('dot')}
@@ -418,21 +410,27 @@ function DotShape() {
       style={{ pointerEvents: 'all' }}
     >
       <circle
-        cx={cx}
-        cy={cy}
+        cx={DOT_CX}
+        cy={DOT_CY}
         r={IB.dotR + 2}
         fill="currentColor"
-        fillOpacity={0}
+        fillOpacity={hovered === 'dot' ? 0.12 : 0}
         className={spotlight.className}
         style={spotlight.style}
       />
-      <circle cx={cx} cy={cy} r={IB.dotR} fill="currentColor" className={spotlight.className} />
+      <circle
+        cx={DOT_CX}
+        cy={DOT_CY}
+        r={IB.dotR}
+        fill="var(--bp-accent, var(--color-accent))"
+        className={spotlight.className}
+      />
     </g>
   )
 }
 
 function RestingButtonShape() {
-  const { setHovered } = useAnatomy()
+  const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('button')
   return (
     <g
@@ -448,7 +446,7 @@ function RestingButtonShape() {
         height={IB.btnH}
         rx={IB.itemRx}
         fill="currentColor"
-        fillOpacity={0.04}
+        fillOpacity={hovered === 'button' ? 0.12 : 0.04}
         className={spotlight.className}
         style={spotlight.style}
       />
@@ -457,7 +455,7 @@ function RestingButtonShape() {
         x={BTN_X[1]}
         y={ICON_Y}
         cell={IB.icon}
-        size={IB.icon * 0.5}
+        size={IB.iconGlyph}
         className="opacity-60"
       />
     </g>
@@ -466,8 +464,8 @@ function RestingButtonShape() {
 
 function DisabledButtonShape() {
   return (
-    <g className="opacity-40">
-      <IconGlyph paths={FILL_PATHS} x={BTN_X[2]} y={ICON_Y} cell={IB.icon} size={IB.icon * 0.5} />
+    <g className="opacity-50">
+      <IconGlyph paths={FILL_PATHS} x={BTN_X[2]} y={ICON_Y} cell={IB.icon} size={IB.iconGlyph} />
     </g>
   )
 }
@@ -475,155 +473,103 @@ function DisabledButtonShape() {
 function AnnotationsLayer() {
   const { hovered } = useAnatomy()
   const dimmed = hovered !== null
+  const gapTop = BAR_Y + BAR_H
   return (
     <g
       style={{ pointerEvents: 'none', filter: dimmed ? 'url(#spotlight-blur)' : 'none' }}
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${dimmed ? 'opacity-30' : 'opacity-100'}`}
     >
-      <GripFrame x={0} y={0} w={TOTAL_W} h={IB.btnH} />
-      <MeasureH x1={0} x2={TOTAL_W} y={-14} label={`${TOTAL_W}`} />
-      <MeasureV x={-12} y1={0} y2={IB.btnH} label={`${IB.btnH}`} labelXOffset={-6} />
-
+      <MeasureV
+        x={BAR_X + BAR_W + 12}
+        y1={BAR_Y}
+        y2={BAR_Y + BAR_H}
+        label={`${BAR_H}`}
+        labelXOffset={5}
+        labelAnchor="start"
+      />
       <g
         stroke="var(--bp-accent, var(--color-accent))"
         strokeWidth={draftTheme.guide.strokeWidth}
         strokeDasharray="2 2"
         opacity={draftTheme.guide.structOpacity}
       >
-        <line x1={BTN_X[1] - IB.gap} y1={IB.btnH + 2} x2={BTN_X[1] - IB.gap} y2={IB.btnH + 6} />
-        <line x1={BTN_X[1]} y1={IB.btnH + 2} x2={BTN_X[1]} y2={IB.btnH + 6} />
-        <line x1={BTN_X[1] - IB.gap} y1={IB.btnH + 4} x2={BTN_X[1]} y2={IB.btnH + 4} />
+        <line x1={BTN_X[1] - IB.gap} y1={gapTop + 2} x2={BTN_X[1] - IB.gap} y2={gapTop + 6} />
+        <line x1={BTN_X[1]} y1={gapTop + 2} x2={BTN_X[1]} y2={gapTop + 6} />
+        <line x1={BTN_X[1] - IB.gap} y1={gapTop + 4} x2={BTN_X[1]} y2={gapTop + 4} />
       </g>
-      <MeasureNote x={BTN_X[1] - IB.gap / 2} y={IB.btnH + 13} anchor="middle">
-        {`${IB.gap}`}
+      <MeasureNote x={BTN_X[1] - IB.gap / 2} y={gapTop + 14} anchor="middle">
+        {`gap ${IB.gap}`}
       </MeasureNote>
     </g>
   )
 }
 
-const ROW_BUTTON_Y = 100
-const ROW_DOT_Y = 132
-const ROW_SELECTED_Y = 164
-const ROW_BLOOM_Y = 196
-
-function OverlayLines() {
-  const toolbarMidX = TX + TOTAL_W / 2
-  const toolbarTop = TY
-  const btn2BottomMidX = TX + BTN_X[1] + BTN2_W / 2
-  const btn2Bottom = TY + IB.btnH
-  const btn1BottomMidX = TX + BTN_X[0] + BTN1_W / 2
-  const btn1Bottom = TY + IB.btnH
-  const bloomMidX = TX + BTN_X[0] + IB.icon + (IB.bloomLabelW + IB.bloomPadEnd) / 2
-  const bloomBottom = TY + ICON_Y + IB.icon
-  const dotCx = TX + BTN_X[0] + BTN1_W - IB.dotInset - IB.dotR
-  const dotBottom = TY + IB.dotInset + IB.dotR + IB.dotR
-  return (
-    <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine
-        id="toolbar"
-        x1={toolbarMidX}
-        y1={toolbarTop}
-        x2={toolbarMidX}
-        y2={toolbarTop - 12}
-      />
-      <OverlayLine
-        id="button"
-        x1={btn2BottomMidX}
-        y1={btn2Bottom}
-        x2={btn2BottomMidX}
-        y2={ROW_BUTTON_Y}
-      />
-      <OverlayLine id="dot" x1={dotCx} y1={dotBottom} x2={dotCx} y2={ROW_DOT_Y} />
-      <OverlayLine
-        id="selected"
-        x1={btn1BottomMidX}
-        y1={btn1Bottom}
-        x2={btn1BottomMidX}
-        y2={ROW_SELECTED_Y}
-      />
-      <OverlayLine id="bloom" x1={bloomMidX} y1={bloomBottom} x2={bloomMidX} y2={ROW_BLOOM_Y} />
-    </g>
-  )
-}
-
-function Tags() {
-  const toolbarMidX = TX + TOTAL_W / 2
-  const toolbarTop = TY
-  const btn2BottomMidX = TX + BTN_X[1] + BTN2_W / 2
-  const btn1BottomMidX = TX + BTN_X[0] + BTN1_W / 2
-  const bloomMidX = TX + BTN_X[0] + IB.icon + (IB.bloomLabelW + IB.bloomPadEnd) / 2
-  const dotCx = TX + BTN_X[0] + BTN1_W - IB.dotInset - IB.dotR
+function Callouts() {
   return (
     <>
-      <foreignObject
-        x={toolbarMidX - 70}
-        y={toolbarTop - 12 - 24}
-        width={140}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="toolbar" label="IconBar" className="items-end justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={btn2BottomMidX - 55}
-        y={ROW_BUTTON_Y}
-        width={110}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="button" label="IconBarItem" className="items-start justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={dotCx - 45}
-        y={ROW_DOT_Y}
-        width={90}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="dot" label="Status dot" className="items-start justify-center" isAccent />
-      </foreignObject>
-      <foreignObject
-        x={btn1BottomMidX - 55}
-        y={ROW_SELECTED_Y}
-        width={110}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="selected"
-          label="Selected fill"
-          className="items-start justify-center"
-          isAccent
-        />
-      </foreignObject>
-      <foreignObject
-        x={bloomMidX - 55}
-        y={ROW_BLOOM_Y}
-        width={110}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="bloom" label="Label bloom" className="items-start justify-center" />
-      </foreignObject>
+      <AnatomyCallout
+        part="toolbar"
+        label="IconBar"
+        anchor={[BAR_X + BAR_W - 15, BAR_Y]}
+        side="top"
+        distance={11}
+        measure={`${BAR_H}px tall, p-1 (4px), 1px border`}
+        caption="Toolbar with roving tabindex; arrow keys move focus"
+      />
+      <AnatomyCallout
+        part="dot"
+        label="Status dot"
+        anchor={[DOT_CX, DOT_CY - IB.dotR]}
+        side="top"
+        distance={22}
+        isAccent
+        measure={`${IB.dotR * 2}px, inset ${IB.dotInset}px`}
+        caption="Accent dot marks the selected item"
+      />
+      <AnatomyCallout
+        part="selected"
+        label="Selected fill"
+        anchor={[BTN_X[0], IB.btnH / 2]}
+        side="start"
+        distance={30}
+        isAccent
+        measure={`${BTN1_W} × ${IB.btnH}px, rounded-md`}
+        caption="Surface fill on the item matching value"
+      />
+      <AnatomyCallout
+        part="button"
+        label="IconBarItem"
+        anchor={[BTN_X[1] + BTN2_W / 2, IB.btnH]}
+        side="bottom"
+        distance={24}
+        measure={`${BTN2_W} × ${IB.btnH}px, icon ${IB.iconGlyph}px`}
+        caption="Icon button; click selects, click again deselects"
+      />
+      <AnatomyCallout
+        part="bloom"
+        label="Label bloom"
+        anchor={[BTN_X[0] + IB.icon + IB.bloomW / 2, ICON_Y + IB.icon]}
+        side="bottom"
+        distance={58}
+        measure={`${IB.bloomW}px for Pen, text-sm`}
+        caption="Label width opens on hover, focus or selection"
+      />
     </>
   )
 }
 
 export function IconBarAnatomy() {
   return (
-    <AnatomyFrame viewBox="10 -20 210 260" maxWidthClassName="max-w-[280px]">
-      <g transform={`translate(${TX}, ${TY})`}>
-        <SelectedFillShape />
-        <Btn1IconShape />
-        <BloomShape />
-        <DotShape />
-        <RestingButtonShape />
-        <DisabledButtonShape />
-        <ToolbarShape />
-        <AnnotationsLayer />
-      </g>
-      <OverlayLines />
-      <Tags />
+    <AnatomyFrame viewBox="-140 -52 350 184" ariaLabel="Icon bar anatomy">
+      <SelectedFillShape />
+      <Btn1IconShape />
+      <BloomShape />
+      <DotShape />
+      <RestingButtonShape />
+      <DisabledButtonShape />
+      <ToolbarShape />
+      <AnnotationsLayer />
+      <Callouts />
     </AnatomyFrame>
   )
 }

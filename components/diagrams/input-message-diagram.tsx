@@ -1,9 +1,9 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   AnatomyFrame,
@@ -495,7 +495,7 @@ function Tags() {
 
 export function InputMessageAnatomy() {
   return (
-    <AnatomyFrame viewBox="-96 -30 368 216" maxWidthClassName="max-w-[480px]">
+    <AnatomyFrame viewBox="-96 -30 368 216" ariaLabel="Input message anatomy">
       <ContainerShape />
       <TextareaShape />
       <LeftSlotShape />

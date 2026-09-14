@@ -1,16 +1,16 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   DraftSurface,
   DRAFT_BEAT,
   DRAFT_FILL_SOLID,
   DRAFT_SCAFFOLD_FADE,
-  DRAFT_TEXT_ON_SOLID,
+  DRAFT_TEXT_SOFT,
   draftTheme,
   beat,
   MeasureH,
@@ -88,12 +88,10 @@ export function ButtonBlueprint() {
           y={cy + 5}
           textAnchor="middle"
           fontSize={BTN.font}
-          fontWeight={500}
+          fontWeight={400}
           fontFamily="var(--font-sans)"
-          strokeWidth={theme.wireframe.textStrokeWidth}
-          strokeOpacity={theme.wireframe.textOpacity}
           style={beat(DRAFT_LABEL_BEAT)}
-          className={`fade-note ${DRAFT_TEXT_ON_SOLID}`}
+          className={`fade-note ${DRAFT_TEXT_SOFT} group-hover:fill-(--color-bg) group-focus-visible:fill-(--color-bg)`}
         >
           Click me
         </text>
@@ -263,7 +261,7 @@ function LabelShape() {
         y={LABEL_BASELINE}
         textAnchor="middle"
         fontSize={BTN.font}
-        fontWeight={500}
+        fontWeight={400}
         fontFamily="var(--font-sans)"
         className={`fill-current ${spotlight.className}`}
       >
@@ -411,11 +409,7 @@ function TagsLayer() {
 
 export function ButtonDiagram() {
   return (
-    <AnatomyFrame
-      viewBox="-22 -12 462 148"
-      maxWidthClassName="max-w-lg"
-      ariaLabel="Anatomy of the Button component"
-    >
+    <AnatomyFrame viewBox="-22 -12 462 148" ariaLabel="Anatomy of the Button component">
       <FocusRingShape />
       <RootShape />
       <LabelShape />

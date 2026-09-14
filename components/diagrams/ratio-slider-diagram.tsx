@@ -1,16 +1,16 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   DraftSurface,
-  DRAFT_FILL_MUTED,
   DRAFT_FILL_SOLID,
   DRAFT_SCAFFOLD_FADE,
   DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
   draftTheme,
   MeasureH,
   MeasureNote,
@@ -23,174 +23,126 @@ import {
 } from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
-  AnatomyTag,
-  OverlayLine,
+  AnatomyCallout,
   useAnatomy,
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 
 const BP = {
-  x: 24,
-  y: 58,
-  w: 172,
-  h: 36,
-  rx: 6,
+  x: 30,
+  y: 16,
+  w: 168,
+  labelsRowH: 32,
+  labelsGap: 16,
+  barH: 32,
+  rx: 4,
   gap: 8,
   divW: 6,
-  divH: 28,
+  divPct: 0.8,
+  divBorder: 1.5,
+  labelInset: 12,
+  labelSize: 12,
+  labelGap: 8,
   leftPct: 0.6,
 } as const
 
-const BP_LEFT_W = Math.round((BP.w - BP.gap - BP.divW) * BP.leftPct)
-const BP_RIGHT_W = BP.w - BP.gap - BP.divW - BP_LEFT_W
-const BP_DIV_X = BP.x + BP_LEFT_W + BP.gap / 2
-const BP_RIGHT_X = BP.x + BP_LEFT_W + BP.gap + BP.divW
+const BP_BAR_Y = BP.y + BP.labelsRowH + BP.labelsGap
+const BP_MID_Y = BP_BAR_Y + BP.barH / 2
+const BP_TRACK_W = BP.w - BP.gap * 2 - BP.divW
+const BP_LEFT_W = Math.round(BP_TRACK_W * BP.leftPct)
+const BP_RIGHT_W = BP_TRACK_W - BP_LEFT_W
+const BP_DIV_X = BP.x + BP_LEFT_W + BP.gap
+const BP_DIV_H = BP.barH * BP.divPct
+const BP_RIGHT_X = BP_DIV_X + BP.divW + BP.gap
+const BP_LABEL_Y = BP.y + BP.labelsRowH / 2 + BP.labelSize * 0.35
+const BP_LEFT_LABEL_X = BP.x + BP.labelInset
+const BP_RIGHT_LABEL_X = BP.x + BP.w - BP.labelInset
+const BP_GAP_DIM_Y = BP_BAR_Y - 9
+const BP_WORD_OPACITY = 0.8
+
+const BP_RIGHT_BAR_CLASS = `${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:fill-(--color-border-strong) group-hover:stroke-transparent group-focus-visible:fill-(--color-border-strong) group-focus-visible:stroke-transparent`
 
 export function RatioSliderWireframe() {
   const theme = draftTheme
-  const midY = BP.y + BP.h / 2
+  const bar = {
+    y: BP_BAR_Y,
+    height: BP.barH,
+    rx: BP.rx,
+    pathLength: 1,
+    strokeDasharray: 1,
+    strokeDashoffset: 1,
+    strokeWidth: theme.wireframe.strokeWidth,
+    strokeOpacity: theme.wireframe.strokeOpacity,
+    style: beat(DRAFT_BEAT.outline),
+  }
+  const label = {
+    y: BP_LABEL_Y,
+    fontSize: BP.labelSize,
+    letterSpacing: '0.025em',
+    fontFamily: 'var(--font-sans)',
+    style: beat(DRAFT_LABEL_BEAT),
+  }
 
   return (
     <DraftSurface>
+      <rect {...bar} x={BP.x} width={BP_LEFT_W} className={`ink-draw ${DRAFT_FILL_SOLID}`} />
       <rect
-        x={BP.x}
-        y={BP.y}
-        width={BP_LEFT_W}
-        height={BP.h}
-        rx={BP.rx}
-        pathLength={1}
-        strokeDasharray={1}
-        strokeDashoffset={1}
-        strokeWidth={theme.wireframe.strokeWidth}
-        strokeOpacity={theme.wireframe.strokeOpacity}
-        style={beat(DRAFT_BEAT.outline)}
-        className={`ink-draw ${DRAFT_FILL_SOLID}`}
+        {...bar}
+        x={BP_RIGHT_X}
+        width={BP_RIGHT_W}
+        className={`ink-draw ${BP_RIGHT_BAR_CLASS}`}
       />
 
-      <text
-        x={BP.x + 12}
-        y={midY + 4}
-        fontSize={9}
-        fontWeight={500}
-        fontFamily="var(--font-sans)"
-        style={beat(DRAFT_LABEL_BEAT)}
-        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-35 group-hover:fill-(--color-bg) group-hover:opacity-100 group-focus-visible:fill-(--color-bg) group-focus-visible:opacity-100`}
-      >
-        RICH <tspan fontWeight={700}>60%</tspan>
-      </text>
       <g
-        style={{ transformOrigin: `${BP_DIV_X + BP.divW / 2}px ${midY}px` }}
-        className="transition-transform duration-(--motion-dur-fast) ease-(--motion-ease-out) group-hover:scale-y-[1.15] group-focus-visible:scale-y-[1.15] motion-reduce:transition-none motion-reduce:transform-none"
+        style={{ transformOrigin: `${BP_DIV_X + BP.divW / 2}px ${BP_MID_Y}px` }}
+        className="transition-transform duration-(--motion-dur-fast) ease-(--motion-ease-out) group-hover:scale-y-[1.15] group-hover:delay-(--motion-dur-base) group-focus-visible:scale-y-[1.15] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none"
       >
         <rect
           x={BP_DIV_X}
-          y={midY - BP.divH / 2}
+          y={BP_MID_Y - BP_DIV_H / 2}
           width={BP.divW}
-          height={BP.divH}
-          rx={3}
+          height={BP_DIV_H}
+          rx={BP.divW / 2}
           pathLength={1}
           strokeDasharray={1}
           strokeDashoffset={1}
-          stroke="var(--color-fg)"
-          strokeWidth={1.5}
+          strokeWidth={BP.divBorder}
           style={beat(DRAFT_BEAT.anatomy)}
-          className={`ink-draw ${DRAFT_INK_MORPH} fill-transparent group-hover:fill-(--color-accent) group-focus-visible:fill-(--color-accent)`}
+          className={`ink-draw ${DRAFT_INK_MORPH} fill-transparent stroke-(--color-fg) group-hover:fill-(--color-accent) group-focus-visible:fill-(--color-accent)`}
         />
       </g>
-      <rect
-        x={BP_RIGHT_X}
-        y={BP.y}
-        width={BP_RIGHT_W}
-        height={BP.h}
-        rx={BP.rx}
-        pathLength={1}
-        strokeDasharray={1}
-        strokeDashoffset={1}
-        strokeWidth={theme.wireframe.strokeWidth}
-        strokeOpacity={theme.wireframe.strokeOpacity}
-        style={beat(DRAFT_BEAT.outline)}
-        className={`ink-draw ${DRAFT_FILL_MUTED} stroke-current`}
-      />
+
+      <text {...label} x={BP_LEFT_LABEL_X} className={`fade-note ${DRAFT_TEXT_SOFT}`}>
+        <tspan fillOpacity={BP_WORD_OPACITY}>RICH</tspan>
+        <tspan dx={BP.labelGap}>60%</tspan>
+      </text>
       <text
-        x={BP_RIGHT_X + BP_RIGHT_W - 12}
-        y={midY + 4}
+        {...label}
+        x={BP_RIGHT_LABEL_X}
         textAnchor="end"
-        fontSize={9}
-        fontWeight={500}
-        fontFamily="var(--font-sans)"
-        style={beat(DRAFT_LABEL_BEAT)}
-        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-(--color-muted) opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`}
       >
-        <tspan fontWeight={700}>40%</tspan> LIGHT
+        <tspan>40%</tspan>
+        <tspan dx={BP.labelGap} fillOpacity={BP_WORD_OPACITY}>
+          LIGHT
+        </tspan>
       </text>
 
       <g className={DRAFT_SCAFFOLD_FADE}>
-        <GripFrame x={BP.x} y={BP.y} w={BP.w} h={BP.h} style={beat(DRAFT_BEAT.handle)} />
-        <MeasureH
-          x1={BP.x}
-          x2={BP.x + BP.w}
-          y={BP.y + BP.h + 14}
-          label={`${BP.w}`}
-          className="note-stamp"
-          style={beat(stampBeat(0))}
-        />
-        <MeasureV
-          x={BP.x - 12}
-          y1={BP.y}
-          y2={BP.y + BP.h}
-          label={`${BP.h}`}
-          labelXOffset={-6}
-          className="note-stamp"
-          style={beat(stampBeat(1))}
-        />
-        <MeasureNote
-          x={BP_DIV_X + BP.divW / 2}
-          y={BP.y - 6}
-          className="note-stamp"
-          style={beat(stampBeat(2))}
-        >
-          {`${BP.divW}`}
-        </MeasureNote>
-        <MeasureNote
+        <rect
           x={BP.x}
-          y={BP.y - 6}
-          anchor="start"
-          className="note-stamp"
-          style={beat(stampBeat(3))}
-        >
-          {`r${BP.rx}`}
-        </MeasureNote>
-        <g
-          stroke="var(--bp-accent, var(--color-accent))"
+          y={BP.y}
+          width={BP.w}
+          height={BP.labelsRowH}
+          rx={BP.rx}
+          fill="none"
+          stroke="currentColor"
           strokeWidth={theme.guide.strokeWidth}
-          opacity={theme.guide.structOpacity}
-          className="dash-march"
+          strokeDasharray="2 2"
+          opacity={theme.guide.dimOpacity}
+          className="fade-note"
           style={beat(DRAFT_BEAT.guide)}
-        >
-          <line
-            x1={BP.x + BP_LEFT_W}
-            y1={BP.y + BP.h + 4}
-            x2={BP.x + BP_LEFT_W}
-            y2={BP.y + BP.h + 21}
-          />
-          <line x1={BP_RIGHT_X} y1={BP.y + BP.h + 4} x2={BP_RIGHT_X} y2={BP.y + BP.h + 21} />
-          <line
-            x1={BP.x + BP_LEFT_W}
-            y1={BP.y + BP.h + 18.5}
-            x2={BP_RIGHT_X}
-            y2={BP.y + BP.h + 18.5}
-          />
-        </g>
-        <MeasureNote
-          x={BP.x + BP_LEFT_W + BP.gap / 2}
-          y={BP.y + BP.h + 30}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(4))}
-        >
-          gap 8
-        </MeasureNote>
-
+        />
         <g
           stroke="var(--bp-accent, var(--color-accent))"
           strokeWidth={theme.guide.strokeWidth}
@@ -199,23 +151,85 @@ export function RatioSliderWireframe() {
           className="dash-march"
           style={beat(DRAFT_BEAT.guide)}
         >
-          <line x1={BP.x + 12} y1={BP.y} x2={BP.x + 12} y2={BP.y + 7} />
-          <line
-            x1={BP_RIGHT_X + BP_RIGHT_W - 12}
-            y1={BP.y}
-            x2={BP_RIGHT_X + BP_RIGHT_W - 12}
-            y2={BP.y + 7}
-          />
+          <line x1={BP_LEFT_LABEL_X} y1={BP.y} x2={BP_LEFT_LABEL_X} y2={BP.y + BP.labelsRowH} />
+          <line x1={BP_RIGHT_LABEL_X} y1={BP.y} x2={BP_RIGHT_LABEL_X} y2={BP.y + BP.labelsRowH} />
         </g>
+        <GripFrame x={BP.x} y={BP_BAR_Y} w={BP.w} h={BP.barH} style={beat(DRAFT_BEAT.handle)} />
+        <MeasureV
+          x={BP.x - 12}
+          y1={BP.y}
+          y2={BP.y + BP.labelsRowH}
+          label={`${BP.labelsRowH}`}
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        />
+        <MeasureV
+          x={BP.x - 12}
+          y1={BP.y + BP.labelsRowH}
+          y2={BP_BAR_Y}
+          label={`${BP.labelsGap}`}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <MeasureV
+          x={BP.x - 12}
+          y1={BP_BAR_Y}
+          y2={BP_BAR_Y + BP.barH}
+          label={`${BP.barH}`}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        />
+        <MeasureH
+          x1={BP.x + BP_LEFT_W}
+          x2={BP_DIV_X}
+          y={BP_GAP_DIM_Y}
+          label=""
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        />
         <MeasureNote
-          x={BP.x + 12 + 4}
+          x={BP.x + BP_LEFT_W - 4}
+          y={BP_GAP_DIM_Y + 2.5}
+          anchor="end"
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
+          {`gap ${BP.gap}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP.x + BP.labelInset / 2}
           y={BP.y + 8}
-          anchor="start"
           className="note-stamp"
           style={beat(stampBeat(5))}
         >
-          12
+          {`${BP.labelInset}`}
         </MeasureNote>
+        <MeasureNote
+          x={BP.x}
+          y={BP_GAP_DIM_Y + 2.5}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(6))}
+        >
+          {`r${BP.rx}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP_DIV_X + BP.divW / 2}
+          y={BP_BAR_Y + BP.barH + 9}
+          className="note-stamp"
+          style={beat(stampBeat(7))}
+        >
+          {`${BP.divW}`}
+        </MeasureNote>
+        <MeasureH
+          x1={BP.x}
+          x2={BP.x + BP.w}
+          y={BP_BAR_Y + BP.barH + 16}
+          label="w-full"
+          labelYOffset={9}
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        />
       </g>
     </DraftSurface>
   )
@@ -265,11 +279,11 @@ function LeftBarShape() {
         x={AN.x + 12}
         y={AN_MID_Y + 4}
         fontSize={12}
-        fontWeight={500}
+        fontWeight={400}
         fontFamily="var(--font-sans)"
         className={`fill-(--color-bg) pointer-events-none ${spotlight.className}`}
       >
-        RICH <tspan fontWeight={700}>60%</tspan>
+        RICH <tspan>60%</tspan>
       </text>
     </g>
   )
@@ -302,11 +316,11 @@ function RightBarShape() {
         y={AN_MID_Y + 4}
         textAnchor="end"
         fontSize={12}
-        fontWeight={500}
+        fontWeight={400}
         fontFamily="var(--font-sans)"
         className={`fill-current pointer-events-none ${spotlight.className}`}
       >
-        <tspan fontWeight={700}>40%</tspan> LIGHT
+        <tspan>40%</tspan> LIGHT
       </text>
     </g>
   )
@@ -321,13 +335,12 @@ function DividerShape() {
     <g
       onMouseEnter={() => setHovered('divider')}
       onMouseLeave={() => setHovered(null)}
-      className="cursor-pointer"
+      className="cursor-pointer transition-transform duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none motion-reduce:transform-none"
       style={{
         pointerEvents: 'all',
         filter: spotlight.style.filter,
         transformOrigin: `${AN_DIV_X + AN.divW / 2}px ${AN_MID_Y}px`,
         transform: `scaleY(${scale})`,
-        transition: 'transform 150ms ease-out',
       }}
     >
       <rect
@@ -459,108 +472,61 @@ function AnnotationsLayer() {
   )
 }
 
-function LinesLayer() {
-  return (
-    <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="left-bar" x1={40} y1={AN_MID_Y} x2={AN.x} y2={AN_MID_Y} />
-      <OverlayLine
-        id="divider"
-        x1={AN_DIV_X + AN.divW / 2}
-        y1={AN.y + AN.h + 36}
-        x2={AN_DIV_X + AN.divW / 2}
-        y2={AN_MID_Y + AN.divH / 2}
-      />
-      <OverlayLine
-        id="right-bar"
-        x1={AN.x + AN.w + 50}
-        y1={AN_MID_Y}
-        x2={AN.x + AN.w}
-        y2={AN_MID_Y}
-      />
-      <OverlayLine id="left-label" x1={AN.x + 50} y1={AN.y - 28} x2={AN.x + 50} y2={AN.y + 8} />
-      <OverlayLine
-        id="right-label"
-        x1={AN_RIGHT_X + AN_RIGHT_W - 40}
-        y1={AN.y - 28}
-        x2={AN_RIGHT_X + AN_RIGHT_W - 40}
-        y2={AN.y + 8}
-      />
-    </g>
-  )
-}
-
-function TagsLayer() {
-  return (
-    <>
-      <foreignObject
-        x={AN.x}
-        y={AN.y - 50}
-        width={110}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="left-label" label="In-bar label" className="items-end justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={AN_RIGHT_X + AN_RIGHT_W - 110}
-        y={AN.y - 50}
-        width={110}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="right-label" label="In-bar label" className="items-end justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={4}
-        y={AN_MID_Y - 12}
-        width={70}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="left-bar"
-          label="Left bar"
-          isAccent
-          className="items-center justify-end"
-        />
-      </foreignObject>
-      <foreignObject
-        x={AN.x + AN.w + 48}
-        y={AN_MID_Y - 12}
-        width={80}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="right-bar" label="Right bar" className="items-center justify-start" />
-      </foreignObject>
-      <foreignObject
-        x={AN_DIV_X + AN.divW / 2 - 44}
-        y={AN.y + AN.h + 36}
-        width={100}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="divider"
-          label="Divider"
-          isAccent
-          className="items-start justify-center"
-        />
-      </foreignObject>
-    </>
-  )
-}
-
 export function RatioSliderBreakdown() {
   return (
-    <AnatomyFrame viewBox="-64 -6 568 200" maxWidthClassName="max-w-[682px]">
+    <AnatomyFrame viewBox="-64 -6 568 200" ariaLabel="Ratio slider anatomy">
       <LeftBarShape />
       <RightBarShape />
       <GapShape />
       <DividerShape />
       <AnnotationsLayer />
-      <LinesLayer />
-      <TagsLayer />
+      <AnatomyCallout
+        part="left-bar"
+        label="Left bar"
+        anchor={[AN.x, AN_MID_Y]}
+        side="start"
+        distance={40}
+        isAccent
+        measure={`${AN_LEFT_W} × ${AN.h} · rounded-md`}
+        caption="Filled bar for the first share of the ratio"
+      />
+      <AnatomyCallout
+        part="right-bar"
+        label="Right bar"
+        anchor={[AN.x + AN.w, AN_MID_Y]}
+        side="end"
+        distance={40}
+        measure={`${AN_RIGHT_W} × ${AN.h} · rounded-md`}
+        caption="Bar for the remaining share"
+      />
+      <AnatomyCallout
+        part="left-label"
+        label="Left label"
+        anchor={[AN.x + 40, AN.y + AN.h]}
+        side="bottom"
+        distance={48}
+        measure="text-sm · moves above when compact"
+        caption="Value label for the left bar"
+      />
+      <AnatomyCallout
+        part="divider"
+        label="Divider"
+        anchor={[AN_DIV_X + AN.divW / 2, AN.y + AN.h]}
+        side="bottom"
+        distance={48}
+        isAccent
+        measure={`${AN.divW} × ${AN.divH} · draggable`}
+        caption="Drag or use arrow keys to change the split"
+      />
+      <AnatomyCallout
+        part="right-label"
+        label="Right label"
+        anchor={[AN_RIGHT_X + AN_RIGHT_W - 24, AN.y + AN.h]}
+        side="bottom"
+        distance={48}
+        measure="text-sm · moves above when compact"
+        caption="Value label for the right bar"
+      />
     </AnatomyFrame>
   )
 }

@@ -1,9 +1,9 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   AnatomyFrame,
@@ -292,7 +292,7 @@ function TagsLayer() {
 
 export function InputAnatomy() {
   return (
-    <AnatomyFrame viewBox="-10 30 500 180" maxWidthClassName="max-w-xl">
+    <AnatomyFrame viewBox="-10 30 500 180" ariaLabel="Input anatomy">
       <FocusRingShape />
       <ContainerShape />
       <BorderShape />
@@ -349,7 +349,7 @@ export function InputWireframe() {
         x={BP_FIELD.x}
         y={BP_FIELD.y - 12}
         fontSize={11}
-        fontWeight={500}
+        fontWeight={400}
         fontFamily="var(--font-sans)"
         style={beat(DRAFT_DETAIL_BEAT.d)}
         className={`fade-note ${DRAFT_TEXT_SOFT}`}

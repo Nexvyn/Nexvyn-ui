@@ -1,9 +1,9 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   AnatomyFrame,
@@ -87,7 +87,7 @@ export function TableBlueprint() {
             x={COL_X[i] + TABLE.pad.x}
             y={TABLE.rowH / 2 + 3}
             fontSize={TABLE.headerFont}
-            fontWeight={600}
+            fontWeight={400}
             fontFamily="var(--font-sans)"
             style={beat(DRAFT_LABEL_BEAT)}
             className="fade-note fill-current"
@@ -264,7 +264,7 @@ function HeaderShape() {
           x={COL_X[i] + TABLE.pad.x}
           y={TABLE.rowH / 2 + 3}
           fontSize={10}
-          fontWeight={600}
+          fontWeight={400}
           fontFamily="var(--font-sans)"
           className="fill-current"
         >
@@ -485,7 +485,7 @@ function Tags() {
 
 export function TableAnatomy() {
   return (
-    <AnatomyFrame viewBox="-72 -24 478 228" maxWidthClassName="max-w-[574px]">
+    <AnatomyFrame viewBox="-72 -24 478 228" ariaLabel="Table anatomy">
       <g transform={`translate(${TX}, ${TY})`}>
         <HeaderShape />
         <RowShape />

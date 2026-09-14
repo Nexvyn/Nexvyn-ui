@@ -1,14 +1,14 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
+import type { CSSProperties } from 'react'
 import {
   AnatomyFrame,
-  AnatomyTag,
-  OverlayLine,
+  AnatomyCallout,
   useAnatomy,
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
@@ -49,85 +49,99 @@ function barXs(leftEdge: number) {
   return Array.from({ length: BAR.count }, (_, i) => leftEdge + i * (BAR.w + BAR.gap))
 }
 
+const BP_SIZE = 160
+const BP_BAR = {
+  w: BP_SIZE * 0.055,
+  gap: BP_SIZE * 0.035,
+  r: BP_SIZE * 0.03,
+  maxH: BP_SIZE * 0.55,
+  minH: BP_SIZE * 0.06,
+  hoverBoost: BP_SIZE * 0.08,
+} as const
+
+const BP_BLOCK_W = BAR.count * BP_BAR.w + (BAR.count - 1) * BP_BAR.gap
 const BP_CENTER_X = 110
-const BP_CENTER_Y = 70
-const BP_LEFT = BP_CENTER_X - BLOCK_W / 2
-const BP_XS = barXs(BP_LEFT)
-const BP_HEIGHTS = barHeights()
+const BP_CENTER_Y = 72
+const BP_LEFT = BP_CENTER_X - BP_BLOCK_W / 2
+const BP_RIGHT = BP_LEFT + BP_BLOCK_W
+const BP_TOP = BP_CENTER_Y - BP_BAR.maxH / 2
+const BP_BOTTOM = BP_CENTER_Y + BP_BAR.maxH / 2
+const BP_XS = Array.from({ length: BAR.count }, (_, i) => BP_LEFT + i * (BP_BAR.w + BP_BAR.gap))
+const BP_HEIGHTS = HEIGHT_FACTORS.map((f) => BP_BAR.minH + (BP_BAR.maxH - BP_BAR.minH) * f)
+const BP_BOOST = BP_HEIGHTS.map((h) => Math.min(h + BP_BAR.hoverBoost, BP_BAR.maxH) / h)
+const BP_GAP_X1 = BP_XS[1] + BP_BAR.w
+const BP_GAP_X2 = BP_XS[2]
+const fmt = (n: number) => `${Number(n.toFixed(1))}`
+
+const BP_BAR_GROW =
+  'scale-y-100 transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:scale-y-(--bp-boost) group-hover:delay-(--motion-dur-base) group-focus-visible:scale-y-(--bp-boost) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none'
 
 export function BarsThemeBlueprint() {
   const theme = draftTheme
   return (
     <DraftSurface>
-      <g>
-        {BP_XS.map((x, i) => {
-          const h = BP_HEIGHTS[i]
-          const y = BP_CENTER_Y - h / 2
-          return (
-            <g
-              key={i}
-              style={{ transformOrigin: `${x + BAR.w / 2}px ${BP_CENTER_Y}px` }}
-              className="transition-transform duration-(--motion-dur-fast) ease-(--motion-ease-out) group-hover:scale-y-[1.15] group-hover:delay-(--motion-dur-base) group-focus-visible:scale-y-[1.15] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none"
-            >
-              <rect
-                x={x}
-                y={y}
-                width={BAR.w}
-                height={h}
-                rx={BAR.r}
-                pathLength={1}
-                strokeDasharray={1}
-                strokeDashoffset={1}
-                strokeWidth={theme.wireframe.strokeWidth}
-                strokeOpacity={theme.wireframe.strokeOpacity}
-                style={beat(i === 0 ? DRAFT_BEAT.anatomy : `${200 + i * 60}ms`)}
-                className={`ink-draw ${DRAFT_FILL_SOLID}`}
-              />
-            </g>
-          )
-        })}
-      </g>
+      {BP_XS.map((x, i) => {
+        const h = BP_HEIGHTS[i]
+        return (
+          <g
+            key={i}
+            style={
+              {
+                transformOrigin: `${x + BP_BAR.w / 2}px ${BP_CENTER_Y}px`,
+                '--bp-boost': BP_BOOST[i],
+              } as CSSProperties
+            }
+            className={BP_BAR_GROW}
+          >
+            <rect
+              x={x}
+              y={BP_CENTER_Y - h / 2}
+              width={BP_BAR.w}
+              height={h}
+              rx={Math.min(BP_BAR.r, BP_BAR.w / 2)}
+              pathLength={1}
+              strokeDasharray={1}
+              strokeDashoffset={1}
+              strokeWidth={theme.wireframe.strokeWidth}
+              strokeOpacity={theme.wireframe.strokeOpacity}
+              style={beat(`${200 + i * 60}ms`)}
+              className={`ink-draw ${DRAFT_FILL_SOLID}`}
+            />
+          </g>
+        )
+      })}
       <g className={DRAFT_SCAFFOLD_FADE}>
         <GripFrame
           x={BP_LEFT}
-          y={BP_CENTER_Y - BAR.maxH / 2}
-          w={BLOCK_W}
-          h={BAR.maxH}
+          y={BP_TOP}
+          w={BP_BLOCK_W}
+          h={BP_BAR.maxH}
           style={beat(DRAFT_BEAT.handle)}
         />
-        <MeasureNote
-          x={BP_LEFT}
-          y={BP_CENTER_Y + BAR.maxH / 2 + 34}
-          anchor="start"
-          className="note-stamp"
-          style={beat(stampBeat(4))}
-        >
-          {'size = 100 ref'}
-        </MeasureNote>
         <MeasureH
           x1={BP_XS[2]}
-          x2={BP_XS[2] + BAR.w}
-          y={BP_CENTER_Y - BAR.maxH / 2 - 14}
-          label={`${BAR.w.toFixed(1)}`}
+          x2={BP_XS[2] + BP_BAR.w}
+          y={BP_TOP - 10}
+          label={fmt(BP_BAR.w)}
           className="note-stamp"
           style={beat(stampBeat(0))}
         />
         <MeasureV
           x={BP_LEFT - 12}
-          y1={BP_CENTER_Y - BAR.maxH / 2}
-          y2={BP_CENTER_Y + BAR.maxH / 2}
-          label={`${BAR.maxH.toFixed(0)}`}
-          className="note-stamp"
-          style={beat(stampBeat(2))}
-        />
-        <MeasureNote
-          x={BP_LEFT}
-          y={BP_CENTER_Y - BAR.maxH / 2 - 4}
-          anchor="start"
+          y1={BP_TOP}
+          y2={BP_BOTTOM}
+          label={fmt(BP_BAR.maxH)}
           className="note-stamp"
           style={beat(stampBeat(1))}
+        />
+        <MeasureNote
+          x={BP_RIGHT + 8}
+          y={BP_TOP + 4}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
         >
-          {`r${BAR.r.toFixed(1)}`}
+          {`r${fmt(BP_BAR.r)}`}
         </MeasureNote>
         <g
           stroke="var(--bp-accent, var(--color-accent))"
@@ -137,33 +151,26 @@ export function BarsThemeBlueprint() {
           className="dash-march"
           style={beat(DRAFT_BEAT.guide)}
         >
-          <line
-            x1={BP_XS[1] + BAR.w}
-            y1={BP_CENTER_Y + BAR.maxH / 2 + 6}
-            x2={BP_XS[1] + BAR.w}
-            y2={BP_CENTER_Y + BAR.maxH / 2 + 11}
-          />
-          <line
-            x1={BP_XS[2]}
-            y1={BP_CENTER_Y + BAR.maxH / 2 + 6}
-            x2={BP_XS[2]}
-            y2={BP_CENTER_Y + BAR.maxH / 2 + 11}
-          />
-          <line
-            x1={BP_XS[1] + BAR.w}
-            y1={BP_CENTER_Y + BAR.maxH / 2 + 8.5}
-            x2={BP_XS[2]}
-            y2={BP_CENTER_Y + BAR.maxH / 2 + 8.5}
-          />
+          <line x1={BP_GAP_X1} y1={BP_BOTTOM + 5} x2={BP_GAP_X1} y2={BP_BOTTOM + 11} />
+          <line x1={BP_GAP_X2} y1={BP_BOTTOM + 5} x2={BP_GAP_X2} y2={BP_BOTTOM + 11} />
+          <line x1={BP_GAP_X1} y1={BP_BOTTOM + 8} x2={BP_GAP_X2} y2={BP_BOTTOM + 8} />
         </g>
         <MeasureNote
-          x={(BP_XS[1] + BAR.w + BP_XS[2]) / 2}
-          y={BP_CENTER_Y + BAR.maxH / 2 + 20}
-          anchor="middle"
+          x={(BP_GAP_X1 + BP_GAP_X2) / 2}
+          y={BP_BOTTOM + 18}
           className="note-stamp"
           style={beat(stampBeat(3))}
         >
-          {`${BAR.gap.toFixed(1)}`}
+          {fmt(BP_BAR.gap)}
+        </MeasureNote>
+        <MeasureNote
+          x={BP_RIGHT + 8}
+          y={BP_BOTTOM + 18}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
+          {`size ${BP_SIZE}`}
         </MeasureNote>
       </g>
     </DraftSurface>
@@ -296,59 +303,31 @@ function AnnotationsLayer() {
   )
 }
 
-function OverlayLines() {
-  return (
-    <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="container" x1={AN_CENTER_X} y1={HIT.y} x2={AN_CENTER_X} y2={HIT.y - 34} />
-      <OverlayLine
-        id="bar"
-        x1={TALLEST_MID_X}
-        y1={TALLEST_BOTTOM}
-        x2={TALLEST_MID_X}
-        y2={HIT.y + HIT.h + 34}
-      />
-    </g>
-  )
-}
-
-function Tags() {
-  return (
-    <>
-      <foreignObject
-        x={AN_CENTER_X - 55}
-        y={HIT.y - 34 - 24}
-        width={110}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="container"
-          label="Interaction zone"
-          className="items-end justify-center"
-          isAccent
-        />
-      </foreignObject>
-      <foreignObject
-        x={TALLEST_MID_X - 35}
-        y={HIT.y + HIT.h + 34}
-        width={70}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="bar" label="Bar" className="items-start justify-center" />
-      </foreignObject>
-    </>
-  )
-}
-
 export function BarsThemeAnatomy() {
   return (
-    <AnatomyFrame viewBox="55 -32 150 244" maxWidthClassName="max-w-[200px]">
+    <AnatomyFrame viewBox="55 -32 150 244" ariaLabel="Bars Theme anatomy: container, bars">
       <ContainerShape />
       <BarsShape />
       <AnnotationsLayer />
-      <OverlayLines />
-      <Tags />
+      <AnatomyCallout
+        part="container"
+        label="Interaction zone"
+        anchor={[AN_CENTER_X, HIT.y]}
+        side="top"
+        distance={34}
+        isAccent
+        measure={`${REF_SIZE} ref, 5 bars`}
+        caption="Interactive area, responds to hover with diamond boost"
+      />
+      <AnatomyCallout
+        part="bar"
+        label="Bar"
+        anchor={[TALLEST_MID_X, TALLEST_BOTTOM]}
+        side="bottom"
+        distance={56}
+        measure={`${BAR.w.toFixed(1)} w, ${BAR.minH.toFixed(1)}–${BAR.maxH.toFixed(1)} h`}
+        caption="Traveling-wave bar with phase-shifted animation"
+      />
     </AnatomyFrame>
   )
 }

@@ -1,13 +1,13 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   DraftSurface,
-  DRAFT_FILL_PANEL,
+  DRAFT_INK_MORPH,
   DRAFT_SCAFFOLD_FADE,
   DRAFT_TEXT_SOFT,
   draftTheme,
@@ -24,8 +24,7 @@ import {
 } from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
-  AnatomyTag,
-  OverlayLine,
+  AnatomyCallout,
   useAnatomy,
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
@@ -35,12 +34,13 @@ const BADGE = {
   padX: 12,
   r: 13,
   font: 12,
-  solidW: 100,
+  solidW: 104,
   dotW: 104,
   dot: 7,
 } as const
 
 const BP = { x: (220 - BADGE.solidW) / 2, y: (140 - BADGE.h) / 2 } as const
+const BP_SURFACE = `${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:fill-(--color-surface) group-focus-visible:fill-(--color-surface) group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`
 
 export function BadgeBlueprint() {
   const theme = draftTheme
@@ -76,14 +76,13 @@ export function BadgeBlueprint() {
           strokeWidth={theme.wireframe.strokeWidth}
           strokeOpacity={theme.wireframe.strokeOpacity}
           style={beat(DRAFT_BEAT.outline)}
-          className={`ink-draw ${DRAFT_FILL_PANEL}`}
+          className={`ink-draw ${BP_SURFACE}`}
         />
         <text
           x={BP.x + BADGE.solidW / 2}
-          y={BP.y + BADGE.h / 2 + 4}
+          y={BP.y + BADGE.h / 2 + BADGE.font * 0.35}
           textAnchor="middle"
           fontSize={BADGE.font}
-          fontWeight={500}
           fontFamily="var(--font-sans)"
           style={beat(DRAFT_LABEL_BEAT)}
           className={`fade-note ${DRAFT_TEXT_SOFT}`}
@@ -95,9 +94,9 @@ export function BadgeBlueprint() {
         <GripFrame x={BP.x} y={BP.y} w={BADGE.solidW} h={BADGE.h} style={beat(DRAFT_BEAT.handle)} />
         <InsetGuide
           x={BP.x + BADGE.padX}
-          y={BP.y + 6}
+          y={BP.y}
           w={BADGE.solidW - BADGE.padX * 2}
-          h={BADGE.h - 12}
+          h={BADGE.h}
           offset={0.8}
           boxX={BP.x}
           boxY={BP.y}
@@ -108,44 +107,43 @@ export function BadgeBlueprint() {
           className="dash-march"
           style={beat(DRAFT_BEAT.guide)}
         />
-        <MeasureNote
-          x={BP.x + BADGE.padX / 2}
-          y={BP.y + BADGE.h / 2 + 2}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(0))}
-        >
-          12
-        </MeasureNote>
-        <MeasureNote
-          x={BP.x + BADGE.solidW - BADGE.padX / 2}
-          y={BP.y + BADGE.h / 2 + 2}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(1))}
-        >
-          12
-        </MeasureNote>
         <MeasureH
           x1={BP.x}
           x2={BP.x + BADGE.solidW}
-          y={BP.y - 14}
+          y={BP.y - 12}
           label={`${BADGE.solidW}`}
           className="note-stamp"
-          style={beat(stampBeat(2))}
+          style={beat(stampBeat(0))}
         />
         <MeasureV
-          x={BP.x - 14}
+          x={BP.x - 12}
           y1={BP.y}
           y2={BP.y + BADGE.h}
           label={`${BADGE.h}`}
-          labelXOffset={-6}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        />
+        <MeasureH
+          x1={BP.x}
+          x2={BP.x + BADGE.padX}
+          y={BP.y + BADGE.h + 10}
+          label={`${BADGE.padX}`}
+          labelYOffset={10}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        />
+        <MeasureH
+          x1={BP.x + BADGE.solidW - BADGE.padX}
+          x2={BP.x + BADGE.solidW}
+          y={BP.y + BADGE.h + 10}
+          label={`${BADGE.padX}`}
+          labelYOffset={10}
           className="note-stamp"
           style={beat(stampBeat(3))}
         />
         <MeasureNote
-          x={BP.x}
-          y={BP.y - 6}
+          x={BP.x + BADGE.solidW + 8}
+          y={BP.y + BADGE.h / 2 + 2.5}
           anchor="start"
           className="note-stamp"
           style={beat(stampBeat(4))}
@@ -157,11 +155,13 @@ export function BadgeBlueprint() {
   )
 }
 
-const AN = { x: 158, y: 67 } as const
-const AN_MID_Y = AN.y + BADGE.h / 2
-const AN_DOT_CX = AN.x + BADGE.padX + BADGE.dot / 2
-const AN_TEXT_X = AN_DOT_CX + BADGE.dot / 2 + 6
-const AN_TEXT_CENTER = 216
+const AN_MID_Y = BADGE.h / 2
+const AN_DOT_CX = BADGE.padX + BADGE.dot / 2
+const AN_GAP = 6
+const AN_TEXT_X = AN_DOT_CX + BADGE.dot / 2 + AN_GAP
+const AN_TEXT_BASELINE = AN_MID_Y + 4
+const AN_TEXT_TOP = AN_TEXT_BASELINE - 0.72 * BADGE.font
+const TOP_TAG_END = -24
 
 function ContainerShape() {
   const { hovered, setHovered } = useAnatomy()
@@ -169,7 +169,7 @@ function ContainerShape() {
 
   return (
     <path
-      d={squirclePillPath(AN.x, AN.y, BADGE.dotW, BADGE.h)}
+      d={squirclePillPath(0, 0, BADGE.dotW, BADGE.h)}
       stroke="currentColor"
       strokeWidth={hovered === 'container' ? 2 : draftTheme.wireframe.strokeWidth}
       fill={hovered === 'container' ? 'currentColor' : 'transparent'}
@@ -193,7 +193,7 @@ function DotShape() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      <rect x={AN_DOT_CX - 10} y={AN_MID_Y - 10} width={20} height={20} fill="transparent" />
+      <rect x={AN_DOT_CX - 6} y={AN_MID_Y - 6} width={12} height={12} fill="transparent" />
       <circle
         cx={AN_DOT_CX}
         cy={AN_MID_Y}
@@ -209,7 +209,7 @@ function DotShape() {
 }
 
 function LabelShape() {
-  const { setHovered } = useAnatomy()
+  const { hovered, setHovered } = useAnatomy()
   const spotlight = useSpotlight('text')
 
   return (
@@ -219,12 +219,18 @@ function LabelShape() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      <rect x={AN_TEXT_X - 4} y={AN.y + 3} width={78} height={20} fill="transparent" />
+      <rect
+        x={AN_TEXT_X - 2}
+        y={3}
+        width={BADGE.dotW - BADGE.padX - AN_TEXT_X + 2}
+        height={20}
+        fill="currentColor"
+        fillOpacity={hovered === 'text' ? 0.08 : 0}
+      />
       <text
         x={AN_TEXT_X}
-        y={AN_MID_Y + 4}
+        y={AN_TEXT_BASELINE}
         fontSize={BADGE.font}
-        fontWeight={500}
         fontFamily="var(--font-sans)"
         className={`fill-current ${spotlight.className}`}
       >
@@ -247,23 +253,23 @@ function AnnotationsLayer() {
       className={`transition-[opacity,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none motion-reduce:filter-none ${isOthersHovered ? 'opacity-30' : 'opacity-100'}`}
     >
       <InsetGuide
-        x={AN.x + BADGE.padX}
-        y={AN.y + 6}
+        x={BADGE.padX}
+        y={6}
         w={BADGE.dotW - BADGE.padX * 2}
         h={BADGE.h - 12}
         offset={0.8}
-        boxX={AN.x}
-        boxY={AN.y}
+        boxX={0}
+        boxY={0}
         boxW={BADGE.dotW}
         boxH={BADGE.h}
         boxRx={BADGE.r}
         clipOffset={0.8}
       />
-      <MeasureNote x={AN.x + BADGE.padX / 2} y={AN_MID_Y + 2} anchor="middle">
-        12
+      <MeasureNote x={BADGE.padX / 2} y={AN_MID_Y + 2} anchor="middle">
+        {`${BADGE.padX}`}
       </MeasureNote>
-      <MeasureNote x={AN.x + BADGE.dotW - BADGE.padX / 2} y={AN_MID_Y + 2} anchor="middle">
-        12
+      <MeasureNote x={BADGE.dotW - BADGE.padX / 2} y={AN_MID_Y + 2} anchor="middle">
+        {`${BADGE.padX}`}
       </MeasureNote>
       <g
         stroke="var(--bp-accent, var(--color-accent))"
@@ -273,88 +279,69 @@ function AnnotationsLayer() {
       >
         <line x1={AN_DOT_CX + BADGE.dot / 2} y1={AN_MID_Y} x2={AN_TEXT_X} y2={AN_MID_Y} />
       </g>
-      <MeasureNote x={(AN_DOT_CX + BADGE.dot / 2 + AN_TEXT_X) / 2} y={AN_MID_Y - 6} anchor="middle">
-        6
+      <MeasureNote x={(AN_DOT_CX + BADGE.dot / 2 + AN_TEXT_X) / 2} y={AN_MID_Y + 9} anchor="middle">
+        {`${AN_GAP}`}
       </MeasureNote>
-      <GripFrame x={AN.x} y={AN.y} w={BADGE.dotW} h={BADGE.h} />
-      <MeasureH x1={AN.x} x2={AN.x + BADGE.dotW} y={AN.y - 15} label={`${BADGE.dotW}`} />
+      <GripFrame x={0} y={0} w={BADGE.dotW} h={BADGE.h} />
+      <MeasureH x1={0} x2={BADGE.dotW} y={BADGE.h + 14} label={`${BADGE.dotW}`} labelYOffset={10} />
       <MeasureV
-        x={AN.x - 15}
-        y1={AN.y}
-        y2={AN.y + BADGE.h}
+        x={-15}
+        y1={0}
+        y2={BADGE.h}
         label={`${BADGE.h}`}
         labelXOffset={-6}
         labelAnchor="end"
       />
-      <MeasureNote x={AN.x} y={AN.y - 6} anchor="start">
+      <MeasureNote x={BADGE.dotW} y={-6} anchor="end">
         {`r${BADGE.r}`}
       </MeasureNote>
     </g>
   )
 }
 
-function LinesLayer() {
-  return (
-    <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="container" x1={AN.x + BADGE.dotW} y1={AN_MID_Y} x2={292} y2={AN_MID_Y} />
-      <OverlayLine id="dot" x1={AN_DOT_CX} y1={AN_MID_Y + BADGE.dot / 2} x2={AN_DOT_CX} y2={124} />
-      <OverlayLine id="text" x1={AN_TEXT_CENTER} y1={AN_MID_Y - 6} x2={AN_TEXT_CENTER} y2={36} />
-    </g>
-  )
-}
-
-function TagsLayer() {
+function Callouts() {
   return (
     <>
-      <foreignObject
-        x={AN_DOT_CX - 58}
-        y={118}
-        width={140}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="dot"
-          label={'Dot (variant="dot")'}
-          className="items-start justify-center"
-        />
-      </foreignObject>
-      <foreignObject
-        x={AN_TEXT_CENTER - 44}
-        y={12}
-        width={100}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag part="text" label="Label Text" className="items-end justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={290}
-        y={AN_MID_Y - 12}
-        width={130}
-        height={24}
-        className="pointer-events-none overflow-visible"
-      >
-        <AnatomyTag
-          part="container"
-          label="Badge.Container"
-          className="items-center justify-start"
-          isAccent
-        />
-      </foreignObject>
+      <AnatomyCallout
+        part="dot"
+        label="Dot"
+        anchor={[AN_DOT_CX, AN_MID_Y - BADGE.dot / 2]}
+        side="top"
+        distance={AN_MID_Y - BADGE.dot / 2 - TOP_TAG_END}
+        measure={`${BADGE.dot} × ${BADGE.dot} · round · md size`}
+        caption="Status dot for the dot variant. Pulses when pulse is set."
+      />
+      <AnatomyCallout
+        part="text"
+        label="Label"
+        anchor={[70, AN_TEXT_TOP]}
+        side="top"
+        distance={AN_TEXT_TOP - TOP_TAG_END}
+        measure={`text ${BADGE.font} · font normal · nowrap`}
+        caption="Badge content. Solid badges can run a shimmer wave across it."
+      />
+      <AnatomyCallout
+        part="container"
+        label="Container"
+        anchor={[BADGE.dotW, AN_MID_Y]}
+        side="end"
+        distance={24}
+        isAccent
+        measure={`${BADGE.dotW} × ${BADGE.h} · r${BADGE.r} · px ${BADGE.padX} · border 1`}
+        caption="Pill shell with solid, muted and dot variants in three sizes."
+      />
     </>
   )
 }
 
 export function BadgeAnatomy() {
   return (
-    <AnatomyFrame viewBox="-14 -2 448 164" maxWidthClassName="max-w-[538px]">
+    <AnatomyFrame viewBox="-44 -60 258 126" ariaLabel="Badge anatomy: container, dot and label">
       <ContainerShape />
       <DotShape />
       <LabelShape />
       <AnnotationsLayer />
-      <LinesLayer />
-      <TagsLayer />
+      <Callouts />
     </AnatomyFrame>
   )
 }

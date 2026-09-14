@@ -1,9 +1,9 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   DraftSurface,
@@ -18,114 +18,168 @@ import {
   beat,
   DRAFT_BEAT,
   stampBeat,
+  squircleRectPath,
 } from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
-  AnatomyTag,
-  OverlayLine,
+  AnatomyCallout,
   useAnatomy,
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 
 const LABELS = ['Dashboard', 'Projects', 'Team'] as const
-const BP = { x: 58, y: 18, w: 104, rowH: 32, gap: 4, indent: 24, dot: 6 } as const
+const BP = {
+  x: 56,
+  y: 22,
+  w: 120,
+  ps: 24,
+  itemPad: 4,
+  rowH: 32,
+  gap: 4,
+  rx: 4,
+  dot: 6,
+  dotInset: 8,
+  font: 14,
+  dotMs: 450,
+} as const
+
+const BP_TOTAL_H = LABELS.length * BP.rowH + (LABELS.length - 1) * BP.gap
+const BP_ITEM_X = BP.x + BP.ps
+const BP_ITEM_W = BP.w - BP.ps
+const BP_DOT_CX = BP.x + BP.dotInset + BP.dot / 2
+const BP_TRAVEL = BP.rowH + BP.gap
+const BP_PEAK_X = -Math.min(0.6, 20 / BP_TRAVEL) * BP_TRAVEL
+const BP_RIGHT = BP.x + BP.w
+const BP_GUIDE_ROW = 2
+
+function bpRowY(i: number) {
+  return BP.y + i * (BP.rowH + BP.gap)
+}
+
+const BP_ROW_OUTLINE = `${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:stroke-transparent group-focus-visible:stroke-transparent`
+const BP_TEXT_WAS_ACTIVE = `${DRAFT_INK_MORPH} fill-current opacity-60 group-hover:opacity-55 group-focus-visible:opacity-55`
+const BP_TEXT_BECOMES_ACTIVE = `${DRAFT_INK_MORPH} fill-current opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100`
+const BP_TEXT_IDLE = `${DRAFT_INK_MORPH} fill-current opacity-35 group-hover:opacity-55 group-focus-visible:opacity-55`
+
+function bpTextClass(i: number) {
+  if (i === 0) return BP_TEXT_WAS_ACTIVE
+  if (i === 1) return BP_TEXT_BECOMES_ACTIVE
+  return BP_TEXT_IDLE
+}
 
 export function BounceSidebarWireframe() {
   const theme = draftTheme
-  const totalH = LABELS.length * BP.rowH + (LABELS.length - 1) * BP.gap
-  const rowY = (i: number) => BP.y + i * (BP.rowH + BP.gap)
 
   return (
     <DraftSurface>
+      <style>{`
+        @keyframes bp-bs-arc {
+          0% { transform: translateX(0); }
+          40% { transform: translateX(${BP_PEAK_X}px); }
+          100% { transform: translateX(0); }
+        }
+        .blueprint .bp-bs-drop {
+          transition: transform ${BP.dotMs}ms var(--motion-ease-out);
+        }
+        .group:hover .blueprint .bp-bs-drop,
+        .group:focus-visible .blueprint .bp-bs-drop {
+          transform: translateY(${BP_TRAVEL}px);
+          transition-delay: var(--motion-dur-base);
+        }
+        .group:hover .blueprint .bp-bs-arc,
+        .group:focus-visible .blueprint .bp-bs-arc {
+          animation: bp-bs-arc ${BP.dotMs}ms var(--motion-ease-out) var(--motion-dur-base) both;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .blueprint .bp-bs-drop {
+            transition: none;
+          }
+          .group:hover .blueprint .bp-bs-arc,
+          .group:focus-visible .blueprint .bp-bs-arc {
+            animation: none;
+          }
+        }
+      `}</style>
       {LABELS.map((label, i) => {
-        const y = rowY(i)
-        const active = i === 0
+        const y = bpRowY(i)
         return (
           <g key={label}>
-            <rect
-              x={BP.x + BP.indent}
-              y={y}
-              width={BP.w - BP.indent}
-              height={BP.rowH}
-              rx={6}
+            <path
+              d={squircleRectPath(BP_ITEM_X, y, BP_ITEM_W, BP.rowH, BP.rx)}
               pathLength={1}
               strokeDasharray={1}
               strokeDashoffset={1}
               strokeWidth={theme.wireframe.strokeWidth}
               strokeOpacity={theme.wireframe.strokeOpacity}
-              style={beat(i === 0 ? DRAFT_BEAT.outline : `${200 + i * 60}ms`)}
-              className={`ink-draw ${DRAFT_INK_MORPH} fill-transparent stroke-current ${
-                active
-                  ? 'group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2) group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)'
-                  : 'group-hover:opacity-50 group-focus-visible:opacity-50'
-              }`}
+              style={beat(`${i * 60}ms`)}
+              className={`ink-draw ${BP_ROW_OUTLINE}`}
             />
             <text
-              x={BP.x + BP.indent + 4}
-              y={y + BP.rowH / 2 + 6}
-              fontSize={16}
+              x={BP_ITEM_X + BP.itemPad}
+              y={y + BP.rowH / 2 + BP.font * 0.35}
+              fontSize={BP.font}
               fontFamily="var(--font-sans)"
               style={beat(`${400 + i * 60}ms`)}
-              className={`fade-note ${DRAFT_INK_MORPH} fill-current ${
-                active
-                  ? 'opacity-70 group-hover:opacity-100 group-focus-visible:opacity-100'
-                  : 'opacity-40 group-hover:opacity-70 group-focus-visible:opacity-70'
-              }`}
+              className={`fade-note ${bpTextClass(i)}`}
             >
               {label}
             </text>
           </g>
         )
       })}
-      <circle
-        cx={BP.x + 11}
-        cy={rowY(0) + BP.rowH / 2}
-        r={BP.dot / 2}
-        fill="var(--bp-accent, var(--color-accent))"
-        style={beat(DRAFT_BEAT.hatch)}
-        className={`fade-note transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-y-[36px] group-hover:delay-(--motion-dur-base) group-focus-visible:translate-y-[36px] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none`}
-      />
+      <g className="bp-bs-drop">
+        <g className="bp-bs-arc">
+          <circle
+            cx={BP_DOT_CX}
+            cy={bpRowY(0) + BP.rowH / 2}
+            r={BP.dot / 2}
+            fill="var(--bp-accent, var(--color-accent))"
+            style={beat(DRAFT_BEAT.hatch)}
+            className="fade-note"
+          />
+        </g>
+      </g>
 
       <g className={DRAFT_SCAFFOLD_FADE}>
-        <GripFrame x={BP.x} y={BP.y} w={BP.w} h={totalH} style={beat(DRAFT_BEAT.handle)} />
+        <GripFrame x={BP.x} y={BP.y} w={BP.w} h={BP_TOTAL_H} style={beat(DRAFT_BEAT.handle)} />
         <MeasureH
           x1={BP.x}
-          x2={BP.x + BP.w}
-          y={BP.y - 10}
+          x2={BP_RIGHT}
+          y={BP.y - 8}
           label={`${BP.w}`}
+          labelYOffset={-2}
           className="note-stamp"
           style={beat(stampBeat(0))}
         />
         <InsetGuide
-          x={BP.x + BP.indent + 4}
-          y={rowY(0) + 4}
-          w={44}
-          h={24}
+          x={BP_ITEM_X + BP.itemPad}
+          y={bpRowY(BP_GUIDE_ROW) + BP.itemPad}
+          w={BP_ITEM_W - BP.itemPad * 2}
+          h={BP.rowH - BP.itemPad * 2}
           offset={0.8}
-          boxX={BP.x + BP.indent}
-          boxY={rowY(0)}
-          boxW={BP.w - BP.indent}
+          boxX={BP_ITEM_X}
+          boxY={bpRowY(BP_GUIDE_ROW)}
+          boxW={BP_ITEM_W}
           boxH={BP.rowH}
-          boxRx={6}
+          boxRx={BP.rx}
           clipOffset={0.8}
           className="dash-march"
           style={beat(DRAFT_BEAT.guide)}
         />
         <MeasureNote
-          x={BP.x + BP.indent - 4}
-          y={rowY(0) + BP.rowH / 2 + 2}
-          anchor="end"
+          x={BP_RIGHT + 15}
+          y={bpRowY(BP_GUIDE_ROW) + BP.rowH / 2 + 2.5}
+          anchor="start"
           className="note-stamp"
           style={beat(stampBeat(1))}
         >
-          4
+          {`${BP.itemPad}`}
         </MeasureNote>
         <MeasureV
-          x={BP.x - 12}
+          x={BP.x - 14}
           y1={BP.y}
-          y2={BP.y + totalH}
-          label={`${totalH}`}
-          labelXOffset={-6}
+          y2={BP.y + BP_TOTAL_H}
+          label={`${BP_TOTAL_H}`}
           className="note-stamp"
           style={beat(stampBeat(2))}
         />
@@ -134,34 +188,57 @@ export function BounceSidebarWireframe() {
           strokeWidth={theme.guide.strokeWidth}
           opacity={theme.guide.structOpacity}
         >
-          <line x1={BP.x} y1={rowY(0) + BP.rowH} x2={BP.x + BP.w + 16} y2={rowY(0) + BP.rowH} />
-          <line x1={BP.x} y1={rowY(1)} x2={BP.x + BP.w + 16} y2={rowY(1)} />
+          <line
+            x1={BP_ITEM_X}
+            y1={bpRowY(0) + BP.rowH}
+            x2={BP_RIGHT + 16}
+            y2={bpRowY(0) + BP.rowH}
+          />
+          <line x1={BP_ITEM_X} y1={bpRowY(1)} x2={BP_RIGHT + 16} y2={bpRowY(1)} />
         </g>
         <MeasureV
-          x={BP.x + BP.w + 10}
-          y1={rowY(0) + BP.rowH}
-          y2={rowY(1)}
-          label={`${BP.gap}`}
-          labelXOffset={10}
+          x={BP_RIGHT + 10}
+          y1={bpRowY(0)}
+          y2={bpRowY(0) + BP.rowH}
+          label={`${BP.rowH}`}
+          labelXOffset={5}
           labelAnchor="start"
           className="note-stamp"
           style={beat(stampBeat(3))}
         />
-        <MeasureNote
-          x={BP.x + BP.w + 24}
-          y={rowY(0) + BP.rowH / 2 + 3}
-          anchor="start"
+        <MeasureV
+          x={BP_RIGHT + 10}
+          y1={bpRowY(0) + BP.rowH}
+          y2={bpRowY(1)}
+          label={`${BP.gap}`}
+          labelXOffset={10}
+          labelAnchor="start"
           className="note-stamp"
           style={beat(stampBeat(4))}
+        />
+        <MeasureH
+          x1={BP.x}
+          x2={BP_ITEM_X}
+          y={bpRowY(2) + BP.rowH / 2}
+          label={`${BP.ps}`}
+          className="note-stamp"
+          style={beat(stampBeat(5))}
+        />
+        <MeasureNote
+          x={BP.x + 2}
+          y={bpRowY(2) + BP.rowH / 2 + 13}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(6))}
         >
           {`dot ${BP.dot}`}
         </MeasureNote>
         <MeasureNote
           x={BP.x}
-          y={BP.y + totalH + 14}
+          y={BP.y + BP_TOTAL_H + 10}
           anchor="start"
           className="note-stamp"
-          style={beat(stampBeat(5))}
+          style={beat(stampBeat(7))}
         >
           spring overshoot
         </MeasureNote>
@@ -172,6 +249,8 @@ export function BounceSidebarWireframe() {
 
 const AN_ITEMS = ['Home', 'About', 'Services'] as const
 const AN = {
+  textInset: 12,
+  fontSize: 12,
   listX: 24,
   listY: 16,
   listW: 136,
@@ -237,9 +316,9 @@ function ItemShape({ index, label }: { index: number; label: string }) {
         className={spotlight.className}
       />
       <text
-        x={AN.listX + AN.padL + 4}
-        y={y + AN.itemH / 2 + 6}
-        fontSize={16}
+        x={AN.listX + AN.padL + AN.textInset}
+        y={y + AN.itemH / 2 + 4}
+        fontSize={AN.fontSize}
         fontFamily="var(--font-sans)"
         className={`fill-current ${spotlight.className}`}
       >
@@ -360,7 +439,10 @@ function AnnotationsLayer() {
 
 export function BounceSidebarBreakdown() {
   return (
-    <AnatomyFrame viewBox="-24 -40 324 223" maxWidthClassName="max-w-[389px]">
+    <AnatomyFrame
+      viewBox="-24 -40 324 223"
+      ariaLabel="Bounce Sidebar anatomy: container, item, active, dot"
+    >
       <ContainerShape />
       {AN_ITEMS.map((label, i) => (
         <ItemShape key={label} index={i} label={label} />
@@ -368,64 +450,44 @@ export function BounceSidebarBreakdown() {
       <ActiveShape />
       <DotShape />
       <AnnotationsLayer />
-      <OverlayLine id="container" x1={160} y1={100} x2={210} y2={100} />
-      <OverlayLine
-        id="item-0"
-        x1={AN.listX + AN.listW - AN.padV}
-        y1={itemY(0) + AN.itemH / 2}
-        x2={180}
-        y2={itemY(0) + AN.itemH / 2}
+      <AnatomyCallout
+        part="container"
+        label="Nav.List"
+        anchor={[160, 100]}
+        side="end"
+        distance={50}
+        measure="flex column · gap 4 · ps 24"
+        caption="Root ul element, vertical nav container"
       />
-      <OverlayLine
-        id="active"
-        x1={AN.listX + AN.listW - AN.padV}
-        y1={itemY(1) + AN.itemH / 2}
-        x2={AN.listX + AN.listW - AN.padV + 28}
-        y2={itemY(1) + AN.itemH / 2}
+      <AnatomyCallout
+        part="item-0"
+        label="Nav.Item"
+        anchor={[AN.listX + AN.listW - AN.padV, itemY(0) + AN.itemH / 2]}
+        side="end"
+        distance={28}
+        measure="rounded-md · p 4 · text-base"
+        caption="Individual nav item button with click and hover states"
       />
-      <OverlayLine
-        id="dot"
-        x1={AN.listX + 10}
-        y1={itemY(1) + AN.itemH / 2 - AN.dotR}
-        x2={AN.listX + 10}
-        y2={-2}
+      <AnatomyCallout
+        part="active"
+        label="Active"
+        anchor={[AN.listX + AN.listW - AN.padV, itemY(1) + AN.itemH / 2]}
+        side="end"
+        distance={28}
+        isAccent
+        measure="active item · rounded-md"
+        caption="Marks the current item with spring animation on change"
       />
-      <foreignObject
-        x={210}
-        y={88}
-        width={80}
-        height={24}
-        className="overflow-visible pointer-events-none"
-      >
-        <AnatomyTag part="container" label="Nav.List" className="items-center justify-start" />
-      </foreignObject>
-      <foreignObject
-        x={180}
-        y={itemY(0) + AN.itemH / 2 - 12}
-        width={80}
-        height={24}
-        className="overflow-visible pointer-events-none"
-      >
-        <AnatomyTag part="item-0" label="Nav.Item" className="items-center justify-start" />
-      </foreignObject>
-      <foreignObject
-        x={AN.listX + AN.listW - AN.padV + 32}
-        y={itemY(1) + AN.itemH / 2 - 12}
-        width={72}
-        height={24}
-        className="overflow-visible pointer-events-none"
-      >
-        <AnatomyTag part="active" label="Active" isAccent className="items-center justify-start" />
-      </foreignObject>
-      <foreignObject
-        x={-14}
-        y={-26}
-        width={96}
-        height={24}
-        className="overflow-visible pointer-events-none"
-      >
-        <AnatomyTag part="dot" label="Bounce Dot" isAccent className="items-end justify-center" />
-      </foreignObject>
+      <AnatomyCallout
+        part="dot"
+        label="Bounce Dot"
+        anchor={[AN.listX + 10, itemY(1) + AN.itemH / 2 - AN.dotR]}
+        side="top"
+        distance={67}
+        isAccent
+        measure="dot · rounded-full"
+        caption="Bounces to active item with spring and audio feedback"
+      />
     </AnatomyFrame>
   )
 }

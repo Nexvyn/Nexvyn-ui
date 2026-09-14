@@ -3,13 +3,14 @@
 // SPDX-License-Identifier: CC-BY-NC-4.0
 // Wireframe/anatomy diagram asset -- licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
-import { useId } from 'react'
+import { type CSSProperties, useId } from 'react'
 import {
   DraftSurface,
   DRAFT_SCAFFOLD_FADE,
   DRAFT_INK_MORPH,
+  DRAFT_TEXT_SOFT,
   draftTheme,
   MeasureH,
   MeasureNote,
@@ -24,27 +25,43 @@ import {
   stampBeat,
 } from '@/components/diagrams/lib/diagram-parts'
 import {
+  AnatomyCallout,
   AnatomyFrame,
-  AnatomyTag,
-  OverlayLine,
   useAnatomy,
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 
-const BP_TRACK = { x: 20, y: 50, w: 180, h: 40, rx: 4 } as const
-const BP_FILL_IDLE = 90
+const BP_W = 176
+const BP_DIM_LANE = 20
+const BP_TRACK = {
+  x: (220 - BP_W - BP_DIM_LANE) / 2 + BP_DIM_LANE,
+  y: 42,
+  w: BP_W,
+  h: 40,
+  rx: 4,
+} as const
+const BP_BAR_BOX = 16
 const BP_BAR = { w: 4, h: 20 } as const
+const BP_BAR_INSET_Y = (BP_TRACK.h - BP_BAR.h) / 2
 const BP_PAD_X = 14
+const BP_FONT = 14
+const BP_VALUE_REST = 50
+const BP_VALUE_HOVER = 67
+const BP_FILL_REST = (BP_VALUE_REST / 100) * BP_TRACK.w
+const BP_TRAVEL = ((BP_VALUE_HOVER - BP_VALUE_REST) / 100) * BP_TRACK.w
+const BP_MID_Y = BP_TRACK.y + BP_TRACK.h / 2
+const BP_BASELINE = BP_MID_Y + BP_FONT * 0.35
+const BP_BAR_CX = BP_TRACK.x + BP_FILL_REST - BP_BAR_BOX / 2
+
+const BP_SLIDE =
+  'transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-x-(--fader-bp-travel) group-hover:delay-(--motion-dur-base) group-focus-visible:translate-x-(--fader-bp-travel) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none'
 
 export function FaderBlueprint() {
   const theme = draftTheme
-  const midY = BP_TRACK.y + BP_TRACK.h / 2
   const uid = useId().replace(/:/g, '')
   const hatchId = `bp-fader-hatch-${uid}`
-  const fillCls = `bp-fader-fill-${uid}`
-  const barCls = `bp-fader-bar-${uid}`
-  const valOutCls = `bp-fader-val-out-${uid}`
-  const valInCls = `bp-fader-val-in-${uid}`
+  const clipId = `bp-fader-clip-${uid}`
+  const travelStyle = { '--fader-bp-travel': `${BP_TRAVEL}px` } as CSSProperties
   return (
     <DraftSurface>
       <defs>
@@ -55,71 +72,17 @@ export function FaderBlueprint() {
           height="4"
           patternTransform="rotate(45)"
         >
-          <rect width="4" height="4" className="fill-transparent" />
-          <line
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="4"
-            stroke="currentColor"
-            strokeWidth="1"
-            className="opacity-60"
-          />
-          <line
-            x1="4"
-            y1="0"
-            x2="4"
-            y2="4"
-            stroke="currentColor"
-            strokeWidth="1"
-            className="opacity-60"
-          />
+          <line x1="0" y1="0" x2="0" y2="4" stroke="currentColor" strokeWidth="1" opacity={0.35} />
         </pattern>
-        <style>
-          {`
-            .${fillCls} {
-              width: ${BP_FILL_IDLE}px;
-              transition:
-                width var(--motion-dur-slow) var(--motion-ease-in-out) 0ms,
-                opacity var(--motion-dur-fast) var(--motion-ease-out);
-            }
-            .group:hover .${fillCls}, .group:focus-visible .${fillCls} {
-              width: ${BP_FILL_IDLE * 1.3333}px;
-              transition:
-                width var(--motion-dur-slow) var(--motion-ease-in-out) var(--motion-dur-base),
-                opacity var(--motion-dur-fast) var(--motion-ease-out) var(--motion-dur-base);
-            }
-            .${barCls} {
-              transition:
-                translate var(--motion-dur-slow) var(--motion-ease-in-out) 0ms,
-                scale var(--motion-dur-slow) var(--motion-ease-in-out) 0ms,
-                opacity var(--motion-dur-slow) var(--motion-ease-out) 0ms;
-            }
-            .group:hover .${barCls}, .group:focus-visible .${barCls} {
-              transition:
-                translate var(--motion-dur-slow) var(--motion-ease-in-out) var(--motion-dur-base),
-                scale var(--motion-dur-slow) var(--motion-ease-in-out) var(--motion-dur-base),
-                opacity var(--motion-dur-slow) var(--motion-ease-out) var(--motion-dur-base);
-            }
-            .${valOutCls} {
-              transition: opacity var(--motion-dur-fast) var(--motion-ease-out) 120ms;
-            }
-            .group:hover .${valOutCls}, .group:focus-visible .${valOutCls} {
-              transition: opacity var(--motion-dur-fast) var(--motion-ease-out) var(--motion-dur-base);
-            }
-            .${valInCls} {
-              transition: opacity var(--motion-dur-fast) var(--motion-ease-out) 0ms;
-            }
-            .group:hover .${valInCls}, .group:focus-visible .${valInCls} {
-              transition: opacity var(--motion-dur-fast) var(--motion-ease-out) 320ms;
-            }
-            @media (prefers-reduced-motion: reduce) {
-              .${fillCls}, .${barCls}, .${valOutCls}, .${valInCls} {
-                transition: none;
-              }
-            }
-          `}
-        </style>
+        <clipPath id={clipId}>
+          <rect
+            x={BP_TRACK.x}
+            y={BP_TRACK.y}
+            width={BP_TRACK.w}
+            height={BP_TRACK.h}
+            rx={BP_TRACK.rx}
+          />
+        </clipPath>
       </defs>
       <rect
         x={BP_TRACK.x}
@@ -135,77 +98,84 @@ export function FaderBlueprint() {
         style={beat(DRAFT_BEAT.outline)}
         className={`ink-draw ${DRAFT_INK_MORPH} fill-transparent stroke-current group-hover:fill-(--color-surface-2) group-focus-visible:fill-(--color-surface-2) group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`}
       />
-      <rect
-        x={BP_TRACK.x}
-        y={BP_TRACK.y}
-        height={BP_TRACK.h}
-        rx={BP_TRACK.rx}
-        fill={`url(#${hatchId})`}
-        style={beat(DRAFT_BEAT.hatch)}
-        className={`fade-note ${fillCls} opacity-70 group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none`}
-      />
-      <rect
-        x={BP_TRACK.x}
-        y={BP_TRACK.y}
-        height={BP_TRACK.h}
-        rx={BP_TRACK.rx}
-        className={`${fillCls} fill-current opacity-0 group-hover:opacity-40 group-focus-visible:opacity-40 motion-reduce:transition-none`}
-      />
-      <g
-        className={`${barCls} group-hover:translate-x-7.5 group-focus-visible:translate-x-7.5 motion-reduce:transition-none`}
-        style={{ transformOrigin: `${BP_TRACK.x + BP_FILL_IDLE}px ${midY}px` }}
-      >
+      <g clipPath={`url(#${clipId})`}>
+        <g style={travelStyle} className={BP_SLIDE}>
+          <rect
+            x={BP_TRACK.x + BP_FILL_REST - BP_TRACK.w}
+            y={BP_TRACK.y}
+            width={BP_TRACK.w}
+            height={BP_TRACK.h}
+            rx={BP_TRACK.rx}
+            fill={`url(#${hatchId})`}
+            style={beat(DRAFT_BEAT.hatch)}
+            className={`fade-note ${DRAFT_INK_MORPH} opacity-100 group-hover:opacity-0 group-focus-visible:opacity-0`}
+          />
+          <rect
+            x={BP_TRACK.x + BP_FILL_REST - BP_TRACK.w}
+            y={BP_TRACK.y}
+            width={BP_TRACK.w}
+            height={BP_TRACK.h}
+            rx={BP_TRACK.rx}
+            strokeWidth={1}
+            fillOpacity={0.4}
+            strokeOpacity={0.3}
+            className={`${DRAFT_INK_MORPH} fill-(--color-muted) stroke-(--color-muted) opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100`}
+          />
+        </g>
+      </g>
+      <g style={travelStyle} className={BP_SLIDE}>
         <rect
-          x={BP_TRACK.x + BP_FILL_IDLE - BP_BAR.w / 2}
-          y={midY - BP_BAR.h / 2}
+          x={BP_BAR_CX - BP_BAR.w / 2}
+          y={BP_MID_Y - BP_BAR.h / 2}
           width={BP_BAR.w}
           height={BP_BAR.h}
           rx={BP_BAR.w / 2}
           style={{
-            transformOrigin: `${BP_TRACK.x + BP_FILL_IDLE}px ${midY}px`,
+            transformOrigin: `${BP_BAR_CX}px ${BP_MID_Y}px`,
             ...beat(DRAFT_DETAIL_BEAT.c),
           }}
-          className={`fade-note ${barCls} fill-current opacity-85 group-hover:opacity-100 group-focus-visible:opacity-100 group-hover:scale-y-[1.35] group-focus-visible:scale-y-[1.35] motion-reduce:transition-none motion-reduce:transform-none`}
+          className="fade-note fill-(--color-muted) opacity-85 transition-[opacity,transform] duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:scale-y-120 group-hover:opacity-100 group-hover:delay-(--motion-dur-base) group-focus-visible:scale-y-120 group-focus-visible:opacity-100 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none"
         />
       </g>
       <text
         x={BP_TRACK.x + BP_PAD_X}
-        y={midY + 4}
-        fontSize={14}
-        fontWeight={500}
+        y={BP_BASELINE}
+        fontSize={BP_FONT}
         fontFamily="var(--font-sans)"
         style={beat(DRAFT_LABEL_BEAT)}
-        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-90`}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
       >
         Volume
       </text>
       <text
         x={BP_TRACK.x + BP_TRACK.w - BP_PAD_X}
-        y={midY + 4}
+        y={BP_BASELINE}
         textAnchor="end"
-        fontSize={14}
+        fontSize={BP_FONT}
         fontFamily="var(--font-sans)"
         style={beat(DRAFT_LABEL_ALT_BEAT)}
-        className={`fade-note ${valOutCls} fill-current opacity-90 tabular-nums group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none`}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-35 tabular-nums group-hover:opacity-0 group-focus-visible:opacity-0`}
       >
-        50%
+        {BP_VALUE_REST}
+        <tspan className="fill-(--color-muted)">%</tspan>
       </text>
       <text
         x={BP_TRACK.x + BP_TRACK.w - BP_PAD_X}
-        y={midY + 4}
+        y={BP_BASELINE}
         textAnchor="end"
-        fontSize={14}
+        fontSize={BP_FONT}
         fontFamily="var(--font-sans)"
-        className={`${valInCls} fill-current opacity-0 tabular-nums group-hover:opacity-90 group-focus-visible:opacity-90 motion-reduce:transition-none`}
+        className={`${DRAFT_INK_MORPH} fill-current opacity-0 tabular-nums group-hover:opacity-100 group-focus-visible:opacity-100`}
       >
-        67%
+        {BP_VALUE_HOVER}
+        <tspan className="fill-(--color-muted)">%</tspan>
       </text>
       <g className={DRAFT_SCAFFOLD_FADE}>
         <InsetGuide
           x={BP_TRACK.x + BP_PAD_X}
-          y={BP_TRACK.y + 10}
+          y={BP_TRACK.y}
           w={BP_TRACK.w - BP_PAD_X * 2}
-          h={BP_TRACK.h - 20}
+          h={BP_TRACK.h}
           offset={0.8}
           boxX={BP_TRACK.x}
           boxY={BP_TRACK.y}
@@ -216,42 +186,6 @@ export function FaderBlueprint() {
           className="dash-march"
           style={beat(DRAFT_BEAT.guide)}
         />
-        <MeasureNote
-          x={BP_TRACK.x + 7}
-          y={midY + 2}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(0))}
-        >
-          14
-        </MeasureNote>
-        <MeasureNote
-          x={BP_TRACK.x + BP_TRACK.w - 7}
-          y={midY + 2}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(1))}
-        >
-          14
-        </MeasureNote>
-        <MeasureNote
-          x={BP_TRACK.x + BP_TRACK.w / 2}
-          y={BP_TRACK.y + 7}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(2))}
-        >
-          10
-        </MeasureNote>
-        <MeasureNote
-          x={BP_TRACK.x + BP_TRACK.w / 2}
-          y={BP_TRACK.y + BP_TRACK.h - 3}
-          anchor="middle"
-          className="note-stamp"
-          style={beat(stampBeat(3))}
-        >
-          10
-        </MeasureNote>
         <GripFrame
           x={BP_TRACK.x}
           y={BP_TRACK.y}
@@ -259,54 +193,114 @@ export function FaderBlueprint() {
           h={BP_TRACK.h}
           style={beat(DRAFT_BEAT.handle)}
         />
+        <MeasureNote
+          x={BP_TRACK.x}
+          y={BP_TRACK.y - 6}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(0))}
+        >
+          {`r${BP_TRACK.rx}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP_BAR_CX}
+          y={BP_TRACK.y - 6}
+          className="note-stamp"
+          style={beat(stampBeat(1))}
+        >
+          {`${BP_BAR_INSET_Y}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP_TRACK.x + BP_TRACK.w - BP_PAD_X / 2}
+          y={BP_TRACK.y - 6}
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
+          {`${BP_PAD_X}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP_TRACK.x + BP_PAD_X / 2}
+          y={BP_TRACK.y + BP_TRACK.h + 10}
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        >
+          {`${BP_PAD_X}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP_BAR_CX}
+          y={BP_TRACK.y + BP_TRACK.h + 10}
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
+          {`${BP_BAR_INSET_Y}`}
+        </MeasureNote>
+        <MeasureNote
+          x={BP_BAR_CX + 11}
+          y={BP_TRACK.y + BP_TRACK.h + 10}
+          anchor="start"
+          className="note-stamp"
+          style={beat(stampBeat(5))}
+        >
+          {`bar ${BP_BAR.w}x${BP_BAR.h}`}
+        </MeasureNote>
+        <MeasureV
+          x={BP_TRACK.x - 8}
+          y1={BP_TRACK.y}
+          y2={BP_TRACK.y + BP_TRACK.h}
+          label={`${BP_TRACK.h}`}
+          labelXOffset={-4}
+          className="note-stamp"
+          style={beat(stampBeat(6))}
+        />
         <MeasureH
           x1={BP_TRACK.x}
           x2={BP_TRACK.x + BP_TRACK.w}
-          y={BP_TRACK.y - 10}
-          label="180"
+          y={BP_TRACK.y + BP_TRACK.h + 24}
+          label="w-full"
           className="note-stamp"
-          style={beat(stampBeat(4))}
+          style={beat(stampBeat(7))}
         />
-        <MeasureV
-          x={BP_TRACK.x - 12}
-          y1={BP_TRACK.y}
-          y2={BP_TRACK.y + BP_TRACK.h}
-          label="40"
-          labelXOffset={-6}
-          className="note-stamp"
-          style={beat(stampBeat(5))}
-        />
-        <MeasureNote
-          x={BP_TRACK.x}
-          y={BP_TRACK.y - 4}
-          anchor="start"
-          className="note-stamp"
-          style={beat(stampBeat(6))}
-        >
-          r4
-        </MeasureNote>
       </g>
     </DraftSurface>
   )
 }
 
 const AN = {
-  x: 10,
-  y: 50,
-  w: 200,
-  h: 38,
+  x: 0,
+  y: 0,
+  w: 240,
+  h: 40,
   rx: 4,
-  fillW: 100,
+  fillW: 156,
+  barBox: 16,
   barW: 4,
-  barH: 18,
+  barH: 20,
+  thumbW: 20,
+  thumbH: 32,
   padX: 14,
-  padY: 10,
+  font: 14,
 } as const
 
+const AN_MID_Y = AN.y + AN.h / 2
+const AN_BAR_X = AN.x + AN.fillW - AN.barBox / 2 - AN.barW / 2
+const AN_BAR_Y = AN_MID_Y - AN.barH / 2
+const AN_THUMB = {
+  x: AN.x + AN.fillW - AN.thumbW / 2,
+  y: AN_MID_Y - AN.thumbH / 2,
+  w: AN.thumbW,
+  h: AN.thumbH,
+} as const
+
+function useEngaged(id: string) {
+  const { hovered, pinned } = useAnatomy()
+  return (hovered ?? pinned) === id
+}
+
 function AnatomyTrack() {
-  const { hovered, setHovered } = useAnatomy()
+  const { setHovered } = useAnatomy()
   const spotlight = useSpotlight(['root', 'track'])
-  const active = hovered === 'root' || hovered === 'track'
+  const isRoot = useEngaged('root')
+  const isTrack = useEngaged('track')
 
   return (
     <rect
@@ -316,9 +310,9 @@ function AnatomyTrack() {
       height={AN.h}
       rx={AN.rx}
       stroke="currentColor"
-      strokeWidth={hovered === 'root' ? 2 : draftTheme.wireframe.strokeWidth}
-      fill={active ? 'currentColor' : 'transparent'}
-      fillOpacity={hovered === 'root' ? 0.03 : hovered === 'track' ? 0.1 : 0}
+      strokeWidth={isRoot ? 2 : draftTheme.wireframe.strokeWidth}
+      fill="currentColor"
+      fillOpacity={isRoot ? 0.03 : isTrack ? 0.1 : 0}
       className={`cursor-pointer ${spotlight.className}`}
       style={{ ...spotlight.style, pointerEvents: 'all' }}
       onMouseEnter={() => setHovered('track')}
@@ -328,8 +322,9 @@ function AnatomyTrack() {
 }
 
 function AnatomyFill() {
-  const { hovered, setHovered } = useAnatomy()
+  const { setHovered } = useAnatomy()
   const spotlight = useSpotlight('fill')
+  const active = useEngaged('fill')
 
   return (
     <rect
@@ -340,8 +335,8 @@ function AnatomyFill() {
       rx={AN.rx}
       stroke="currentColor"
       strokeWidth={1}
-      fill={hovered === 'fill' ? 'currentColor' : 'url(#bp-anatomy-hatch)'}
-      className={`cursor-pointer ${hovered === 'fill' ? 'text-(--color-fg)' : ''} ${spotlight.className}`}
+      fill={active ? 'currentColor' : 'url(#bp-anatomy-hatch)'}
+      className={`cursor-pointer ${active ? 'text-(--color-fg)' : ''} ${spotlight.className}`}
       style={{ ...spotlight.style, pointerEvents: 'all' }}
       onMouseEnter={() => setHovered('fill')}
       onMouseLeave={() => setHovered(null)}
@@ -350,10 +345,9 @@ function AnatomyFill() {
 }
 
 function AnatomyThumb() {
-  const { hovered, setHovered } = useAnatomy()
+  const { setHovered } = useAnatomy()
   const spotlight = useSpotlight('thumb')
-  const barX = AN.x + AN.fillW - AN.barW / 2
-  const barY = AN.y + (AN.h - AN.barH) / 2
+  const active = useEngaged('thumb')
 
   return (
     <g
@@ -362,60 +356,59 @@ function AnatomyThumb() {
       className="cursor-pointer"
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
-      <rect x={barX - 10} y={AN.y} width={24} height={AN.h} fill="transparent" />
+      <rect x={AN_BAR_X - 4} y={AN_BAR_Y} width={AN.barW + 8} height={AN.barH} fill="transparent" />
       <rect
-        x={barX}
-        y={barY}
+        x={AN_BAR_X}
+        y={AN_BAR_Y}
         width={AN.barW}
         height={AN.barH}
-        rx={2}
+        rx={AN.barW / 2}
         stroke="currentColor"
-        strokeWidth={hovered === 'thumb' ? 1.25 : draftTheme.wireframe.strokeWidth}
-        fill={hovered === 'thumb' ? 'currentColor' : 'transparent'}
-        className={`${hovered === 'thumb' ? 'text-(--color-fg)' : ''} ${spotlight.className}`}
+        strokeWidth={active ? 1.25 : draftTheme.wireframe.strokeWidth}
+        fill={active ? 'currentColor' : 'var(--color-bg)'}
+        className={`${active ? 'text-(--color-fg)' : ''} ${spotlight.className}`}
       />
     </g>
   )
 }
 
 function AnatomyTexts() {
-  const { hovered } = useAnatomy()
+  const fillActive = useEngaged('fill')
+  const trackActive = useEngaged('track')
   const fillSpot = useSpotlight('fill', { defaultOpacity: 70 })
   const trackSpot = useSpotlight('track', { defaultOpacity: 70 })
-  const midY = AN.y + AN.h / 2 + 4.5
+  const baseline = AN_MID_Y + AN.font * 0.35
 
   return (
     <>
       <text
         x={AN.x + AN.padX}
-        y={midY}
-        fontSize={14}
-        fontWeight={500}
+        y={baseline}
+        fontSize={AN.font}
         fontFamily="var(--font-sans)"
         style={{ pointerEvents: 'none', ...fillSpot.style }}
-        className={`${hovered === 'fill' ? 'fill-(--color-bg)' : 'fill-current'} ${fillSpot.className}`}
+        className={`${fillActive ? 'fill-(--color-bg)' : 'fill-current'} ${fillSpot.className}`}
       >
         Volume
       </text>
       <text
         x={AN.x + AN.w - AN.padX}
-        y={midY}
+        y={baseline}
         textAnchor="end"
-        fontSize={14}
-        fontWeight={500}
+        fontSize={AN.font}
         fontFamily="var(--font-sans)"
         style={{ pointerEvents: 'none', ...trackSpot.style }}
-        className={`${hovered === 'track' ? 'fill-(--color-fg)' : 'fill-current'} tabular-nums ${trackSpot.className}`}
+        className={`${trackActive ? 'fill-(--color-fg)' : 'fill-current'} tabular-nums ${trackSpot.className}`}
       >
-        50%
+        65%
       </text>
     </>
   )
 }
 
 function AnatomyBackground() {
-  const { hovered } = useAnatomy()
-  const dimmed = hovered !== null
+  const { hovered, pinned } = useAnatomy()
+  const dimmed = (hovered ?? pinned) !== null
 
   return (
     <g
@@ -427,9 +420,9 @@ function AnatomyBackground() {
     >
       <InsetGuide
         x={AN.x + AN.padX}
-        y={AN.y + AN.padY}
+        y={AN.y}
         w={AN.w - AN.padX * 2}
-        h={AN.h - AN.padY * 2}
+        h={AN.h}
         offset={0.8}
         boxX={AN.x}
         boxY={AN.y}
@@ -438,179 +431,109 @@ function AnatomyBackground() {
         boxRx={AN.rx}
         clipOffset={0.8}
       />
-      <g
-        fontSize={9}
-        fontFamily="var(--font-mono)"
-        fill="currentColor"
-        textAnchor="middle"
-        opacity={0.5}
-      >
-        <text x={AN.x + 7} y={AN.y + AN.h / 2 + 3}>
-          14
-        </text>
-        <text x={AN.x + AN.w - 7} y={AN.y + AN.h / 2 + 3}>
-          14
-        </text>
-        <text x={AN.x + AN.w / 2} y={AN.y + 7.5}>
-          10
-        </text>
-        <text x={AN.x + AN.w / 2} y={AN.y + AN.h - 3.5}>
-          10
-        </text>
-      </g>
-      <text
-        x={AN.x}
-        y={AN.y - 7}
-        fontSize={10}
-        fontFamily="var(--font-mono)"
-        fill="currentColor"
-        opacity={0.5}
-        fontWeight={500}
-      >
-        r4
-      </text>
+      <MeasureNote x={AN.x + AN.padX / 2} y={AN.y + AN.h - 4}>
+        {`${AN.padX}`}
+      </MeasureNote>
+      <MeasureNote x={AN.x + AN.w - AN.padX / 2} y={AN.y + AN.h - 4}>
+        {`${AN.padX}`}
+      </MeasureNote>
       <GripFrame x={AN.x} y={AN.y} w={AN.w} h={AN.h} />
-      <MeasureH x1={AN.x} x2={AN.x + AN.w} y={AN.y - 15} label="200" />
-      <MeasureV
-        x={AN.x + AN.w + 15}
-        y1={AN.y}
-        y2={AN.y + AN.h}
-        label="38"
-        labelXOffset={5}
-        labelAnchor="start"
-      />
+      <MeasureV x={AN.x - 12} y1={AN.y} y2={AN.y + AN.h} label={`${AN.h}`} labelXOffset={-6} />
     </g>
   )
 }
 
 function AnatomyInteractionZone() {
-  const { hovered, setHovered } = useAnatomy()
+  const { setHovered } = useAnatomy()
   const spotlight = useSpotlight('interaction', { isInteraction: true })
-  const barCenterX = AN.x + AN.fillW
-  const barCenterY = AN.y + AN.h / 2
-  const zone = { x: barCenterX - 22, y: barCenterY - 22, w: 44, h: 44 }
+  const active = useEngaged('interaction')
 
   return (
-    <>
-      <rect
-        x={zone.x}
-        y={zone.y}
-        width={zone.w}
-        height={zone.h}
-        rx={8}
-        strokeWidth={1}
-        strokeDasharray={hovered === 'interaction' ? 'none' : '2 2'}
-        className={`cursor-pointer stroke-(--color-fg) ${hovered === 'interaction' ? 'fill-(--color-fg)' : 'fill-transparent'} ${spotlight.className}`}
-        style={{
-          pointerEvents: 'all',
-          fillOpacity: hovered === 'interaction' ? 0.1 : 0,
-          ...spotlight.style,
-        }}
-        onMouseEnter={() => setHovered('interaction')}
-        onMouseLeave={() => setHovered(null)}
-      />
-      <line
-        x1={zone.x + zone.w}
-        y1={zone.y + zone.h / 2}
-        x2={240}
-        y2={68}
-        strokeWidth={1}
-        strokeDasharray={hovered === 'interaction' ? 'none' : '2 2'}
-        className={`pointer-events-none stroke-(--color-fg) ${spotlight.className}`}
-        style={spotlight.style}
-      />
-    </>
+    <rect
+      x={AN_THUMB.x}
+      y={AN_THUMB.y}
+      width={AN_THUMB.w}
+      height={AN_THUMB.h}
+      rx={AN.rx}
+      stroke="var(--bp-accent, var(--color-accent))"
+      strokeWidth={1}
+      strokeDasharray={active ? 'none' : '2 2'}
+      className={`cursor-pointer ${active ? 'fill-(--color-fg)' : 'fill-transparent'} ${spotlight.className}`}
+      style={{
+        pointerEvents: 'all',
+        fillOpacity: active ? 0.1 : 0,
+        ...spotlight.style,
+      }}
+      onMouseEnter={() => setHovered('interaction')}
+      onMouseLeave={() => setHovered(null)}
+    />
   )
 }
 
-function AnatomyLines() {
-  return (
-    <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="root" x1={70} y1={109} x2={20} y2={109} />
-      <OverlayLine id="fill" x1={130} y1={40} x2={130} y2={90} />
-      <OverlayLine id="thumb" x1={170} y1={145} x2={170} y2={128} />
-      <OverlayLine id="track" x1={270} y1={178} x2={270} y2={128} />
-    </g>
-  )
-}
-
-function AnatomyTags() {
+function AnatomyCallouts() {
   return (
     <>
-      <foreignObject
-        x={-90}
-        y={97}
-        width={110}
-        height={24}
-        className="overflow-visible pointer-events-none"
-      >
-        <AnatomyTag part="root" label="Fader.Root" className="items-center justify-end" />
-      </foreignObject>
-      <foreignObject
-        x={70}
-        y={16}
-        width={120}
-        height={24}
-        className="overflow-visible pointer-events-none"
-      >
-        <AnatomyTag
-          part="fill"
-          label="Fill (custom)"
-          isAccent
-          className="items-end justify-center"
-        />
-      </foreignObject>
-      <foreignObject
-        x={115}
-        y={148}
-        width={110}
-        height={24}
-        className="overflow-visible pointer-events-none"
-      >
-        <AnatomyTag part="thumb" label="Grab bar" className="items-start justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={270}
-        y={178}
-        width={110}
-        height={24}
-        className="overflow-visible pointer-events-none"
-      >
-        <AnatomyTag part="track" label="Fader.Track" className="items-start justify-start" />
-      </foreignObject>
-      <foreignObject
-        x={300}
-        y={96}
-        width={200}
-        height={24}
-        className="overflow-visible pointer-events-none"
-      >
-        <AnatomyTag
-          part="interaction"
-          label="Interaction zone (>=24px)"
-          isAccent
-          className="items-center justify-start"
-        />
-      </foreignObject>
+      <AnatomyCallout
+        part="fill"
+        label="Fill"
+        anchor={[AN.x + 40, AN.y]}
+        side="top"
+        distance={24}
+        isAccent
+        measure={`${AN.fillW} × ${AN.h} · 65% · rounded-md`}
+        caption="Fill whose edge is the reading. Stretches elastically on overdrag."
+      />
+      <AnatomyCallout
+        part="interaction"
+        label="Thumb hit area"
+        anchor={[AN_THUMB.x + AN_THUMB.w / 2, AN_THUMB.y]}
+        side="top"
+        distance={AN_THUMB.y - AN.y + 24}
+        isAccent
+        measure={`${AN.thumbW} × ${AN.thumbH} · Slider.Thumb`}
+        caption="Focusable thumb. Arrows step, PageUp and PageDown take big steps."
+      />
+      <AnatomyCallout
+        part="root"
+        label="Fader.Root"
+        anchor={[AN.x + 30, AN.y + AN.h]}
+        side="bottom"
+        distance={24}
+        measure={`w-full × ${AN.h} · size md`}
+        caption="Slider root, controlled through value and onValueChange."
+      />
+      <AnatomyCallout
+        part="thumb"
+        label="Grab bar"
+        anchor={[AN_BAR_X + AN.barW / 2, AN_BAR_Y + AN.barH]}
+        side="bottom"
+        distance={AN.y + AN.h + 24 - (AN_BAR_Y + AN.barH)}
+        measure={`${AN.barW} × ${AN.barH} · rounded-full`}
+        caption="Grab signifier riding the fill edge, centered 8px inside it."
+      />
+      <AnatomyCallout
+        part="track"
+        label="Fader.Track"
+        anchor={[AN.x + AN.w, AN_MID_Y]}
+        side="end"
+        distance={24}
+        measure={`w-full × ${AN.h} · rounded-md · px-3.5`}
+        caption="Clickable track that holds the label and value readout."
+      />
     </>
   )
 }
 
 export function FaderAnatomy() {
   return (
-    <AnatomyFrame viewBox="-104 7 549 204" maxWidthClassName="max-w-[659px]">
-      <g transform="translate(60, 40)">
-        <AnatomyTrack />
-        <AnatomyFill />
-        <AnatomyThumb />
-        <AnatomyTexts />
-        <AnatomyBackground />
-      </g>
-      <AnatomyLines />
-      <g transform="translate(60, 40)">
-        <AnatomyInteractionZone />
-      </g>
-      <AnatomyTags />
+    <AnatomyFrame viewBox="-40 -60 402 160" ariaLabel="Fader anatomy">
+      <AnatomyTrack />
+      <AnatomyFill />
+      <AnatomyThumb />
+      <AnatomyTexts />
+      <AnatomyBackground />
+      <AnatomyInteractionZone />
+      <AnatomyCallouts />
     </AnatomyFrame>
   )
 }

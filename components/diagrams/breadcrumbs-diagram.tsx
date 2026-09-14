@@ -1,18 +1,19 @@
 'use client'
 
 // SPDX-License-Identifier: CC-BY-NC-4.0
-// Wireframe/anatomy diagram asset — licensed separately from the rest of
+// Wireframe/anatomy diagram asset, licensed separately from the rest of
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
-// This file is NOT covered by the repository's root MIT LICENSE.
+// This file is NOT covered by the repository's root LICENSE.
 
 import {
   DraftSurface,
-  DRAFT_FILL_PANEL,
+  DRAFT_INK_MORPH,
   DRAFT_SCAFFOLD_FADE,
   DRAFT_TEXT_SOFT,
   draftTheme,
   MeasureH,
   MeasureV,
+  MeasureNote,
   GripFrame,
   beat,
   DRAFT_BEAT,
@@ -20,142 +21,157 @@ import {
 } from '@/components/diagrams/lib/diagram-parts'
 import {
   AnatomyFrame,
-  AnatomyTag,
-  OverlayLine,
+  AnatomyCallout,
   useAnatomy,
   useSpotlight,
 } from '@/components/diagrams/lib/anatomy-parts'
 
 const BREAD = {
   items: ['Home', 'Docs', 'Breadcrumbs'] as const,
-  itemH: 20,
-  sepW: 10,
-  gap: 4,
-  rx: 2,
+  textW: { Home: 36, Docs: 32, Breadcrumbs: 86 },
+  font: 14,
+  lineH: 20,
+  sep: 12,
+  sepNudge: 1,
+  focusRx: 4,
 } as const
 
-function breadItemW(label: string) {
-  return label.length * 6.5 + 9
+function breadTextW(label: (typeof BREAD.items)[number]) {
+  return BREAD.textW[label]
 }
 
 const BREAD_TOTAL_W = BREAD.items.reduce(
-  (sum, label, i) =>
-    sum + breadItemW(label) + (i < BREAD.items.length - 1 ? BREAD.gap + BREAD.sepW + BREAD.gap : 0),
+  (sum, label, i) => sum + breadTextW(label) + (i < BREAD.items.length - 1 ? BREAD.sep : 0),
   0,
 )
 
 const BP = {
   x: (220 - BREAD_TOTAL_W) / 2,
-  y: (140 - BREAD.itemH) / 2,
+  y: (140 - BREAD.lineH) / 2,
 } as const
+const BP_BASELINE = BP.y + BREAD.lineH / 2 + BREAD.font * 0.35
+const BP_FOCUS_I = 1
 
 function itemX(i: number) {
   let x = BP.x
-  for (let j = 0; j < i; j++) {
-    x += breadItemW(BREAD.items[j]) + BREAD.gap + BREAD.sepW + BREAD.gap
-  }
+  for (let j = 0; j < i; j++) x += breadTextW(BREAD.items[j]) + BREAD.sep
   return x
 }
+
+function sepX(i: number) {
+  return itemX(i) + breadTextW(BREAD.items[i])
+}
+
+const BP_LINK_TEXT = `${DRAFT_INK_MORPH} fill-current opacity-35 group-hover:fill-(--color-muted) group-focus-visible:fill-(--color-muted) group-hover:opacity-100 group-focus-visible:opacity-100`
+const BP_SEP_INK = `${DRAFT_INK_MORPH} stroke-current opacity-50 group-hover:stroke-(--color-subtle) group-focus-visible:stroke-(--color-subtle) group-hover:opacity-100 group-focus-visible:opacity-100`
+const BP_FOCUS_RING = `${DRAFT_INK_MORPH} opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100`
 
 export function BreadcrumbsBlueprint() {
   const theme = draftTheme
   const lastIdx = BREAD.items.length - 1
-  const lastLabel = BREAD.items[lastIdx]
-  const lastTextW = breadItemW(lastLabel) - 10
-  const lastCx = itemX(lastIdx) + breadItemW(lastLabel) / 2
+  const focusX = itemX(BP_FOCUS_I)
+  const focusW = breadTextW(BREAD.items[BP_FOCUS_I])
   return (
     <DraftSurface>
-      {BREAD.items.map((label, i) => {
-        const w = breadItemW(label)
-        const inkAt = i === 0 ? DRAFT_BEAT.outline : i === 1 ? '260ms' : '320ms'
-        return (
-          <g key={i}>
-            <rect
-              x={itemX(i)}
-              y={BP.y}
-              width={w}
-              height={BREAD.itemH}
-              rx={BREAD.rx}
+      <rect
+        x={focusX - 2}
+        y={BP.y - 2}
+        width={focusW + 4}
+        height={BREAD.lineH + 4}
+        rx={BREAD.focusRx + 2}
+        fill="none"
+        stroke="var(--bp-accent, var(--color-accent))"
+        strokeWidth={2}
+        className={BP_FOCUS_RING}
+      />
+      {BREAD.items.map((label, i) => (
+        <g key={label}>
+          <text
+            x={itemX(i)}
+            y={BP_BASELINE}
+            fontSize={BREAD.font}
+            fontFamily="var(--font-sans)"
+            style={beat(`${400 + i * 70}ms`)}
+            className={`fade-note ${i === lastIdx ? DRAFT_TEXT_SOFT : BP_LINK_TEXT}`}
+          >
+            {label}
+          </text>
+          {i < lastIdx && (
+            <path
+              d={`M${sepX(i) + 4.5} ${BP.y + 4 + BREAD.sepNudge + 2.5}l3 3.5-3 3.5`}
               pathLength={1}
               strokeDasharray={1}
               strokeDashoffset={1}
-              strokeWidth={theme.wireframe.strokeWidth}
-              strokeOpacity={theme.wireframe.strokeOpacity}
-              style={beat(inkAt)}
-              className={`ink-draw ${i < BREAD.items.length - 1 ? DRAFT_FILL_PANEL : ''}`}
+              fill="none"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={beat(`${200 + i * 60}ms`)}
+              className={`ink-draw ${BP_SEP_INK}`}
             />
-            <text
-              x={itemX(i) + w / 2}
-              y={BP.y + BREAD.itemH / 2 + 5}
-              fontSize={12}
-              textAnchor="middle"
-              fontFamily="var(--font-sans)"
-              style={beat(`${400 + i * 70}ms`)}
-              className={`fade-note ${DRAFT_TEXT_SOFT}`}
-            >
-              {label}
-            </text>
-            {i < BREAD.items.length - 1 &&
-              (() => {
-                const cx = itemX(i) + w + BREAD.gap + BREAD.sepW / 2
-                const cy = BP.y + BREAD.itemH / 2 + 1
-                return (
-                  <path
-                    d={`M${cx - 1.5} ${cy - 3.5}l3 3.5-3 3.5`}
-                    pathLength={1}
-                    strokeDasharray={1}
-                    strokeDashoffset={1}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={theme.wireframe.strokeWidth}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    opacity={theme.wireframe.strokeOpacity}
-                    style={beat(`${260 + i * 60}ms`)}
-                    className={`ink-draw ${DRAFT_SCAFFOLD_FADE}`}
-                  />
-                )
-              })()}
-          </g>
-        )
-      })}
-      <line
-        x1={lastCx - lastTextW / 2}
-        y1={BP.y + BREAD.itemH + 3}
-        x2={lastCx + lastTextW / 2}
-        y2={BP.y + BREAD.itemH + 3}
-        stroke="var(--color-accent)"
-        strokeWidth={1}
-        strokeLinecap="round"
-        pathLength={1}
-        strokeDasharray={1}
-        strokeDashoffset={1}
-        className="transition-[stroke-dashoffset] duration-(--motion-dur-slow) ease-(--motion-ease-out) group-hover:[stroke-dashoffset:0] group-hover:delay-(--motion-dur-base) group-focus-visible:[stroke-dashoffset:0] group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none"
-      />
+          )}
+        </g>
+      ))}
       <g className={DRAFT_SCAFFOLD_FADE}>
         <GripFrame
           x={BP.x}
-          y={BP.y - 2}
-          w={itemX(2) + breadItemW(BREAD.items[2]) - BP.x}
-          h={BREAD.itemH + 4}
+          y={BP.y}
+          w={BREAD_TOTAL_W}
+          h={BREAD.lineH}
           style={beat(DRAFT_BEAT.handle)}
         />
+        <g
+          stroke="currentColor"
+          strokeWidth={theme.guide.strokeWidth}
+          strokeDasharray="2 2"
+          opacity={theme.guide.dimOpacity}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
+        >
+          {BREAD.items.slice(0, lastIdx).map((label, i) => (
+            <rect
+              key={label}
+              x={sepX(i)}
+              y={BP.y + 4 + BREAD.sepNudge}
+              width={BREAD.sep}
+              height={BREAD.sep}
+            />
+          ))}
+        </g>
         <MeasureH
           x1={BP.x}
-          x2={itemX(2) + breadItemW(BREAD.items[2])}
+          x2={BP.x + BREAD_TOTAL_W}
           y={BP.y - 12}
-          label={`${itemX(2) + breadItemW(BREAD.items[2]) - BP.x}`}
+          label={`${BREAD_TOTAL_W}`}
           className="note-stamp"
           style={beat(stampBeat(0))}
         />
+        <MeasureH
+          x1={sepX(0)}
+          x2={sepX(0) + BREAD.sep}
+          y={BP.y + BREAD.lineH + 8}
+          label={`${BREAD.sep}`}
+          labelYOffset={10}
+          className="note-stamp"
+          style={beat(stampBeat(3))}
+        />
         <MeasureV
-          x={BP.x - 12}
+          x={BP.x - 8}
           y1={BP.y}
-          y2={BP.y + BREAD.itemH}
-          label={`${BREAD.itemH}`}
+          y2={BP.y + BREAD.lineH}
+          label={`${BREAD.lineH}`}
           className="note-stamp"
           style={beat(stampBeat(1))}
         />
+        <MeasureNote
+          x={BP.x + BREAD_TOTAL_W}
+          y={BP.y + BREAD.lineH + 18}
+          anchor="end"
+          className="note-stamp"
+          style={beat(stampBeat(2))}
+        >
+          {`text ${BREAD.font} · gap 0`}
+        </MeasureNote>
       </g>
     </DraftSurface>
   )
@@ -281,7 +297,6 @@ function AnatomyCurrent() {
         x={x + item.w / 2}
         y={AN.y + AN.itemH / 2 + 5}
         fontSize={14}
-        fontWeight={500}
         textAnchor="middle"
         fontFamily="var(--font-sans)"
         className={`fill-current ${isHovered ? 'opacity-100' : 'opacity-90'}`}
@@ -315,78 +330,46 @@ function AnatomyBackground() {
   )
 }
 
-function AnatomyLines() {
-  const linkX = anItemX(0) + AN.items[0].w / 2
-  const sepX = anItemX(0) + AN.items[0].w + AN.gap + AN.sepW / 2
-  const currentX = anItemX(2) + AN.items[2].w / 2
-  return (
-    <g strokeWidth="1" className="pointer-events-none">
-      <OverlayLine id="link" x1={linkX} y1={AN.y} x2={linkX} y2={AN.y - 8} />
-      <OverlayLine
-        id="separator"
-        x1={sepX}
-        y1={AN.y + AN.itemH}
-        x2={sepX}
-        y2={AN.y + AN.itemH + 8}
-      />
-      <OverlayLine id="current" x1={currentX} y1={AN.y} x2={currentX} y2={AN.y - 8} />
-    </g>
-  )
-}
-
-function AnatomyTags() {
-  const linkX = anItemX(0) + AN.items[0].w / 2
-  const sepX = anItemX(0) + AN.items[0].w + AN.gap + AN.sepW / 2
-  const currentX = anItemX(2) + AN.items[2].w / 2
-  return (
-    <>
-      <foreignObject
-        x={linkX - 35}
-        y={AN.y - 32}
-        width={70}
-        height={24}
-        className="overflow-visible pointer-events-none"
-      >
-        <AnatomyTag part="link" label="Link" className="items-end justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={sepX - 50}
-        y={AN.y + AN.itemH + 8}
-        width={100}
-        height={24}
-        className="overflow-visible pointer-events-none"
-      >
-        <AnatomyTag part="separator" label="Separator" className="items-start justify-center" />
-      </foreignObject>
-      <foreignObject
-        x={currentX - 55}
-        y={AN.y - 32}
-        width={110}
-        height={24}
-        className="overflow-visible pointer-events-none"
-      >
-        <AnatomyTag
-          part="current"
-          label="Current page"
-          isAccent
-          className="items-end justify-center"
-        />
-      </foreignObject>
-    </>
-  )
-}
-
 export function BreadcrumbsAnatomy() {
+  const linkX = anItemX(0) + AN.items[0].w / 2
+  const sepX = anItemX(0) + AN.items[0].w + AN.gap + AN.sepW / 2
+  const currentX = anItemX(2) + AN.items[2].w / 2
   return (
-    <AnatomyFrame viewBox="0 8 320 130" maxWidthClassName="max-w-sm">
+    <AnatomyFrame viewBox="0 8 320 130" ariaLabel="Breadcrumbs anatomy: link, separator, current">
       <AnatomyLink i={0} />
       <AnatomySeparator i={0} />
       <AnatomyLink i={1} />
       <AnatomySeparator i={1} />
       <AnatomyCurrent />
       <AnatomyBackground />
-      <AnatomyLines />
-      <AnatomyTags />
+      <AnatomyCallout
+        part="link"
+        label="Link"
+        anchor={[linkX, AN.y]}
+        side="top"
+        distance={8}
+        measure={`${AN.items[0].w} x ${AN.itemH}, r 2`}
+        caption="Clickable link to a parent page in the trail"
+      />
+      <AnatomyCallout
+        part="separator"
+        label="Separator"
+        anchor={[sepX, AN.y + AN.itemH]}
+        side="bottom"
+        distance={8}
+        measure={`${AN.sepW} x ${AN.itemH}, r 2`}
+        caption="Visual divider between breadcrumb items"
+      />
+      <AnatomyCallout
+        part="current"
+        label="Current page"
+        anchor={[currentX, AN.y]}
+        side="top"
+        distance={8}
+        isAccent
+        measure={`${AN.items[2].w} x ${AN.itemH}, r 2`}
+        caption="The current location, not clickable"
+      />
     </AnatomyFrame>
   )
 }
