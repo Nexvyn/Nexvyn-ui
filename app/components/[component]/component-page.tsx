@@ -17,21 +17,17 @@ import {
   AdaptiveActionsDemo,
   AiInputDemo,
   BadgeDemo,
-  ButtonDemo,
   BounceSidebarDemo,
   BreadcrumbsDemo,
   CheckboxDemo,
-  ComboboxDemo,
   ContextMenuDemo,
   MorphNavDemo,
-  MobileDrawerDemo,
   ClipboardFieldDemo,
   DropdownMenuDemo,
   ColorPickerDemo,
   FaderDemo,
   GooDropdownDemo,
   IconBarDemo,
-  InputDemo,
   NavMenuDemo,
   PasswordInputDemo,
   RadioGroupDemo,
@@ -39,11 +35,9 @@ import {
   ScrollIndicatorDemo,
   SelectDemo,
   SwitchDemo,
-  TableDemo,
   TableOfContentsDemo,
   TabsSubtleDemo,
   InputCopyDemo,
-  InputMessageDemo,
   BarsThemeDemo,
   GlowOrbDemo,
   FluidOrbDemo,
@@ -170,12 +164,6 @@ export function ComponentDemo({ id }: { id: string }) {
           <BadgeDemo />
         </DemoFrame>
       )
-    case 'button':
-      return (
-        <DemoFrame className="flex items-center justify-center p-6">
-          <ButtonDemo />
-        </DemoFrame>
-      )
     case 'breadcrumbs':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
@@ -188,12 +176,6 @@ export function ComponentDemo({ id }: { id: string }) {
           <CheckboxDemo />
         </DemoFrame>
       )
-    case 'combobox':
-      return (
-        <DemoFrame className="flex items-center justify-center p-6">
-          <ComboboxDemo />
-        </DemoFrame>
-      )
     case 'context-menu':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
@@ -204,12 +186,6 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <MorphNavDemo />
-        </DemoFrame>
-      )
-    case 'mobile-drawer':
-      return (
-        <DemoFrame className="flex items-center justify-center p-6">
-          <MobileDrawerDemo />
         </DemoFrame>
       )
     case 'clipboard-field':
@@ -234,12 +210,6 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <IconBarDemo />
-        </DemoFrame>
-      )
-    case 'input':
-      return (
-        <DemoFrame className="flex items-center justify-center p-6">
-          <InputDemo />
         </DemoFrame>
       )
     case 'bounce-sidebar':
@@ -296,12 +266,6 @@ export function ComponentDemo({ id }: { id: string }) {
           <SwitchDemo />
         </DemoFrame>
       )
-    case 'table':
-      return (
-        <DemoFrame className="flex items-center justify-center p-6">
-          <TableDemo />
-        </DemoFrame>
-      )
     case 'select':
       return (
         <DemoFrame className="flex items-center justify-center p-6">
@@ -324,12 +288,6 @@ export function ComponentDemo({ id }: { id: string }) {
       return (
         <DemoFrame className="flex items-center justify-center p-6">
           <InputCopyDemo />
-        </DemoFrame>
-      )
-    case 'input-message':
-      return (
-        <DemoFrame className="flex h-full min-h-72 w-full items-stretch justify-center">
-          <InputMessageDemo />
         </DemoFrame>
       )
     case 'bars-theme':

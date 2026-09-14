@@ -3,16 +3,13 @@ import { actionButtonMetadata } from '@/components/ui/Doc/action-button-metadata
 import { adaptiveActionsMetadata } from '@/components/ui/Doc/adaptive-actions-metadata'
 import { aiInputMetadata } from '@/components/ui/Doc/ai-input-metadata'
 import { badgeMetadata } from '@/components/ui/Doc/badge-metadata'
-import { buttonMetadata } from '@/components/ui/Doc/button-metadata'
 import { barsThemeMetadata } from '@/components/ui/Doc/bars-theme-metadata'
 import { bounceSidebarMetadata } from '@/components/ui/Doc/bounce-sidebar-metadata'
 import { breadcrumbsMetadata } from '@/components/ui/Doc/breadcrumbs-metadata'
 import { checkboxMetadata } from '@/components/ui/Doc/checkbox-metadata'
 import { glowOrbMetadata } from '@/components/ui/Doc/glow-orb-metadata'
-import { comboboxMetadata } from '@/components/ui/Doc/combobox-metadata'
 import { contextMenuMetadata } from '@/components/ui/Doc/context-menu-metadata'
 import { morphNavMetadata } from '@/components/ui/Doc/morph-nav-metadata'
-import { mobileDrawerMetadata } from '@/components/ui/Doc/mobile-drawer-metadata'
 import { clipboardFieldMetadata } from '@/components/ui/Doc/clipboard-field-metadata'
 import { colorPickerMetadata } from '@/components/ui/Doc/color-picker-metadata'
 import { faderMetadata } from '@/components/ui/Doc/fader-metadata'
@@ -21,16 +18,13 @@ import { dropdownMenuMetadata } from '@/components/ui/Doc/dropdown-menu-metadata
 import { navMenuMetadata } from '@/components/ui/Doc/nav-menu-metadata'
 import { iconBarMetadata } from '@/components/ui/Doc/icon-bar-metadata'
 import { gooDropdownMetadata } from '@/components/ui/Doc/goo-dropdown-metadata'
-import { inputMetadata } from '@/components/ui/Doc/input-metadata'
 import { inputCopyMetadata } from '@/components/ui/Doc/input-copy-metadata'
-import { inputMessageMetadata } from '@/components/ui/Doc/input-message-metadata'
 import { passwordInputMetadata } from '@/components/ui/Doc/password-input-metadata'
 import { radioGroupMetadata } from '@/components/ui/Doc/radio-group-metadata'
 import { ratioSliderMetadata } from '@/components/ui/Doc/ratio-slider-metadata'
 import { scrollIndicatorMetadata } from '@/components/ui/Doc/scroll-indicator-metadata'
 import { selectMetadata } from '@/components/ui/Doc/select-metadata'
 import { switchMetadata } from '@/components/ui/Doc/switch-metadata'
-import { tableMetadata } from '@/components/ui/Doc/table-metadata'
 import { tableOfContentsMetadata } from '@/components/ui/Doc/table-of-contents-metadata'
 import { tabsSubtleMetadata } from '@/components/ui/Doc/tabs-subtle-metadata'
 import { phoneMockupMetadata } from '@/components/ui/Doc/phone-mockup-metadata'
@@ -126,16 +120,13 @@ const COMPONENTS_UNSORTED: ComponentItem[] = [
   adaptiveActionsMetadata,
   aiInputMetadata,
   badgeMetadata,
-  buttonMetadata,
   barsThemeMetadata,
   bounceSidebarMetadata,
   breadcrumbsMetadata,
   checkboxMetadata,
   glowOrbMetadata,
-  comboboxMetadata,
   contextMenuMetadata,
   morphNavMetadata,
-  mobileDrawerMetadata,
   clipboardFieldMetadata,
   colorPickerMetadata,
   dropdownMenuMetadata,
@@ -143,9 +134,7 @@ const COMPONENTS_UNSORTED: ComponentItem[] = [
   fluidOrbMetadata,
   gooDropdownMetadata,
   iconBarMetadata,
-  inputMetadata,
   inputCopyMetadata,
-  inputMessageMetadata,
   navMenuMetadata,
   passwordInputMetadata,
   radioGroupMetadata,
@@ -153,7 +142,6 @@ const COMPONENTS_UNSORTED: ComponentItem[] = [
   scrollIndicatorMetadata,
   selectMetadata,
   switchMetadata,
-  tableMetadata,
   tableOfContentsMetadata,
   tabsSubtleMetadata,
   phoneMockupMetadata,
