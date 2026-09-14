@@ -11,33 +11,17 @@ export interface ActionButtonProps extends Omit<
   ButtonProps,
   'loading' | 'loadingLabel' | 'loadingIndicator' | 'onClick'
 > {
-  /**
-   * Controlled state. If provided, the component becomes fully controlled
-   * and ignores the result of `onAction`.
-   */
+  /** Controlled state; when set, the result of `onAction` is ignored. */
   state?: ActionButtonState
-  /**
-   * Default state for uncontrolled mode.
-   */
+  /** Default state for uncontrolled mode. */
   defaultState?: ActionButtonState
-  /**
-   * A callback that returns a promise. The component tracks the promise lifecycle
-   * (idle → pending → success/error → idle). Receives an AbortSignal.
-   */
+  /** Async action whose promise lifecycle drives the state. Receives an AbortSignal. */
   onAction?: (signal: AbortSignal) => Promise<void>
-  /**
-   * Callback fired whenever internal state changes (uncontrolled mode).
-   */
+  /** Fired whenever internal state changes (uncontrolled mode). */
   onStateChange?: (state: ActionButtonState) => void
-  /**
-   * Minimum time (ms) to show the pending state. Prevents flicker for fast operations.
-   * Defaults to 0 (no minimum). Opt-in only.
-   */
+  /** Minimum ms to show the pending state, to prevent flicker. Defaults to 0. */
   minPendingMs?: number
-  /**
-   * Time (ms) before resetting from success/error back to idle.
-   * Defaults to 2000ms. Set to 0 to disable auto-reset.
-   */
+  /** Ms before success/error resets to idle. Defaults to 2000; 0 disables. */
   resetDelayMs?: number
   /** Label content shown in idle state. */
   idleLabel?: React.ReactNode
@@ -55,17 +39,11 @@ export interface ActionButtonProps extends Omit<
   successIcon?: React.ReactNode
   /** Icon shown in error state. Defaults to an × glyph. */
   errorIcon?: React.ReactNode
-  /**
-   * Full control over rendering each state. Overrides individual label/icon props.
-   * The returned node is rendered inside the button.
-   */
+  /** Custom render per state. Overrides the individual label/icon props. */
   renderState?: (state: ActionButtonState) => React.ReactNode
-  /**
-   * Accessible live-region announcement per state.
-   * Provide either a static string or a function.
-   */
+  /** Accessible live-region announcement per state. */
   announcements?: Partial<Record<ActionButtonState, string>>
-  /** onClick passthrough — fires only in idle state. Does not track async. */
+  /** onClick passthrough, fires only in idle state. Does not track async. */
   onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
 
@@ -145,9 +123,9 @@ function StateLayer({
             ? 'opacity-100'
             : 'opacity-0'
           : [
-              'transition-[opacity,transform,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out)',
+              'transition-[opacity,scale,filter] duration-(--motion-dur-base) ease-(--motion-ease-in-out)',
               active
-                ? 'scale-100 opacity-100 blur-0'
+                ? 'scale-100 opacity-100 blur-none'
                 : 'pointer-events-none scale-95 opacity-0 blur-[1px]',
             ],
         !animateEnabled && !active && 'pointer-events-none',
@@ -214,7 +192,7 @@ export const ActionButton = React.forwardRef<HTMLButtonElement, ActionButtonProp
   ) => {
     if (process.env.NODE_ENV !== 'production' && asChild) {
       console.warn(
-        '[ActionButton] asChild is not supported — ActionButton manages its own internal' +
+        '[ActionButton] asChild is not supported: ActionButton manages its own internal' +
           ' DOM layers for state crossfade. Ignoring asChild prop.',
       )
     }
@@ -228,7 +206,7 @@ export const ActionButton = React.forwardRef<HTMLButtonElement, ActionButtonProp
     const [animateEnabled, setAnimateEnabled] = React.useState(false)
 
     React.useEffect(() => {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time post-mount reveal gate, not a sync loop: transitions must not run on the very first paint (avoids an initial-mount opacity flash), so this only needs to flip true once after hydration.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time post-mount gate that avoids an initial-mount opacity flash
       setAnimateEnabled(true)
     }, [])
 
@@ -331,7 +309,6 @@ export const ActionButton = React.forwardRef<HTMLButtonElement, ActionButtonProp
           },
           (err: unknown) => {
             if (controller.signal.aborted) return
-            // Don't treat AbortError as a real error
             if (err instanceof DOMException && err.name === 'AbortError') return
             transitionToTerminal('error')
           },
@@ -399,7 +376,7 @@ export const ActionButton = React.forwardRef<HTMLButtonElement, ActionButtonProp
           onClick={handleClick}
           asChild={false}
         >
-          {/* Invisible sizing layer — grid-stacks all states so the widest determines width */}
+          {/* Invisible sizing layer, grid-stacks all states so the widest determines width */}
           <span className="invisible grid [&>*]:col-start-1 [&>*]:row-start-1" aria-hidden="true">
             <span className="inline-flex items-center gap-2">{resolveIdleContent()}</span>
             <span className="inline-flex items-center gap-2">{resolvePendingContent()}</span>

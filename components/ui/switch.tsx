@@ -16,6 +16,11 @@ import { cn } from '@/lib/utils'
 import { springs } from '@/lib/motion-tokens'
 import { playHoverSound, playClickSound } from '@/lib/sound'
 
+const TRACK_WIDTH = 44
+const THUMB_SIZE = 20
+const THUMB_INSET = 2
+const THUMB_TRAVEL = TRACK_WIDTH - THUMB_SIZE - THUMB_INSET * 2
+
 export interface SwitchProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'onChange'> {
   checked?: boolean
   defaultChecked?: boolean
@@ -79,6 +84,13 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
     const nativeInputRef = useRef<HTMLInputElement | null>(null)
     const thumbScaleX = useMotionValue(1)
     const isInteractive = !disabled && !readOnly
+    const [isRtl, setIsRtl] = useState(false)
+
+    useEffect(() => {
+      const node = buttonRef.current
+      if (!node) return
+      setIsRtl(getComputedStyle(node).direction === 'rtl')
+    }, [])
 
     const setRefs = useCallback(
       (node: HTMLButtonElement | null) => {
@@ -213,7 +225,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           onPointerCancel={handlePointerCancel}
           onPointerLeave={handlePointerLeave}
           className={cn(
-            'relative inline-flex h-6 w-11 shrink-0 items-center justify-start rounded-full p-0.5 transition-colors',
+            'relative inline-block h-6 w-11 shrink-0 rounded-full transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out)',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
             'disabled:cursor-not-allowed disabled:opacity-50',
             readOnly && 'cursor-default opacity-75',
@@ -224,10 +236,10 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           )}
         >
           <motion.span
-            animate={{ x: checked ? 20 : 0 }}
+            animate={{ x: checked ? (isRtl ? -THUMB_TRAVEL : THUMB_TRAVEL) : 0 }}
             transition={reduceMotion ? { duration: 0 } : springs.settle}
             className={cn(
-              'pointer-events-none inline-block size-5 rounded-full bg-(--color-bg) shadow-sm',
+              'pointer-events-none absolute inset-y-0.5 start-0.5 block size-5 rounded-full bg-(--color-bg) shadow-sm',
               thumbClassName,
             )}
             style={{ scaleX: thumbScaleX }}

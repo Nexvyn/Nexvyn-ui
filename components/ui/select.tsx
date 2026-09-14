@@ -262,8 +262,8 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
         disabled={disabled}
         style={itemsWidth ? { width: itemsWidth } : undefined}
         className={cn(
-          'flex min-h-11 w-full items-center justify-between gap-2 border border-(--color-border) bg-(--color-surface) px-4 py-3 text-left text-sm font-medium text-(--color-fg) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
-          'rounded-lg supports-[corner-shape:squircle]:corner-squircle supports-[corner-shape:squircle]:rounded-[11px]',
+          'flex min-h-11 w-full items-center justify-between gap-2 border border-(--color-border) bg-(--color-surface) px-4 py-3 text-start text-sm font-normal text-(--color-fg) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
+          'rounded-md squircle-corners supports-[corner-shape:squircle]:rounded-md',
           'hover:bg-(--color-surface-2)',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
           'disabled:cursor-not-allowed disabled:opacity-50',
@@ -363,7 +363,7 @@ export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(
                 opacity: { duration: 0.1 },
               }}
               className="inline-block min-w-0 truncate"
-              style={{ top: 0, left: 0 }}
+              style={{ top: 0, insetInlineStart: 0 }}
             >
               {label}
             </motion.span>
@@ -375,7 +375,7 @@ export const SelectValue = forwardRef<HTMLSpanElement, SelectValueProps>(
               exit={{ opacity: 0, position: 'absolute' }}
               transition={{ duration: 0.06 }}
               className="inline-block min-w-0 truncate"
-              style={{ top: 0, left: 0 }}
+              style={{ top: 0, insetInlineStart: 0 }}
             >
               {placeholder}
             </motion.span>
@@ -648,11 +648,8 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
       ],
     )
 
-    // The hidden width-measurement clone renders the same SelectItems with the
-    // same indices as the real panel. It must never share the real registerItem
-    // map — otherwise its (invisible, off-panel) elements race the real panel's
-    // items for the same index slots and the proximity highlight tracks the
-    // wrong element entirely.
+    // The hidden measurement clone must not share the real registerItem map, or its
+    // items race the real panel's for the same index slots and break the highlight.
     const measureOnlyCtx = useMemo<SelectContentContextValue>(
       () => ({
         ...contentCtx,
@@ -671,8 +668,8 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
               ref={measureRef}
               aria-hidden="true"
               className={cn(
-                'pointer-events-none invisible fixed top-0 left-0 min-w-48 border border-(--color-border) bg-(--color-bg) p-1.5 **:min-w-max',
-                'rounded-lg supports-[corner-shape:squircle]:corner-squircle supports-[corner-shape:squircle]:rounded-[11px]',
+                'pointer-events-none invisible fixed top-0 start-0 min-w-48 border border-(--color-border) bg-(--color-bg) p-1 **:min-w-max',
+                'rounded-md squircle-corners supports-[corner-shape:squircle]:rounded-md',
                 className,
               )}
             >
@@ -710,9 +707,9 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                 aria-labelledby={triggerId}
                 data-select-content
                 className={cn(
-                  'relative w-full min-w-48 overflow-hidden border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
-                  'rounded-lg supports-[corner-shape:squircle]:corner-squircle supports-[corner-shape:squircle]:rounded-[11px]',
-                  'shadow-[0_14px_34px_-22px_rgba(0,0,0,0.15)]',
+                  'relative w-full min-w-48 overflow-hidden border border-(--color-border) bg-(--color-bg) p-1 outline-none',
+                  'rounded-md squircle-corners supports-[corner-shape:squircle]:rounded-md',
+                  'shadow-md',
                   className,
                 )}
                 tabIndex={-1}
@@ -727,7 +724,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                   {selectedRect && (
                     <motion.div
                       aria-hidden="true"
-                      className="pointer-events-none absolute inset-x-3 top-0 rounded-md supports-[corner-shape:squircle]:corner-squircle bg-(--color-accent)/15"
+                      className="pointer-events-none absolute inset-x-1 top-0 rounded-md squircle-corners bg-(--color-accent)/15"
                       initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
                       animate={{ opacity: 1, y: selectedRect.top, height: selectedRect.height }}
                       exit={
@@ -749,14 +746,14 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                   highlightSize={highlightSize}
                   highlightOpacity={highlightOpacity}
                   axis={axis}
-                  className="mx-3 rounded-md supports-[corner-shape:squircle]:corner-squircle bg-(--color-surface-2)"
+                  className="mx-1 rounded-md squircle-corners bg-(--color-surface-2)"
                 />
 
                 <AnimatePresence>
                   {focusRect && showFocusRing && (
                     <motion.div
                       aria-hidden="true"
-                      className="pointer-events-none z-20 rounded-md supports-[corner-shape:squircle]:corner-squircle border-2 border-(--color-accent)"
+                      className="pointer-events-none z-20 rounded-md squircle-corners border-2 border-(--color-accent)"
                       initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
                       animate={{
                         opacity: 1,
@@ -852,8 +849,8 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
         data-text-value={resolvedTextValue}
         tabIndex={focusedIndex === index ? 0 : -1}
         className={cn(
-          'relative flex min-h-11 w-full cursor-default select-none scroll-m-1 items-center justify-between gap-3 px-3 py-2.5 text-left text-sm outline-none transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
-          'rounded-md supports-[corner-shape:squircle]:corner-squircle supports-[corner-shape:squircle]:rounded-[9px]',
+          'relative flex min-h-11 w-full cursor-default select-none scroll-m-1 items-center justify-between gap-3 px-3 py-2.5 text-start text-sm outline-none transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
+          'rounded-md squircle-corners supports-[corner-shape:squircle]:rounded-md',
           'data-disabled:pointer-events-none data-disabled:opacity-50',
           isSelected ? 'text-(--color-fg)' : 'text-(--color-muted)',
           className,
@@ -929,7 +926,7 @@ export const SelectGroup = forwardRef<HTMLDivElement, SelectGroupProps>(
       {label && (
         <div
           className={cn(
-            'px-3 pt-1 pb-1 text-[11px] font-medium uppercase tracking-[0.12em] text-(--color-subtle)',
+            'px-3 pt-1 pb-1 text-[11px] font-normal uppercase tracking-[0.12em] text-(--color-subtle)',
             labelClassName,
           )}
         >
@@ -977,7 +974,7 @@ export const SelectLabel = forwardRef<HTMLDivElement, SelectLabelProps>(
     <div
       ref={ref}
       className={cn(
-        'px-3 pt-1 pb-1 text-[11px] font-medium uppercase tracking-[0.12em] text-(--color-subtle)',
+        'px-3 pt-1 pb-1 text-[11px] font-normal uppercase tracking-[0.12em] text-(--color-subtle)',
         className,
       )}
       {...props}

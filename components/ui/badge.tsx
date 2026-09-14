@@ -13,7 +13,7 @@ import { motion, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { playHoverSound, playClickSound } from '@/lib/sound'
 
-const badgeVariants = cva('inline-flex items-center squircle font-medium whitespace-nowrap', {
+const badgeVariants = cva('inline-flex items-center squircle font-normal whitespace-nowrap', {
   variants: {
     variant: {
       solid: 'border border-(--color-border) bg-(--color-surface) text-(--color-fg)',
@@ -64,7 +64,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
       onDismiss,
       dismissLabel = 'Remove',
       pulse = false,
-      shimmer = true,
+      shimmer = false,
       asChild = false,
       onClick,
       onKeyDown,
@@ -186,7 +186,7 @@ export { badgeVariants }
 export function BadgePreview() {
   return (
     <div className="flex w-full flex-col items-center gap-10 p-8">
-      <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 text-balance font-medium text-lg leading-snug tracking-tight text-foreground sm:text-xl">
+      <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 text-balance font-normal text-lg leading-snug tracking-tight text-foreground sm:text-xl">
         <span>This update is</span>
         <span className="inline-flex translate-y-px align-middle">
           <Badge>Early Access</Badge>

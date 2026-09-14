@@ -59,8 +59,13 @@ const SWEEP_SWAP_EASE = [0.22, 1, 0.36, 1] as const
 
 const sweepEase = (t: number) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2)
 
-/** Deliberate exception to the neutral+accent palette rule in AGENTS.md. */
-const DEFAULT_SWEEP_COLORS = ['#c679c4', '#fa3d1d', '#ffb005', '#e1e1fe', '#0358f7']
+const DEFAULT_SWEEP_COLORS = [
+  'var(--color-fg)',
+  'color-mix(in oklch, var(--color-accent) 60%, var(--color-fg))',
+  'var(--color-accent)',
+  'color-mix(in oklch, var(--color-accent) 45%, var(--color-bg))',
+  'var(--color-accent)',
+]
 
 function buildSweepGradient(pos: number, colors: string[], textColor: string): string {
   const bandStart = pos - SWEEP_BAND_HALF
@@ -343,7 +348,13 @@ export const DiaText = forwardRef<HTMLDivElement, DiaTextProps>(
         setMeasuredWidths([])
         return
       }
-      setMeasuredWidths(measureWidths(element, texts))
+
+      const measure = async () => {
+        await document.fonts.ready
+        setMeasuredWidths(measureWidths(element, texts))
+      }
+
+      measure()
     }, [variant, texts])
 
     const fixedW =
@@ -361,6 +372,7 @@ export const DiaText = forwardRef<HTMLDivElement, DiaTextProps>(
     const label = texts[variant === 'sweep' ? sweep.activeIndex : 0]
 
     if (variant === 'sweep') {
+      const maxMeasuredW = measuredWidths.length > 0 ? Math.max(...measuredWidths) : 0
       const wrapperStyle: CSSProperties = {
         ...(texts.length > 1 && {
           display: 'inline-block',
@@ -368,15 +380,25 @@ export const DiaText = forwardRef<HTMLDivElement, DiaTextProps>(
           whiteSpace: 'nowrap',
           verticalAlign: 'bottom',
           ...(fixedW != null && { width: fixedW }),
+          ...(animatedW != null &&
+            !fixedW &&
+            maxMeasuredW > 0 && {
+              width: maxMeasuredW,
+              clipPath: `inset(0 ${Math.max(0, maxMeasuredW - (animatedW ?? 0))}px 0 0)`,
+            }),
         }),
       }
 
       return (
-        <div ref={setRefs} className={cn('relative', className)} aria-label={label} {...props}>
+        <div ref={setRefs} className={cn('relative', className)} {...props}>
           <span className="sr-only">{label}</span>
           <motion.span
             aria-hidden="true"
-            animate={animatedW != null ? { width: animatedW } : undefined}
+            animate={
+              animatedW != null
+                ? { clipPath: `inset(0 ${Math.max(0, maxMeasuredW - (animatedW ?? 0))}px 0 0)` }
+                : undefined
+            }
             transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
             className="align-bottom text-inherit leading-none"
             style={wrapperStyle}
@@ -415,7 +437,7 @@ export const DiaText = forwardRef<HTMLDivElement, DiaTextProps>(
     }
 
     return (
-      <div ref={setRefs} className={cn('relative', className)} aria-label={label} {...props}>
+      <div ref={setRefs} className={cn('relative', className)} {...props}>
         <span className="sr-only">{label}</span>
 
         {showStatic ? (
@@ -448,7 +470,7 @@ export function DiaTextPreview() {
         repeat
         repeatDelay={0.6}
         once={false}
-        className="text-2xl font-semibold tracking-tight"
+        className="text-2xl font-normal tracking-tight"
       >
         {['Fluid Precision', 'Editorial Restraint', 'Signature Motion']}
       </DiaText>

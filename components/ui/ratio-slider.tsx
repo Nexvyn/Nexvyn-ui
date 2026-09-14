@@ -1,6 +1,14 @@
 'use client'
 
-import { forwardRef, useState, useRef, useCallback, useEffect, type HTMLAttributes } from 'react'
+import {
+  forwardRef,
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  type HTMLAttributes,
+} from 'react'
 import {
   animate,
   motion,
@@ -10,8 +18,15 @@ import {
   useTransform,
 } from 'motion/react'
 import { cn } from '@/lib/utils'
-import { springs } from '@/lib/motion-tokens'
+import { easings, springs } from '@/lib/motion-tokens'
 import { playHoverSound, playClickSound, playTickSound } from '@/lib/sound'
+
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
+
+const BAR_EASE = easings.out
+  .replace(/cubic-bezier\(|\)/g, '')
+  .split(',')
+  .map(Number) as [number, number, number, number]
 
 export interface RatioSliderProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -29,6 +44,8 @@ export interface RatioSliderProps extends Omit<
   rightColor?: string
   leftLabelColor?: string
   rightLabelColor?: string
+  compactLeftLabelColor?: string
+  compactRightLabelColor?: string
   disabled?: boolean
 }
 
@@ -48,9 +65,11 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
       leftLabel = 'RICH',
       rightLabel = 'LIGHT',
       leftColor = 'var(--color-fg)',
-      rightColor = 'var(--color-muted)',
+      rightColor = 'var(--color-border-strong)',
       leftLabelColor = 'var(--color-bg)',
       rightLabelColor = 'var(--color-fg)',
+      compactLeftLabelColor = 'var(--color-fg)',
+      compactRightLabelColor = 'var(--color-muted)',
       disabled = false,
       className,
       ...rest
@@ -73,9 +92,20 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
 
     const ratio = 100 - leftRatio
     const barHeight = isCompact ? 32 : 60
+    const barScale = useMotionValue(1)
+    const previousBarHeight = useRef(barHeight)
     const labelsRowHeight = 32
     const gap = 16
     const edgePadding = 16
+
+    useIsomorphicLayoutEffect(() => {
+      const from = previousBarHeight.current
+      previousBarHeight.current = barHeight
+      if (from === barHeight || reduceMotion) return
+      barScale.set(from / barHeight)
+      const controls = animate(barScale, 1, { duration: 0.2, ease: BAR_EASE })
+      return () => controls.stop()
+    }, [barHeight, reduceMotion, barScale])
 
     const leftPercent = useMotionValue(leftRatio)
     const settleRef = useRef<ReturnType<typeof animate> | null>(null)
@@ -233,7 +263,7 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
         className={cn(
           'w-full flex flex-col select-none',
           disabled ? 'cursor-not-allowed opacity-60' : 'cursor-ew-resize',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg) rounded-lg',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg) rounded-md',
           className,
         )}
         onPointerDown={onPointerDown}
@@ -248,57 +278,54 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
           <div
             ref={leftLabelRef}
             className={cn(
-              'absolute inset-s-3 top-0 flex items-center gap-2 font-medium text-xs tracking-wide whitespace-nowrap z-1',
+              'absolute inset-s-3 top-0 flex items-center gap-2 font-normal text-xs tracking-wide whitespace-nowrap z-1',
               reduceMotion
                 ? ''
-                : 'transition-[color,transform] duration-200 ease-(--motion-ease-in-out)',
+                : 'transition-[color,transform] duration-(--motion-dur-base) ease-(--motion-ease-in-out)',
             )}
             style={{
-              color: isCompact ? leftColor : leftLabelColor,
+              color: isCompact ? compactLeftLabelColor : leftLabelColor,
               transform: `translateY(calc(${isCompact ? labelsRowHeight / 2 : labelsRowHeight + gap + barHeight / 2}px - 50%))`,
             }}
           >
             <span className="opacity-80">{leftLabel}</span>
-            <span className="font-bold tabular-nums">{leftRatio}%</span>
+            <span className="font-normal tabular-nums">{leftRatio}%</span>
           </div>
           <div
             ref={rightLabelRef}
             className={cn(
-              'absolute inset-e-3 top-0 flex items-center gap-2 font-medium text-xs tracking-wide whitespace-nowrap z-1',
+              'absolute inset-e-3 top-0 flex items-center gap-2 font-normal text-xs tracking-wide whitespace-nowrap z-1',
               reduceMotion
                 ? ''
-                : 'transition-[color,transform] duration-200 ease-(--motion-ease-in-out)',
+                : 'transition-[color,transform] duration-(--motion-dur-base) ease-(--motion-ease-in-out)',
             )}
             style={{
-              color: isCompact ? rightColor : rightLabelColor,
+              color: isCompact ? compactRightLabelColor : rightLabelColor,
               transform: `translateY(calc(${isCompact ? labelsRowHeight / 2 : labelsRowHeight + gap + barHeight / 2}px - 50%))`,
             }}
           >
-            <span className="font-bold tabular-nums">{ratio}%</span>
+            <span className="font-normal tabular-nums">{ratio}%</span>
             <span className="opacity-80">{rightLabel}</span>
           </div>
         </div>
 
-        <div
+        <motion.div
           ref={sliderRef}
-          className={cn(
-            'relative w-full flex items-center gap-2 touch-none',
-            reduceMotion ? '' : 'transition-[height] duration-200 ease-out',
-          )}
-          style={{ height: barHeight }}
+          className="relative w-full flex items-center gap-2 touch-none"
+          style={{ height: barHeight, scaleY: barScale }}
         >
           <motion.div
             ref={leftBarRef}
             className={cn(
-              'h-full rounded-lg flex items-center justify-start overflow-hidden',
-              reduceMotion ? '' : 'transition-[filter] duration-100',
+              'h-full rounded-md flex items-center justify-start overflow-hidden',
+              reduceMotion ? '' : 'transition-[filter] duration-(--motion-dur-fast)',
             )}
             style={{ backgroundColor: leftColor, width: leftWidth }}
           />
           <div
             className={cn(
               'w-1.5 h-[80%] rounded-full z-10 shrink-0',
-              reduceMotion ? '' : 'transition-transform duration-150',
+              reduceMotion ? '' : 'transition-transform duration-(--motion-dur-fast)',
             )}
             style={{
               backgroundColor: 'var(--color-accent)',
@@ -309,12 +336,12 @@ export const RatioSlider = forwardRef<HTMLDivElement, RatioSliderProps>(
           <motion.div
             ref={rightBarRef}
             className={cn(
-              'h-full rounded-lg flex items-center justify-end overflow-hidden',
-              reduceMotion ? '' : 'transition-[filter] duration-100',
+              'h-full rounded-md flex items-center justify-end overflow-hidden',
+              reduceMotion ? '' : 'transition-[filter] duration-(--motion-dur-fast)',
             )}
             style={{ backgroundColor: rightColor, width: rightWidth }}
           />
-        </div>
+        </motion.div>
       </div>
     )
   },
@@ -325,7 +352,7 @@ RatioSlider.displayName = 'RatioSlider'
 export function RatioSliderPreview() {
   return (
     <div
-      className="w-full h-full min-h-50 rounded-lg overflow-hidden flex items-center justify-center p-4"
+      className="w-full h-full min-h-50 rounded-md overflow-hidden flex items-center justify-center p-4"
       style={{ backgroundColor: 'var(--color-surface)' }}
     >
       <div className="w-full max-w-md">

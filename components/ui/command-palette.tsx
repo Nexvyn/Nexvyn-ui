@@ -8,16 +8,15 @@ import {
   useMemo,
   useRef,
   useState,
+  type ForwardedRef,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
 } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/utils'
-import { springs } from '@/lib/motion-tokens'
 import { useMounted } from '@/hooks/use-mounted'
-import { useScrollLock, useRestoreFocus, useDismiss } from '@/lib/hooks/use-overlay'
-import { useProximityHighlight, ProximityHighlight } from '@/lib/hooks/use-proximity-highlight'
+import { useScrollLock, useRestoreFocus } from '@/lib/hooks/use-overlay'
 import { matchesSearch, buildSearchableText } from '@/lib/search-match'
 import { playClickSound, playHoverSound } from '@/lib/sound'
 
@@ -52,8 +51,15 @@ export interface CommandPaletteProps {
   recentHeading?: string
   title?: string
   showFooter?: boolean
+  navigateLabel?: string
+  selectLabel?: string
+  closeLabel?: string
   className?: string
 }
+
+const EASE_OUT = [0.22, 1, 0.36, 1] as const
+const ENTER_DURATION = 0.2
+const EXIT_DURATION = 0.12
 
 function actionMatches(action: CommandAction, query: string): boolean {
   return matchesSearch(
@@ -91,13 +97,18 @@ function loadRecents(key: string | null | undefined): string[] {
   }
 }
 
+function assignRef<T>(ref: ForwardedRef<T>, node: T | null) {
+  if (typeof ref === 'function') ref(node)
+  else if (ref) ref.current = node
+}
+
 function Kbd({ className, children }: { className?: string; children: ReactNode }) {
   return (
     <kbd
       className={cn(
         'inline-flex h-5 min-w-5 select-none items-center justify-center rounded-md squircle-corners',
         'border border-(--color-border) bg-(--color-surface) px-1.5',
-        'font-sans text-[11px] font-medium text-(--color-muted)',
+        'font-mono text-xs leading-none text-(--color-muted)',
         className,
       )}
     >
@@ -122,6 +133,9 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
       recentHeading = 'Recent',
       title = 'Command palette',
       showFooter = true,
+      navigateLabel = 'Navigate',
+      selectLabel = 'Open',
+      closeLabel = 'Close',
       className,
     },
     ref,
@@ -145,6 +159,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
     const titleId = `${reactId}-title`
 
     const [query, setQuery] = useState('')
+    const [activeIndex, setActiveIndex] = useState<number | null>(null)
     const [recentIds, setRecentIds] = useState<string[]>(() =>
       recentLimit > 0 ? loadRecents(recentStorageKey) : [],
     )
@@ -161,11 +176,6 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
 
     useScrollLock(open)
     useRestoreFocus(open)
-    useDismiss(panelRef, {
-      escape: true,
-      outsidePointer: true,
-      onDismiss: () => setOpen(false),
-    })
 
     useEffect(() => {
       if (!open) return
@@ -176,26 +186,25 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
     useEffect(() => {
       if (!open) return
       const onKeyDown = (e: KeyboardEvent) => {
-        if (e.key === 'Tab') {
+        if (e.key === 'Escape') {
+          e.preventDefault()
+          setOpen(false)
+        } else if (e.key === 'Tab') {
           e.preventDefault()
           inputRef.current?.focus()
         }
       }
+      const onPointerDown = (e: PointerEvent) => {
+        const panel = panelRef.current
+        if (panel && !panel.contains(e.target as Node)) setOpen(false)
+      }
       document.addEventListener('keydown', onKeyDown)
-      return () => document.removeEventListener('keydown', onKeyDown)
-    }, [open])
-
-    const {
-      activeIndex,
-      setActiveIndex,
-      handlers,
-      registerItem,
-      measureItems,
-      highlightX,
-      highlightSize,
-      highlightOpacity,
-      axis,
-    } = useProximityHighlight(listRef, { axis: 'y' })
+      document.addEventListener('pointerdown', onPointerDown)
+      return () => {
+        document.removeEventListener('keydown', onKeyDown)
+        document.removeEventListener('pointerdown', onPointerDown)
+      }
+    }, [open, setOpen])
 
     useEffect(() => {
       if (recentLimit <= 0 || !recentStorageKey) return
@@ -208,19 +217,17 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
       return () => window.removeEventListener('storage', onStorage)
     }, [recentLimit, recentStorageKey])
 
-    const [prevOpen, setPrevOpen] = useState(open)
-    if (open !== prevOpen) {
-      setPrevOpen(open)
-      if (open) {
-        setQuery('')
-      }
-    }
-
     useEffect(() => {
       if (!hotkey) return
       const wanted = hotkey.toLowerCase()
       const onKeyDown = (e: KeyboardEvent) => {
-        if ((e.metaKey || e.ctrlKey) && !e.altKey && e.key.toLowerCase() === wanted) {
+        if (e.repeat) return
+        if (
+          (e.metaKey || e.ctrlKey) &&
+          !e.altKey &&
+          !e.shiftKey &&
+          e.key.toLowerCase() === wanted
+        ) {
           e.preventDefault()
           setOpen(!open)
         }
@@ -249,14 +256,16 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
       for (const action of actions) {
         if (trimmed && !actionMatches(action, trimmed)) continue
         const heading = action.section ?? ungroupedHeading
-        if (!buckets.has(heading)) {
-          buckets.set(heading, [])
+        let bucket = buckets.get(heading)
+        if (!bucket) {
+          bucket = []
+          buckets.set(heading, bucket)
           order.push(heading)
         }
-        buckets.get(heading)!.push(action)
+        bucket.push(action)
       }
       for (const heading of order) {
-        result.push({ heading, actions: buckets.get(heading)! })
+        result.push({ heading, actions: buckets.get(heading) ?? [] })
       }
 
       return result
@@ -264,17 +273,18 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
 
     const flat = useMemo(() => sections.flatMap((s) => s.actions), [sections])
 
+    const [prevOpen, setPrevOpen] = useState(open)
+    const [prevFlat, setPrevFlat] = useState(flat)
+    if (open !== prevOpen || flat !== prevFlat) {
+      setPrevOpen(open)
+      setPrevFlat(flat)
+      if (open && !prevOpen) setQuery('')
+      setActiveIndex(flat.length > 0 ? firstEnabledIndex(flat) : null)
+    }
+
     useEffect(() => {
-      itemRefsMap.forEach((_, key) => {
-        if (key >= flat.length) itemRefsMap.delete(key)
-      })
-      if (!open) return
-      const frame = requestAnimationFrame(() => {
-        measureItems()
-        setActiveIndex(flat.length > 0 ? firstEnabledIndex(flat) : null)
-      })
-      return () => cancelAnimationFrame(frame)
-    }, [flat, open, measureItems, setActiveIndex, itemRefsMap])
+      if (open) listRef.current?.scrollTo({ top: 0 })
+    }, [flat, open])
 
     const performAction = useCallback(
       (action: CommandAction | undefined) => {
@@ -297,16 +307,13 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
       [recentLimit, recentStorageKey, setOpen],
     )
 
-    const moveActive = useCallback(
-      (dir: 1 | -1) => {
-        if (flat.length === 0) return
-        const current = activeIndex ?? (dir === 1 ? -1 : 0)
-        const next = nextEnabledIndex(flat, current, dir)
-        if (next < 0) return
-        setActiveIndex(next)
-        itemRefsMap.get(next)?.scrollIntoView({ block: 'nearest' })
+    const focusIndex = useCallback(
+      (index: number) => {
+        if (index < 0) return
+        setActiveIndex(index)
+        itemRefsMap.get(index)?.scrollIntoView({ block: 'nearest' })
       },
-      [activeIndex, flat, setActiveIndex, itemRefsMap],
+      [itemRefsMap],
     )
 
     const onInputKeyDown = useCallback(
@@ -314,30 +321,20 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
         switch (e.key) {
           case 'ArrowDown':
             e.preventDefault()
-            moveActive(1)
+            focusIndex(nextEnabledIndex(flat, activeIndex ?? -1, 1))
             break
           case 'ArrowUp':
             e.preventDefault()
-            moveActive(-1)
+            focusIndex(nextEnabledIndex(flat, activeIndex ?? 0, -1))
             break
-          case 'Home': {
+          case 'Home':
             e.preventDefault()
-            const first = firstEnabledIndex(flat)
-            if (first >= 0) {
-              setActiveIndex(first)
-              itemRefsMap.get(first)?.scrollIntoView({ block: 'nearest' })
-            }
+            focusIndex(firstEnabledIndex(flat))
             break
-          }
-          case 'End': {
+          case 'End':
             e.preventDefault()
-            const last = nextEnabledIndex(flat, 0, -1)
-            if (last >= 0) {
-              setActiveIndex(last)
-              itemRefsMap.get(last)?.scrollIntoView({ block: 'nearest' })
-            }
+            focusIndex(nextEnabledIndex(flat, 0, -1))
             break
-          }
           case 'Enter':
             e.preventDefault()
             if (activeIndex !== null) performAction(flat[activeIndex])
@@ -346,15 +343,13 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
             break
         }
       },
-      [activeIndex, flat, moveActive, performAction, setActiveIndex, itemRefsMap],
+      [activeIndex, flat, focusIndex, performAction],
     )
 
     if (!mounted) return null
 
-    const enterTransition = reduceMotion ? { duration: 0 } : springs.settle
-    const exitTransition = reduceMotion
-      ? { duration: 0 }
-      : { type: 'spring' as const, stiffness: 320, damping: 40, mass: 0.9 }
+    const enter = reduceMotion ? { duration: 0 } : { duration: ENTER_DURATION, ease: EASE_OUT }
+    const exit = reduceMotion ? { duration: 0 } : { duration: EXIT_DURATION, ease: EASE_OUT }
 
     let runningIndex = -1
     const activeOptionId =
@@ -363,42 +358,38 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
     return createPortal(
       <AnimatePresence>
         {open && (
-          <div className="fixed inset-0 z-300 flex items-start justify-center p-4 pt-[16vh]">
+          <div className="fixed inset-0 z-300 flex items-start justify-center px-4 pt-[12vh] sm:pt-[16vh]">
             <motion.div
-              className="absolute inset-0 bg-black/45 backdrop-blur-sm"
+              className="absolute inset-0 bg-(--color-bg)/70 backdrop-blur-[2px] motion-reduce:backdrop-blur-none"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={
-                reduceMotion ? { duration: 0 } : { duration: 0.18, ease: [0.22, 1, 0.36, 1] }
-              }
+              animate={{ opacity: 1, transition: enter }}
+              exit={{ opacity: 0, transition: exit }}
               aria-hidden="true"
             />
 
             <motion.div
               ref={(node) => {
                 panelRef.current = node
-                if (typeof ref === 'function') ref(node)
-                else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+                assignRef(ref, node)
               }}
               role="dialog"
               aria-modal="true"
               aria-labelledby={titleId}
               className={cn(
-                'relative z-10 flex max-h-[68vh] w-full max-w-xl flex-col overflow-hidden',
-                'rounded-2xl squircle-corners border border-(--color-border) bg-(--color-bg)',
-                'shadow-[0_24px_60px_-32px_rgba(0,0,0,0.45)] outline-none',
+                'relative z-10 flex max-h-[min(70dvh,32rem)] w-full max-w-xl flex-col overflow-hidden',
+                'rounded-md squircle-corners border border-(--color-border) bg-(--color-bg)',
+                'shadow-xl outline-none',
                 className,
               )}
-              initial={reduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.97, y: -6 }}
-              animate={{ opacity: 1, scale: 1, y: 0, transition: enterTransition }}
-              exit={{ opacity: 0, scale: 0.98, y: -4, transition: exitTransition }}
+              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1, transition: enter }}
+              exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.98, transition: exit }}
             >
               <h2 id={titleId} className="sr-only">
                 {title}
               </h2>
 
-              <div className="flex shrink-0 items-center gap-3 px-4">
+              <div className="flex shrink-0 items-center gap-3 border-b border-(--color-border) px-4">
                 <svg
                   width="16"
                   height="16"
@@ -409,7 +400,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   aria-hidden="true"
-                  className="shrink-0 text-(--color-muted)"
+                  className="shrink-0 text-(--color-subtle)"
                 >
                   <circle cx="7" cy="7" r="4.5" />
                   <path d="M13.5 13.5 10.5 10.5" />
@@ -422,6 +413,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
                   aria-controls={listboxId}
                   aria-activedescendant={activeOptionId}
                   aria-autocomplete="list"
+                  aria-label={title}
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck={false}
@@ -430,7 +422,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
                   onKeyDown={onInputKeyDown}
                   placeholder={placeholder}
                   className={cn(
-                    'h-12 w-full min-w-0 bg-transparent text-sm text-(--color-fg) outline-none',
+                    'h-14 w-full min-w-0 bg-transparent text-base text-(--color-fg) outline-none sm:text-sm',
                     'placeholder:text-(--color-subtle)',
                   )}
                 />
@@ -442,27 +434,24 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
                 id={listboxId}
                 role="listbox"
                 aria-label={title}
-                className="no-scrollbar relative min-h-0 flex-1 overflow-y-auto overscroll-contain p-1.5"
-                {...handlers}
+                className="no-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain p-2"
               >
-                {flat.length > 0 && (
-                  <ProximityHighlight
-                    highlightX={highlightX}
-                    highlightSize={highlightSize}
-                    highlightOpacity={highlightOpacity}
-                    axis={axis}
-                    className="mx-1.5 rounded-xl squircle-corners bg-(--color-accent)/12"
-                  />
-                )}
-
                 {flat.length === 0 ? (
-                  <div className="px-3 py-10 text-center text-sm text-(--color-muted)">
+                  <div className="px-3 py-12 text-center text-sm text-(--color-muted)">
                     {emptyState}
                   </div>
                 ) : (
-                  sections.map((section) => (
-                    <div key={section.heading} role="group" aria-label={section.heading}>
-                      <div className="px-3 pb-1 pt-2 text-[11px] font-medium uppercase tracking-[0.12em] text-(--color-subtle)">
+                  sections.map((section, sectionIndex) => (
+                    <div
+                      key={section.heading}
+                      role="group"
+                      aria-label={section.heading}
+                      className={cn(sectionIndex > 0 && 'mt-2')}
+                    >
+                      <div
+                        aria-hidden="true"
+                        className="px-3 pb-1.5 pt-2 text-xs text-(--color-subtle)"
+                      >
                         {section.heading}
                       </div>
                       {section.actions.map((action) => {
@@ -474,10 +463,8 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
                             key={`${section.heading}:${action.id}`}
                             ref={(node) => {
                               itemRefsMap.set(index, node)
-                              registerItem(index, node)
                               return () => {
                                 itemRefsMap.delete(index)
-                                registerItem(index, null)
                               }
                             }}
                             type="button"
@@ -489,39 +476,40 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
                             disabled={action.disabled}
                             data-active={isActive || undefined}
                             onPointerDown={(e) => e.preventDefault()}
-                            onMouseEnter={() => {
-                              if (!action.disabled) {
+                            onPointerMove={() => {
+                              if (!action.disabled && !isActive) {
                                 setActiveIndex(index)
                                 playHoverSound()
                               }
                             }}
                             onClick={() => performAction(action)}
                             className={cn(
-                              'relative z-10 flex min-h-11 w-full items-center gap-3 rounded-xl squircle-corners px-3 py-2 text-start',
-                              'text-sm transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none',
-                              'outline-none',
+                              'relative flex min-h-10 w-full items-center gap-3 rounded-md squircle-corners px-3 py-2 text-start pointer-coarse:min-h-11',
+                              'text-sm outline-none',
+                              'before:absolute before:inset-y-2 before:inset-s-0 before:w-0.5 before:rounded-full before:bg-(--color-accent) before:opacity-0',
+                              'data-active:bg-(--color-surface) data-active:before:opacity-100',
                               action.disabled
                                 ? 'cursor-not-allowed text-(--color-subtle)'
-                                : 'cursor-pointer text-(--color-muted) data-[active]:text-(--color-fg)',
+                                : 'cursor-pointer text-(--color-muted) data-active:text-(--color-fg)',
                             )}
                           >
                             {action.icon !== undefined && (
                               <span
                                 aria-hidden={typeof action.icon !== 'string' ? 'true' : undefined}
-                                className="flex size-4 shrink-0 items-center justify-center text-(--color-muted)"
+                                className="flex size-4 shrink-0 items-center justify-center text-(--color-subtle)"
                               >
                                 {action.icon}
                               </span>
                             )}
-                            <span className="flex min-w-0 flex-1 flex-col">
-                              <span className="truncate font-medium">{action.label}</span>
+                            <span className="flex min-w-0 flex-1 items-baseline gap-3">
+                              <span className="shrink-0 truncate">{action.label}</span>
                               {action.detail && (
-                                <span className="truncate text-xs text-(--color-subtle)">
+                                <span className="hidden min-w-0 truncate text-xs text-(--color-subtle) sm:block">
                                   {action.detail}
                                 </span>
                               )}
                             </span>
-                            {action.hint && <Kbd className="shrink-0 font-sans">{action.hint}</Kbd>}
+                            {action.hint && <Kbd className="shrink-0">{action.hint}</Kbd>}
                           </button>
                         )
                       })}
@@ -531,19 +519,19 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
               </div>
 
               {showFooter && (
-                <div className="flex shrink-0 items-center gap-4 px-4 py-2 text-[11px] text-(--color-subtle)">
+                <div className="flex shrink-0 items-center gap-4 border-t border-(--color-border) px-4 py-2.5 text-xs text-(--color-subtle) pointer-coarse:hidden">
                   <span className="inline-flex items-center gap-1.5">
                     <Kbd>↑</Kbd>
                     <Kbd>↓</Kbd>
-                    <span>Navigate</span>
+                    <span>{navigateLabel}</span>
                   </span>
                   <span className="inline-flex items-center gap-1.5">
                     <Kbd>↵</Kbd>
-                    <span>Select</span>
+                    <span>{selectLabel}</span>
                   </span>
                   <span className="ms-auto inline-flex items-center gap-1.5">
                     <Kbd>Esc</Kbd>
-                    <span>Close</span>
+                    <span>{closeLabel}</span>
                   </span>
                 </div>
               )}
@@ -579,8 +567,8 @@ export function CommandPalettePreview() {
         type="button"
         onClick={() => setOpen(true)}
         className={cn(
-          'flex items-center gap-2 rounded-lg squircle-corners border border-(--color-border) bg-(--color-surface)',
-          'px-4 py-2.5 text-sm text-(--color-muted) transition-colors duration-(--motion-dur-fast)',
+          'flex min-h-11 items-center gap-2 rounded-md squircle-corners border border-(--color-border) bg-(--color-surface)',
+          'px-4 py-2.5 text-sm text-(--color-muted) transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out)',
           'hover:text-(--color-fg) motion-reduce:transition-none',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
         )}
@@ -588,7 +576,7 @@ export function CommandPalettePreview() {
         <span>Search commands</span>
         <Kbd>⌘K</Kbd>
       </button>
-      <CommandPalette actions={actions} open={open} onOpenChange={setOpen} />
+      <CommandPalette actions={actions} open={open} onOpenChange={setOpen} hotkey={null} />
     </div>
   )
 }

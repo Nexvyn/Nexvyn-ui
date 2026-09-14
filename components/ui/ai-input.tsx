@@ -275,7 +275,7 @@ function MenuBackRow({ label, onClick }: { label: string; onClick: () => void })
     <button
       type="button"
       className={cn(
-        'relative flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2.5 text-start text-sm font-medium text-(--color-fg) outline-none',
+        'relative flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2.5 text-start text-sm font-normal text-(--color-fg) outline-none',
         'hover:bg-(--color-surface-2) focus-visible:bg-(--color-surface-2)',
         'transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
       )}
@@ -390,7 +390,7 @@ export function AiInputPlusMenu({
         aria-label={label}
         style={{}}
         className={cn(
-          'inline-flex size-8 shrink-0 min-h-0 w-8 items-center justify-center rounded-full supports-[corner-shape:squircle]:corner-squircle border-0 bg-transparent p-0 text-(--color-muted) hover:bg-(--color-surface-2) hover:text-(--color-fg)',
+          'inline-flex size-8 shrink-0 min-h-0 w-8 items-center justify-center rounded-full squircle-corners border-0 bg-transparent p-0 text-(--color-muted) hover:bg-(--color-surface-2) hover:text-(--color-fg)',
           className,
         )}
       >
@@ -448,7 +448,7 @@ export function AiInputAgentMenu({
         aria-label={label}
         style={{ width: 'auto' }}
         className={cn(
-          'inline-flex min-h-0 w-auto items-center gap-1.5 rounded-full border-0 bg-(--color-surface-2) px-3 py-1.5 text-sm font-medium text-(--color-fg) hover:bg-(--color-border)',
+          'inline-flex min-h-0 w-auto items-center gap-1.5 rounded-full border-0 bg-(--color-surface-2) px-3 py-1.5 text-sm font-normal text-(--color-fg) hover:bg-(--color-border)',
           className,
         )}
       >
@@ -535,7 +535,7 @@ function FeaturedSettingRow({ option }: { option: AiInputSettingOption }) {
   return (
     <div className="flex items-start justify-between gap-2.5 px-3 py-2.5">
       <div className="min-w-0">
-        <p className="truncate text-sm font-medium text-(--color-fg)">{option.label}</p>
+        <p className="truncate text-sm font-normal text-(--color-fg)">{option.label}</p>
         {option.description && (
           <p className="mt-0.5 truncate text-xs text-(--color-muted)">{option.description}</p>
         )}
@@ -589,7 +589,7 @@ export function AiInputSettingsDropdown({
           return (
             <span
               key={group.id}
-              className={cn('truncate', index === 0 ? 'font-medium text-(--color-fg)' : '')}
+              className={cn('truncate', index === 0 ? 'font-normal text-(--color-fg)' : '')}
             >
               {optionLabel}
             </span>
@@ -809,14 +809,12 @@ export const AiInput = forwardRef<HTMLTextAreaElement, AiInputProps>(
         if (e.nativeEvent.isComposing) return
         if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault()
-          if (streaming) {
-            handleStop()
-          } else {
+          if (!streaming) {
             handleSubmit()
           }
         }
       },
-      [streaming, handleSubmit, handleStop],
+      [streaming, handleSubmit],
     )
 
     useEffect(() => {
@@ -856,7 +854,7 @@ export const AiInput = forwardRef<HTMLTextAreaElement, AiInputProps>(
                         ? { duration: 0 }
                         : { type: 'spring', stiffness: 420, damping: 34 }
                     }
-                    className="max-w-[85%] self-end rounded-3xl rounded-br-lg bg-(--color-surface-2) px-4 py-2.5 text-sm leading-relaxed wrap-break-word whitespace-pre-wrap text-foreground"
+                    className="max-w-[85%] self-end rounded-md rounded-br-lg bg-(--color-surface-2) px-4 py-2.5 text-sm leading-relaxed wrap-break-word whitespace-pre-wrap text-foreground"
                   >
                     {message.text}
                   </motion.div>
@@ -867,7 +865,7 @@ export const AiInput = forwardRef<HTMLTextAreaElement, AiInputProps>(
 
           <div
             className={cn(
-              'relative rounded-lg supports-[corner-shape:squircle]:corner-squircle border border-(--color-border) bg-(--color-card)',
+              'relative rounded-md squircle-corners border border-(--color-border) bg-(--color-card)',
               'transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
               'focus-within:border-(--color-accent)',
               disabled && 'opacity-50 pointer-events-none',
@@ -908,6 +906,7 @@ export const AiInput = forwardRef<HTMLTextAreaElement, AiInputProps>(
                     className={cn(
                       'inline-flex size-8 shrink-0 items-center justify-center rounded-full border-0 bg-transparent text-(--color-muted) outline-none',
                       'hover:bg-(--color-surface-2) hover:text-(--color-fg)',
+                      'focus-visible:ring-2 focus-visible:ring-(--color-accent)',
                       'transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
                     )}
                   >

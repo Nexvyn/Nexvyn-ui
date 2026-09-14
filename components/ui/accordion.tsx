@@ -155,7 +155,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
           data-state={isExpanded ? 'open' : 'closed'}
           data-disabled={disabled || undefined}
           className={cn(
-            'rounded-lg squircle-corners border border-(--color-border) bg-(--color-card) overflow-hidden',
+            'rounded-md squircle-corners border border-(--color-border) bg-(--color-card) overflow-hidden',
             disabled && 'opacity-50 pointer-events-none',
             className,
           )}
@@ -195,7 +195,7 @@ export const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerPr
           disabled={disabled}
           onClick={() => toggle(value)}
           className={cn(
-            'flex flex-1 items-center justify-between gap-2 px-4 py-3 text-start font-medium text-(--color-fg) outline-none',
+            'flex flex-1 items-center justify-between gap-2 px-4 py-3 text-start font-normal text-(--color-fg) outline-none',
             'transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-in-out)',
             'hover:bg-(--color-muted)/50',
             'focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-inset',
@@ -249,6 +249,7 @@ export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps
         id={contentId}
         role="region"
         aria-labelledby={triggerId}
+        inert={!isExpanded}
         hidden={!isExpanded && reducedMotion}
         className={cn(
           'grid',

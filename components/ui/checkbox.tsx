@@ -161,7 +161,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           onKeyDown={handleKeyDown}
           onPointerDown={handlePointerDown}
           className={cn(
-            'relative inline-flex size-5 shrink-0 items-center justify-center rounded-[5px] supports-[corner-shape:squircle]:corner-squircle',
+            'relative inline-flex size-5 shrink-0 items-center justify-center rounded-md squircle-corners',
             'border border-(--color-border)',
             'transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-1 focus-visible:ring-offset-(--color-bg)',
@@ -227,7 +227,7 @@ export function CheckboxField({
         <label
           id={labelId}
           htmlFor={controlId}
-          className="cursor-pointer text-base font-medium leading-tight select-none"
+          className="cursor-pointer text-base font-normal leading-tight select-none"
         >
           {strikeThrough ? (
             <span
@@ -239,7 +239,7 @@ export function CheckboxField({
               {label}
               <motion.span
                 aria-hidden="true"
-                className="absolute left-0 right-0 top-1/2 h-px bg-current motion-reduce:transition-none"
+                className="absolute inset-x-0 top-1/2 h-px bg-current motion-reduce:transition-none"
                 style={{ transformOrigin: 'left' }}
                 initial={false}
                 animate={{ scaleX: isChecked ? 1 : 0 }}

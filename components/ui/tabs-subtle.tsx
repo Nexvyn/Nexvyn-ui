@@ -115,7 +115,7 @@ export const TabsSubtle = forwardRef<HTMLDivElement, TabsSubtleProps>(
             aria-orientation="horizontal"
             onKeyDown={handleKeyDown}
             className={cn(
-              'relative inline-flex items-center gap-0.5 rounded-lg squircle-corners bg-muted p-1.5 select-none overflow-x-auto max-w-full',
+              'relative inline-flex items-center gap-0.5 rounded-md squircle-corners bg-(--color-surface-2) p-1.5 select-none overflow-x-auto max-w-full',
               className,
             )}
             {...props}
@@ -154,7 +154,7 @@ export const TabsSubtleItem = forwardRef<HTMLButtonElement, TabsSubtleItemProps>
         onPointerDown={(e) => e.preventDefault()}
         onClick={() => onSelect(value)}
         className={cn(
-          'relative z-10 flex items-center gap-1.5 rounded-md squircle-corners px-3 py-1.5 text-[13px] font-medium cursor-pointer bg-transparent border-none outline-none whitespace-nowrap',
+          'relative z-10 flex items-center gap-1.5 rounded-md squircle-corners px-3 py-1.5 text-[13px] font-normal cursor-pointer bg-transparent border-none outline-none whitespace-nowrap',
           'transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
           isSelected ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
           'focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-1 focus-visible:ring-offset-background',
@@ -212,7 +212,7 @@ TabsSubtlePanel.displayName = 'TabsSubtlePanel'
 export function TabsSubtlePreview() {
   return (
     <div
-      className="w-full h-full min-h-50 rounded-lg overflow-hidden flex flex-col items-center justify-center gap-4 p-4"
+      className="w-full h-full min-h-50 rounded-md overflow-hidden flex flex-col items-center justify-center gap-4 p-4"
       style={{ backgroundColor: 'var(--color-surface)' }}
     >
       <TabsSubtle defaultValue="overview">

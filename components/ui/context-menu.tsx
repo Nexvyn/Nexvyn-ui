@@ -225,9 +225,8 @@ const ContextMenuPanel = forwardRef<HTMLDivElement, ContextMenuPanelProps>(
       const vCenterX = vw / 2
       const vCenterY = vh / 2
 
-      // Grow the menu away from the cursor's quadrant so it stays on
-      // screen, but anchor the panel so the chosen origin corner lands
-      // exactly at the cursor — not just clamped independently of it.
+      // Grow away from the cursor's quadrant to stay on screen, anchoring the
+      // chosen origin corner exactly at the cursor rather than clamping.
       const horizontal = position.x < vCenterX ? 'left' : 'right'
       const vertical = position.y < vCenterY ? 'top' : 'bottom'
 
@@ -307,8 +306,8 @@ const ContextMenuPanel = forwardRef<HTMLDivElement, ContextMenuPanelProps>(
         role="menu"
         data-context-menu-content
         className={cn(
-          'fixed z-300 min-w-48 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-lg squircle-corners border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
-          'shadow-[0_14px_34px_-22px_rgba(0,0,0,0.15)]',
+          'fixed z-300 min-w-48 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-md squircle-corners border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
+          'shadow-lg',
           className,
         )}
         style={{
@@ -417,7 +416,7 @@ function ContextMenuItemComponent({
       <span className="relative z-10 flex min-w-0 flex-1 items-center truncate">{item.label}</span>
       {item.shortcut && (
         <kbd
-          className="relative z-10 shrink-0 rounded border border-(--color-border) bg-(--color-surface) px-1.5 py-0.5 text-[10px] font-medium text-(--color-subtle)"
+          className="relative z-10 shrink-0 rounded-md border border-(--color-border) bg-(--color-surface) px-1.5 py-0.5 text-[10px] font-normal text-(--color-subtle)"
           aria-hidden="true"
         >
           {item.shortcut}
@@ -440,7 +439,7 @@ export function ContextMenuPreview() {
           { label: 'Delete', destructive: true },
         ]}
       >
-        <div className="flex h-32 w-48 items-center justify-center rounded-lg squircle-corners border border-(--color-border) bg-(--color-bg) text-sm text-(--color-muted)">
+        <div className="flex h-32 w-48 items-center justify-center rounded-md squircle-corners border border-(--color-border) bg-(--color-bg) text-sm text-(--color-muted)">
           Right-click me
         </div>
       </ContextMenu>

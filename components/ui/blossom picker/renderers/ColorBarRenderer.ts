@@ -36,7 +36,6 @@ export class ColorBarRenderer {
       cy,
       r,
       fill: 'none',
-      stroke: 'rgba(0,0,0,0.06)',
       'stroke-width': sw,
     })
 
@@ -48,6 +47,7 @@ export class ColorBarRenderer {
       'stroke-width': sw,
     })
 
+    this.bgCircle.style.stroke = 'var(--color-border)'
     this.el.appendChild(this.bgCircle)
     this.el.appendChild(this.colorCircle)
   }

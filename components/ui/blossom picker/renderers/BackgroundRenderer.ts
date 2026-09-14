@@ -27,7 +27,7 @@ export class BackgroundRenderer {
     setStyles(this.solidBg, {
       position: 'absolute',
       inset: '0',
-      backgroundColor: '#FFFFFF',
+      backgroundColor: 'var(--color-bg)',
       borderRadius: '50%',
       transform: 'scale(1)',
       transition: `transform ${animationDuration}ms ${BLOOM_EASING}, opacity ${animationDuration}ms ${BLOOM_EASING}`,

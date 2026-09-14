@@ -59,7 +59,7 @@ export const CircularProgress = forwardRef<SVGSVGElement, CircularProgressProps>
         />
         <circle
           className={cn(
-            'text-(--color-accent) transition-[stroke-dashoffset] duration-500 ease-out',
+            'text-(--color-accent) transition-[stroke-dashoffset] duration-(--motion-dur-slow) ease-(--motion-ease-out) motion-reduce:transition-none',
             progressClassName,
           )}
           strokeWidth={strokeWidth}
@@ -71,10 +71,6 @@ export const CircularProgress = forwardRef<SVGSVGElement, CircularProgressProps>
           r={radius}
           cx={size / 2}
           cy={size / 2}
-          style={{
-            transitionProperty: 'stroke-dashoffset',
-            filter: 'drop-shadow(0 0 2px currentColor)',
-          }}
         />
         {showLabel && (
           <text
@@ -83,7 +79,7 @@ export const CircularProgress = forwardRef<SVGSVGElement, CircularProgressProps>
             transform={`rotate(90, ${size / 2}, ${size / 2})`}
             textAnchor="middle"
             dominantBaseline="central"
-            className={cn('select-none fill-foreground font-medium tabular-nums', valueClassName)}
+            className={cn('select-none fill-foreground font-normal tabular-nums', valueClassName)}
             style={{ fontSize: size * 0.28 }}
           >
             {Math.round(safeProgress)}

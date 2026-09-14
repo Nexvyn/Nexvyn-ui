@@ -125,7 +125,7 @@ export function Fader({
             slider.controlProps?.onPointerDown?.(e)
           }}
           className={cn(
-            'group/control relative block w-full cursor-grab touch-pan-y select-none rounded-md outline-none data-disabled:cursor-default data-dragging:cursor-grabbing has-[&:focus-visible]:ring-2 has-[&:focus-visible]:ring-ring has-[&:focus-visible]:ring-offset-2 has-[&:focus-visible]:ring-offset-background bg-muted',
+            'group/control relative block w-full cursor-grab touch-pan-y select-none rounded-md outline-none data-disabled:cursor-default data-dragging:cursor-grabbing has-[&:focus-visible]:ring-2 has-[&:focus-visible]:ring-ring has-[&:focus-visible]:ring-offset-2 has-[&:focus-visible]:ring-offset-background bg-(--color-surface-2)',
             sizeStyle.control,
           )}
         >
@@ -139,7 +139,7 @@ export function Fader({
               />
             }
             className={cn(
-              'h-full w-full overflow-hidden rounded-md bg-muted border border-border/50',
+              'h-full w-full overflow-hidden rounded-md bg-(--color-surface-2) border border-border/50',
               bordered && '!border-border',
             )}
           >
@@ -204,7 +204,7 @@ export function Fader({
         >
           <BaseSlider.Label
             ref={slider.labelRef}
-            className={cn('font-medium text-foreground', sizeStyle.text)}
+            className={cn('font-normal text-foreground', sizeStyle.text)}
           >
             {behavior.label}
           </BaseSlider.Label>
@@ -223,7 +223,6 @@ export function Fader({
             )}
           </BaseSlider.Value>
         </div>
-        {/* /group/fader */}
       </div>
     </BaseSlider.Root>
   )

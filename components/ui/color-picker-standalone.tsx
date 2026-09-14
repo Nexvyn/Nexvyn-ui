@@ -1,6 +1,7 @@
 'use client'
 
 import { forwardRef, useEffect, useRef, type HTMLAttributes, type Ref } from 'react'
+import { useReducedMotion } from 'motion/react'
 
 import { cn } from '@/lib/utils'
 import {
@@ -113,6 +114,7 @@ const BlossomPickerInner = forwardRef<HTMLDivElement, Omit<BlossomPickerProps, '
   ({ className, ...props }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null)
     const pickerRef = useRef<LocalBlossomColorPicker | null>(null)
+    const reduceMotion = useReducedMotion()
 
     useEffect(() => {
       if (!containerRef.current) return
@@ -126,7 +128,11 @@ const BlossomPickerInner = forwardRef<HTMLDivElement, Omit<BlossomPickerProps, '
     }, [])
 
     useEffect(() => {
-      pickerRef.current?.setOptions(propsToOptions(props))
+      const options = propsToOptions(props)
+      if (reduceMotion && options.animationDuration !== 0) {
+        options.animationDuration = 0
+      }
+      pickerRef.current?.setOptions(options)
       // props is read via propsToOptions; individual fields below drive updates
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
@@ -149,6 +155,7 @@ const BlossomPickerInner = forwardRef<HTMLDivElement, Omit<BlossomPickerProps, '
       props.sliderWidth,
       props.sliderOffset,
       props.collapsible,
+      reduceMotion,
     ])
 
     return (

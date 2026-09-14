@@ -1,6 +1,13 @@
 'use client'
 
-import { useEffect, useLayoutEffect, useRef, type AriaAttributes, type CSSProperties } from 'react'
+import {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  type AriaAttributes,
+  type CSSProperties,
+} from 'react'
 import { useReducedMotion } from 'motion/react'
 import { useCssColorRgb } from '@/lib/hooks/use-css-color-rgb'
 
@@ -244,7 +251,13 @@ function FluidOrb({ size, colorRgb, speed }: FluidOrbProps) {
     }
   }, [size])
 
-  return <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
+  return (
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      style={{ width: '100%', height: '100%', display: 'block' }}
+    />
+  )
 }
 
 const STATE_COLOR_TOKEN: Record<OrbState, 'accent' | 'destructive'> = {
@@ -289,306 +302,352 @@ const SETTLE_RATE = 0.12
 const SETTLE_SCALE_EPSILON = 0.002
 const TRANSITION_RATE = 0.06
 
-export function GlowOrb({
-  state,
-  volume,
-  size,
-  className,
-  style,
-  disabled = false,
-  interactive = false,
-  onClick,
-  ...controlProps
-}: GlowOrbProps) {
-  const circleRef = useRef<HTMLSpanElement>(null)
-  const glowRef = useRef<HTMLSpanElement>(null)
-  const hoverRef = useRef<HTMLSpanElement>(null)
-  const rafRef = useRef<number>(0)
-
-  const reduceMotion = useReducedMotion()
-
-  const volumeRef = useRef(volume)
-  useIsomorphicLayoutEffect(() => {
-    volumeRef.current = volume
-  }, [volume])
-
-  const accentRgb = useCssColorRgb('--color-accent', FALLBACK_ACCENT)
-  const destructiveRgb = useCssColorRgb('--color-destructive', FALLBACK_DESTRUCTIVE)
-  const accentRgbRef = useRef(accentRgb)
-  const destructiveRgbRef = useRef(destructiveRgb)
-  useEffect(() => {
-    accentRgbRef.current = accentRgb
-  }, [accentRgb])
-  useEffect(() => {
-    destructiveRgbRef.current = destructiveRgb
-  }, [destructiveRgb])
-
-  const currentScaleRef = useRef(1)
-  const currentGlowRef = useRef(0)
-  const currentColorRef = useRef<RGB>(accentRgb)
-  const currentBaseRef = useRef(LISTEN_BASE)
-  const currentRangeRef = useRef(LISTEN_RANGE)
-  const touchEndTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  useEffect(
-    () => () => {
-      if (touchEndTimerRef.current) clearTimeout(touchEndTimerRef.current)
+export const GlowOrb = forwardRef<HTMLButtonElement | HTMLDivElement, GlowOrbProps>(
+  function GlowOrbComponent(
+    {
+      state,
+      volume,
+      size,
+      className,
+      style,
+      disabled = false,
+      interactive = false,
+      onClick,
+      ...controlProps
     },
-    [],
-  )
+    ref,
+  ) {
+    const circleRef = useRef<HTMLSpanElement>(null)
+    const glowRef = useRef<HTMLSpanElement>(null)
+    const hoverRef = useRef<HTMLSpanElement>(null)
+    const rafRef = useRef<number>(0)
+    const observerRef = useRef<IntersectionObserver | null>(null)
+    const isVisibleRef = useRef(true)
+    const rootRef = useRef<HTMLButtonElement | HTMLDivElement>(null)
 
-  useEffect(() => {
-    const id = 'orb-circle-keyframes'
-    if (!document.getElementById(id)) {
-      const el = document.createElement('style')
-      el.id = id
-      el.textContent = KEYFRAMES
-      document.head.appendChild(el)
-    }
-  }, [])
+    const reduceMotion = useReducedMotion()
 
-  useEffect(() => {
-    const el = circleRef.current
-    if (!el) return
+    const volumeRef = useRef(volume)
+    useIsomorphicLayoutEffect(() => {
+      volumeRef.current = volume
+    }, [volume])
 
-    const targetToken = STATE_COLOR_TOKEN[state]
-    const tRgb = targetToken === 'destructive' ? destructiveRgbRef.current : accentRgbRef.current
+    const accentRgb = useCssColorRgb('--color-accent', FALLBACK_ACCENT)
+    const destructiveRgb = useCssColorRgb('--color-destructive', FALLBACK_DESTRUCTIVE)
+    const accentRgbRef = useRef(accentRgb)
+    const destructiveRgbRef = useRef(destructiveRgb)
+    useEffect(() => {
+      accentRgbRef.current = accentRgb
+    }, [accentRgb])
+    useEffect(() => {
+      destructiveRgbRef.current = destructiveRgb
+    }, [destructiveRgb])
 
-    if (!reduceMotion && (state === 'listening' || state === 'speaking')) {
-      const base = state === 'speaking' ? SPEAK_BASE : LISTEN_BASE
-      const range = state === 'speaking' ? SPEAK_RANGE : LISTEN_RANGE
-      const glow = state === 'speaking' ? SPEAK_GLOW : LISTEN_GLOW
+    const currentScaleRef = useRef(1)
+    const currentGlowRef = useRef(0)
+    const currentColorRef = useRef<RGB>(accentRgb)
+    const currentBaseRef = useRef(LISTEN_BASE)
+    const currentRangeRef = useRef(LISTEN_RANGE)
+    const touchEndTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-      const animate = () => {
-        const vol = volumeRef.current
+    useEffect(() => {
+      return () => {
+        if (touchEndTimerRef.current) clearTimeout(touchEndTimerRef.current)
+        if (observerRef.current) observerRef.current.disconnect()
+      }
+    }, [])
 
-        currentBaseRef.current += (base - currentBaseRef.current) * TRANSITION_RATE
-        currentRangeRef.current += (range - currentRangeRef.current) * TRANSITION_RATE
+    useEffect(() => {
+      const root = rootRef.current
+      if (!root) return
 
-        const tScale = currentBaseRef.current + vol * currentRangeRef.current
-        const tGlow = vol * glow
+      const handleVisibilityChange = () => {
+        isVisibleRef.current = !document.hidden
+      }
 
-        if (state === 'listening') {
-          currentScaleRef.current += (tScale - currentScaleRef.current) * LERP
-          currentGlowRef.current += (tGlow - currentGlowRef.current) * LERP
-        } else {
-          currentScaleRef.current = tScale
-          currentGlowRef.current = tGlow
-        }
+      observerRef.current = new IntersectionObserver(([entry]) => {
+        isVisibleRef.current = entry.isIntersecting
+      })
+      observerRef.current.observe(root)
 
-        const [cr, cg, cb] = currentColorRef.current
-        currentColorRef.current = [
-          cr + (tRgb[0] - cr) * 0.05,
-          cg + (tRgb[1] - cg) * 0.05,
-          cb + (tRgb[2] - cb) * 0.05,
-        ]
-        const [r, g, b] = currentColorRef.current.map(Math.round)
+      document.addEventListener('visibilitychange', handleVisibilityChange)
 
-        el.style.transform = `scale(${currentScaleRef.current})`
-        el.style.animation = 'none'
+      return () => {
+        document.removeEventListener('visibilitychange', handleVisibilityChange)
+      }
+    }, [])
 
-        const ge = glowRef.current
-        if (ge) {
-          const g2 = currentGlowRef.current
-          ge.style.transform = `scale(${currentScaleRef.current})`
-          ge.style.boxShadow = g2 > 0.5 ? `0 0 ${g2}px ${g2 * 0.4}px rgb(${r},${g},${b})` : 'none'
+    useEffect(() => {
+      const id = 'orb-circle-keyframes'
+      if (!document.getElementById(id)) {
+        const el = document.createElement('style')
+        el.id = id
+        el.textContent = KEYFRAMES
+        document.head.appendChild(el)
+      }
+    }, [])
+
+    useEffect(() => {
+      const el = circleRef.current
+      if (!el) return
+
+      const targetToken = STATE_COLOR_TOKEN[state]
+      const tRgb = targetToken === 'destructive' ? destructiveRgbRef.current : accentRgbRef.current
+
+      if (!reduceMotion && (state === 'listening' || state === 'speaking')) {
+        const base = state === 'speaking' ? SPEAK_BASE : LISTEN_BASE
+        const range = state === 'speaking' ? SPEAK_RANGE : LISTEN_RANGE
+        const glow = state === 'speaking' ? SPEAK_GLOW : LISTEN_GLOW
+
+        const animate = () => {
+          if (!isVisibleRef.current) {
+            rafRef.current = requestAnimationFrame(animate)
+            return
+          }
+
+          const vol = volumeRef.current
+
+          currentBaseRef.current += (base - currentBaseRef.current) * TRANSITION_RATE
+          currentRangeRef.current += (range - currentRangeRef.current) * TRANSITION_RATE
+
+          const tScale = currentBaseRef.current + vol * currentRangeRef.current
+          const tGlow = vol * glow
+
+          if (state === 'listening') {
+            currentScaleRef.current += (tScale - currentScaleRef.current) * LERP
+            currentGlowRef.current += (tGlow - currentGlowRef.current) * LERP
+          } else {
+            currentScaleRef.current = tScale
+            currentGlowRef.current = tGlow
+          }
+
+          const [cr, cg, cb] = currentColorRef.current
+          currentColorRef.current = [
+            cr + (tRgb[0] - cr) * 0.05,
+            cg + (tRgb[1] - cg) * 0.05,
+            cb + (tRgb[2] - cb) * 0.05,
+          ]
+          const [r, g, b] = currentColorRef.current.map(Math.round)
+
+          el.style.transform = `scale(${currentScaleRef.current})`
+          el.style.animation = 'none'
+
+          const ge = glowRef.current
+          if (ge) {
+            const g2 = currentGlowRef.current
+            ge.style.transform = `scale(${currentScaleRef.current})`
+            ge.style.boxShadow = g2 > 0.5 ? `0 0 ${g2}px ${g2 * 0.4}px rgb(${r},${g},${b})` : 'none'
+          }
+
+          rafRef.current = requestAnimationFrame(animate)
         }
 
         rafRef.current = requestAnimationFrame(animate)
-      }
 
-      rafRef.current = requestAnimationFrame(animate)
-
-      return () => {
-        cancelAnimationFrame(rafRef.current)
-      }
-    } else {
-      cancelAnimationFrame(rafRef.current)
-
-      const settle = () => {
-        currentScaleRef.current += (1 - currentScaleRef.current) * SETTLE_RATE
-        currentGlowRef.current += (0 - currentGlowRef.current) * SETTLE_RATE
-
-        const [cr, cg, cb] = currentColorRef.current
-        currentColorRef.current = [
-          cr + (tRgb[0] - cr) * SETTLE_RATE,
-          cg + (tRgb[1] - cg) * SETTLE_RATE,
-          cb + (tRgb[2] - cb) * SETTLE_RATE,
-        ]
-
-        el.style.transform = `scale(${currentScaleRef.current})`
-        el.style.animation = 'none'
-
-        if (glowRef.current) {
-          glowRef.current.style.transform = `scale(${currentScaleRef.current})`
-          glowRef.current.style.boxShadow = 'none'
+        return () => {
+          cancelAnimationFrame(rafRef.current)
         }
+      } else {
+        cancelAnimationFrame(rafRef.current)
 
-        const scaleDone = Math.abs(currentScaleRef.current - 1) < SETTLE_SCALE_EPSILON
-        const glowDone = currentGlowRef.current < 0.1
-        const colorDone = currentColorRef.current.every(
-          (channel, i) => Math.abs(channel - tRgb[i]) < 1,
-        )
+        const settle = () => {
+          if (!isVisibleRef.current) {
+            rafRef.current = requestAnimationFrame(settle)
+            return
+          }
 
-        if (scaleDone && glowDone && colorDone) {
-          currentScaleRef.current = 1
-          currentGlowRef.current = 0
-          currentColorRef.current = tRgb
+          currentScaleRef.current += (1 - currentScaleRef.current) * SETTLE_RATE
+          currentGlowRef.current += (0 - currentGlowRef.current) * SETTLE_RATE
 
-          el.style.transform = ''
+          const [cr, cg, cb] = currentColorRef.current
+          currentColorRef.current = [
+            cr + (tRgb[0] - cr) * SETTLE_RATE,
+            cg + (tRgb[1] - cg) * SETTLE_RATE,
+            cb + (tRgb[2] - cb) * SETTLE_RATE,
+          ]
+
+          el.style.transform = `scale(${currentScaleRef.current})`
+          el.style.animation = 'none'
+
           if (glowRef.current) {
-            glowRef.current.style.transform = 'scale(1)'
+            glowRef.current.style.transform = `scale(${currentScaleRef.current})`
             glowRef.current.style.boxShadow = 'none'
           }
 
-          if (state === 'thinking' && !reduceMotion) {
-            el.style.animation =
-              'orb-circle-thinking-wave 2.4s cubic-bezier(0.37, 0, 0.63, 1) infinite'
+          const scaleDone = Math.abs(currentScaleRef.current - 1) < SETTLE_SCALE_EPSILON
+          const glowDone = currentGlowRef.current < 0.1
+          const colorDone = currentColorRef.current.every(
+            (channel, i) => Math.abs(channel - tRgb[i]) < 1,
+          )
+
+          if (scaleDone && glowDone && colorDone) {
+            currentScaleRef.current = 1
+            currentGlowRef.current = 0
+            currentColorRef.current = tRgb
+
+            el.style.transform = ''
+            if (glowRef.current) {
+              glowRef.current.style.transform = 'scale(1)'
+              glowRef.current.style.boxShadow = 'none'
+            }
+
+            if (state === 'thinking' && !reduceMotion) {
+              el.style.animation =
+                'orb-circle-thinking-wave 2.4s cubic-bezier(0.37, 0, 0.63, 1) infinite'
+            }
+
+            return
           }
 
-          return
+          rafRef.current = requestAnimationFrame(settle)
         }
 
         rafRef.current = requestAnimationFrame(settle)
+
+        return () => cancelAnimationFrame(rafRef.current)
       }
+    }, [state, reduceMotion])
 
-      rafRef.current = requestAnimationFrame(settle)
+    const d = size * 0.55
+    const shaderSpeed = reduceMotion ? 0 : STATE_SPEED[state]
+    const orbColorRgb = STATE_COLOR_TOKEN[state] === 'destructive' ? destructiveRgb : accentRgb
 
-      return () => cancelAnimationFrame(rafRef.current)
+    const rootStyle: CSSProperties = {
+      width: size,
+      height: size,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative',
+      ...style,
     }
-  }, [state, reduceMotion])
 
-  const d = size * 0.55
-  const shaderSpeed = reduceMotion ? 0 : STATE_SPEED[state]
-  const orbColorRgb = STATE_COLOR_TOKEN[state] === 'destructive' ? destructiveRgb : accentRgb
-
-  const rootStyle: CSSProperties = {
-    width: size,
-    height: size,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    ...style,
-  }
-
-  const content = (
-    <span
-      ref={hoverRef}
-      onMouseEnter={() => {
-        if (hoverRef.current && !disabled) {
-          hoverRef.current.style.transform = 'scale(1.04)'
-          hoverRef.current.style.filter = 'brightness(1.08)'
-        }
-      }}
-      onMouseLeave={() => {
-        if (hoverRef.current) {
-          hoverRef.current.style.transform = 'scale(1)'
-          hoverRef.current.style.filter = 'brightness(1)'
-        }
-      }}
-      onTouchEnd={() => {
-        touchEndTimerRef.current = setTimeout(() => {
+    const content = (
+      <span
+        ref={hoverRef}
+        onMouseEnter={() => {
+          if (hoverRef.current && !disabled) {
+            hoverRef.current.style.transform = 'scale(1.04)'
+            hoverRef.current.style.filter = 'brightness(1.08)'
+          }
+        }}
+        onMouseLeave={() => {
           if (hoverRef.current) {
             hoverRef.current.style.transform = 'scale(1)'
             hoverRef.current.style.filter = 'brightness(1)'
           }
-        }, 180)
-      }}
-      style={{
-        position: 'relative',
-        display: 'inline-block',
-        transition: reduceMotion
-          ? 'none'
-          : 'transform 220ms cubic-bezier(0.23, 1, 0.32, 1), filter 220ms cubic-bezier(0.23, 1, 0.32, 1)',
-        cursor: interactive ? (disabled ? 'not-allowed' : 'pointer') : 'default',
-        borderRadius: '50%',
-        lineHeight: 0,
-      }}
-    >
-      <span
-        ref={glowRef}
-        style={{
-          position: 'absolute',
-          display: 'block',
-          width: d,
-          height: d,
-          borderRadius: '50%',
-          pointerEvents: 'none',
         }}
-      />
-      <span
-        style={{
-          position: 'absolute',
-          display: 'block',
-          width: d,
-          height: d,
-          borderRadius: '50%',
-          background: 'rgba(0,0,0,0.08)',
-          filter: 'blur(8px)',
-          transform: 'scale(1.15)',
-          pointerEvents: 'none',
+        onTouchEnd={() => {
+          touchEndTimerRef.current = setTimeout(() => {
+            if (hoverRef.current) {
+              hoverRef.current.style.transform = 'scale(1)'
+              hoverRef.current.style.filter = 'brightness(1)'
+            }
+          }, 180)
         }}
-      />
-      <span
-        ref={circleRef}
         style={{
           position: 'relative',
-          display: 'block',
-          width: d,
-          height: d,
+          display: 'inline-block',
+          transition: reduceMotion
+            ? 'none'
+            : 'transform var(--motion-dur-base) var(--motion-ease-out), filter var(--motion-dur-base) var(--motion-ease-out)',
+          cursor: interactive ? (disabled ? 'not-allowed' : 'pointer') : 'default',
           borderRadius: '50%',
-          overflow: 'hidden',
+          lineHeight: 0,
         }}
       >
-        <FluidOrb size={d} colorRgb={orbColorRgb} speed={shaderSpeed} />
+        <span
+          ref={glowRef}
+          style={{
+            position: 'absolute',
+            display: 'block',
+            width: d,
+            height: d,
+            borderRadius: '50%',
+            pointerEvents: 'none',
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            display: 'block',
+            width: d,
+            height: d,
+            borderRadius: '50%',
+            background: 'var(--color-surface-2)',
+            filter: 'blur(8px)',
+            transform: 'scale(1.15)',
+            pointerEvents: 'none',
+          }}
+        />
+        <span
+          ref={circleRef}
+          style={{
+            position: 'relative',
+            display: 'block',
+            width: d,
+            height: d,
+            borderRadius: '50%',
+            overflow: 'hidden',
+          }}
+        >
+          <FluidOrb size={d} colorRgb={orbColorRgb} speed={shaderSpeed} />
+        </span>
       </span>
-    </span>
-  )
+    )
 
-  if (interactive) {
+    if (interactive) {
+      return (
+        <button
+          ref={ref as React.Ref<HTMLButtonElement>}
+          {...controlProps}
+          type="button"
+          className={className}
+          disabled={disabled}
+          onClick={disabled ? undefined : onClick}
+          style={{
+            appearance: 'none',
+            WebkitAppearance: 'none',
+            border: 0,
+            padding: 0,
+            margin: 0,
+            background: 'transparent',
+            color: 'inherit',
+            font: 'inherit',
+            cursor: disabled ? 'not-allowed' : 'pointer',
+            transition: reduceMotion
+              ? 'none'
+              : 'transform var(--motion-dur-fast) var(--motion-ease-out)',
+            ...rootStyle,
+          }}
+          onMouseDown={(e) => {
+            if (disabled) return
+            ;(e.currentTarget as HTMLElement).style.transform = 'scale(0.96)'
+          }}
+          onMouseUp={(e) => {
+            ;(e.currentTarget as HTMLElement).style.transform = 'scale(1)'
+          }}
+          onMouseLeave={(e) => {
+            ;(e.currentTarget as HTMLElement).style.transform = 'scale(1)'
+          }}
+        >
+          {content}
+        </button>
+      )
+    }
+
     return (
-      <button
+      <div
         {...controlProps}
-        type="button"
+        ref={ref as React.Ref<HTMLDivElement>}
         className={className}
-        disabled={disabled}
-        onClick={disabled ? undefined : onClick}
-        style={{
-          appearance: 'none',
-          WebkitAppearance: 'none',
-          border: 0,
-          padding: 0,
-          margin: 0,
-          background: 'transparent',
-          color: 'inherit',
-          font: 'inherit',
-          cursor: disabled ? 'not-allowed' : 'pointer',
-          transition: reduceMotion ? 'none' : 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1)',
-          ...rootStyle,
-        }}
-        onMouseDown={(e) => {
-          if (disabled) return
-          ;(e.currentTarget as HTMLElement).style.transform = 'scale(0.96)'
-        }}
-        onMouseUp={(e) => {
-          ;(e.currentTarget as HTMLElement).style.transform = 'scale(1)'
-        }}
-        onMouseLeave={(e) => {
-          ;(e.currentTarget as HTMLElement).style.transform = 'scale(1)'
-        }}
+        style={rootStyle}
       >
         {content}
-      </button>
+      </div>
     )
-  }
-
-  return (
-    <div {...controlProps} className={className} style={rootStyle}>
-      {content}
-    </div>
-  )
-}
+  },
+)
 
 export function GlowOrbPreview() {
   return <GlowOrb state="listening" volume={0.5} size={200} />

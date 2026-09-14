@@ -18,7 +18,7 @@ export const WeightShiftText = forwardRef<HTMLSpanElement, WeightShiftTextProps>
     {
       children,
       baseWeight = 400,
-      activeWeight = 600,
+      activeWeight = 450,
       active,
       duration = durations.fast,
       className,
@@ -85,7 +85,7 @@ WeightShiftText.displayName = 'WeightShiftText'
 export function WeightShiftTextPreview() {
   return (
     <div
-      className="w-full h-full min-h-50 rounded-lg overflow-hidden flex flex-col items-center justify-center gap-6 p-4"
+      className="w-full h-full min-h-50 rounded-md overflow-hidden flex flex-col items-center justify-center gap-6 p-4"
       style={{ backgroundColor: 'var(--color-surface)' }}
     >
       <WeightShiftText

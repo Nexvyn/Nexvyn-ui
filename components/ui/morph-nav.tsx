@@ -152,7 +152,15 @@ export const MorphNav = forwardRef<HTMLDivElement, MorphNavProps>(
               'flex size-11 items-center justify-center rounded-full squircle-corners bg-(--color-fg) text-(--color-bg) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
             )}
-            onClick={() => handleSetState(state === 'closed' ? 'main' : 'closed')}
+            onClick={() => {
+              if (state === 'closed') {
+                handleSetState('main')
+              } else if (state === 'sub') {
+                handleSetState('main')
+              } else {
+                handleSetState('closed')
+              }
+            }}
           >
             <svg
               width="16"
@@ -319,8 +327,8 @@ const MorphNavPanel = forwardRef<HTMLDivElement, MorphNavPanelProps>(
         id={id}
         role="menu"
         className={cn(
-          'fixed z-300 min-w-[12rem] max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-lg squircle-corners border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
-          'shadow-[0_14px_34px_-22px_rgba(0,0,0,0.15)]',
+          'fixed z-300 min-w-[12rem] max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-md squircle-corners border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
+          'shadow-lg',
           className,
         )}
         style={{ left: position.left, top: position.top }}

@@ -79,7 +79,7 @@ export class ArcSliderRenderer {
     for (let i = 0; i < ARC_GRADIENT_STEPS; i++) {
       const stop = createSVGElement('stop', {
         offset: `${(i / (ARC_GRADIENT_STEPS - 1)) * 100}%`,
-        'stop-color': '#fff',
+        'stop-color': 'transparent',
       })
       this.gradientStops.push(stop)
       this.gradient.appendChild(stop)
@@ -90,10 +90,10 @@ export class ArcSliderRenderer {
 
     this.bgPath = createSVGElement('path', {
       fill: 'none',
-      stroke: 'rgba(0,0,0,0.06)',
       'stroke-width': String(this.barWidth),
       'stroke-linecap': 'round',
     })
+    this.bgPath.style.stroke = 'var(--color-border)'
     this.el.appendChild(this.bgPath)
 
     this.gradientPath = createSVGElement('path', {
@@ -110,8 +110,7 @@ export class ArcSliderRenderer {
 
     this.handle = createSVGElement('circle', {
       r: String(this.handleRadius),
-      fill: '#fff',
-      stroke: 'white',
+      fill: 'currentColor',
       'stroke-width': '2',
       tabindex: '0',
       role: 'slider',
@@ -120,6 +119,7 @@ export class ArcSliderRenderer {
       'aria-valuemax': '100',
       'aria-valuenow': String(this.currentValue),
     })
+    this.handle.style.stroke = 'var(--color-bg)'
     this.handle.classList.add('bcp-slider-handle')
     this.handle.addEventListener('mouseenter', () => playHoverSound())
     this.handle.addEventListener('mousedown', (e) => {

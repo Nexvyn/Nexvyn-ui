@@ -53,7 +53,9 @@
       "title": "Adaptive Actions",
       "description": "A responsive action toolbar that measures its available inline size and moves overflowed items into an accessible dropdown menu, with priority and pinned flags to control what stays visible.",
       "dependencies": [
-        "motion"
+        "motion",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
       ],
       "files": [
         {
@@ -78,6 +80,22 @@
         {
           "path": "lib/motion-tokens.ts",
           "type": "registry:lib"
+        },
+        {
+          "path": "components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/switch.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -87,8 +105,9 @@
       "title": "Badge",
       "description": "A compact status label with solid, muted, and dot variants for tagging content inline.",
       "dependencies": [
+        "@radix-ui/react-slot",
         "class-variance-authority",
-        "@radix-ui/react-slot"
+        "motion"
       ],
       "files": [
         {
@@ -105,7 +124,7 @@
       "name": "clipboard-field",
       "type": "registry:ui",
       "title": "Clipboard Field",
-      "description": "A one-click install/copy field that morphs between the command and a success label using CSS grid fr tracks — JS only copies and toggles state.",
+      "description": "A one-click install/copy field that morphs between the command and a success label using CSS grid fr tracks. JS only copies and toggles state.",
       "dependencies": [],
       "files": [
         {
@@ -146,6 +165,14 @@
         },
         {
           "path": "lib/sound.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "hooks/use-elastic-overdrag.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
           "type": "registry:lib"
         }
       ]
@@ -296,6 +323,10 @@
         {
           "path": "lib/sound.ts",
           "type": "registry:lib"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -304,7 +335,9 @@
       "type": "registry:ui",
       "title": "Scroll Indicator",
       "description": "A vertical scroll progress indicator with tick marks, section labels, and a floating position readout.",
-      "dependencies": [],
+      "dependencies": [
+        "motion"
+      ],
       "files": [
         {
           "path": "components/ui/scroll-indicator.tsx",
@@ -370,6 +403,14 @@
         {
           "path": "components/ui/morph-nav.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -388,6 +429,10 @@
         },
         {
           "path": "lib/hooks/use-proximity-highlight.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
           "type": "registry:lib"
         }
       ]
@@ -486,6 +531,10 @@
         {
           "path": "lib/sound.ts",
           "type": "registry:lib"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -509,6 +558,14 @@
         {
           "path": "lib/sound.ts",
           "type": "registry:lib"
+        },
+        {
+          "path": "hooks/use-mounted.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -528,6 +585,10 @@
         {
           "path": "lib/sound.ts",
           "type": "registry:lib"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -536,11 +597,21 @@
       "type": "registry:ui",
       "title": "Switch",
       "description": "A toggle switch with thumb travel animation and hidden checkbox for forms.",
-      "dependencies": [],
+      "dependencies": [
+        "motion"
+      ],
       "files": [
         {
           "path": "components/ui/switch.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "lib/motion-tokens.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/sound.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -662,7 +733,7 @@
       "name": "navigation-compass",
       "type": "registry:ui",
       "title": "Navigation Compass",
-      "description": "A draggable compass dial that doubles as a nav menu — scroll rotates it with physical lag, and links entering the active zone scale up and light with the accent.",
+      "description": "A draggable compass dial that doubles as a nav menu: scroll rotates it with physical lag, and links entering the active zone scale up and light with the accent.",
       "dependencies": [
         "motion"
       ],
@@ -698,14 +769,6 @@
         {
           "path": "components/ui/fluid-orb.tsx",
           "type": "registry:ui"
-        },
-        {
-          "path": "lib/hooks/use-css-color-rgb.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "lib/resolve-css-color.ts",
-          "type": "registry:lib"
         }
       ]
     },

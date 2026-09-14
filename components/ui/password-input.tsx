@@ -99,7 +99,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
         {label ? (
           <label
             htmlFor={id}
-            className={cn('mb-2 block font-medium text-sm font-sans', labelClassName)}
+            className={cn('mb-2 block font-normal text-sm font-sans', labelClassName)}
             style={{ color: 'var(--color-fg)' }}
           >
             {label}
@@ -111,10 +111,10 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             id={id}
             type={visible ? 'text' : 'password'}
             className={cn(
-              'h-11 w-full rounded-lg ps-3.5 pe-12 py-2.5 text-sm outline-none',
+              'h-11 w-full rounded-md ps-3.5 pe-12 py-2.5 text-sm outline-none',
               'border border-(--color-border)',
               'focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-1 focus-visible:ring-offset-(--color-bg)',
-              'transition-[border-color,box-shadow] duration-150',
+              'transition-[border-color,box-shadow] duration-(--motion-dur-fast) motion-reduce:transition-none',
               'placeholder:text-(--color-subtle)',
               className,
             )}
@@ -136,10 +136,10 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             data-state={visible ? 'visible' : 'hidden'}
             className={cn(
               'absolute inset-e-3 top-1/2 -translate-y-1/2 cursor-pointer text-(--color-muted)',
-              "before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:size-11",
-              'transition-[color,transform] duration-150',
+              "before:content-[''] before:absolute before:top-1/2 before:start-1/2 before:-translate-x-1/2 rtl:before:translate-x-1/2 before:-translate-y-1/2 before:size-11",
+              'transition-[color,transform] duration-(--motion-dur-fast) motion-reduce:transition-none motion-reduce:transform-none',
               'hover:text-(--color-fg) active:scale-90',
-              'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-(--color-accent) focus-visible:rounded-sm',
+              'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-(--color-accent) focus-visible:rounded-md',
             )}
           >
             <svg

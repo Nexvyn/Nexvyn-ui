@@ -10,8 +10,8 @@ import { playClickSound, playHoverSound } from '@/lib/sound'
 
 export const buttonVariants = cva(
   [
-    'inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium',
-    'rounded-lg squircle-corners',
+    'inline-flex items-center justify-center gap-2 whitespace-nowrap font-normal',
+    'rounded-md squircle-corners',
     'select-none',
     'transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out)',
     'motion-reduce:transition-none motion-reduce:transform-none',
@@ -134,6 +134,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     forwardedRef,
   ) => {
     const internalRef = React.useRef<HTMLButtonElement | null>(null)
+    const pressedRef = React.useRef(false)
     const prefersReducedMotion = useReducedMotion()
     const isDisabled = disabled || loading
     const resolvedVariant =
@@ -161,11 +162,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     )
 
     const settle = React.useCallback(() => {
-      if (prefersReducedMotion) return
+      if (!pressedRef.current) return
+      pressedRef.current = false
       const element = internalRef.current
       if (!element) return
-      animate(element, { transform: 'scale(1) translateY(0px)' }, { ...springs.settle })
-    }, [prefersReducedMotion])
+      animate(element, { scale: 1, y: 0 }, { ...springs.settle })
+    }, [])
 
     const handlePointerDown = React.useCallback(
       (event: React.PointerEvent<HTMLButtonElement>) => {
@@ -174,7 +176,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
         const element = internalRef.current
         if (!element) return
-        animate(element, { transform: 'scale(0.97) translateY(1px)' }, { ...springs.press })
+        pressedRef.current = true
+        animate(element, { scale: 0.97, y: 1 }, { ...springs.press })
       },
       [onPointerDown, isDisabled, prefersReducedMotion],
     )

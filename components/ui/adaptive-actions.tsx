@@ -16,12 +16,21 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { HugeiconsIcon } from '@hugeicons/react'
+import {
+  Archive02Icon,
+  Copy01Icon,
+  Delete02Icon,
+  Edit02Icon,
+  MoreHorizontalIcon,
+  Share08Icon,
+} from '@hugeicons/core-free-icons'
 import { cn } from '@/lib/utils'
 
 export interface ActionItem {
   /** Stable unique identifier for the action. */
   id: string
-  /** Accessible label — rendered as visible text or `aria-label` for icon-only. */
+  /** Accessible label, rendered as visible text or `aria-label` for icon-only. */
   label: string
   /** Icon rendered inside the button (decorative, `aria-hidden`). */
   icon?: ReactNode
@@ -46,7 +55,7 @@ export interface AdaptiveActionsProps extends Omit<HTMLAttributes<HTMLDivElement
   moreLabel?: string
   /** Render a custom trigger for the overflow menu. Receives the count of hidden items. */
   renderMoreTrigger?: (count: number) => ReactNode
-  /** Maximum visible items before overflow — independent of inline measurement. Optional. */
+  /** Maximum visible items before overflow, independent of inline measurement. Optional. */
   maxVisible?: number
 }
 
@@ -200,7 +209,7 @@ function OverflowMenu({
         aria-controls={open ? contentId : undefined}
         aria-label={moreLabel}
         className={cn(
-          'inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg supports-[corner-shape:squircle]:corner-squircle px-3 text-sm font-medium text-(--color-fg)',
+          'inline-flex min-h-11 min-w-11 items-center justify-center rounded-md squircle-corners px-3 text-sm font-normal text-(--color-fg)',
           'transition-colors duration-(--motion-dur-fast) ease motion-reduce:transition-none',
           'hover:bg-(--color-surface-2)',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
@@ -216,13 +225,7 @@ function OverflowMenu({
         {renderMoreTrigger ? (
           renderMoreTrigger(actions.length)
         ) : (
-          <span aria-hidden="true" className="flex items-center gap-1">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-              <circle cx="4" cy="8" r="1.5" />
-              <circle cx="8" cy="8" r="1.5" />
-              <circle cx="12" cy="8" r="1.5" />
-            </svg>
-          </span>
+          <HugeiconsIcon icon={MoreHorizontalIcon} size={16} strokeWidth={1.5} aria-hidden="true" />
         )}
       </button>
 
@@ -248,7 +251,7 @@ function OverflowMenu({
                 insetInlineEnd: menuPos.insetInlineEnd,
                 zIndex: 50,
               }}
-              className="min-w-40 rounded-lg supports-[corner-shape:squircle]:corner-squircle border border-(--color-border) bg-(--color-surface) py-1 shadow-lg"
+              className="flex min-w-44 flex-col gap-0.5 rounded-md squircle-corners border border-(--color-border) bg-(--color-surface) p-1 shadow-lg"
               onKeyDown={handleMenuKeyDown}
             >
               {actions.map((action, i) => (
@@ -260,7 +263,7 @@ function OverflowMenu({
                   disabled={action.disabled}
                   aria-disabled={action.disabled || undefined}
                   className={cn(
-                    'flex min-h-10 w-full items-center gap-2 px-3 py-2 text-start text-sm',
+                    'flex min-h-9 w-full items-center gap-2.5 rounded-md squircle-corners px-2.5 py-1.5 text-start text-sm pointer-coarse:min-h-11',
                     'transition-colors duration-(--motion-dur-fast) ease motion-reduce:transition-none',
                     action.disabled
                       ? 'cursor-not-allowed opacity-50'
@@ -277,11 +280,14 @@ function OverflowMenu({
                   }}
                 >
                   {action.icon && (
-                    <span aria-hidden="true" className="shrink-0">
+                    <span
+                      aria-hidden="true"
+                      className="flex size-4 shrink-0 items-center justify-center"
+                    >
                       {action.icon}
                     </span>
                   )}
-                  <span>{action.label}</span>
+                  <span className="min-w-0 flex-1 truncate">{action.label}</span>
                 </button>
               ))}
             </motion.div>
@@ -334,7 +340,7 @@ function VisibleAction({ action, index, itemRef, measureRef, visible }: VisibleA
         aria-disabled={action.disabled || undefined}
         aria-label={!action.icon ? undefined : action.label}
         className={cn(
-          'inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-lg supports-[corner-shape:squircle]:corner-squircle px-3 text-sm font-medium',
+          'inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-md squircle-corners px-3 text-sm font-normal',
           'transition-colors duration-(--motion-dur-fast) ease motion-reduce:transition-none',
           action.disabled
             ? 'cursor-not-allowed opacity-50'
@@ -430,7 +436,6 @@ export const AdaptiveActions = forwardRef<HTMLDivElement, AdaptiveActionsProps>(
           usedWidth = nextUsed
           count++
         } else {
-          // This item doesn't fit. But if it's pinned, we must include it.
           if (sortedActions[i].pinned) {
             usedWidth = nextUsed
             count++
@@ -544,7 +549,7 @@ export const AdaptiveActions = forwardRef<HTMLDivElement, AdaptiveActionsProps>(
 
     return (
       <AdaptiveActionsContext.Provider value={ctx}>
-        {/* Hidden measurement row — measures all items at full size without visible layout */}
+        {/* Hidden measurement row, measures all items at full size without visible layout */}
         <div
           ref={measureRowRef}
           aria-hidden="true"
@@ -563,7 +568,7 @@ export const AdaptiveActions = forwardRef<HTMLDivElement, AdaptiveActionsProps>(
               data-aa-measure
               type="button"
               tabIndex={-1}
-              className="inline-flex min-h-11 min-w-11 items-center gap-2 px-3 text-sm font-medium"
+              className="inline-flex min-h-11 min-w-11 items-center gap-2 px-3 text-sm font-normal"
             >
               {action.icon && <span className="shrink-0">{action.icon}</span>}
               <span>{action.label}</span>
@@ -573,13 +578,14 @@ export const AdaptiveActions = forwardRef<HTMLDivElement, AdaptiveActionsProps>(
             data-aa-more-measure
             type="button"
             tabIndex={-1}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center px-3 text-sm font-medium"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center px-3 text-sm font-normal"
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <circle cx="4" cy="8" r="1.5" />
-              <circle cx="8" cy="8" r="1.5" />
-              <circle cx="12" cy="8" r="1.5" />
-            </svg>
+            <HugeiconsIcon
+              icon={MoreHorizontalIcon}
+              size={16}
+              strokeWidth={1.5}
+              aria-hidden="true"
+            />
           </button>
         </div>
 
@@ -633,85 +639,28 @@ export function AdaptiveActionsPreview() {
       id: 'edit',
       label: 'Edit',
       priority: 3,
-      icon: (
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M11.5 2.5l2 2-8 8H3.5v-2l8-8z" />
-        </svg>
-      ),
+      icon: <HugeiconsIcon icon={Edit02Icon} size={16} strokeWidth={1.5} aria-hidden="true" />,
       onSelect: () => {},
     },
     {
       id: 'duplicate',
       label: 'Duplicate',
       priority: 2,
-      icon: (
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="5.5" y="5.5" width="7" height="7" rx="1" />
-          <path d="M3.5 10.5v-7a1 1 0 011-1h7" />
-        </svg>
-      ),
+      icon: <HugeiconsIcon icon={Copy01Icon} size={16} strokeWidth={1.5} aria-hidden="true" />,
       onSelect: () => {},
     },
     {
       id: 'share',
       label: 'Share',
       priority: 1,
-      icon: (
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="4" r="2" />
-          <circle cx="4" cy="8" r="2" />
-          <circle cx="12" cy="12" r="2" />
-          <path d="M5.8 9l4.4 2M10.2 5L5.8 7" />
-        </svg>
-      ),
+      icon: <HugeiconsIcon icon={Share08Icon} size={16} strokeWidth={1.5} aria-hidden="true" />,
       onSelect: () => {},
     },
     {
       id: 'archive',
       label: 'Archive',
       priority: 0,
-      icon: (
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect x="2" y="3" width="12" height="3" rx="1" />
-          <path d="M3 6v7a1 1 0 001 1h8a1 1 0 001-1V6M6.5 9h3" />
-        </svg>
-      ),
+      icon: <HugeiconsIcon icon={Archive02Icon} size={16} strokeWidth={1.5} aria-hidden="true" />,
       onSelect: () => {},
     },
     {
@@ -719,20 +668,7 @@ export function AdaptiveActionsPreview() {
       label: 'Delete',
       destructive: true,
       priority: 0,
-      icon: (
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M3 5h10M5.5 5V3.5a1 1 0 011-1h3a1 1 0 011 1V5M12 5v7.5a1.5 1.5 0 01-1.5 1.5h-5A1.5 1.5 0 014 12.5V5" />
-        </svg>
-      ),
+      icon: <HugeiconsIcon icon={Delete02Icon} size={16} strokeWidth={1.5} aria-hidden="true" />,
       onSelect: () => {},
     },
   ]

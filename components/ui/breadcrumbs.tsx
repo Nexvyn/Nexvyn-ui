@@ -1,6 +1,6 @@
 'use client'
 
-import { forwardRef, useMemo, type HTMLAttributes, type ReactNode } from 'react'
+import { forwardRef, useMemo, useRef, useState, type HTMLAttributes, type ReactNode } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 import { playHoverSound } from '@/lib/sound'
@@ -77,9 +77,11 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
     ref,
   ) => {
     const sep = separator ?? <DefaultSeparator />
+    const [isExpanded, setIsExpanded] = useState(false)
+    const firstHiddenItemRef = useRef<HTMLAnchorElement>(null)
 
     const { visibleItems, collapsedItems } = useMemo(() => {
-      if (!maxItems || items.length <= maxItems) {
+      if (isExpanded || !maxItems || items.length <= maxItems) {
         return { visibleItems: items, collapsedItems: [] }
       }
       const keep = maxItems - 2
@@ -87,7 +89,7 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
         visibleItems: [items[0], ...items.slice(-keep)],
         collapsedItems: items.slice(1, items.length - keep),
       }
-    }, [items, maxItems])
+    }, [items, maxItems, isExpanded])
 
     const hasEllipsis = collapsedItems.length > 0
 
@@ -105,14 +107,15 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
       }
     }, [items, siteUrl])
 
-    const renderItem = (item: BreadcrumbItem) => {
-      const isLast = !item.href
+    const renderItem = (item: BreadcrumbItem, originalIndex: number, isLastItem: boolean) => {
+      const isFirstHidden = isExpanded && originalIndex === 1 && collapsedItems.length > 0
+
       const content = (
         <span
           className={cn(
             breadcrumbVariants({ variant, size }),
-            isLast
-              ? 'font-medium text-(--color-fg)'
+            isLastItem
+              ? 'font-normal text-(--color-fg)'
               : 'text-(--color-muted) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none hover:text-(--color-fg)',
           )}
         >
@@ -125,7 +128,7 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
         </span>
       )
 
-      if (isLast) {
+      if (isLastItem) {
         return (
           <span aria-current="page" title={item.title}>
             {content}
@@ -135,9 +138,10 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
 
       return (
         <a
+          ref={isFirstHidden ? firstHiddenItemRef : null}
           href={item.href}
           title={item.title}
-          className="outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-1 focus-visible:ring-offset-(--color-bg) rounded-sm"
+          className="outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-1 focus-visible:ring-offset-(--color-bg) rounded-md"
           onMouseEnter={() => playHoverSound()}
         >
           {content}
@@ -150,19 +154,24 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
         {jsonLd && (
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
           />
         )}
         <nav ref={ref} aria-label={ariaLabel} className={className} {...props}>
           <ol className={cn('flex flex-wrap items-center', listClassName)}>
-            {visibleItems.map((item, i) => {
+            {visibleItems.map((item, visibleIndex) => {
+              const originalIndex = items.indexOf(item)
               const elements: ReactNode[] = []
-              if (hasEllipsis && i === 1) {
+              if (hasEllipsis && visibleIndex === 1) {
                 elements.push(
                   <li key="ellipsis" className="flex items-center">
                     <button
                       type="button"
                       aria-label={`Show ${collapsedItems.length} hidden pages`}
+                      onClick={() => {
+                        setIsExpanded(true)
+                        setTimeout(() => firstHiddenItemRef.current?.focus(), 0)
+                      }}
                       className={cn(
                         'inline-flex items-center justify-center rounded-md squircle-corners text-(--color-muted) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none hover:text-(--color-fg) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent)',
                         size === 'sm' && 'size-7',
@@ -195,15 +204,16 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
                   </li>,
                 )
               }
+              const isLastItem = visibleIndex === visibleItems.length - 1
               elements.push(
-                <li key={`item-${i}`} className="flex items-center">
-                  {renderItem(item)}
+                <li key={`item-${originalIndex}`} className="flex items-center">
+                  {renderItem(item, originalIndex, isLastItem)}
                 </li>,
               )
-              if (i < visibleItems.length - 1) {
+              if (visibleIndex < visibleItems.length - 1) {
                 elements.push(
                   <li
-                    key={`sep-${i}`}
+                    key={`sep-${originalIndex}`}
                     role="presentation"
                     aria-hidden="true"
                     className="flex items-center"

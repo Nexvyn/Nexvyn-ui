@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 import type { AriaAttributes, CSSProperties } from 'react'
 import { useReducedMotion } from 'motion/react'
 import { useCssColorRgb } from '@/lib/hooks/use-css-color-rgb'
@@ -46,17 +46,23 @@ const FALLBACK_DESTRUCTIVE: [number, number, number] = [232, 80, 80]
 
 const BLEND_MS = 280
 
-export function BarsTheme({
-  state,
-  volume,
-  size,
-  className,
-  style,
-  disabled = false,
-  interactive = false,
-  onClick,
-  ...controlProps
-}: BarsThemeProps) {
+export const BarsTheme = forwardRef<
+  HTMLButtonElement | HTMLDivElement,
+  BarsThemeProps & { ref?: React.Ref<HTMLButtonElement | HTMLDivElement> }
+>(function BarsTheme(
+  {
+    state,
+    volume,
+    size,
+    className,
+    style,
+    disabled = false,
+    interactive = false,
+    onClick,
+    ...controlProps
+  },
+  forwardedRef,
+) {
   const barRefs = useRef<(HTMLSpanElement | null)[]>([])
   const containerRef = useRef<HTMLSpanElement>(null)
   const rafRef = useRef<number>(0)
@@ -76,11 +82,25 @@ export function BarsTheme({
     const el = containerRef.current
     if (!el || typeof IntersectionObserver === 'undefined') return
     const io = new IntersectionObserver(
-      ([entry]) => setVisible(entry.isIntersecting && entry.intersectionRatio >= 0.2),
+      ([entry]) =>
+        setVisible(entry.isIntersecting && entry.intersectionRatio >= 0.2 && !document.hidden),
       { threshold: [0, 0.2] },
     )
     io.observe(el)
-    return () => io.disconnect()
+
+    const handleVisibilityChange = () => {
+      io.disconnect()
+      const entry = el.getBoundingClientRect()
+      const isIntersecting = entry.top < window.innerHeight && entry.bottom > 0
+      setVisible(isIntersecting && !document.hidden)
+      io.observe(el)
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      io.disconnect()
+    }
   }, [])
 
   const foregroundRgb = useCssColorRgb('--color-fg', FALLBACK_FOREGROUND)
@@ -305,7 +325,9 @@ export function BarsTheme({
         justifyContent: 'center',
         gap,
         cursor: interactive ? (disabled ? 'not-allowed' : 'pointer') : 'default',
-        transition: reduceMotion ? 'none' : 'transform 180ms cubic-bezier(0.23, 1, 0.32, 1)',
+        transition: reduceMotion
+          ? 'none'
+          : 'transform var(--motion-dur-base) var(--motion-ease-out)',
       }}
     >
       {Array.from({ length: BAR_COUNT }, (_, i) => (
@@ -321,7 +343,9 @@ export function BarsTheme({
             height: minH,
             borderRadius: radius,
             background: initialBg,
-            transition: reduceMotion ? 'none' : 'opacity 200ms ease-out',
+            transition: reduceMotion
+              ? 'none'
+              : 'opacity var(--motion-dur-base) var(--motion-ease-out)',
           }}
         />
       ))}
@@ -331,6 +355,7 @@ export function BarsTheme({
   if (interactive) {
     return (
       <button
+        ref={forwardedRef as React.Ref<HTMLButtonElement>}
         {...controlProps}
         type="button"
         className={className}
@@ -346,7 +371,9 @@ export function BarsTheme({
           color: 'inherit',
           font: 'inherit',
           cursor: disabled ? 'not-allowed' : 'pointer',
-          transition: reduceMotion ? 'none' : 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1)',
+          transition: reduceMotion
+            ? 'none'
+            : 'transform var(--motion-dur-fast) var(--motion-ease-out)',
           ...rootStyle,
         }}
         onMouseDown={(e) => {
@@ -366,11 +393,18 @@ export function BarsTheme({
   }
 
   return (
-    <div {...controlProps} className={className} style={rootStyle}>
+    <div
+      ref={forwardedRef as React.Ref<HTMLDivElement>}
+      {...controlProps}
+      className={className}
+      style={rootStyle}
+    >
       {content}
     </div>
   )
-}
+})
+
+BarsTheme.displayName = 'BarsTheme'
 
 export function BarsThemePreview() {
   return <BarsTheme state="listening" volume={0.5} size={180} />

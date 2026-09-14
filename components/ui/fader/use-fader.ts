@@ -174,13 +174,13 @@ export function useFader(options: UseFaderOptions) {
     }
   }, [overdrag.dragging, fillPercent])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: keyed on points content via join(",") — literal arrays get a new identity every render
+  // biome-ignore lint/correctness/useExhaustiveDependencies: keyed on points content via join(","), literal arrays get a new identity every render
   const pointsKey = points?.join(',')
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') return
     if (min >= max) {
       console.warn(
-        `Fader "${label}": min (${min}) must be less than max (${max}) — percent math degenerates to NaN.`,
+        `Fader "${label}": min (${min}) must be less than max (${max}): percent math degenerates to NaN.`,
       )
     }
     if (!points) return

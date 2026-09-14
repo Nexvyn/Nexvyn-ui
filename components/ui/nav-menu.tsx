@@ -10,6 +10,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
   type HTMLAttributes,
   type ReactNode,
 } from 'react'
@@ -26,6 +27,7 @@ import { WeightShiftText } from '@/components/ui/weight-shift-text'
 
 interface NavMenuContextValue {
   activeSlug: string | null
+  hasActiveItem: boolean
   nextIndex: () => number
   registerItem: (index: number, el: HTMLElement | null) => void
 }
@@ -78,6 +80,7 @@ export const NavMenu = forwardRef<HTMLElement, NavMenuProps>(
       axis,
     } = useProximityHighlight(navRef, { axis: 'y' })
 
+    const [hasActiveItem, setHasActiveItem] = useState(false)
     const indexRef = useRef(0)
     const nextIndex = useCallback(() => {
       const idx = indexRef.current
@@ -110,6 +113,7 @@ export const NavMenu = forwardRef<HTMLElement, NavMenuProps>(
       if (!nav) return
       const items = Array.from(nav.querySelectorAll<HTMLElement>('[data-nav-item]'))
       const found = items.find((el) => el.getAttribute('data-slug') === activeSlug)
+      setHasActiveItem(Boolean(found))
       if (found) {
         const rect: ItemRect = {
           top: found.offsetTop,
@@ -195,7 +199,7 @@ export const NavMenu = forwardRef<HTMLElement, NavMenuProps>(
     )
 
     return (
-      <NavMenuContext.Provider value={{ activeSlug, nextIndex, registerItem }}>
+      <NavMenuContext.Provider value={{ activeSlug, hasActiveItem, nextIndex, registerItem }}>
         <NavMenuContentContext.Provider value={contentCtx}>
           <nav
             ref={setRefs}
@@ -239,7 +243,7 @@ export const NavMenuItem = forwardRef<HTMLAnchorElement, NavMenuItemProps>(
     { href, label, icon, isNew, isUpdated, asChild = false, className, children, ...props },
     ref,
   ) => {
-    const { activeSlug, nextIndex } = useNavMenuCtx('NavMenuItem')
+    const { activeSlug, hasActiveItem, nextIndex } = useNavMenuCtx('NavMenuItem')
     const { activeIndex, setActiveIndex, registerItem } = useNavMenuContentCtx('NavMenuItem')
 
     const itemRef = useRef<HTMLAnchorElement | null>(null)
@@ -266,7 +270,7 @@ export const NavMenuItem = forwardRef<HTMLAnchorElement, NavMenuItemProps>(
       [ref],
     )
 
-    const weight = isActive ? 550 : isHovered ? 500 : 400
+    const weight = 400
 
     const itemClassName = cn(
       'group relative flex min-h-11 items-center gap-2.5 rounded-md squircle-corners px-3 py-2 text-sm outline-none transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
@@ -280,7 +284,7 @@ export const NavMenuItem = forwardRef<HTMLAnchorElement, NavMenuItemProps>(
       'data-nav-item': true,
       'data-slug': href,
       'aria-current': isActive ? ('page' as const) : undefined,
-      tabIndex: isActive ? 0 : -1,
+      tabIndex: isActive || (!hasActiveItem && index === 0) ? 0 : -1,
       onFocus: () => setActiveIndex(index),
     }
 

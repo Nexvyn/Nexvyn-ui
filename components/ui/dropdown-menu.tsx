@@ -166,7 +166,7 @@ export const DropdownMenuTrigger = forwardRef<HTMLButtonElement, DropdownMenuTri
         aria-controls={open ? contentId : undefined}
         style={itemsWidth ? { width: itemsWidth } : undefined}
         className={cn(
-          'flex min-h-11 w-full items-center justify-between gap-2 rounded-lg squircle-corners border border-(--color-border) bg-(--color-surface) px-4 py-3 text-left text-sm font-medium text-(--color-fg) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
+          'flex min-h-11 w-full items-center justify-between gap-2 rounded-md squircle-corners border border-(--color-border) bg-(--color-surface) px-4 py-3 text-left text-sm font-normal text-(--color-fg) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
           'hover:bg-(--color-surface-2)',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
           className,
@@ -190,7 +190,9 @@ export const DropdownMenuTrigger = forwardRef<HTMLButtonElement, DropdownMenuTri
             style={{
               display: 'inline-flex',
               transform: `rotate(${open ? 180 : 0}deg)`,
-              transition: reduceMotion ? 'none' : 'transform 200ms var(--motion-ease-out)',
+              transition: reduceMotion
+                ? 'none'
+                : 'transform var(--motion-dur-base) var(--motion-ease-out)',
             }}
           >
             <svg
@@ -397,7 +399,7 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuConten
               aria-hidden="true"
               className={cn(
                 'pointer-events-none invisible fixed top-0 left-0 min-w-48 border border-(--color-border) bg-(--color-bg) p-1.5 **:min-w-max',
-                'rounded-lg squircle-corners',
+                'rounded-md squircle-corners',
                 className,
               )}
             >
@@ -417,8 +419,8 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuConten
           aria-labelledby={triggerId}
           data-dropdown-content
           className={cn(
-            'relative z-300 min-w-48 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-lg squircle-corners border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
-            'shadow-[0_14px_34px_-22px_rgba(0,0,0,0.15)]',
+            'relative z-300 min-w-48 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-md squircle-corners border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
+            'shadow-lg',
             className,
           )}
           style={{
@@ -551,7 +553,7 @@ export const DropdownMenuGroup = forwardRef<HTMLDivElement, DropdownMenuGroupPro
       {label && (
         <div
           className={cn(
-            'px-3 pt-1 pb-1 text-[11px] font-medium uppercase tracking-[0.12em] text-(--color-subtle)',
+            'px-3 pt-1 pb-1 text-[11px] font-normal uppercase tracking-[0.12em] text-(--color-subtle)',
             labelClassName,
           )}
         >
@@ -570,7 +572,7 @@ export const DropdownMenuLabel = forwardRef<HTMLDivElement, DropdownMenuLabelPro
     <div
       ref={ref}
       className={cn(
-        'px-3 pt-1 pb-1 text-[11px] font-medium uppercase tracking-[0.12em] text-(--color-subtle)',
+        'px-3 pt-1 pb-1 text-[11px] font-normal uppercase tracking-[0.12em] text-(--color-subtle)',
         className,
       )}
       {...props}
