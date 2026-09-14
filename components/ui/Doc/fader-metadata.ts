@@ -6,7 +6,7 @@ export const faderMetadata: ComponentItem = {
   collection: 'inputs',
   previewType: 'default',
   description:
-    'A mixing-console-style parameter fader where the control IS the display — label and value live inside the track, the fill edge is the reading, and a thin bar rides the edge as the grab signifier. Supports continuous and detent (snappy) value grammars, elastic overdrag, and spring-animated settle.',
+    'A mixing-console-style parameter fader where the control IS the display: label and value live inside the track, the fill edge is the reading, and a thin bar rides the edge as the grab signifier. Supports continuous and detent (snappy) value grammars, elastic overdrag, and spring-animated settle.',
   registry: 'fader',
   dependencies: [{ name: '@base-ui/react' }, { name: 'motion' }],
   interaction:

@@ -40,12 +40,35 @@ export const ratioSliderMetadata: ComponentItem = {
     {
       name: 'leftColor',
       type: 'string',
-      description: 'Background color of the left bar.',
+      description: 'Background color of the left bar. Defaults to var(--color-fg).',
     },
     {
       name: 'rightColor',
       type: 'string',
-      description: 'Background color of the right bar.',
+      description: 'Background color of the right bar. Defaults to var(--color-border-strong).',
+    },
+    {
+      name: 'leftLabelColor',
+      type: 'string',
+      description: 'Left label color while it sits over the left bar. Defaults to var(--color-bg).',
+    },
+    {
+      name: 'rightLabelColor',
+      type: 'string',
+      description:
+        'Right label color while it sits over the right bar. Defaults to var(--color-fg).',
+    },
+    {
+      name: 'compactLeftLabelColor',
+      type: 'string',
+      description:
+        'Left label color once it moves above the bars onto the page background. Defaults to var(--color-fg).',
+    },
+    {
+      name: 'compactRightLabelColor',
+      type: 'string',
+      description:
+        'Right label color once it moves above the bars onto the page background. Defaults to var(--color-muted).',
     },
     {
       name: 'disabled',
@@ -67,7 +90,7 @@ export function Demo() {
       leftLabel="RICH"
       rightLabel="LIGHT"
       leftColor="var(--color-fg)"
-      rightColor="var(--color-muted)"
+      rightColor="var(--color-border-strong)"
     />
   )
 }`,

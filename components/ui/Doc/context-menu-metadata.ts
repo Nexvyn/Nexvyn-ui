@@ -4,6 +4,7 @@ export const contextMenuMetadata: ComponentItem = {
   id: 'context-menu',
   name: 'Context Menu',
   collection: 'menus',
+  basic: true,
   previewType: 'default',
 
   description:

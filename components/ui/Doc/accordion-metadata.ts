@@ -4,6 +4,7 @@ export const accordionMetadata: ComponentItem = {
   id: 'accordion',
   name: 'Accordion',
   collection: 'overlays',
+  basic: true,
   previewType: 'default',
   isNew: true,
   description:

@@ -6,6 +6,7 @@ export const badgeMetadata: ComponentItem = {
   collection: 'inputs',
   basic: true,
   previewType: 'default',
+  hasExamples: true,
   description:
     'A compact status label with solid, muted, and dot variants for tagging content inline.',
   registry: 'badge',
@@ -32,7 +33,7 @@ export const badgeMetadata: ComponentItem = {
       name: 'shimmer',
       type: 'boolean',
       description:
-        'Solid variant only: a soft light wave sweeps across the badge (default: true). Disabled under reduced motion.',
+        'Solid variant only: a soft light wave sweeps across the badge (default: false). Disabled under reduced motion.',
     },
     {
       name: 'pulse',

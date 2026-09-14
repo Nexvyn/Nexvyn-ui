@@ -6,7 +6,6 @@ export const actionButtonMetadata: ComponentItem = {
   collection: 'primitives',
   previewType: 'default',
   isNew: true,
-  basic: false,
   description:
     'An async-aware button with an idle → pending → success/error state machine. Composes over Button, adding promise tracking, abort support, minimum-pending opt-in, auto-reset, layered crossfade transitions, and live screen-reader announcements.',
   registry: 'action-button',
@@ -16,7 +15,7 @@ export const actionButtonMetadata: ComponentItem = {
     { name: 'class-variance-authority' },
   ],
   interaction:
-    'Click triggers the async onAction callback. State transitions crossfade with opacity + scale(0.95) + 1px blur — one morph moment. Focus is never moved. Width is stabilized by an invisible sizing layer. Pending state disables interaction and announces via live region. Success/error auto-reset to idle after a configurable delay.',
+    'Click triggers the async onAction callback. State transitions crossfade with opacity + scale(0.95) + 1px blur, one morph moment. Focus is never moved. Width is stabilized by an invisible sizing layer. Pending state disables interaction and announces via live region. Success/error auto-reset to idle after a configurable delay.',
   props: [
     {
       name: 'state',

@@ -4,6 +4,7 @@ export const tabsSubtleMetadata: ComponentItem = {
   id: 'tabs-subtle',
   name: 'Tabs Subtle',
   collection: 'navigation',
+  basic: true,
   previewType: 'default',
   description:
     'A pill-style tab list where the selected indicator springs between tabs, built on the WAI-ARIA tabs pattern with full roving-focus keyboard support.',
@@ -37,16 +38,14 @@ export const tabsSubtleMetadata: ComponentItem = {
 
 export function Demo() {
   return (
-    <>
-      <TabsSubtle defaultValue="overview">
-        <TabsSubtleItem value="overview" label="Overview" />
-        <TabsSubtleItem value="activity" label="Activity" />
-        <TabsSubtleItem value="settings" label="Settings" />
-      </TabsSubtle>
+    <TabsSubtle defaultValue="overview">
+      <TabsSubtleItem value="overview" label="Overview" />
+      <TabsSubtleItem value="activity" label="Activity" />
+      <TabsSubtleItem value="settings" label="Settings" />
       <TabsSubtlePanel value="overview">Overview content</TabsSubtlePanel>
       <TabsSubtlePanel value="activity">Activity content</TabsSubtlePanel>
       <TabsSubtlePanel value="settings">Settings content</TabsSubtlePanel>
-    </>
+    </TabsSubtle>
   )
 }`,
 }

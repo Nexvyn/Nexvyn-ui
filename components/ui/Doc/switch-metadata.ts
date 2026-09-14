@@ -6,6 +6,7 @@ export const switchMetadata: ComponentItem = {
   collection: 'inputs',
   previewType: 'default',
   basic: true,
+  hasExamples: true,
   description: 'A toggle switch with thumb travel animation and hidden checkbox for forms.',
   registry: 'switch',
   dependencies: [],

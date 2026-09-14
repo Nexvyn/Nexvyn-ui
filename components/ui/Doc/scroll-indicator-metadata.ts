@@ -35,6 +35,12 @@ export const scrollIndicatorMetadata: ComponentItem = {
       description: 'Ref to the scrollable container for automatic scroll tracking.',
     },
     {
+      name: 'scrollOffset',
+      type: 'number',
+      description:
+        'Gap in px between the container top and a heading after clicking its section. Defaults to 16.',
+    },
+    {
       name: 'className',
       type: 'string',
       description: 'Additional CSS classes.',

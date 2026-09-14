@@ -16,7 +16,7 @@ export const navMenuMetadata: ComponentItem = {
     {
       name: 'activeSlug',
       type: 'string | null',
-      description: 'The current route path. Required — the router owns truth.',
+      description: 'The current route path. Required: the router owns truth.',
       required: true,
     },
     {

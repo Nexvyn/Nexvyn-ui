@@ -7,9 +7,13 @@ export const adaptiveActionsMetadata: ComponentItem = {
   previewType: 'default',
   isNew: true,
   description:
-    'A responsive action toolbar that measures its available inline size with ResizeObserver and smoothly moves overflowed items into an accessible dropdown menu. Priority and pinned flags ensure critical actions always remain visible. Items animate with opacity/transform when crossing the visible↔overflow boundary — no width animation.',
+    'A responsive action toolbar that measures its available inline size with ResizeObserver and smoothly moves overflowed items into an accessible dropdown menu. Priority and pinned flags ensure critical actions always remain visible. Items animate with opacity/transform when crossing the visible↔overflow boundary, no width animation.',
   registry: 'adaptive-actions',
-  dependencies: [{ name: 'motion' }],
+  dependencies: [
+    { name: 'motion' },
+    { name: '@hugeicons/react' },
+    { name: '@hugeicons/core-free-icons' },
+  ],
   interaction:
     'Arrow keys rove focus across visible toolbar items and the overflow trigger (RTL-aware). Home/End jump to the ends. Enter/Space invoke an action or open the overflow menu. Inside the overflow menu, ArrowUp/Down navigates items, Escape returns focus to the trigger. Pinned items never overflow; higher-priority items overflow last. The overflow trigger shows a localized "More actions" label for screen readers.',
   props: [
@@ -39,7 +43,7 @@ export const adaptiveActionsMetadata: ComponentItem = {
       name: 'maxVisible',
       type: 'number',
       description:
-        'Maximum visible items before overflow — independent of inline measurement. Optional.',
+        'Maximum visible items before overflow, independent of inline measurement. Optional.',
     },
     {
       name: 'className',
@@ -47,13 +51,19 @@ export const adaptiveActionsMetadata: ComponentItem = {
       description: 'Merged onto the root toolbar element via cn().',
     },
   ],
-  usage: `import { AdaptiveActions, type ActionItem } from "@/components/ui/adaptive-actions"
+  usage: `import { HugeiconsIcon } from "@hugeicons/react"
+import { Copy01Icon, Delete02Icon, Edit02Icon, Share08Icon } from "@hugeicons/core-free-icons"
+import { AdaptiveActions, type ActionItem } from "@/components/ui/adaptive-actions"
+
+const icon = (glyph: typeof Edit02Icon) => (
+  <HugeiconsIcon icon={glyph} size={16} strokeWidth={1.5} aria-hidden="true" />
+)
 
 const actions: ActionItem[] = [
-  { id: "edit", label: "Edit", priority: 3, pinned: true, icon: <EditIcon />, onSelect: () => {} },
-  { id: "duplicate", label: "Duplicate", priority: 2, icon: <CopyIcon />, onSelect: () => {} },
-  { id: "share", label: "Share", priority: 1, icon: <ShareIcon />, onSelect: () => {} },
-  { id: "delete", label: "Delete", destructive: true, icon: <TrashIcon />, onSelect: () => {} },
+  { id: "edit", label: "Edit", priority: 3, pinned: true, icon: icon(Edit02Icon), onSelect: () => {} },
+  { id: "duplicate", label: "Duplicate", priority: 2, icon: icon(Copy01Icon), onSelect: () => {} },
+  { id: "share", label: "Share", priority: 1, icon: icon(Share08Icon), onSelect: () => {} },
+  { id: "delete", label: "Delete", destructive: true, icon: icon(Delete02Icon), onSelect: () => {} },
 ]
 
 export function Demo() {

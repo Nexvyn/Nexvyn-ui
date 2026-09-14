@@ -8,7 +8,7 @@ export const navigationCompassMetadata: ComponentItem = {
   size: 'lg',
   isNew: true,
   description:
-    'A draggable compass dial that doubles as a nav menu — scroll rotates it with physical lag, and links entering the active zone scale up and light with the accent.',
+    'A draggable compass dial that doubles as a nav menu: scroll rotates it with physical lag, and links entering the active zone scale up and light with the accent.',
   registry: 'navigation-compass',
   dependencies: [{ name: 'motion' }],
   interaction:

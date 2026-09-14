@@ -4,13 +4,14 @@ export const inputCopyMetadata: ComponentItem = {
   id: 'input-copy',
   name: 'Input Copy',
   collection: 'inputs',
+  basic: true,
   previewType: 'default',
   description:
-    'A copy-to-clipboard field that shows a monospace value with an icon or button trigger, animating a checkmark on copy.',
+    'A copy-to-clipboard field that shows a monospace value in a read-only input with an icon or button trigger, animating a checkmark on copy.',
   registry: 'input-copy',
   dependencies: [{ name: 'motion' }],
   interaction:
-    'Hover field for micro-clicks; click to copy the value with tactile audio feedback. The icon morphs into a checkmark.',
+    'Click or press Enter on the copy button to copy the value with tactile audio feedback. The icon morphs into a checkmark and the result is announced to screen readers. Falls back to a legacy copy when the Clipboard API is unavailable.',
   props: [
     {
       name: 'value',
@@ -41,6 +42,32 @@ export const inputCopyMetadata: ComponentItem = {
       name: 'disabled',
       type: 'boolean',
       description: 'Disables copying.',
+    },
+    {
+      name: 'copyLabel',
+      type: 'string',
+      description:
+        'Accessible label and tooltip for the icon trigger. Defaults to "Copy to clipboard".',
+    },
+    {
+      name: 'copiedLabel',
+      type: 'string',
+      description: 'Text shown and announced after a successful copy. Defaults to "Copied".',
+    },
+    {
+      name: 'failedLabel',
+      type: 'string',
+      description: 'Text announced when copying fails and the value is selected instead.',
+    },
+    {
+      name: 'buttonText',
+      type: 'string',
+      description: 'Trigger text for the button variant. Defaults to "Copy".',
+    },
+    {
+      name: 'resetDelay',
+      type: 'number',
+      description: 'Milliseconds before the copied state resets. Defaults to 2000.',
     },
   ],
   usage: `import { InputCopy } from "@/components/ui/input-copy"

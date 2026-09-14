@@ -6,7 +6,7 @@ export const fluidOrbMetadata: ComponentItem = {
   collection: 'effects',
   previewType: 'default',
   description:
-    'A WebGL fluid orb in muted/neutral design tokens (follows light and dark theme). Sphere normals, fBm noise, glass highlights, and a pulsing core driven by audio level.',
+    'A calm, monochrome WebGL fluid orb drawn from neutral design tokens with a subtle accent tint in its highlights and core. Colors are resolved from CSS variables and follow light and dark theme.',
   registry: 'fluid-orb',
   dependencies: [],
   interaction:
@@ -22,7 +22,13 @@ export const fluidOrbMetadata: ComponentItem = {
       name: 'color',
       type: 'string',
       description:
-        'Optional hex override. When omitted, uses --color-muted so the orb stays neutral and theme-aware.',
+        'Base tone as any CSS color, including a token such as var(--color-fg). Defaults to var(--color-muted).',
+    },
+    {
+      name: 'accentColor',
+      type: 'string',
+      description:
+        'Tint mixed into the fluid highlights and pulsing core. Defaults to var(--color-accent).',
     },
     {
       name: 'audioLevel',

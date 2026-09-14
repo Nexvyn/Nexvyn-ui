@@ -11,7 +11,7 @@ export const diaTextMetadata: ComponentItem = {
   registry: 'dia-text',
   dependencies: [{ name: 'motion' }],
   interaction:
-    'Scroll-triggered — text reveals via an animated diagonal clip-path polygon when the component enters the viewport. Direction and angle are configurable. Respects prefers-reduced-motion by showing text immediately.',
+    'Scroll-triggered: text reveals via an animated diagonal clip-path polygon when the component enters the viewport. Direction and angle are configurable. Respects prefers-reduced-motion by showing text immediately.',
   props: [
     {
       name: 'children',
