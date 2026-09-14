@@ -22,7 +22,7 @@ export async function generateMetadata({
     title: `${item.name} Component`,
     description:
       item.description ??
-      `${item.name} — an accessible React component built with TypeScript and Tailwind CSS.`,
+      `${item.name}, an accessible React component built with TypeScript and Tailwind CSS.`,
     path: `/components/${item.id}`,
   })
 }

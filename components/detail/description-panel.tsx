@@ -77,9 +77,7 @@ type DescriptionPanelProps = {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-semibold uppercase tracking-wider text-(--color-muted)">
-      {children}
-    </p>
+    <p className="text-xs font-normal uppercase tracking-wider text-(--color-muted)">{children}</p>
   )
 }
 
@@ -98,7 +96,6 @@ const ANATOMY_COMPONENTS = [
   'glow-orb',
   'clipboard-field',
   'color-picker',
-  'command-palette',
   'context-menu',
   'dia-text',
   'dropdown-menu',
@@ -115,7 +112,6 @@ const ANATOMY_COMPONENTS = [
   'ratio-slider',
   'scroll-indicator',
   'select',
-  'selection-toolbar',
   'switch',
   'table-of-contents',
   'tabs-subtle',
@@ -134,10 +130,17 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
   const [feedbackOpen, setFeedbackOpen] = useState(false)
   const hasAnatomy = item?.id ? ANATOMY_COMPONENTS.includes(item.id) : false
   const hasCode = item?.registry && item.collection !== 'illustration'
-  const [anatomyView, setAnatomyView] = usePreviewControl(
+  const hasExamples = item?.hasExamples ?? false
+  const [currentView, setCurrentView] = usePreviewControl(
     item?.id ? `${item.id}-view` : 'preview',
     'preview',
   )
+  const toggleAnatomy = () => {
+    setCurrentView(currentView === 'anatomy' ? 'preview' : 'anatomy')
+  }
+  const toggleExamples = () => {
+    setCurrentView(currentView === 'examples' ? 'preview' : 'examples')
+  }
   const [prevOpen, setPrevOpen] = useState(open)
   if (open !== prevOpen) {
     setPrevOpen(open)
@@ -214,20 +217,41 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
           </Tooltip>
         )}
 
-        {hasAnatomy && (
+        {hasExamples && (
           <Tooltip
-            content={anatomyView === 'anatomy' ? 'Hide anatomy' : 'Show anatomy'}
+            content={currentView === 'examples' ? 'Hide examples' : 'Show examples'}
             side="bottom"
           >
             <button
               type="button"
-              onClick={() => setAnatomyView(anatomyView === 'anatomy' ? 'preview' : 'anatomy')}
-              aria-label={anatomyView === 'anatomy' ? 'Hide anatomy' : 'Show anatomy'}
-              aria-pressed={anatomyView === 'anatomy'}
+              onClick={toggleExamples}
+              aria-label={currentView === 'examples' ? 'Hide examples' : 'Show examples'}
+              aria-pressed={currentView === 'examples'}
               className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl p-1.5"
               style={{
                 backgroundColor: 'var(--color-bg)',
-                color: anatomyView === 'anatomy' ? 'var(--color-fg)' : 'var(--color-muted)',
+                color: currentView === 'examples' ? 'var(--color-fg)' : 'var(--color-muted)',
+              }}
+            >
+              <Frame className="h-5 w-5" />
+            </button>
+          </Tooltip>
+        )}
+
+        {hasAnatomy && (
+          <Tooltip
+            content={currentView === 'anatomy' ? 'Hide anatomy' : 'Show anatomy'}
+            side="bottom"
+          >
+            <button
+              type="button"
+              onClick={toggleAnatomy}
+              aria-label={currentView === 'anatomy' ? 'Hide anatomy' : 'Show anatomy'}
+              aria-pressed={currentView === 'anatomy'}
+              className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl p-1.5"
+              style={{
+                backgroundColor: 'var(--color-bg)',
+                color: currentView === 'anatomy' ? 'var(--color-fg)' : 'var(--color-muted)',
               }}
             >
               <Frame className="h-5 w-5" />
@@ -258,7 +282,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub Repository"
-              className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl px-2 h-8 flex items-center gap-1 text-xs font-medium"
+              className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl px-2 h-8 flex items-center gap-1 text-xs font-normal"
               style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
             >
               <StarsCount />
@@ -310,14 +334,14 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               Components
             </Link>
             <span className="text-(--color-subtle) leading-none">·</span>
-            <span className="text-(--color-fg) font-semibold">{item?.name ?? 'Component'}</span>
+            <span className="text-(--color-fg) font-normal">{item?.name ?? 'Component'}</span>
           </nav>
 
           <div className="flex flex-col gap-1 text-left">
-            <h1 className="flex items-center gap-2 text-3xl font-semibold tracking-tight text-(--color-fg)">
+            <h1 className="flex items-center gap-2 text-3xl font-normal tracking-tight text-(--color-fg)">
               {item?.isNew && <NewStarIcon className="size-5 shrink-0 text-(--color-new)" />}
               {item?.name ?? 'Component'}
-              {item?.isNew && <span className="text-sm font-medium">New</span>}
+              {item?.isNew && <span className="text-sm font-normal">New</span>}
             </h1>
             <p className="text-base leading-relaxed text-(--color-muted) text-pretty mt-2">
               {item?.description ?? 'This component is not available yet.'}

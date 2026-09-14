@@ -11,6 +11,8 @@ import { NotFoundCard } from '@/components/layout/not-found-card'
 import { useScreenSize } from '@/hooks/use-screen-size'
 import { COMPONENTS } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
+import { ExamplesGrid } from '@/components/detail/examples-grid'
+import { usePreviewControl } from '@/components/detail/preview-controls'
 import {
   AccordionDemo,
   ActionButtonDemo,
@@ -75,7 +77,7 @@ function PixelTrailDemo() {
           pixelSize={screenSize.lessThan('md') ? 20 : 28}
           fadeDuration={800}
           delay={200}
-          pixelClassName="bg-[var(--color-fg)] opacity-60"
+          pixelClassName="bg-(--color-fg) opacity-60"
         />
       </div>
       <p
@@ -99,12 +101,12 @@ function GooeyFilterDemo() {
         <motion.div
           animate={{ x: [-30, 30, -30] }}
           transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-          className="absolute size-16 rounded-full bg-sky-400"
+          className="absolute size-16 rounded-full bg-(--color-accent)"
         />
         <motion.div
           animate={{ x: [30, -30, 30] }}
           transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-          className="absolute size-16 rounded-full bg-sky-500"
+          className="absolute size-16 rounded-full bg-(--color-accent)"
         />
       </div>
     </DemoFrame>
@@ -114,7 +116,7 @@ function GooeyFilterDemo() {
 function ScrollFadeDemo() {
   return (
     <DemoFrame className="flex items-center justify-center p-6">
-      <div className="relative h-48 w-64 overflow-hidden rounded-xl border border-border/60 bg-(--color-bg)">
+      <div className="relative h-48 w-64 overflow-hidden rounded-md squircle-corners border border-border/60 bg-(--color-bg)">
         <ScrollFade side="top" background="var(--color-bg)" className="z-10" />
         <ScrollFade side="bottom" background="var(--color-bg)" className="z-10" />
         <div className="h-full overflow-y-auto p-4 space-y-3 no-scrollbar">
@@ -378,10 +380,21 @@ export function ComponentDemo({ id }: { id: string }) {
   }
 }
 
+function ViewContainer({ view, componentId }: { view: string; componentId: string }) {
+  if (view === 'examples') {
+    return <ExamplesGrid id={componentId} />
+  }
+  return <ComponentDemo id={componentId} />
+}
+
 export default function ComponentPage() {
   const params = useParams()
   const componentId = typeof params.component === 'string' ? params.component : ''
   const component = COMPONENTS.find((item) => item.id === componentId)
+  const [currentView] = usePreviewControl(
+    componentId ? `${componentId}-view` : 'preview',
+    'preview',
+  )
 
   if (!component) {
     return (
@@ -396,7 +409,7 @@ export default function ComponentPage() {
 
   return (
     <div className="detail-preview-enter h-full w-full">
-      <ComponentDemo id={component.id} />
+      <ViewContainer view={currentView} componentId={component.id} />
     </div>
   )
 }
