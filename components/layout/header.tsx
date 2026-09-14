@@ -38,16 +38,12 @@ export function Header() {
   }, [isGitHubHovered])
 
   return (
-    <header
-      className="relative z-10 mx-auto flex w-full max-w-325 items-center justify-between bg-transparent px-4 pb-2 pt-4 text-sm tracking-tight sm:px-6 md:px-12 md:pb-4 md:pt-12"
-      style={{ color: 'var(--color-muted)' }}
-    >
+    <header className="relative z-10 mx-auto flex w-full max-w-325 items-center justify-between bg-transparent px-4 pb-2 pt-4 text-sm tracking-tight text-(--color-muted) sm:px-6 md:px-12 md:pb-4 md:pt-12">
       <div className="flex-1 pointer-events-auto">
         <Link
           ref={logoRef}
           href="/"
-          className="relative z-20 inline-block rounded-md text-xl no-underline outline-none focus-visible:ring-2 focus-visible:ring-(--color-fg) sm:text-2xl"
-          style={{ fontFamily: 'var(--font-handwriting), cursive', color: 'var(--color-fg)' }}
+          className="relative z-20 inline-block rounded-md font-handwriting text-xl text-(--color-fg) no-underline outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) sm:text-2xl"
           suppressHydrationWarning
         >
           Nexvyn/Ui
@@ -70,7 +66,7 @@ export function Header() {
           <Button
             variant="ghost"
             size="sm"
-            className="gh-btn relative z-10 gap-1.5 rounded-2xl squircle-corners bg-(--color-fg) text-(--color-bg) hover:bg-(--color-fg) hover:text-(--color-bg)"
+            className="gh-btn relative z-10 gap-1.5 rounded-2xl squircle-corners bg-(--color-fg) font-normal text-(--color-bg) hover:bg-(--color-fg)/90 hover:text-(--color-bg)"
             asChild
           >
             <a

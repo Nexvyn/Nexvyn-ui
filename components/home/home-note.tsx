@@ -32,10 +32,10 @@ export function HomeNote() {
       </div>
       <div className="space-y-4 text-lg leading-relaxed text-(--color-muted)">
         <p>
-          I’ve seen many UI libraries, but few that feel truly polished, thoughtful, and tasteful.
-          Many aim to impress quickly, while others feel vibe-coded.
+          I&apos;ve seen many UI libraries, but few that feel truly polished, thoughtful, and
+          tasteful. Many aim to impress quickly, while others feel vibe-coded.
         </p>
-        <p>With Nexvyn UI, I’m focused on quality, craft, and tasteful animation.</p>
+        <p>With Nexvyn UI, I&apos;m focused on quality, craft, and tasteful animation.</p>
         <p>
           Explore the{' '}
           <Link

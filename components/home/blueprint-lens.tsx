@@ -154,8 +154,6 @@ export function BlueprintLens({
   const pointer = useRef<{ x: number; y: number } | null>(null)
   const hasDiagram = diagram != null
 
-  // Diagram mode: overlay the wireframe on the live component's real bounds,
-  // so the loupe reads as an x-ray of the actual component, not a thumbnail
   useEffect(() => {
     if (!active || !hasDiagram) return
     const panel = panelRef.current
@@ -165,7 +163,7 @@ export function BlueprintLens({
       if (!content) return
       const panelRect = panel.getBoundingClientRect()
       const contentRect = content.getBoundingClientRect()
-      // Full-bleed wrappers mirror the content box — they say nothing about the component
+      // Full-bleed wrappers mirror the content box, they say nothing about the component
       const found = collectBoxes(content, panelRect).filter(
         (b) => b.w < contentRect.width * 0.95 || b.h < contentRect.height * 0.95,
       )
@@ -226,9 +224,7 @@ export function BlueprintLens({
     }
 
     measure()
-    // Panel content is live (spinning, sweeping, dragging) — keep annotations honest.
-    // Scroll/resize fire at input frequency; coalesce them into one rAF so layout
-    // reads (getBoundingClientRect) never queue behind every scroll tick.
+    // Coalesce scroll/resize into one rAF so layout reads never queue behind every tick.
     let measureRaf = 0
     const scheduleMeasure = () => {
       if (measureRaf) return
@@ -259,10 +255,8 @@ export function BlueprintLens({
     <div
       aria-hidden="true"
       data-blueprint-lens
-      className="pointer-events-none absolute inset-0 z-30 hidden animate-in fade-in overflow-hidden rounded-2xl duration-150 [@media(hover:hover)]:block motion-reduce:animate-none"
+      className="pointer-events-none absolute inset-0 z-30 hidden animate-in fade-in overflow-hidden rounded-2xl duration-(--motion-dur-fast) [@media(hover:hover)]:block motion-reduce:animate-none"
     >
-      {/* X-ray layer masked inside the 56px radius loupe: the component's blueprint
-          drawing when one exists, auto-measured outlines otherwise */}
       <div
         className="absolute inset-0 size-full overflow-hidden"
         style={{
@@ -276,8 +270,7 @@ export function BlueprintLens({
           <>
             <div className="absolute inset-0 bg-(--color-surface)" />
             {fit && (
-              // 220×140 = DraftSurface canvas; cover-fit so the drawn component
-              // lands at roughly the live component's real size and position
+              // 220×140 = DraftSurface canvas, cover-fit to the live component's real bounds
               <div
                 className="absolute left-0 top-0 flex items-center justify-center"
                 style={{
@@ -310,7 +303,6 @@ export function BlueprintLens({
                   }}
                   opacity={i === activeIdx ? 0.9 : 0.55}
                 />
-                {/* GripFrame-style selection handles, matching the diagram language */}
                 {i === activeIdx &&
                   (
                     [
@@ -340,7 +332,6 @@ export function BlueprintLens({
                 <g key={`g${i}`} strokeWidth={1} style={{ stroke: 'var(--color-accent)' }}>
                   <g opacity={0.8}>
                     <line x1={gap.x1} y1={gap.y1} x2={gap.x2} y2={gap.y2} />
-                    {/* MeasureH/MeasureV-style end ticks */}
                     {horizontal ? (
                       <>
                         <line x1={gap.x1} y1={gap.y1 - 3} x2={gap.x1} y2={gap.y1 + 3} />
@@ -353,7 +344,6 @@ export function BlueprintLens({
                       </>
                     )}
                   </g>
-                  {/* Monospace CAD measurement pill */}
                   <rect
                     x={gap.lx - pillW / 2}
                     y={gap.ly - 7}
@@ -375,7 +365,7 @@ export function BlueprintLens({
                       fontFamily: 'var(--font-mono)',
                       fill: 'var(--color-fg)',
                       stroke: 'none',
-                      fontWeight: 500,
+                      fontWeight: 400,
                     }}
                   >
                     {gap.label}
@@ -387,8 +377,7 @@ export function BlueprintLens({
         )}
       </div>
 
-      {/* Loupe reticle: 112px dashed ring + cardinal crosshairs + center pip.
-          Physical left/top throughout — lens coordinates are measured from rect.left */}
+      {/* Physical left/top on purpose: lens coordinates are measured from rect.left */}
       <div
         className="pointer-events-none absolute left-0 top-0 size-28 rounded-full border border-dashed"
         style={{
@@ -397,32 +386,14 @@ export function BlueprintLens({
           opacity: 0.75,
         }}
       >
-        {/* Cardinal crosshair ticks at 12, 6, 9, 3 o'clock */}
-        <span
-          className="absolute left-1/2 top-0.5 h-2 w-px -translate-x-1/2"
-          style={{ backgroundColor: 'var(--color-accent)' }}
-        />
-        <span
-          className="absolute left-1/2 bottom-0.5 h-2 w-px -translate-x-1/2"
-          style={{ backgroundColor: 'var(--color-accent)' }}
-        />
-        <span
-          className="absolute top-1/2 left-0.5 h-px w-2 -translate-y-1/2"
-          style={{ backgroundColor: 'var(--color-accent)' }}
-        />
-        <span
-          className="absolute top-1/2 right-0.5 h-px w-2 -translate-y-1/2"
-          style={{ backgroundColor: 'var(--color-accent)' }}
-        />
-        {/* Central precision registration dot */}
-        <span
-          className="absolute left-1/2 top-1/2 size-1 -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{ backgroundColor: 'var(--color-accent)' }}
-        />
-        {/* W×H readout for the element under the reticle */}
+        <span className="absolute left-1/2 top-0.5 h-2 w-px -translate-x-1/2 bg-(--color-accent)" />
+        <span className="absolute left-1/2 bottom-0.5 h-2 w-px -translate-x-1/2 bg-(--color-accent)" />
+        <span className="absolute top-1/2 left-0.5 h-px w-2 -translate-y-1/2 bg-(--color-accent)" />
+        <span className="absolute top-1/2 right-0.5 h-px w-2 -translate-y-1/2 bg-(--color-accent)" />
+        <span className="absolute left-1/2 top-1/2 size-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-(--color-accent)" />
         {activeBox && (
           <span
-            className="absolute left-1/2 top-full mt-1.5 -translate-x-1/2 whitespace-nowrap rounded-sm border px-1 py-px font-mono text-[9px] font-medium tabular-nums"
+            className="absolute left-1/2 top-full mt-1.5 -translate-x-1/2 whitespace-nowrap rounded-sm border px-1 py-px font-mono text-[9px] font-normal tabular-nums"
             style={{
               backgroundColor: 'var(--color-surface)',
               borderColor: 'var(--color-border)',

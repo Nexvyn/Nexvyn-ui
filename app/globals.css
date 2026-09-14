@@ -137,7 +137,14 @@
   --panel-border: rgb(0 0 0 / 0.04);
   --panel-border-hover: rgb(0 0 0 / 0.08);
   --shadow-panel-ambient: 0 4px 24px -4px rgb(0 0 0 / 0.03);
+  --hero-rail-ink: var(--color-fg);
+  --pixel-trail-ink: var(--color-fg);
+  --media-brightness: 1;
 
+  --goo-dropdown-fill: var(--color-border);
+  --goo-dropdown-outline: var(--color-border-strong);
+  --brand-mintlify: #18e299;
+  --brand-mintlify-deep: #0c8c5e;
   --sponsor-mintlify-surface: radial-gradient(
     circle at 50% 0%,
     #e4fed9 0%,
@@ -214,7 +221,7 @@ body::-webkit-scrollbar {
 }
 .text-meta {
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 400;
 }
 .border-divider {
   border-color: var(--border);
@@ -250,7 +257,7 @@ html.dark,
 :root.dark {
   color-scheme: dark;
 
-  --background: oklch(0 0 0);
+  --background: oklch(0.145 0 0);
   --foreground: oklch(0.9219 0 0);
   --card: oklch(0.1822 0 0);
   --card-foreground: oklch(1 0 0);
@@ -286,6 +293,8 @@ html.dark,
   --color-bg: #0a0a0a;
   --color-surface: #171717;
   --color-surface-2: #262626;
+  --goo-dropdown-fill: var(--card);
+  --goo-dropdown-outline: transparent;
   --color-fg: #fafafa;
   --color-muted: #a3a3a3;
   --color-subtle: #737373;
@@ -294,18 +303,14 @@ html.dark,
   --color-accent: #567eff;
   --color-new: #c9b06a;
 
-  --panel-border: rgb(255 255 255 / 0.06);
-  --panel-border-hover: rgb(255 255 255 / 0.12);
+  --panel-border: rgb(255 255 255 / 0.08);
+  --panel-border-hover: rgb(255 255 255 / 0.14);
   --shadow-panel-ambient: 0 4px 24px -4px rgb(0 0 0 / 0.25);
+  --hero-rail-ink: var(--color-muted);
+  --pixel-trail-ink: var(--color-subtle);
+  --media-brightness: 0.88;
 
-  --sponsor-mintlify-surface:
-    radial-gradient(
-      circle at 50% 0%,
-      rgb(24 226 153 / 0.14) 0%,
-      rgb(24 226 153 / 0.06) 32%,
-      transparent 70%
-    ),
-    var(--color-surface);
+  --sponsor-mintlify-surface: var(--color-surface);
 
   --mascot-stop-1: #ffffff;
   --mascot-stop-2: #eef4fa;
@@ -606,10 +611,6 @@ html.dark body {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
-}
-.components-grid > * {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 420px;
 }
 
 @media (min-width: 640px) {

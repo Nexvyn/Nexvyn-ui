@@ -4,7 +4,6 @@ import { HomeShowcaseGrid, HomeShowcaseRow, homeShowcaseColSpan } from './home-s
 import { HomeShowcasePanel } from './home-showcase-panel'
 import { blueprintPreviews } from '@/components/showcase/preview-map'
 
-// REAL NEXVYN COMPONENTS — not placeholders
 import { DiaText } from '@/components/ui/dia-text'
 import { NavigationCompass } from '@/components/illustration/navigation-compass'
 import { LINKS as COMPASS_LINKS } from '@/components/ui/previews/navigation-compass-preview'
@@ -24,17 +23,15 @@ export function HomeFeaturedShowcase() {
     >
       <h2
         id="home-featured-showcase-heading"
-        className="mx-auto max-w-[18ch] text-center font-light text-[clamp(0.9rem,3.4vw,1.85rem)] tracking-[-0.07em] sm:max-w-none sm:whitespace-nowrap"
-        style={{ color: 'var(--color-fg)' }}
+        className="mx-auto text-center text-balance font-light text-xl sm:text-2xl md:text-3xl tracking-tight text-(--color-fg)"
       >
         Every component, live and ready to explore.
       </h2>
 
       <HomeShowcaseGrid className="mt-8 sm:mt-10">
-        {/* Row 1: Navigation Compass (6) | Blossom Picker (6) */}
         <HomeShowcaseRow columnWeights={[6, 6]}>
           <HomeShowcasePanel
-            className={cn(homeShowcaseColSpan[6], 'min-h-[240px] md:min-h-[280px]')}
+            className={cn(homeShowcaseColSpan[6], 'min-h-60 md:min-h-70')}
             lens
             href="/components/navigation-compass"
             title="Navigation Compass"
@@ -55,7 +52,7 @@ export function HomeFeaturedShowcase() {
             </div>
           </HomeShowcasePanel>
           <HomeShowcasePanel
-            className={cn(homeShowcaseColSpan[6], 'min-h-[240px] md:min-h-[280px]')}
+            className={cn(homeShowcaseColSpan[6], 'min-h-60 md:min-h-70')}
             lens
             href="/components/color-picker"
             title="Blossom Picker"
@@ -65,10 +62,9 @@ export function HomeFeaturedShowcase() {
           </HomeShowcasePanel>
         </HomeShowcaseRow>
 
-        {/* Row 2: Fader (7) | Dia Text (5) */}
         <HomeShowcaseRow columnWeights={[7, 5]}>
           <HomeShowcasePanel
-            className={cn(homeShowcaseColSpan[7], 'min-h-[180px] md:min-h-[220px]')}
+            className={cn(homeShowcaseColSpan[7], 'min-h-45 md:min-h-55')}
             lens
             href="/components/fader"
             title="Fader"
@@ -77,24 +73,21 @@ export function HomeFeaturedShowcase() {
             <FaderPreview />
           </HomeShowcasePanel>
           <HomeShowcasePanel
-            className={cn(homeShowcaseColSpan[5], 'min-h-[180px] md:min-h-[220px]')}
+            className={cn(homeShowcaseColSpan[5], 'min-h-45 md:min-h-55')}
             lens
             href="/components/dia-text"
             title="Dia Text"
             diagram={<DiaTextBlueprint />}
           >
             <div className="w-full px-4 text-center">
-              <div
-                className="text-center text-2xl font-light tracking-tight sm:text-3xl"
-                style={{ color: 'var(--color-fg)' }}
-              >
+              <div className="text-center text-2xl font-light tracking-tight text-(--color-fg) sm:text-3xl">
                 Make interfaces feel{' '}
                 <DiaText
                   variant="sweep"
                   repeat
                   repeatDelay={1}
                   once={false}
-                  className="inline-block font-medium"
+                  className="inline-block font-normal"
                 >
                   {['smooth.', 'focused.', 'refined.']}
                 </DiaText>

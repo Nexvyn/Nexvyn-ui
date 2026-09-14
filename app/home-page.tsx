@@ -82,7 +82,7 @@ function ArrowCtaLink({ href, label }: { href: string; label: string }) {
   return (
     <Button
       asChild
-      className="h-9 rounded-2xl squircle-corners px-4 duration-(--motion-dur-fast) ease-(--motion-ease-out) active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100"
+      className="h-9 rounded-2xl squircle-corners bg-(--color-fg) px-4 font-normal text-(--color-bg) duration-(--motion-dur-fast) ease-(--motion-ease-out) hover:bg-(--color-fg)/90 active:scale-97 motion-reduce:transition-none motion-reduce:active:scale-100"
     >
       <Link
         href={href}
@@ -94,7 +94,7 @@ function ArrowCtaLink({ href, label }: { href: string; label: string }) {
         onBlur={() => setActive(false)}
       >
         {/* size lives here, not on Button: tailwind-merge reads text-cta as a color and would drop text-primary-foreground */}
-        <span className="text-cta text-center font-medium leading-none">{label}</span>
+        <span className="text-cta text-center font-normal leading-none">{label}</span>
         <HeroCtaArrowIcon active={active} />
       </Link>
     </Button>
@@ -106,13 +106,7 @@ export default function HomePage() {
 
   return (
     <PageWaveProvider>
-      <div
-        className="w-full font-sans"
-        style={{
-          backgroundColor: 'var(--color-bg)',
-          color: 'var(--color-fg)',
-        }}
-      >
+      <div className="w-full bg-(--color-bg) font-sans text-(--color-fg)">
         <div className="relative flex h-dvh w-full flex-col overflow-hidden">
           <GooeyFilter id="gooey-filter-pixel-trail" strength={8} />
 
@@ -124,7 +118,7 @@ export default function HomePage() {
               pixelSize={screenSize.lessThan(`md`) ? 20 : 28}
               fadeDuration={800}
               delay={200}
-              pixelClassName="bg-(--color-fg) opacity-60"
+              pixelClassName="bg-(--pixel-trail-ink)"
             />
           </div>
 
@@ -133,15 +127,10 @@ export default function HomePage() {
           <Header />
 
           <section className="relative z-10 flex flex-1 flex-col justify-end px-4 pb-8 sm:px-6">
-            <h1 className="sr-only">
-              Nexvyn UI — a polished React UI library for design engineers
-            </h1>
-            <p
-              className="mx-auto max-w-70 animate-in fade-in slide-in-from-bottom-4 px-2 text-center text-base font-normal leading-relaxed duration-1000 sm:max-w-md sm:text-lg md:text-xl"
-              style={{ color: 'var(--color-fg)' }}
-            >
-              library for design engineers clean components, smooth motion, and interfaces that feel
-              built, not assembled.
+            <h1 className="sr-only">Nexvyn UI: a polished React UI library for design engineers</h1>
+            <p className="mx-auto max-w-70 animate-in fade-in slide-in-from-bottom-4 px-2 text-center text-base font-normal leading-relaxed text-(--color-fg) duration-1000 sm:max-w-md sm:text-lg md:text-xl">
+              A React library for design engineers. Clean components, smooth motion, and interfaces
+              that feel built, not assembled.
             </p>
 
             <div className="mt-8 flex w-full items-center justify-center gap-3 sm:mt-10">
@@ -150,10 +139,7 @@ export default function HomePage() {
           </section>
         </div>
 
-        <div
-          className="w-full px-4 pb-16 sm:px-6 sm:pb-20 lg:px-42"
-          style={{ backgroundColor: 'var(--color-bg)' }}
-        >
+        <div className="w-full bg-(--color-bg) px-4 pb-16 sm:px-6 sm:pb-20 lg:px-42">
           <HomeNote />
           <HomeFeaturedShowcase />
           <div className="mt-8 flex justify-center sm:mt-10">

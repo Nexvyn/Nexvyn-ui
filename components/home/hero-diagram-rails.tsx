@@ -1,14 +1,11 @@
 'use client'
 
-import type { ComponentType, CSSProperties } from 'react'
+import type { ComponentType } from 'react'
 import { cn } from '@/lib/utils'
 import { DraftQuiet } from '@/components/diagrams/lib/diagram-parts'
-import { InputMessageBlueprint } from '@/components/diagrams/input-message-diagram'
 import { BreadcrumbsBlueprint } from '@/components/diagrams/breadcrumbs-diagram'
 import { BadgeBlueprint } from '@/components/diagrams/badge-diagram'
-import { InputWireframe } from '@/components/diagrams/input-diagram'
 import { SwitchBlueprint } from '@/components/diagrams/switch-diagram'
-import { ButtonBlueprint } from '@/components/diagrams/button-diagram'
 import { SelectBlueprint } from '@/components/diagrams/select-diagram'
 import { TabsSubtleBlueprint } from '@/components/diagrams/tabs-subtle-diagram'
 import { AccordionBlueprint } from '@/components/diagrams/accordion-diagram'
@@ -21,12 +18,15 @@ import { ClipboardFieldBlueprint } from '@/components/diagrams/clipboard-field-d
 import { InputCopyWireframe } from '@/components/diagrams/input-copy-diagram'
 import { RadioGroupBlueprint } from '@/components/diagrams/radio-group-diagram'
 import { ActionButtonBlueprint } from '@/components/diagrams/action-button-diagram'
-import { ComboboxBlueprint } from '@/components/diagrams/combobox-diagram'
-import { TableBlueprint } from '@/components/diagrams/table-diagram'
 import { BarsThemeBlueprint } from '@/components/diagrams/bars-theme-diagram'
-import { MobileDrawerBlueprint } from '@/components/diagrams/mobile-drawer-diagram'
 import { NavMenuBlueprint } from '@/components/diagrams/nav-menu-diagram'
 import { GooDropdownWireframe } from '@/components/diagrams/goo-dropdown-diagram'
+import { InputMessageBlueprint } from '@/components/diagrams/input-message-diagram'
+import { ComboboxBlueprint } from '@/components/diagrams/combobox-diagram'
+import { ButtonBlueprint } from '@/components/diagrams/button-diagram'
+import { TableBlueprint } from '@/components/diagrams/table-diagram'
+import { InputWireframe } from '@/components/diagrams/input-diagram'
+import { MobileDrawerBlueprint } from '@/components/diagrams/mobile-drawer-diagram'
 
 interface RailPiece {
   Drawing: ComponentType
@@ -85,15 +85,13 @@ function DiagramRail({ side, pieces }: { side: 'left' | 'right'; pieces: RailPie
         {pieces.map(({ Drawing, x, y, scale, opacity }, index) => (
           <div
             key={index}
-            className="absolute origin-center text-(--color-fg) dark:text-zinc-200 [--bp-accent:var(--color-fg)] [--color-accent:var(--color-fg)] dark:[--bp-accent:rgb(228,228,231)] dark:[--color-accent:rgb(228,228,231)] [&_*]:[stroke-dasharray:none!important] [&_*]:[stroke-dashoffset:0!important] [&_*]:[stroke-opacity:1!important] [&_.dash-march]:hidden [&_.dim-draw]:hidden [&_.draft-scaffold]:hidden [&_.handle-pop]:hidden [&_.note-lift]:hidden [&_.note-measure]:hidden [&_.note-stamp]:hidden [&_path:not([stroke])]:stroke-current [&_path]:[fill:transparent!important] [&_rect]:[fill:transparent!important] [&_svg.blueprint]:relative [&_svg.blueprint]:overflow-visible [&_svg.blueprint]:text-(--color-fg) [&_svg.blueprint]:dark:text-zinc-200 [&_text.note-measure]:hidden [&_text]:[fill-opacity:1!important] [&_text]:[opacity:1!important]"
-            style={
-              {
-                left: `${x}%`,
-                top: `${y}%`,
-                transform: `translate(-50%, -50%) scale(calc(${scale} * var(--rail-scale, 1)))`,
-                opacity,
-              } as CSSProperties
-            }
+            className="absolute origin-center text-(--hero-rail-ink) [--bp-accent:var(--hero-rail-ink)] [--color-accent:var(--hero-rail-ink)] [--color-error:var(--hero-rail-ink)] [&_*]:[stroke-dasharray:none!important] [&_*]:[stroke-dashoffset:0!important] [&_*]:[stroke-opacity:1!important] [&_.dash-march]:hidden [&_.dim-draw]:hidden [&_.draft-scaffold]:hidden [&_.handle-pop]:hidden [&_.note-lift]:hidden [&_.note-measure]:hidden [&_.note-stamp]:hidden [&_path:not([stroke])]:stroke-current [&_path]:[fill:transparent!important] [&_rect]:[fill:transparent!important] [&_svg.blueprint]:relative [&_svg.blueprint]:overflow-visible [&_svg.blueprint]:text-(--hero-rail-ink) [&_text.note-measure]:hidden [&_text]:[fill-opacity:1!important] [&_text]:[opacity:1!important]"
+            style={{
+              left: `${x}%`,
+              top: `${y}%`,
+              transform: `translate(-50%, -50%) scale(calc(${scale} * var(--rail-scale, 1)))`,
+              opacity,
+            }}
           >
             <DraftQuiet>
               <Drawing />

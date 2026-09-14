@@ -40,7 +40,6 @@ export function HomeShowcasePanel({
     panel.style.setProperty('--ly', `${clientY - r.top}px`)
   }
 
-  // Panels react to the water wave: bob once, staggered by distance from splash
   useEffect(() => {
     if (reduceMotion) return
     const onSplash = (e: Event) => {
@@ -93,7 +92,7 @@ export function HomeShowcasePanel({
       onPointerUp={() => setPressed(false)}
       onPointerCancel={() => setPressed(false)}
       className={cn(
-        'group/panel relative flex min-h-[240px] flex-col justify-center rounded-2xl overflow-hidden bg-(--color-surface) border border-(--panel-border) outline-none transition-[border-color,box-shadow] duration-(--motion-dur-fast) ease-(--motion-ease-out) hover:border-(--panel-border-hover) hover:shadow-(--shadow-panel-ambient) motion-reduce:transition-none has-focus-visible:ring-2 has-focus-visible:ring-(--color-accent) has-focus-visible:ring-offset-2 has-focus-visible:ring-offset-background md:min-h-[300px]',
+        'group/panel relative flex min-h-60 flex-col justify-center overflow-hidden rounded-2xl bg-(--color-surface) border border-(--panel-border) outline-none transition-[border-color,box-shadow] duration-(--motion-dur-fast) ease-(--motion-ease-out) hover:border-(--panel-border-hover) hover:shadow-(--shadow-panel-ambient) motion-reduce:transition-none has-focus-visible:ring-2 has-focus-visible:ring-(--color-accent) has-focus-visible:ring-offset-2 has-focus-visible:ring-offset-background md:min-h-75',
         bleed ? 'p-0' : 'p-6',
         className,
       )}
@@ -108,16 +107,14 @@ export function HomeShowcasePanel({
       )}
       {tag && (
         <div className="pointer-events-none absolute end-6 top-3.5 z-20">
-          <span className="font-mono text-[10px] tracking-[0.25em] text-(--color-muted)/60">
-            {tag}
-          </span>
+          <span className="font-mono text-xs tracking-widest text-(--color-subtle)">{tag}</span>
         </div>
       )}
-      <div className="absolute bottom-3.5 start-6 z-30 backdrop-blur-[6px]">
+      <div className="absolute bottom-3.5 start-6 z-30">
         <Link
           prefetch={false}
           href={href}
-          className="text-[12px] font-normal tracking-tight text-(--color-muted)/70 transition-colors hover:text-(--color-fg) focus-visible:text-(--color-fg) outline-none"
+          className="text-xs font-normal tracking-tight text-(--color-muted) outline-none transition-colors duration-(--motion-dur-fast) ease-[ease] hover:text-(--color-fg) focus-visible:text-(--color-fg) motion-reduce:transition-none"
         >
           {title}
         </Link>

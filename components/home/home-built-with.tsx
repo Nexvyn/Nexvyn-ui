@@ -14,11 +14,11 @@ export function HomeBuiltWith() {
     >
       <h2
         id="home-built-with-heading"
-        className="mx-auto max-w-[18ch] text-center font-light text-[clamp(0.9rem,3.4vw,1.85rem)] tracking-tight text-(--color-fg) sm:max-w-none sm:whitespace-nowrap"
+        className="mx-auto text-center text-balance font-light text-xl sm:text-2xl md:text-3xl tracking-tight text-(--color-fg)"
       >
         Built with Nexvyn UI
       </h2>
-      <p className="mx-auto mt-3 max-w-[60ch] text-center text-[15px] leading-7 text-(--color-muted)">
+      <p className="mx-auto mt-3 max-w-prose text-center text-sm leading-7 text-(--color-muted)">
         Shipped something with Nexvyn UI?{' '}
         <Link
           href={CONTACT_HREF}
@@ -28,14 +28,14 @@ export function HomeBuiltWith() {
         >
           DM me on X
         </Link>
-        . I’d love to feature it here.
+        . I&apos;d love to feature it here.
       </p>
 
       <Link
         href={PROJECT_HREF}
         target="_blank"
         rel="noopener noreferrer"
-        className="group mx-auto mt-8 block w-full max-w-[520px] rounded-2xl border border-(--panel-border) bg-(--color-surface) p-2 outline-none transition-[border-color,box-shadow] duration-(--motion-dur-fast) ease-(--motion-ease-out) hover:border-(--panel-border-hover) hover:shadow-(--shadow-panel-ambient) focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none sm:mt-10"
+        className="group mx-auto mt-8 block w-full max-w-130 rounded-2xl border border-(--panel-border) bg-(--color-surface) p-2 outline-none transition-[border-color,box-shadow] duration-(--motion-dur-fast) ease-(--motion-ease-out) hover:border-(--panel-border-hover) hover:shadow-(--shadow-panel-ambient) focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none sm:mt-10"
       >
         <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-(--panel-border)">
           <Image
@@ -44,17 +44,17 @@ export function HomeBuiltWith() {
             fill
             unoptimized
             sizes="(max-width: 520px) 100vw, 520px"
-            className="object-cover transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-out) group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:transform-none"
+            className="object-cover brightness-(--media-brightness) transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-out) group-hover:scale-102 motion-reduce:transition-none motion-reduce:transform-none"
           />
         </div>
         <div className="flex items-center justify-between gap-4 px-2 pt-3 pb-1">
           <div className="min-w-0">
-            <p className="text-[15px] text-(--color-fg)">Rune Icons</p>
+            <p className="text-sm text-(--color-fg)">Rune Icons</p>
             <p className="truncate text-cta text-(--color-muted)">
               Icon library site, built on Nexvyn primitives
             </p>
           </div>
-          <span className="inline-flex shrink-0 items-center gap-1 text-cta text-(--color-muted) transition-colors duration-(--motion-dur-fast) ease-out group-hover:text-(--color-fg) motion-reduce:transition-none">
+          <span className="inline-flex shrink-0 items-center gap-1 text-cta text-(--color-muted) transition-colors duration-(--motion-dur-fast) ease-[ease] group-hover:text-(--color-fg) motion-reduce:transition-none">
             Visit
             <svg
               xmlns="http://www.w3.org/2000/svg"

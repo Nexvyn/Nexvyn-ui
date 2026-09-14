@@ -89,7 +89,7 @@ export function ThemeToggle({
       <SolarSwitch isDark={dark} />
       {showShortcut && (
         <kbd
-          className="hidden sm:inline-flex items-center justify-center w-4.5 h-4.5 rounded text-[10px] font-mono leading-none opacity-40 group-hover:opacity-100 transition-opacity duration-150"
+          className="hidden sm:inline-flex items-center justify-center w-4.5 h-4.5 rounded text-[10px] font-mono leading-none opacity-40 group-hover:opacity-100 transition-opacity duration-(--motion-dur-fast) ease motion-reduce:transition-none"
           style={{
             background: 'var(--color-surface-2)',
             border: '0.5px solid var(--color-border)',

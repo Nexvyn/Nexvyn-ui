@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { motion, useAnimationControls } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { useDimensions } from '@/hooks/use-debounced-dimensions'
@@ -26,7 +26,7 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const dimensions = useDimensions(containerRef)
-  const [trailId] = useState(() => crypto.randomUUID())
+  const trailId = useId()
   const pendingRef = useRef<{ x: number; y: number } | null>(null)
   const rafRef = useRef(0)
   const visibleRef = useRef(true)
@@ -146,7 +146,7 @@ const PixelDot: React.FC<PixelDotProps> = React.memo(
       <motion.div
         id={id}
         ref={ref}
-        className={cn('cursor-pointer-none', className)}
+        className={className}
         style={{
           width: `${size}px`,
           height: `${size}px`,
