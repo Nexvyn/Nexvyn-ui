@@ -36,6 +36,7 @@ export function HomeFeaturedShowcase() {
             href="/components/navigation-compass"
             title="Navigation Compass"
             diagram={<CompassBlueprint />}
+            diagramAnchor='circle[r="250"]'
           >
             <div
               className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2"
@@ -57,6 +58,7 @@ export function HomeFeaturedShowcase() {
             href="/components/color-picker"
             title="Blossom Picker"
             diagram={<ColorPickerBlueprint />}
+            diagramAnchor=".bcp-root"
           >
             <ColorPickerPreview />
           </HomeShowcasePanel>
@@ -69,6 +71,7 @@ export function HomeFeaturedShowcase() {
             href="/components/fader"
             title="Fader"
             diagram={<FaderBlueprint />}
+            diagramAnchor='[class~="group/fader"]'
           >
             <FaderPreview />
           </HomeShowcasePanel>
@@ -77,11 +80,12 @@ export function HomeFeaturedShowcase() {
             lens
             href="/components/dia-text"
             title="Dia Text"
-            diagram={<DiaTextBlueprint />}
+            diagram={<DiaTextBlueprint text="Make interfaces feel" />}
+            diagramAnchor="[data-lens-anchor]"
           >
             <div className="w-full px-4 text-center">
               <div className="text-center text-2xl font-light tracking-tight text-(--color-fg) sm:text-3xl">
-                Make interfaces feel{' '}
+                <span data-lens-anchor>Make interfaces feel</span>{' '}
                 <DiaText
                   variant="sweep"
                   repeat

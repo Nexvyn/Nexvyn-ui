@@ -1,6 +1,14 @@
 'use client'
 
-import { type ReactNode, useEffect, useRef, useState } from 'react'
+import {
+  type CSSProperties,
+  type ReactNode,
+  cloneElement,
+  isValidElement,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 interface LensBox {
   x: number
@@ -24,6 +32,8 @@ const MAX_GAPS = 6
 const MIN_SIZE = 8
 const MIN_GAP = 4
 const REMEASURE_MS = 450
+const CANVAS = { w: 220, h: 140 } as const
+const DIAGRAM_ANCHOR = '[data-lens-anchor]'
 
 function collectBoxes(root: HTMLElement, panelRect: DOMRect): LensBox[] {
   const out: LensBox[] = []
@@ -121,6 +131,19 @@ function leftX(top: LensBox, bottom: LensBox) {
   return (Math.max(top.x, bottom.x) + Math.min(top.x + top.w, bottom.x + bottom.w)) / 2
 }
 
+function relativeBox(rect: DOMRect, origin: DOMRect): LensBox {
+  return { x: rect.left - origin.left, y: rect.top - origin.top, w: rect.width, h: rect.height }
+}
+
+function sameBox(a: LensBox, b: LensBox) {
+  return (
+    Math.abs(a.x - b.x) < 0.5 &&
+    Math.abs(a.y - b.y) < 0.5 &&
+    Math.abs(a.w - b.w) < 0.5 &&
+    Math.abs(a.h - b.h) < 0.5
+  )
+}
+
 function smallestBoxAt(boxes: LensBox[], x: number, y: number): number | null {
   let best: number | null = null
   let bestArea = Infinity
@@ -136,21 +159,42 @@ function smallestBoxAt(boxes: LensBox[], x: number, y: number): number | null {
   return best
 }
 
+function canvasStyle(fit: LensBox, anchored: boolean, drawn: LensBox | null): CSSProperties {
+  const size = { width: CANVAS.w, height: CANVAS.h }
+  if (!anchored) {
+    const k = Math.max(fit.w / CANVAS.w, fit.h / CANVAS.h)
+    return {
+      ...size,
+      transform: `translate(${fit.x + fit.w / 2 - CANVAS.w / 2}px, ${fit.y + fit.h / 2 - CANVAS.h / 2}px) scale(${k})`,
+    }
+  }
+  if (!drawn) return { ...size, visibility: 'hidden' }
+  const k = fit.h / drawn.h
+  const tx = fit.x + fit.w / 2 - k * (drawn.x + drawn.w / 2)
+  const ty = fit.y + fit.h / 2 - k * (drawn.y + drawn.h / 2)
+  return { ...size, transformOrigin: '0 0', transform: `translate(${tx}px, ${ty}px) scale(${k})` }
+}
+
 export function BlueprintLens({
   panelRef,
   contentRef,
   active,
   diagram,
+  anchor,
 }: {
   panelRef: React.RefObject<HTMLDivElement | null>
   contentRef: React.RefObject<HTMLDivElement | null>
   active: boolean
   diagram?: ReactNode
+  anchor?: string
 }) {
   const [boxes, setBoxes] = useState<LensBox[]>([])
   const [gaps, setGaps] = useState<LensGap[]>([])
   const [activeIdx, setActiveIdx] = useState<number | null>(null)
   const [fit, setFit] = useState<LensBox | null>(null)
+  const [anchored, setAnchored] = useState(false)
+  const [drawnAnchor, setDrawnAnchor] = useState<LensBox | null>(null)
+  const canvasRef = useRef<HTMLDivElement>(null)
   const pointer = useRef<{ x: number; y: number } | null>(null)
   const hasDiagram = diagram != null
 
@@ -162,6 +206,13 @@ export function BlueprintLens({
       const content = contentRef.current
       if (!content) return
       const panelRect = panel.getBoundingClientRect()
+      const target = anchor ? content.querySelector(anchor) : null
+      if (target) {
+        setAnchored(true)
+        setFit(relativeBox(target.getBoundingClientRect(), panelRect))
+        return
+      }
+      setAnchored(false)
       const contentRect = content.getBoundingClientRect()
       // Full-bleed wrappers mirror the content box, they say nothing about the component
       const found = collectBoxes(content, panelRect).filter(
@@ -191,7 +242,30 @@ export function BlueprintLens({
     measure()
     window.addEventListener('resize', measure)
     return () => window.removeEventListener('resize', measure)
-  }, [active, hasDiagram, panelRef, contentRef])
+  }, [active, hasDiagram, anchor, panelRef, contentRef])
+
+  const hasFit = fit !== null
+  useEffect(() => {
+    if (!active || !anchored || !hasFit) return
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const read = () => {
+      const el = canvas.querySelector(DIAGRAM_ANCHOR)
+      if (!el) return false
+      const canvasRect = canvas.getBoundingClientRect()
+      const s = canvasRect.width / CANVAS.w
+      if (!s) return false
+      const box = relativeBox(el.getBoundingClientRect(), canvasRect)
+      const next = { x: box.x / s, y: box.y / s, w: box.w / s, h: box.h / s }
+      setDrawnAnchor((prev) => (prev && sameBox(prev, next) ? prev : next))
+      return true
+    }
+    read()
+    // The bundle is lazy and the drawing redraws at the live width, so keep re-reading the anchor.
+    const observer = new MutationObserver(read)
+    observer.observe(canvas, { childList: true, subtree: true, attributes: true })
+    return () => observer.disconnect()
+  }, [active, anchored, hasFit])
 
   useEffect(() => {
     if (!active || hasDiagram) return
@@ -270,16 +344,14 @@ export function BlueprintLens({
           <>
             <div className="absolute inset-0 bg-(--color-surface)" />
             {fit && (
-              // 220×140 = DraftSurface canvas, cover-fit to the live component's real bounds
               <div
+                ref={canvasRef}
                 className="absolute left-0 top-0 flex items-center justify-center"
-                style={{
-                  width: 220,
-                  height: 140,
-                  transform: `translate(${fit.x + fit.w / 2 - 110}px, ${fit.y + fit.h / 2 - 70}px) scale(${Math.max(fit.w / 220, fit.h / 140)})`,
-                }}
+                style={canvasStyle(fit, anchored, drawnAnchor)}
               >
-                {diagram}
+                {anchored && drawnAnchor && isValidElement<{ anchorWidth?: number }>(diagram)
+                  ? cloneElement(diagram, { anchorWidth: (fit.w * drawnAnchor.h) / fit.h })
+                  : diagram}
               </div>
             )}
           </>

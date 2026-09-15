@@ -14,6 +14,7 @@ export function HomeShowcasePanel({
   lens = true,
   bleed = false,
   diagram,
+  diagramAnchor,
 }: {
   children: ReactNode
   className?: string
@@ -23,6 +24,7 @@ export function HomeShowcasePanel({
   lens?: boolean
   bleed?: boolean
   diagram?: ReactNode
+  diagramAnchor?: string
 }) {
   const panelRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -103,6 +105,7 @@ export function HomeShowcasePanel({
           contentRef={contentRef}
           active={inspect && !pressed}
           diagram={diagram}
+          anchor={diagramAnchor}
         />
       )}
       {tag && (

@@ -1,16 +1,17 @@
 ﻿import dynamic from 'next/dynamic'
 import type { ComponentType } from 'react'
+import type { BlueprintProps } from '@/components/diagrams/blueprints-bundle'
 
 // One dynamic() for all blueprints ships them as a single lazy chunk instead of ~40 requests.
 const BlueprintsBundle = dynamic(() => import('@/components/diagrams/blueprints-bundle'))
 
-function makePreview(key: string): ComponentType {
+function makePreview(key: string): ComponentType<BlueprintProps> {
   return function BlueprintPreview(props) {
     return <BlueprintsBundle render={key} {...props} />
   }
 }
 
-export const blueprintPreviews: Record<string, ComponentType> = {
+export const blueprintPreviews: Record<string, ComponentType<BlueprintProps>> = {
   'accordion-blueprint': makePreview('accordion-blueprint'),
   'action-button-blueprint': makePreview('action-button-blueprint'),
   'adaptive-actions-blueprint': makePreview('adaptive-actions-blueprint'),
