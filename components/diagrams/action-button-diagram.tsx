@@ -38,6 +38,7 @@ const BP_BTN = {
   iconSize: 16,
   spinnerR: 6.67,
   font: 14,
+  lineH: 20,
 } as const
 const BP_X = (220 - BP_BTN.w) / 2
 const BP_Y = (140 - BP_BTN.h) / 2
@@ -45,8 +46,7 @@ const BP_CX = BP_X + BP_BTN.w / 2
 const BP_CY = BP_Y + BP_BTN.h / 2
 const BP_TEXT_Y = BP_CY + BP_BTN.font * 0.35
 const BP_PENDING_X = BP_X + BP_BTN.padX
-const BP_LINE_H = 20
-const BP_CONTENT_INSET = (BP_BTN.h - BP_LINE_H) / 2
+const BP_CONTENT_INSET = (BP_BTN.h - BP_BTN.lineH) / 2
 
 export function ActionButtonBlueprint() {
   const theme = draftTheme
@@ -170,9 +170,9 @@ export function ActionButtonBlueprint() {
         <GripFrame x={BP_X} y={BP_Y} w={BP_BTN.w} h={BP_BTN.h} style={beat(DRAFT_BEAT.handle)} />
         <InsetGuide
           x={BP_X + BP_BTN.padX}
-          y={BP_Y}
+          y={BP_Y + BP_CONTENT_INSET}
           w={BP_BTN.w - BP_BTN.padX * 2}
-          h={BP_BTN.h}
+          h={BP_BTN.lineH}
           offset={0.8}
           boxX={BP_X}
           boxY={BP_Y}

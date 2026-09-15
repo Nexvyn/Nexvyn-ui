@@ -321,6 +321,7 @@ export function AdaptiveActionsAnatomy() {
 const BP_S = 0.75
 const BP_C = {
   btnH: 44 * BP_S,
+  lineH: 20 * BP_S,
   padX: 12 * BP_S,
   iconSize: 16 * BP_S,
   iconGap: 8 * BP_S,
@@ -492,9 +493,9 @@ export function AdaptiveActionsBlueprint() {
       <g className={DRAFT_SCAFFOLD_FADE}>
         <InsetGuide
           x={BP_OX + BP_C.padX}
-          y={BP_OY}
+          y={BP_CY - BP_C.lineH / 2}
           w={BP_BTN_W[0] - BP_C.padX * 2}
-          h={BP_C.btnH}
+          h={BP_C.lineH}
           offset={0.8}
           boxX={BP_OX}
           boxY={BP_OY}

@@ -44,24 +44,26 @@ const BP_BAR_BOX = 16
 const BP_BAR = { w: 4, h: 20 } as const
 const BP_BAR_INSET_Y = (BP_TRACK.h - BP_BAR.h) / 2
 const BP_PAD_X = 14
+const BP_LINE_H = 20
 const BP_FONT = 14
 const BP_VALUE_REST = 50
 const BP_VALUE_HOVER = 67
-const BP_FILL_REST = (BP_VALUE_REST / 100) * BP_TRACK.w
-const BP_TRAVEL = ((BP_VALUE_HOVER - BP_VALUE_REST) / 100) * BP_TRACK.w
 const BP_MID_Y = BP_TRACK.y + BP_TRACK.h / 2
 const BP_BASELINE = BP_MID_Y + BP_FONT * 0.35
-const BP_BAR_CX = BP_TRACK.x + BP_FILL_REST - BP_BAR_BOX / 2
 
 const BP_SLIDE =
   'transition-transform duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:translate-x-(--fader-bp-travel) group-hover:delay-(--motion-dur-base) group-focus-visible:translate-x-(--fader-bp-travel) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none'
 
-export function FaderBlueprint() {
+export function FaderBlueprint({ anchorWidth = BP_W }: { anchorWidth?: number }) {
+  const track = { ...BP_TRACK, w: anchorWidth }
+  const fillRest = (BP_VALUE_REST / 100) * track.w
+  const travel = ((BP_VALUE_HOVER - BP_VALUE_REST) / 100) * track.w
+  const barCx = track.x + fillRest - BP_BAR_BOX / 2
   const theme = draftTheme
   const uid = useId().replace(/:/g, '')
   const hatchId = `bp-fader-hatch-${uid}`
   const clipId = `bp-fader-clip-${uid}`
-  const travelStyle = { '--fader-bp-travel': `${BP_TRAVEL}px` } as CSSProperties
+  const travelStyle = { '--fader-bp-travel': `${travel}px` } as CSSProperties
   return (
     <DraftSurface>
       <defs>
@@ -75,21 +77,16 @@ export function FaderBlueprint() {
           <line x1="0" y1="0" x2="0" y2="4" stroke="currentColor" strokeWidth="1" opacity={0.35} />
         </pattern>
         <clipPath id={clipId}>
-          <rect
-            x={BP_TRACK.x}
-            y={BP_TRACK.y}
-            width={BP_TRACK.w}
-            height={BP_TRACK.h}
-            rx={BP_TRACK.rx}
-          />
+          <rect x={track.x} y={track.y} width={track.w} height={track.h} rx={track.rx} />
         </clipPath>
       </defs>
       <rect
-        x={BP_TRACK.x}
-        y={BP_TRACK.y}
-        width={BP_TRACK.w}
-        height={BP_TRACK.h}
-        rx={BP_TRACK.rx}
+        data-lens-anchor=""
+        x={track.x}
+        y={track.y}
+        width={track.w}
+        height={track.h}
+        rx={track.rx}
         pathLength={1}
         strokeDasharray={1}
         strokeDashoffset={1}
@@ -101,21 +98,21 @@ export function FaderBlueprint() {
       <g clipPath={`url(#${clipId})`}>
         <g style={travelStyle} className={BP_SLIDE}>
           <rect
-            x={BP_TRACK.x + BP_FILL_REST - BP_TRACK.w}
-            y={BP_TRACK.y}
-            width={BP_TRACK.w}
-            height={BP_TRACK.h}
-            rx={BP_TRACK.rx}
+            x={track.x + fillRest - track.w}
+            y={track.y}
+            width={track.w}
+            height={track.h}
+            rx={track.rx}
             fill={`url(#${hatchId})`}
             style={beat(DRAFT_BEAT.hatch)}
             className={`fade-note ${DRAFT_INK_MORPH} opacity-100 group-hover:opacity-0 group-focus-visible:opacity-0`}
           />
           <rect
-            x={BP_TRACK.x + BP_FILL_REST - BP_TRACK.w}
-            y={BP_TRACK.y}
-            width={BP_TRACK.w}
-            height={BP_TRACK.h}
-            rx={BP_TRACK.rx}
+            x={track.x + fillRest - track.w}
+            y={track.y}
+            width={track.w}
+            height={track.h}
+            rx={track.rx}
             strokeWidth={1}
             fillOpacity={0.4}
             strokeOpacity={0.3}
@@ -125,20 +122,20 @@ export function FaderBlueprint() {
       </g>
       <g style={travelStyle} className={BP_SLIDE}>
         <rect
-          x={BP_BAR_CX - BP_BAR.w / 2}
+          x={barCx - BP_BAR.w / 2}
           y={BP_MID_Y - BP_BAR.h / 2}
           width={BP_BAR.w}
           height={BP_BAR.h}
           rx={BP_BAR.w / 2}
           style={{
-            transformOrigin: `${BP_BAR_CX}px ${BP_MID_Y}px`,
+            transformOrigin: `${barCx}px ${BP_MID_Y}px`,
             ...beat(DRAFT_DETAIL_BEAT.c),
           }}
           className="fade-note fill-(--color-muted) opacity-85 transition-[opacity,transform] duration-(--motion-dur-slow) ease-(--motion-ease-in-out) group-hover:scale-y-120 group-hover:opacity-100 group-hover:delay-(--motion-dur-base) group-focus-visible:scale-y-120 group-focus-visible:opacity-100 group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none"
         />
       </g>
       <text
-        x={BP_TRACK.x + BP_PAD_X}
+        x={track.x + BP_PAD_X}
         y={BP_BASELINE}
         fontSize={BP_FONT}
         fontFamily="var(--font-sans)"
@@ -148,7 +145,7 @@ export function FaderBlueprint() {
         Volume
       </text>
       <text
-        x={BP_TRACK.x + BP_TRACK.w - BP_PAD_X}
+        x={track.x + track.w - BP_PAD_X}
         y={BP_BASELINE}
         textAnchor="end"
         fontSize={BP_FONT}
@@ -160,7 +157,7 @@ export function FaderBlueprint() {
         <tspan className="fill-(--color-muted)">%</tspan>
       </text>
       <text
-        x={BP_TRACK.x + BP_TRACK.w - BP_PAD_X}
+        x={track.x + track.w - BP_PAD_X}
         y={BP_BASELINE}
         textAnchor="end"
         fontSize={BP_FONT}
@@ -172,71 +169,66 @@ export function FaderBlueprint() {
       </text>
       <g className={DRAFT_SCAFFOLD_FADE}>
         <InsetGuide
-          x={BP_TRACK.x + BP_PAD_X}
-          y={BP_TRACK.y}
-          w={BP_TRACK.w - BP_PAD_X * 2}
-          h={BP_TRACK.h}
+          x={track.x + BP_PAD_X}
+          y={track.y + (track.h - BP_LINE_H) / 2}
+          w={track.w - BP_PAD_X * 2}
+          h={BP_LINE_H}
           offset={0.8}
-          boxX={BP_TRACK.x}
-          boxY={BP_TRACK.y}
-          boxW={BP_TRACK.w}
-          boxH={BP_TRACK.h}
-          boxRx={BP_TRACK.rx}
+          boxX={track.x}
+          boxY={track.y}
+          boxW={track.w}
+          boxH={track.h}
+          boxRx={track.rx}
           clipOffset={0.8}
           className="dash-march"
           style={beat(DRAFT_BEAT.guide)}
         />
         <GripFrame
-          x={BP_TRACK.x}
-          y={BP_TRACK.y}
-          w={BP_TRACK.w}
-          h={BP_TRACK.h}
+          x={track.x}
+          y={track.y}
+          w={track.w}
+          h={track.h}
           style={beat(DRAFT_BEAT.handle)}
         />
         <MeasureNote
-          x={BP_TRACK.x}
-          y={BP_TRACK.y - 6}
+          x={track.x}
+          y={track.y - 6}
           anchor="start"
           className="note-stamp"
           style={beat(stampBeat(0))}
         >
-          {`r${BP_TRACK.rx}`}
+          {`r${track.rx}`}
         </MeasureNote>
-        <MeasureNote
-          x={BP_BAR_CX}
-          y={BP_TRACK.y - 6}
-          className="note-stamp"
-          style={beat(stampBeat(1))}
-        >
+        <MeasureNote x={barCx} y={track.y - 6} className="note-stamp" style={beat(stampBeat(1))}>
           {`${BP_BAR_INSET_Y}`}
         </MeasureNote>
         <MeasureNote
-          x={BP_TRACK.x + BP_TRACK.w - BP_PAD_X / 2}
-          y={BP_TRACK.y - 6}
+          x={track.x + track.w - BP_PAD_X / 2}
+          y={track.y - 6}
           className="note-stamp"
           style={beat(stampBeat(2))}
         >
           {`${BP_PAD_X}`}
         </MeasureNote>
         <MeasureNote
-          x={BP_TRACK.x + BP_PAD_X / 2}
-          y={BP_TRACK.y + BP_TRACK.h + 10}
+          x={track.x + BP_PAD_X / 2}
+          y={track.y + track.h + 10}
           className="note-stamp"
           style={beat(stampBeat(3))}
         >
           {`${BP_PAD_X}`}
         </MeasureNote>
         <MeasureNote
-          x={BP_BAR_CX}
-          y={BP_TRACK.y + BP_TRACK.h + 10}
+          x={barCx}
+          y={track.y + track.h + 10}
           className="note-stamp"
           style={beat(stampBeat(4))}
         >
           {`${BP_BAR_INSET_Y}`}
         </MeasureNote>
         <MeasureNote
-          x={BP_BAR_CX + 11}
-          y={BP_TRACK.y + BP_TRACK.h + 10}
+          x={barCx + 11}
+          y={track.y + track.h + 10}
           anchor="start"
           className="note-stamp"
           style={beat(stampBeat(5))}
@@ -244,18 +236,18 @@ export function FaderBlueprint() {
           {`bar ${BP_BAR.w}x${BP_BAR.h}`}
         </MeasureNote>
         <MeasureV
-          x={BP_TRACK.x - 8}
-          y1={BP_TRACK.y}
-          y2={BP_TRACK.y + BP_TRACK.h}
-          label={`${BP_TRACK.h}`}
+          x={track.x - 8}
+          y1={track.y}
+          y2={track.y + track.h}
+          label={`${track.h}`}
           labelXOffset={-4}
           className="note-stamp"
           style={beat(stampBeat(6))}
         />
         <MeasureH
-          x1={BP_TRACK.x}
-          x2={BP_TRACK.x + BP_TRACK.w}
-          y={BP_TRACK.y + BP_TRACK.h + 24}
+          x1={track.x}
+          x2={track.x + track.w}
+          y={track.y + track.h + 24}
           label="w-full"
           className="note-stamp"
           style={beat(stampBeat(7))}

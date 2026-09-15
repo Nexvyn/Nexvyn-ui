@@ -34,6 +34,7 @@ const BADGE = {
   padX: 12,
   r: 13,
   font: 12,
+  lineH: 18,
   solidW: 104,
   dotW: 104,
   dot: 7,
@@ -94,9 +95,9 @@ export function BadgeBlueprint() {
         <GripFrame x={BP.x} y={BP.y} w={BADGE.solidW} h={BADGE.h} style={beat(DRAFT_BEAT.handle)} />
         <InsetGuide
           x={BP.x + BADGE.padX}
-          y={BP.y}
+          y={BP.y + (BADGE.h - BADGE.lineH) / 2}
           w={BADGE.solidW - BADGE.padX * 2}
-          h={BADGE.h}
+          h={BADGE.lineH}
           offset={0.8}
           boxX={BP.x}
           boxY={BP.y}

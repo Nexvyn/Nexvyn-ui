@@ -137,6 +137,20 @@ export function CheckboxBlueprint() {
             className="dash-march"
             style={beat(DRAFT_BEAT.guide)}
           />
+          <InsetGuide
+            x={bx}
+            y={by}
+            w={BOX.size}
+            h={BOX.size}
+            offset={0.8}
+            boxX={bx}
+            boxY={by}
+            boxW={BP_ROW_W}
+            boxH={ROW.h}
+            clipOffset={0.8}
+            className="dash-march"
+            style={beat(DRAFT_BEAT.guide)}
+          />
           <MeasureH
             x1={bx}
             x2={bx + BOX.size}
@@ -148,7 +162,7 @@ export function CheckboxBlueprint() {
           <MeasureH
             x1={bx + BOX.size}
             x2={labelX}
-            y={by + BOX.size + 8}
+            y={by + ROW.h + 8}
             label={`${ROW.labelGap}`}
             labelYOffset={10}
             className="note-stamp"

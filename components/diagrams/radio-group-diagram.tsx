@@ -145,20 +145,23 @@ export function RadioGroupBlueprint() {
           className="note-stamp"
           style={beat(DRAFT_BEAT.handle)}
         />
-        <InsetGuide
-          x={BP_X}
-          y={bpRowY(BP_SELECTED_ROW) + (ROW_H - RADIO.circle) / 2}
-          w={RADIO.circle}
-          h={RADIO.circle}
-          offset={0.8}
-          boxX={BP_X}
-          boxY={bpRowY(BP_SELECTED_ROW)}
-          boxW={RADIO.circle + RADIO.gap}
-          boxH={ROW_H}
-          clipOffset={0.8}
-          className="dash-march"
-          style={beat(DRAFT_BEAT.guide)}
-        />
+        {BP_ROWS.map((label, i) => (
+          <InsetGuide
+            key={label}
+            x={BP_X}
+            y={bpRowY(i) + (ROW_H - RADIO.circle) / 2}
+            w={RADIO.circle}
+            h={RADIO.circle}
+            offset={0.8}
+            boxX={BP_X}
+            boxY={bpRowY(i)}
+            boxW={TOTAL_W}
+            boxH={ROW_H}
+            clipOffset={0.8}
+            className="dash-march"
+            style={beat(DRAFT_BEAT.guide)}
+          />
+        ))}
         <MeasureH
           x1={BP_X}
           x2={BP_X + TOTAL_W}

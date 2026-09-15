@@ -225,22 +225,13 @@ export function BounceSidebarWireframe() {
           style={beat(stampBeat(5))}
         />
         <MeasureNote
-          x={BP.x + 2}
-          y={bpRowY(2) + BP.rowH / 2 + 13}
-          anchor="start"
-          className="note-stamp"
-          style={beat(stampBeat(6))}
-        >
-          {`dot ${BP.dot}`}
-        </MeasureNote>
-        <MeasureNote
           x={BP.x}
           y={BP.y + BP_TOTAL_H + 10}
           anchor="start"
           className="note-stamp"
           style={beat(stampBeat(7))}
         >
-          spring overshoot
+          {`spring overshoot · dot ${BP.dot}`}
         </MeasureNote>
       </g>
     </DraftSurface>

@@ -27,11 +27,12 @@ import {
 } from '@/components/diagrams/lib/anatomy-parts'
 
 const BREAD = {
-  items: ['Home', 'Docs', 'Breadcrumbs'] as const,
-  textW: { Home: 36, Docs: 32, Breadcrumbs: 86 },
+  items: ['Home', 'Docs', 'Install'] as const,
+  textW: { Home: 40, Docs: 33, Install: 38 },
   font: 14,
   lineH: 20,
   sep: 12,
+  gap: 6,
   sepNudge: 1,
   focusRx: 4,
 } as const
@@ -41,7 +42,8 @@ function breadTextW(label: (typeof BREAD.items)[number]) {
 }
 
 const BREAD_TOTAL_W = BREAD.items.reduce(
-  (sum, label, i) => sum + breadTextW(label) + (i < BREAD.items.length - 1 ? BREAD.sep : 0),
+  (sum, label, i) =>
+    sum + breadTextW(label) + (i < BREAD.items.length - 1 ? BREAD.sep + BREAD.gap * 2 : 0),
   0,
 )
 
@@ -54,12 +56,12 @@ const BP_FOCUS_I = 1
 
 function itemX(i: number) {
   let x = BP.x
-  for (let j = 0; j < i; j++) x += breadTextW(BREAD.items[j]) + BREAD.sep
+  for (let j = 0; j < i; j++) x += breadTextW(BREAD.items[j]) + BREAD.gap + BREAD.sep + BREAD.gap
   return x
 }
 
 function sepX(i: number) {
-  return itemX(i) + breadTextW(BREAD.items[i])
+  return itemX(i) + breadTextW(BREAD.items[i]) + BREAD.gap
 }
 
 const BP_LINK_TEXT = `${DRAFT_INK_MORPH} fill-current opacity-35 group-hover:fill-(--color-muted) group-focus-visible:fill-(--color-muted) group-hover:opacity-100 group-focus-visible:opacity-100`
@@ -170,7 +172,7 @@ export function BreadcrumbsBlueprint() {
           className="note-stamp"
           style={beat(stampBeat(2))}
         >
-          {`text ${BREAD.font} · gap 0`}
+          {`text ${BREAD.font} · gap ${BREAD.gap}`}
         </MeasureNote>
       </g>
     </DraftSurface>

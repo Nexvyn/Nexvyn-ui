@@ -205,6 +205,7 @@ export function ColorPickerWireframe() {
         )
       })}
       <circle
+        data-lens-anchor=""
         cx={BP_CX}
         cy={BP_CY}
         r={BP_CORE_R}

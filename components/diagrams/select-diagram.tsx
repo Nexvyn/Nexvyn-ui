@@ -227,60 +227,27 @@ export function SelectBlueprint() {
         >
           p4
         </MeasureNote>
-        <MeasureNote
-          x={BP_X + BP.w + 6}
-          y={BP_TRIGGER_CY + 2.5}
-          anchor="start"
-          className="note-stamp"
-          style={beat(stampBeat(0))}
-        >
-          w192
-        </MeasureNote>
-        <MeasureNote
-          x={BP_X + BP.w + 6}
-          y={BP_Y + BP.triggerH + 1}
-          anchor="start"
-          className="note-stamp"
-          style={beat(stampBeat(2))}
-        >
-          r4
-        </MeasureNote>
-        <MeasureNote
-          x={BP_X + BP.triggerPadX / 2}
-          y={BP_TRIGGER_CY + 2.5}
-          className="note-stamp"
-          style={beat(stampBeat(2))}
-        >
-          16
-        </MeasureNote>
-        <MeasureNote
-          x={BP_X + BP.w - BP.triggerPadX / 2}
-          y={BP_TRIGGER_CY + 2.5}
-          className="note-stamp"
-          style={beat(stampBeat(2))}
-        >
-          16
-        </MeasureNote>
-        <MeasureNote
-          x={BP_X + BP.w / 2}
-          y={BP_Y + BP.triggerPadY / 2 + 2.5}
-          className="note-stamp"
-          style={beat(stampBeat(3))}
-        >
-          12
-        </MeasureNote>
-        <MeasureNote
-          x={BP_X + BP.w / 2}
-          y={BP_Y + BP.triggerH - BP.triggerPadY / 2 + 2.5}
-          className="note-stamp"
-          style={beat(stampBeat(3))}
-        >
-          12
-        </MeasureNote>
+        {[
+          { label: 'w192', y: BP_Y + 6, beatIndex: 0 },
+          { label: 'px 16', y: BP_Y + 17, beatIndex: 2 },
+          { label: 'py 12', y: BP_Y + 28, beatIndex: 3 },
+          { label: 'r4', y: BP_Y + 39, beatIndex: 2 },
+        ].map(({ label, y, beatIndex }) => (
+          <MeasureNote
+            key={label}
+            x={BP_X + BP.w + 6}
+            y={y}
+            anchor="start"
+            className="note-stamp"
+            style={beat(stampBeat(beatIndex))}
+          >
+            {label}
+          </MeasureNote>
+        ))}
         <MeasureV
           x={BP_X + BP.w + 10}
-          y1={bpItemY(0)}
-          y2={bpItemY(0) + BP.itemH}
+          y1={bpItemY(1)}
+          y2={bpItemY(1) + BP.itemH}
           label="44"
           labelXOffset={5}
           labelAnchor="start"

@@ -200,26 +200,26 @@ export function InputCopyWireframe() {
         />
         <MeasureNote
           x={BP_INNER_X + BP_INPUT.padStart / 2}
-          y={BP_INPUT_Y + BP_INPUT.h - 1}
+          y={BP_FIELD.y + BP_FIELD.h + 8}
           anchor="middle"
           className="note-stamp"
           style={beat(stampBeat(0))}
         >
-          {`${BP_INPUT.padStart}`}
+          {`ps ${BP_INPUT.padStart}`}
         </MeasureNote>
         <MeasureNote
-          x={BP_BTN_X - BP_INPUT.padEnd - 1}
-          y={BP_INPUT_Y + BP_INPUT.h - 1}
+          x={BP_BTN_X}
+          y={BP_FIELD.y + BP_FIELD.h + 8}
           anchor="end"
           className="note-stamp"
           style={beat(stampBeat(1))}
         >
-          {`${BP_INPUT.padEnd}`}
+          {`pe ${BP_INPUT.padEnd}`}
         </MeasureNote>
         <MeasureH
           x1={BP_FIELD.x}
           x2={BP_FIELD.x + BP_FIELD.w}
-          y={BP_FIELD.y + BP_FIELD.h + 12}
+          y={BP_FIELD.y + BP_FIELD.h + 16}
           label="w-full"
           labelYOffset={9}
           className="note-stamp"

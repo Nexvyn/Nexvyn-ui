@@ -176,6 +176,15 @@ export function TabsSubtleBlueprint() {
           p6
         </MeasureNote>
         <MeasureNote
+          x={BP_X + BP_W}
+          y={BP_NOTE_Y}
+          anchor="end"
+          className="note-stamp"
+          style={beat(stampBeat(4))}
+        >
+          px 12
+        </MeasureNote>
+        <MeasureNote
           x={gapX + BP.gap / 2}
           y={BP_NOTE_Y}
           className="note-stamp"
@@ -191,14 +200,6 @@ export function TabsSubtleBlueprint() {
           className="note-stamp"
           style={beat(stampBeat(2))}
         />
-        <MeasureNote
-          x={BP_X + BP_ITEM_X[0] + BP.itemPadX / 2}
-          y={BP_Y - 4}
-          className="note-stamp"
-          style={beat(stampBeat(4))}
-        >
-          12
-        </MeasureNote>
       </g>
     </DraftSurface>
   )

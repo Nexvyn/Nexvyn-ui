@@ -43,6 +43,7 @@ const BP = {
   gap: 12 * BP_S,
   triggerH: 56 * BP_S,
   triggerPadX: 24 * BP_S,
+  lineH: 20 * BP_S,
   border: 1 * BP_S,
   clusterGap: 12 * BP_S,
   chevron: 16 * BP_S,
@@ -224,9 +225,9 @@ export function TableOfContentsWireframe() {
         />
         <InsetGuide
           x={BP_X + BP.border + BP.triggerPadX}
-          y={BP_TRIGGER_Y}
+          y={BP_TRIGGER_Y + (BP.triggerH - BP.lineH) / 2}
           w={BP.w - (BP.border + BP.triggerPadX) * 2}
-          h={BP.triggerH}
+          h={BP.lineH}
           offset={0.8}
           boxX={BP_X}
           boxY={BP_TRIGGER_Y}
@@ -273,7 +274,7 @@ export function TableOfContentsWireframe() {
         />
         <MeasureNote
           x={BP_X + BP.w + 5}
-          y={BP_TRIGGER_CY + 2.5}
+          y={BP_TRIGGER_CY - 3}
           anchor="start"
           className="note-stamp"
           style={beat(stampBeat(4))}
@@ -281,12 +282,13 @@ export function TableOfContentsWireframe() {
           r4
         </MeasureNote>
         <MeasureNote
-          x={BP_X + BP.border + BP.triggerPadX / 2}
-          y={BP_TRIGGER_CY + 2.5}
+          x={BP_X + BP.w + 5}
+          y={BP_TRIGGER_CY + 8}
+          anchor="start"
           className="note-stamp"
           style={beat(stampBeat(2))}
         >
-          24
+          px 24
         </MeasureNote>
         <MeasureH
           x1={BP_X}

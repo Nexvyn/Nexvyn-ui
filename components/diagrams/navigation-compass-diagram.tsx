@@ -73,6 +73,7 @@ export function NavigationCompassBlueprint() {
       {BP_FACE_RINGS.map((r, i) => (
         <circle
           key={r}
+          data-lens-anchor={i === 0 ? '' : undefined}
           cx={BP_CENTER_X}
           cy={BP_CENTER_Y}
           r={r * BP_SCALE}

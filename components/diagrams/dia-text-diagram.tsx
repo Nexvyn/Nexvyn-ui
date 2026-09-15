@@ -5,7 +5,7 @@
 // this repository under CC BY-NC 4.0. See components/diagrams/LICENSE.
 // This file is NOT covered by the repository's root LICENSE.
 
-import type { CSSProperties } from 'react'
+import { useId, type CSSProperties } from 'react'
 import {
   AnatomyCallout,
   AnatomyFrame,
@@ -248,10 +248,6 @@ const BP_DIM_LANE = 20
 const BP_TEXT_X = (220 - BP_TEXT_W - BP_DIM_LANE) / 2 + BP_DIM_LANE
 const BP_TEXT_Y = 57
 const BP_BASELINE = BP_TEXT_Y + BP_FONT * 0.78
-const BP_BAND_W = BP_TEXT_W * ((SWEEP_BAND_HALF_PCT * 2) / 100)
-const BP_TRAVEL = BP_TEXT_W + BP_BAND_W
-const BP_BAND_REST_X = BP_TEXT_X - BP_BAND_W
-const BP_GUIDE_BAND_X = BP_TEXT_X + BP_TEXT_W * 0.55 - BP_BAND_W / 2
 
 const BP_TEXT_PROPS = {
   x: BP_TEXT_X,
@@ -263,7 +259,20 @@ const BP_TEXT_PROPS = {
   lengthAdjust: 'spacingAndGlyphs' as const,
 }
 
-export function DiaTextBlueprint() {
+export function DiaTextBlueprint({
+  text = 'Fluid Precision',
+  anchorWidth = BP_TEXT_W,
+}: {
+  text?: string
+  anchorWidth?: number
+}) {
+  const glyphClipId = `dia-text-bp-glyphs-${useId().replace(/:/g, '')}`
+  const textW = anchorWidth
+  const bandW = textW * ((SWEEP_BAND_HALF_PCT * 2) / 100)
+  const travel = textW + bandW
+  const bandRestX = BP_TEXT_X - bandW
+  const guideBandX = BP_TEXT_X + textW * 0.55 - bandW / 2
+  const textProps = { ...BP_TEXT_PROPS, textLength: textW }
   return (
     <DraftSurface>
       <defs>
@@ -276,35 +285,36 @@ export function DiaTextBlueprint() {
             />
           ))}
         </linearGradient>
-        <clipPath id="dia-text-bp-glyphs">
-          <text {...BP_TEXT_PROPS}>Fluid Precision</text>
+        <clipPath id={glyphClipId}>
+          <text {...textProps}>{text}</text>
         </clipPath>
       </defs>
 
       <text
-        {...BP_TEXT_PROPS}
+        {...textProps}
+        data-lens-anchor=""
         style={beat(DRAFT_LABEL_BEAT)}
         className="fade-note fill-current opacity-35"
       >
-        Fluid Precision
+        {text}
       </text>
 
-      <g clipPath="url(#dia-text-bp-glyphs)">
+      <g clipPath={`url(#${glyphClipId})`}>
         <g
-          style={{ '--dia-bp-travel': `${BP_TRAVEL}px` } as CSSProperties}
+          style={{ '--dia-bp-travel': `${travel}px` } as CSSProperties}
           className="transition-transform duration-(--motion-dur-ambient) ease-(--motion-ease-in-out) group-hover:translate-x-(--dia-bp-travel) group-hover:delay-(--motion-dur-base) group-focus-visible:translate-x-(--dia-bp-travel) group-focus-visible:delay-(--motion-dur-base) motion-reduce:transition-none motion-reduce:transform-none"
         >
           <rect
-            x={BP_BAND_REST_X - BP_TRAVEL}
+            x={bandRestX - travel}
             y={BP_TEXT_Y}
-            width={BP_TRAVEL}
+            width={travel}
             height={BP_FONT}
             fill="var(--color-fg)"
           />
           <rect
-            x={BP_BAND_REST_X}
+            x={bandRestX}
             y={BP_TEXT_Y}
-            width={BP_BAND_W}
+            width={bandW}
             height={BP_FONT}
             fill="url(#dia-text-bp-band)"
           />
@@ -313,9 +323,9 @@ export function DiaTextBlueprint() {
 
       <g className={DRAFT_SCAFFOLD_FADE}>
         <rect
-          x={BP_GUIDE_BAND_X}
+          x={guideBandX}
           y={BP_TEXT_Y}
-          width={BP_BAND_W}
+          width={bandW}
           height={BP_FONT}
           fill="none"
           stroke="var(--color-accent)"
@@ -328,13 +338,13 @@ export function DiaTextBlueprint() {
         <GripFrame
           x={BP_TEXT_X}
           y={BP_TEXT_Y}
-          w={BP_TEXT_W}
+          w={textW}
           h={BP_FONT}
           style={beat(DRAFT_BEAT.handle)}
         />
         <MeasureH
-          x1={BP_GUIDE_BAND_X}
-          x2={BP_GUIDE_BAND_X + BP_BAND_W}
+          x1={guideBandX}
+          x2={guideBandX + bandW}
           y={BP_TEXT_Y - 10}
           label={`band ${SWEEP_BAND_HALF_PCT * 2}%`}
           className="note-stamp"
@@ -351,14 +361,14 @@ export function DiaTextBlueprint() {
         />
         <MeasureH
           x1={BP_TEXT_X}
-          x2={BP_TEXT_X + BP_TEXT_W}
+          x2={BP_TEXT_X + textW}
           y={BP_TEXT_Y + BP_FONT + 14}
           label="auto"
           className="note-stamp"
           style={beat(stampBeat(2))}
         />
         <MeasureNote
-          x={BP_TEXT_X + BP_TEXT_W}
+          x={BP_TEXT_X + textW}
           y={BP_TEXT_Y + BP_FONT + 27}
           anchor="end"
           className="note-stamp"
@@ -367,9 +377,9 @@ export function DiaTextBlueprint() {
           sweep 1.5s
         </MeasureNote>
         <line
-          x1={BP_TEXT_X + BP_TEXT_W}
+          x1={BP_TEXT_X + textW}
           y1={BP_TEXT_Y}
-          x2={BP_TEXT_X + BP_TEXT_W}
+          x2={BP_TEXT_X + textW}
           y2={BP_TEXT_Y + BP_FONT}
           stroke="var(--color-accent)"
           strokeWidth={1}

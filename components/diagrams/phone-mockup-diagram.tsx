@@ -194,13 +194,11 @@ export function PhoneMockupWireframe() {
           y={screenY}
           w={screenW}
           h={screenH}
-          offset={0.8}
           boxX={PH_X}
           boxY={PH_Y}
           boxW={PH_W}
           boxH={PH_H}
           boxRx={PH_RX}
-          clipOffset={0.8}
           className="dash-march"
           style={beat(DRAFT_BEAT.guide)}
         />
