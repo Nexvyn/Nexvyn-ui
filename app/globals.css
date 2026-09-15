@@ -3,8 +3,10 @@
 @source "../app/**/*.{ts,tsx}";
 @source "../components/**/*.{ts,tsx}";
 @source "../hooks/**/*.{ts,tsx}";
+@source not "../*.md";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant short (@media (min-width: 48rem) and (max-height: 50rem));
 
 @theme {
   --font-handwriting: var(--font-handwriting), cursive;
