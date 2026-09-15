@@ -1,7 +1,7 @@
 {
   "name": "Nexvyn/UI",
   "short_name": "Nexvyn",
-  "description": "Open-source React components for design engineers.",
+  "description": "Polished React components for design engineers.",
   "start_url": "/",
   "icons": [
     { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },

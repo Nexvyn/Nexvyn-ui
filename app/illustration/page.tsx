@@ -4,7 +4,7 @@ import IllustrationPage from './illustration-page'
 export const metadata = pageMetadata({
   title: 'Illustration',
   description:
-    'Animated React illustrations from Nexvyn/UI — device mockups, orbs and motion pieces ready to drop into your product.',
+    'Animated React illustrations from Nexvyn/UI: device mockups, orbs and motion pieces ready to drop into your product.',
   path: '/illustration',
 })
 

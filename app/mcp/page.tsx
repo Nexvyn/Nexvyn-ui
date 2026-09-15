@@ -4,7 +4,7 @@ import MCPPage from './mcp-page'
 export const metadata = pageMetadata({
   title: 'MCP',
   description:
-    'Use Nexvyn/UI from your AI editor — connect the shadcn MCP server to search and install components by prompt.',
+    'Use Nexvyn/UI from your AI editor. Connect the shadcn MCP server to search and install components by prompt.',
   path: '/mcp',
 })
 

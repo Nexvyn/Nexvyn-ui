@@ -17,7 +17,7 @@ const CATEGORY_TONE: Record<string, string> = {
 function Segment({ segment, index }: { segment: ChangelogSegment; index: number }) {
   if (segment.bold) {
     return (
-      <strong key={index} className="text-(--color-fg) font-semibold">
+      <strong key={index} className="text-(--color-fg) font-normal">
         {segment.text}
       </strong>
     )
@@ -67,7 +67,7 @@ export default function ChangelogPage() {
                   className="absolute inset-s-0 top-1.5 size-2 rounded-full bg-(--color-accent)"
                 />
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-6">
-                  <h2 className="text-lg font-medium text-(--color-fg)">v{release.version}</h2>
+                  <h2 className="text-lg font-normal text-(--color-fg)">v{release.version}</h2>
                   <time className="text-xs text-(--color-subtle)">{release.date}</time>
                 </div>
 
@@ -75,7 +75,7 @@ export default function ChangelogPage() {
                   {release.categories.map((category) => (
                     <div key={category.heading}>
                       <h3
-                        className={`text-xs font-medium uppercase tracking-wide mb-2 ${
+                        className={`text-xs font-normal uppercase tracking-wide mb-2 ${
                           CATEGORY_TONE[category.heading] ?? 'text-(--color-fg)'
                         }`}
                       >

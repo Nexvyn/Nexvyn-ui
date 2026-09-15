@@ -10,10 +10,10 @@ export const metadata = pageMetadata({
 function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <div className="mb-6">
-      <p className="text-xs font-medium uppercase tracking-wide text-(--color-accent) mb-1">
+      <p className="text-xs font-normal uppercase tracking-wide text-(--color-accent) mb-1">
         {eyebrow}
       </p>
-      <h2 className="text-lg font-medium text-(--color-fg)">{title}</h2>
+      <h2 className="text-lg font-normal text-(--color-fg)">{title}</h2>
     </div>
   )
 }
@@ -72,13 +72,12 @@ export default function DesignPage() {
             className="text-2xl sm:text-3xl font-normal tracking-tight mb-2"
           />
           <p className="text-sm text-(--color-muted) mb-14 max-w-lg">
-            The tokens every component in this library is built from — neutral + one accent, a
+            The tokens every component in this library is built from: neutral + one accent, a
             restrained radius scale, one signature motion moment per interaction. Nothing here is
             hardcoded downstream; every value below is a CSS variable.
           </p>
 
           <div className="flex flex-col gap-14">
-            {/* Color */}
             <section>
               <SectionHeading eyebrow="Palette" title="Color" />
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -97,7 +96,6 @@ export default function DesignPage() {
               </div>
             </section>
 
-            {/* Radius */}
             <section>
               <SectionHeading eyebrow="Shape" title="Radius" />
               <div className="flex flex-wrap items-end gap-6">
@@ -115,7 +113,6 @@ export default function DesignPage() {
               </div>
             </section>
 
-            {/* Shape treatment */}
             <section>
               <SectionHeading eyebrow="Shape" title="Corner treatment" />
               <div className="flex flex-wrap gap-6">
@@ -134,7 +131,6 @@ export default function DesignPage() {
               </div>
             </section>
 
-            {/* Typography */}
             <section>
               <SectionHeading eyebrow="Type" title="Typography" />
               <div className="flex flex-col gap-3 mb-8">
@@ -170,7 +166,6 @@ export default function DesignPage() {
               </div>
             </section>
 
-            {/* Spacing */}
             <section>
               <SectionHeading eyebrow="Grid" title="Spacing" />
               <div className="flex flex-col gap-2">
