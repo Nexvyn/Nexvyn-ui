@@ -3,14 +3,7 @@
 import { useEffect, useState } from 'react'
 import { resolveCssColor } from '@/lib/resolve-css-color'
 
-/**
- * Subscribes to a CSS custom property's resolved RGB value, re-resolving
- * whenever the document's theme class changes rather than reading it once
- * or during render — the `.dark` class is applied pre-hydration and can
- * change at any time via the theme toggle, so a one-shot read would go
- * stale (see AGENTS.md's "never read the theme during render" rule, which
- * applies equally to any CSS variable whose value is theme-scoped).
- */
+/** Resolved RGB of a CSS variable, re-resolved on theme change (never read during render). */
 export function useCssColorRgb(
   varName: string,
   fallback: [number, number, number],

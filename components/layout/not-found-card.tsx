@@ -49,12 +49,12 @@ export function NotFoundCard({
 
       <Link
         href={backHref}
-        className="absolute left-0 top-0 z-10 bg-(--color-bg) px-5 py-3 text-[15px] font-medium leading-none text-(--color-fg) transition-opacity hover:opacity-65 rounded-br-[28px] rounded-tl-[28px]"
+        className="absolute left-0 top-0 z-10 bg-(--color-bg) px-5 py-3 text-[15px] font-normal leading-none text-(--color-fg) transition-opacity hover:opacity-65 rounded-br-[28px] rounded-tl-[28px]"
       >
         {backLabel}
       </Link>
 
-      <div className="absolute bottom-0 right-0 z-10 bg-(--color-bg) px-5 py-3 text-[15px] font-medium leading-none text-(--color-fg) rounded-br-[28px] rounded-tl-[28px]">
+      <div className="absolute bottom-0 right-0 z-10 bg-(--color-bg) px-5 py-3 text-[15px] font-normal leading-none text-(--color-fg) rounded-br-[28px] rounded-tl-[28px]">
         {message}
       </div>
     </div>

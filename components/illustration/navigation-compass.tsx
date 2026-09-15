@@ -96,7 +96,7 @@ const ROSE_SRC = { cx: 175.421, cy: 180.077, r: 93.327 } as const
 const DIAL_R = ROSE_SRC.r * 0.6
 /**
  * Arms start at the dial edge (r=93.3) and run ~126 units out, so this scales
- * the pair to reach r=198 — inside the r=230 guide ring, clear of the labels.
+ * the pair to reach r=198, inside the r=230 guide ring, clear of the labels.
  */
 const ROSE_SCALE = 0.9
 
@@ -117,7 +117,6 @@ const SPIKE_CONTOUR =
 const SPIKE_INNER = { x: 21.7657, y: 107.614 } as const
 const SPIKE_AIM_CORRECTION = -44.65
 
-/** Bearings the four arms are snapped to. */
 const SPIKE_BEARINGS = [45, 135, 225, 315] as const
 
 // Low stiffness + high damping so the dial lags behind scroll like a physical wheel.
@@ -183,7 +182,6 @@ function useCompassRotation({
   return { totalRotation, onPan, onPanEnd }
 }
 
-/** Static concentric guide rings. Rotating these would be invisible, so they stay put. */
 function CompassRose({
   center,
   transparentFace = false,
@@ -420,7 +418,6 @@ function CompassLinkItem({
   )
   const springProgress = useSpring(rawProgress, LINK_SPRING)
   const scale = useTransform(springProgress, [0, 1], prefersReducedMotion ? [1, 1] : [1, 1.2])
-  // Counter-rotate so labels stay upright as the dial spins.
   const counterRotation = useTransform(totalRotation, (r) => -r)
 
   return (
@@ -604,7 +601,6 @@ export function NavigationCompass({
 }: NavigationCompassProps) {
   const center = size / 2
 
-  // Radii stay proportional to `size` so the dial scales at any dimension.
   const outerRadius = Math.round(size * 0.4233)
   const tickMajorRadius = Math.round(size * 0.3836)
   const tickMediumRadius = Math.round(size * 0.3968)
@@ -643,7 +639,6 @@ export function NavigationCompass({
       >
         <CompassRose center={center} transparentFace={transparentFace} />
 
-        {/* Fixed pointer: stays put while the dial turns beneath it. */}
         <CompassSpikes
           center={center}
           roseRotation={roseRotation}
