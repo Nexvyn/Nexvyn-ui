@@ -1,10 +1,7 @@
 ﻿import dynamic from 'next/dynamic'
 import type { ComponentType } from 'react'
 
-// All blueprint wireframes are static SVG components that share the same two
-// diagram-part modules. Importing them through ONE dynamic() call bundles them
-// into a single lazily-loaded chunk (~1 request) instead of 40 separate chunks
-// (~40 requests) per gallery page view.
+// One dynamic() for all blueprints ships them as a single lazy chunk instead of ~40 requests.
 const BlueprintsBundle = dynamic(() => import('@/components/diagrams/blueprints-bundle'))
 
 function makePreview(key: string): ComponentType {

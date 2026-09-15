@@ -43,11 +43,7 @@ export type ComponentItem = {
   previewType?: 'video' | 'icons' | 'pixels' | 'toggle' | 'default'
   isNew?: boolean
   basic?: boolean
-  /**
-   * Grid card sizing on the /components showcase. Defaults to a standard
-   * single cell. 'lg' spans two rows (tall illustrations, e.g. a phone).
-   * 'xl' spans two rows and two columns (wide + tall illustrations, e.g. a laptop).
-   */
+  /** Showcase grid card size: 'lg' spans two rows, 'xl' two rows and two columns. */
   size?: 'default' | 'lg' | 'xl'
   description?: string
   registry?: string
@@ -56,6 +52,7 @@ export type ComponentItem = {
   props?: ComponentProp[]
   usage?: string
   credits?: string
+  hasExamples?: boolean
 }
 
 export type ComponentProp = {
@@ -75,14 +72,6 @@ export type ComponentCollection = {
   components: ComponentItem[]
 }
 
-/**
- * Display order for the catalog:
- * 1. Released showcase components (stable, not basic, not isNew)
- * 2. Latest / new showcase components (isNew)
- * 3. Basic components last
- *
- * Within each tier, sorted alphabetically by id so "Sort by Id" is stable.
- */
 function catalogTier(item: ComponentItem): number {
   if (item.basic) return 2
   if (item.isNew) return 1
@@ -159,11 +148,7 @@ export const BASIC_COMPONENTS: ComponentItem[] = COMPONENTS.filter((c) => c.basi
 /** Non-basic components only (released + latest). */
 export const NORMAL_COMPONENTS: ComponentItem[] = COMPONENTS.filter((c) => !c.basic)
 
-/**
- * Illustration items (e.g. phone-mockup). Shown on the /components showcase
- * grid, but kept out of the sidebar's flat/collection nav lists — there they
- * only ever appear nested under the dedicated "Illustration" link.
- */
+/** Shown in the showcase grid but kept out of the sidebar's flat/collection nav lists. */
 export const ILLUSTRATION_COMPONENTS: ComponentItem[] = COMPONENTS.filter(
   (c) => c.collection === 'illustration',
 )

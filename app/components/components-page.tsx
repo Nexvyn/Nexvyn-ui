@@ -6,11 +6,7 @@ import { Footer } from '@/components/layout/footer'
 import { ComponentCard } from '@/components/showcase/component-card'
 import { AnimatedTitle } from '@/components/showcase/animated-title'
 import { AnatomyLicenseNotice } from '@/components/detail/anatomy-license-notice'
-import {
-  ComponentSearchProvider,
-  useComponentSearch,
-  useShortcutLabel,
-} from '@/components/detail/component-search'
+import { useComponentSearch, useShortcutLabel } from '@/components/detail/component-search'
 import {
   BASIC_COMPONENTS,
   COMPONENTS,
@@ -65,7 +61,7 @@ function SearchButton() {
   return (
     <button
       onClick={() => search.setOpen(true)}
-      className="inline-flex h-9 items-center justify-center gap-2 rounded-2xl squircle-corners px-3 text-sm font-medium text-(--color-fg) opacity-40 outline-none transition-colors hover:bg-(--color-surface) hover:opacity-100 focus-visible:ring-2 focus-visible:ring-(--color-accent)"
+      className="inline-flex h-9 items-center justify-center gap-2 rounded-2xl squircle-corners px-3 text-sm font-normal text-(--color-fg) opacity-40 outline-none transition-colors hover:bg-(--color-surface) hover:opacity-100 focus-visible:ring-2 focus-visible:ring-(--color-accent)"
       title="Search components"
     >
       <SearchIcon className="size-4.5" />
@@ -177,7 +173,7 @@ function ComponentsPageContent() {
                 setTimeout(() => setSortAnimating(false), 300)
               }}
               className={cn(
-                'inline-flex h-9 items-center justify-center gap-2 rounded-2xl squircle-corners px-3 text-sm font-medium text-(--color-fg) outline-none transition-colors hover:bg-(--color-surface) hover:text-(--color-fg) focus-visible:ring-2 focus-visible:ring-(--color-accent)',
+                'inline-flex h-9 items-center justify-center gap-2 rounded-2xl squircle-corners px-3 text-sm font-normal text-(--color-fg) outline-none transition-colors hover:bg-(--color-surface) hover:text-(--color-fg) focus-visible:ring-2 focus-visible:ring-(--color-accent)',
                 sortByCategory ? 'opacity-100' : 'opacity-40 hover:opacity-75',
               )}
               title={sortByCategory ? 'Sort by id' : 'Sort by category'}
@@ -231,10 +227,19 @@ function ComponentsPageContent() {
           </div>
         ) : (
           <div className="space-y-10">
-            <div className="components-grid">
-              {normalSorted.map((item, i) => (
-                <ComponentCard key={item.id} item={item} index={i} />
-              ))}
+            <div>
+              <div className="mb-4">
+                <AnimatedTitle
+                  title="Unique"
+                  right={`${normalSorted.length}`}
+                  className="text-lg font-normal tracking-tight"
+                />
+              </div>
+              <div className="components-grid">
+                {normalSorted.map((item, i) => (
+                  <ComponentCard key={item.id} item={item} index={i} />
+                ))}
+              </div>
             </div>
             {basicSorted.length > 0 && (
               <div>
@@ -266,9 +271,5 @@ function ComponentsPageContent() {
 }
 
 export default function ComponentsPage() {
-  return (
-    <ComponentSearchProvider>
-      <ComponentsPageContent />
-    </ComponentSearchProvider>
-  )
+  return <ComponentsPageContent />
 }
