@@ -60,6 +60,8 @@ const DefaultSeparator = () => (
   </span>
 )
 
+const listGap = { sm: 'gap-1', md: 'gap-1.5', lg: 'gap-2' } as const
+
 export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
   (
     {
@@ -158,7 +160,7 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
           />
         )}
         <nav ref={ref} aria-label={ariaLabel} className={className} {...props}>
-          <ol className={cn('flex flex-wrap items-center', listClassName)}>
+          <ol className={cn('flex flex-wrap items-center', listGap[size ?? 'md'], listClassName)}>
             {visibleItems.map((item, visibleIndex) => {
               const originalIndex = items.indexOf(item)
               const elements: ReactNode[] = []
