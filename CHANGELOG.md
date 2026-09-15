@@ -6,6 +6,39 @@ All notable changes to Nexvyn/UI will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- **Accordion**: Stacked headings that unfold their sections with a grid-rows reveal, in single or multiple mode.
+- **Action Button**: Async-aware button that moves from idle to pending to success or error, with abort support and auto reset.
+- **Adaptive Actions**: Toolbar that measures its space and moves overflowing actions into an accessible menu.
+- **AI Input**: Auto-growing composer with a send and stop morph, attachment slots, and Enter to send.
+- **Badge**: Compact status label in solid, muted, and dot variants.
+- **Bars Theme**: Five bars riding a traveling sine wave that reacts to volume.
+- **Breadcrumbs**: Link trail that collapses into an ellipsis past `maxItems`.
+- **Checkbox**: Drawn check animation, indeterminate state, and a hidden native input for forms.
+- **Clipboard Field**: One-click install field that morphs between the command and a copied label.
+- **Context Menu**: Right-click or long-press menu that unfurls from the pointer with shortcut hints.
+- **Dia Text**: Diagonal clip-path reveal for display typography.
+- **Dropdown Menu**: Action menu with a highlight that springs between items as the pointer moves.
+- **Fader**: Mixing-console fader where the label and value live inside the track.
+- **Fluid Orb** and **Glow Orb**: WebGL orbs that follow the theme and respond to state and volume.
+- **Icon Bar**: Icon toolbar whose labels bloom open on hover and selection, with roving focus.
+- **Input Copy**: Read-only value with a copy trigger and an animated check.
+- **Laptop Mockup** and **Phone Mockup**: Device frames for showcasing app screens.
+- **Morph Nav**: Floating action button that morphs through its menu states with directional panel slides.
+- **Nav Menu**: Vertical navigation with a two-layer highlight and status dots.
+- **Navigation Compass**: Draggable compass dial that doubles as a nav menu.
+- **Radio Group**: Selection dot that travels from the previous option to the new one.
+- **Rocket Launch**: Hand-drawn rocket that ignites and lifts off on demand.
+- **Select**: Form select with a proximity highlight, drawn check, and a label morph on change.
+- **Switch**: Toggle with thumb travel and a hidden checkbox for forms.
+- **Table of Contents**: Floating block that tracks the active section and expands into a section list.
+- **Tabs Subtle**: Pill tabs with a springing indicator and full roving focus.
+- **Homepage**: A note from Nexvyn, a featured showcase with a compass dial and inspection lens, sponsors with a page ripple, and blueprint rails in the hero.
+- **Search (Cmd/Ctrl+K)**: Command palette for components and site pages.
+- **Design page**: Principles, brand, color, type, shape, spacing, and motion tokens in one place.
+- **Share images**: Static Open Graph and Twitter images generated at build time.
+
 ### Removed
 
 - **Id Reel**: Removed from the catalog.
@@ -31,7 +64,6 @@ All notable changes to Nexvyn/UI will be documented in this file.
 - **Colors**: Hardcoded hex/rgb colors, glows, and one-off durations replaced with design tokens across components; Dia Text now sweeps from the text color into the accent.
 - **Anatomy diagrams**: Tags attach to their parts through a shared `AnatomyCallout` helper, every diagram has a screen-reader label, keyboard support (Tab between parts, Enter to pin, Esc to clear), a uniform 1.2x render scale, and an info line showing the hovered part's real measurements and a one-line caption. Anatomy diagrams now load only when opened.
 - **Component pages**: New Examples view (Badge, Select, Switch) with a scrollable grid of variants, grouped sections, and copy-code buttons, loaded only when opened.
-- **Landing page**: Visible headline, centered hero, copyable install line, reordered sections, two-row footer with links and license, skip link and main landmark, 44px CTA on mobile, and the pixel trail turns off with reduced motion and on touch devices. Hero rails now show only shipped components.
 - **Diagrams**: Card blueprints redrawn from the current components with every annotation kept, a dev-only QA page at `/dev/diagrams`, touch support in anatomy, and a rule check (`npm run check:rules`) that runs before every build.
 
 ### Fixed
@@ -42,7 +74,11 @@ All notable changes to Nexvyn/UI will be documented in this file.
 - **Accessibility**: collapsed Accordion content is hidden from screen readers, Breadcrumbs mark the right current page and can expand collapsed items, Morph Nav's Back returns to the main menu, Nav Menu always has a tab stop, AI Input's mic button has a focus ring and Enter no longer stops streaming, Goo Dropdown's closed menu is hidden from screen readers.
 - **Motion**: Bounce Sidebar respects reduced motion and no longer fires twice per click, Dia Text no longer animates width, Blossom Picker respects reduced motion, and the orbs pause when off screen.
 - **Action Button**: Buttons no longer shrink and spring back when the pointer leaves them.
+- **Changelog page**: Releases render again on Windows line endings, including unreleased changes.
 - **Bounce Sidebar diagram**: Row labels fit inside their rows and the annotations no longer overlap.
+- **Breadcrumbs**: Separators now have a size-matched gap (6px at `md`) instead of touching the labels.
+- **Diagrams**: Select, Table of Contents, Input Copy, Tabs Subtle and Bounce Sidebar annotations no longer collide with text or frames; Breadcrumbs, Checkbox and Radio Group guides match the real layout.
+- **Homepage showcase**: Hover blueprints line up with the live Compass, Blossom Picker, Fader and Dia Text.
 
 ## [0.1.0] - 2026-07-04
 

@@ -116,6 +116,29 @@ Default to NO comments. Code should explain itself through clear names and struc
 - **Anatomy diagrams use the shared API**: `AnatomyFrame` (required `ariaLabel`, automatic 1.2x scale, fixed-height info line so hovering never shifts the layout) and `AnatomyCallout` (tag + leader from an anchor on the part's edge, with a real-px `measure` and one-line `caption`). Anatomy exports are lazy-loaded from the demo files with `next/dynamic`; never re-export them from `components/ui/previews/index.ts`.
 - **Positioning + motion**: never put a centering `transform` (`translate(-50%, ...)`) on the same element that motion animates with `x`/`y`/`scale`; motion overwrites `transform` and the element jumps off position. Position an outer wrapper (fixed, clamped to the viewport) and animate an inner element.
 - **Hover must not change layout.** Anything that appears on hover (info lines, captions, tooltips) reserves its space up front (fixed height, `line-clamp`) or lives in a portal, so surrounding content never shifts.
+- **pnpm 11 build approvals live in `pnpm-workspace.yaml` as `allowBuilds`** (`sharp: true`, `unrs-resolver: true`). The old `onlyBuiltDependencies` key is ignored by pnpm 11, and Vercel's clean install then fails with `ERR_PNPM_IGNORED_BUILDS`. Any new dependency with an install script must be added to `allowBuilds`. Local installs hide this, so verify with a clean install in an empty folder.
+- **Registry items ship their full import closure.** Every `@/` file a component imports (hooks, `lib/motion-tokens.ts`, `lib/sound.ts`, other components) must be listed in its `registry.json` `files[]`, and every npm package it imports in `dependencies`, or `npx shadcn add` produces broken imports. Walk the imports after changing a component, then run `npm run build:registry`.
+- **Tailwind's dev server remembers every class it has seen.** An invalid arbitrary variant (for example `[&:not(:hover):[...]]`) breaks the whole `globals.css` compile and keeps breaking it after you delete it, until the dev server restarts. Never nest brackets inside arbitrary variants; `touch:` is not a variant, use `[@media(hover:none)]:`. Confirm with a production build.
+- **Use `http://localhost:3000`, not `127.0.0.1`,** for the dev server. Next 16 blocks the other origin in dev, so pages never hydrate and look broken.
+- **`inert` goes on the content, not on a wrapper around a grid or flex item.** A wrapper `div` takes the item's place in the layout and collapses it (the showcase panels shrank to slivers). Put `inert` on the preview inside the panel, or use `className="contents"`.
+- **OG image cache busting**: X and other platforms cache card images by URL. When the image changes, bump the `?v=N` query on the image URLs in `lib/seo.ts` and share the page URL with a new query to force a re-scrape.
+- **`npm run check:rules` runs in `prebuild`** and fails the build on em dashes, `transition-all`, bold weights, tiny diagram fonts, legacy draft text, and `bg-[var(...)]` syntax. File-level exceptions go in `BOLD_ALLOWED_FILES` in `scripts/check-rules.ts`, only with the user's approval.
+- **Examples view**: per-component variant grids live in `components/ui/examples/<id>-examples.tsx` (`ComponentExample[]`, type in `components/detail/examples-types.ts`) and are enabled with `hasExamples: true` in the component's metadata. They load only when the Examples view opens.
+
+# Decisions and Working Agreements
+
+Decisions the user has made. Do not undo them without asking.
+
+- **Never commit or push SVG, Markdown, rule, or prompt files.** `*.svg`, `*.md`, `*.mdc`, `*.mdx`, and any `*prompt*` / `*rules*` file are in `.gitignore`. Do not `git add -f` them, and leave them out of every commit and push. Files already tracked (README, CHANGELOG, AGENTS.md, CLAUDE.md, `public/favicon.svg`, etc.) stay as they are; do not stage new edits to them unless the user asks.
+- **Landing page**: keep its structure, copy, section order and radii (`rounded-2xl` / `rounded-xl` / `squircle-corners`) as they are. A proposed redesign (visible headline, install line, new footer, reordered sections) was reverted by the user; propose landing changes first and apply them only after approval. The dark-mode token fixes and the Mintlify brand-green logo (`--brand-mintlify`, `--brand-mintlify-deep`, the one allowed third-party brand color) stay.
+- **Icon Bar** stays exactly as originally designed: no container border, including its original label measurer (allowlisted in `check-rules.ts`).
+- **Scroll Indicator** keeps the tick-ruler design; section markers snap to the tick grid and clicks scroll headings to `scrollOffset` (16px).
+- **Goo Dropdown**: visible gray fill in light and no outline ring in dark, through `--goo-dropdown-fill` / `--goo-dropdown-outline` (with fallbacks for registry consumers).
+- **Removed components** (Button, Combobox, Input, Input Message, Mobile Drawer, Table): their diagrams are kept; `components/ui/button.tsx` stays as an internal dependency of Action Button.
+- **Catalog grouping**: Unique (signature pieces) and Basic (standard primitives, `basic: true` in metadata).
+- **Verify before reporting done**: check agent and subagent work with screenshots in both themes and with diffs against `HEAD` (for example annotation counts in diagrams) before calling a task complete. Bulk implementation may be delegated to Haiku agents, but their output must be reviewed.
+- **Commit grouping**: when splitting work into commits, put dependency changes (`package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`) first, and keep files that depend on each other in the same commit so every commit builds.
+- **Improvement backlog** lives in `IMPROVEMENT_PLAN.md`.
 
 # Forms, Testing, and Documentation
 
