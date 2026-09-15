@@ -12,7 +12,7 @@ export type ChangelogCategory = {
 
 export type ChangelogRelease = {
   version: string
-  date: string
+  date: string | null
   categories: ChangelogCategory[]
 }
 
@@ -41,19 +41,23 @@ function parseInline(line: string): ChangelogSegment[] {
 
 export function parseChangelog(): ChangelogRelease[] {
   const raw = readFileSync(join(process.cwd(), 'CHANGELOG.md'), 'utf-8')
-  const lines = raw.split('\n')
+  const lines = raw.split(/\r?\n/)
 
   const releases: ChangelogRelease[] = []
   let currentRelease: ChangelogRelease | null = null
   let currentCategory: ChangelogCategory | null = null
 
   for (const line of lines) {
-    const releaseMatch = line.match(/^##\s*\[([^\]]+)\]\s*-\s*(.+)$/)
+    const releaseMatch = line.match(/^##\s*\[([^\]]+)\](?:\s*-\s*(.+))?$/)
     const categoryMatch = line.match(/^###\s*(.+)$/)
     const bulletMatch = line.match(/^-\s+(.+)$/)
 
     if (releaseMatch) {
-      currentRelease = { version: releaseMatch[1], date: releaseMatch[2].trim(), categories: [] }
+      currentRelease = {
+        version: releaseMatch[1],
+        date: releaseMatch[2]?.trim() ?? null,
+        categories: [],
+      }
       releases.push(currentRelease)
       currentCategory = null
       continue
