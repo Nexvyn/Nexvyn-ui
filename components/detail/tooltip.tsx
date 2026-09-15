@@ -2,11 +2,13 @@
 
 import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/utils'
 import { useMounted } from '@/hooks/use-mounted'
 
 type TooltipSide = 'top' | 'right' | 'bottom' | 'left'
+
+const VIEWPORT_MARGIN = 8
 
 interface TooltipProps {
   content: ReactNode
@@ -27,6 +29,7 @@ function Tooltip({
 }: TooltipProps) {
   const [open, setOpen] = useState(false)
   const mounted = useMounted()
+  const reduceMotion = useReducedMotion()
   const [coords, setCoords] = useState<{ top: number; left: number } | null>(null)
   const [computedSide, setComputedSide] = useState<TooltipSide>(side)
   const [prevSide, setPrevSide] = useState(side)
@@ -92,24 +95,27 @@ function Tooltip({
 
     let top = 0
     let left = 0
-    const scrollY = window.pageYOffset || document.documentElement.scrollTop
-    const scrollX = window.pageXOffset || document.documentElement.scrollLeft
 
     if (newSide === 'top') {
-      top = rect.top + scrollY - sideOffset
-      left = rect.left + scrollX + rect.width / 2
+      top = rect.top - sideOffset - tooltipH
+      left = rect.left + rect.width / 2 - tooltipW / 2
     } else if (newSide === 'bottom') {
-      top = rect.bottom + scrollY + sideOffset
-      left = rect.left + scrollX + rect.width / 2
+      top = rect.bottom + sideOffset
+      left = rect.left + rect.width / 2 - tooltipW / 2
     } else if (newSide === 'left') {
-      top = rect.top + scrollY + rect.height / 2
-      left = rect.left + scrollX - sideOffset
-    } else if (newSide === 'right') {
-      top = rect.top + scrollY + rect.height / 2
-      left = rect.left + scrollX + rect.width + sideOffset
+      top = rect.top + rect.height / 2 - tooltipH / 2
+      left = rect.left - sideOffset - tooltipW
+    } else {
+      top = rect.top + rect.height / 2 - tooltipH / 2
+      left = rect.right + sideOffset
     }
 
-    setCoords({ top, left })
+    const maxLeft = window.innerWidth - tooltipW - VIEWPORT_MARGIN
+    const maxTop = window.innerHeight - tooltipH - VIEWPORT_MARGIN
+    setCoords({
+      top: Math.min(Math.max(top, VIEWPORT_MARGIN), Math.max(maxTop, VIEWPORT_MARGIN)),
+      left: Math.min(Math.max(left, VIEWPORT_MARGIN), Math.max(maxLeft, VIEWPORT_MARGIN)),
+    })
   }, [side, sideOffset])
 
   const setTooltipRef = useCallback(
@@ -146,27 +152,12 @@ function Tooltip({
     }
   }, [open, updateCoords])
 
-  const positionStyles = () => {
-    if (!coords) return { opacity: 0, position: 'absolute' as const }
-
-    let transform = ''
-    if (computedSide === 'top') {
-      transform = 'translate(-50%, -100%)'
-    } else if (computedSide === 'bottom') {
-      transform = 'translate(-50%, 0)'
-    } else if (computedSide === 'left') {
-      transform = 'translate(-100%, -50%)'
-    } else if (computedSide === 'right') {
-      transform = 'translate(0, -50%)'
-    }
-
-    return {
-      position: 'absolute' as const,
-      top: `${coords.top}px`,
-      left: `${coords.left}px`,
-      transform,
-      zIndex: 9999,
-    }
+  const positionStyles = {
+    position: 'fixed' as const,
+    top: coords ? coords.top : 0,
+    left: coords ? coords.left : 0,
+    visibility: coords ? ('visible' as const) : ('hidden' as const),
+    zIndex: 9999,
   }
 
   const slide = {
@@ -191,21 +182,21 @@ function Tooltip({
         createPortal(
           <AnimatePresence>
             {open && (
-              <motion.div
-                ref={setTooltipRef}
-                initial={{ opacity: 0, ...slide[computedSide] }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                exit={{ opacity: 0, ...slide[computedSide] }}
-                transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
-                style={positionStyles()}
-                className={cn(
-                  'pointer-events-none whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-medium',
-                  'bg-(--color-fg) text-(--color-bg) shadow-md',
-                  className,
-                )}
-              >
-                {content}
-              </motion.div>
+              <div ref={setTooltipRef} style={positionStyles} className="pointer-events-none">
+                <motion.div
+                  initial={reduceMotion ? { opacity: 0 } : { opacity: 0, ...slide[computedSide] }}
+                  animate={{ opacity: 1, x: 0, y: 0 }}
+                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, ...slide[computedSide] }}
+                  transition={{ duration: reduceMotion ? 0 : 0.15, ease: [0.22, 1, 0.36, 1] }}
+                  className={cn(
+                    'whitespace-nowrap rounded-md px-2.5 py-1 text-xs font-normal',
+                    'bg-(--color-fg) text-(--color-bg) shadow-md',
+                    className,
+                  )}
+                >
+                  {content}
+                </motion.div>
+              </div>
             )}
           </AnimatePresence>,
           document.body,

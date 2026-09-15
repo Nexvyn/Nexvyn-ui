@@ -224,7 +224,7 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
           <button
             type="button"
             onClick={onClose}
-            className="flex items-center gap-2 text-sm font-medium text-(--color-fg) hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-0 p-0"
+            className="flex items-center gap-2 text-sm font-normal text-(--color-fg) hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-0 p-0"
           >
             <ChevronLeft className="h-4.5 w-4.5" />
             <span>Source Code</span>
@@ -270,7 +270,7 @@ export default function CodeDrawer({ open, onClose, item }: CodeDrawerProps) {
                     className={cn(
                       'relative px-3 sm:px-4 py-1.5 text-[11px] sm:text-[13px] font-normal rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 transition-colors duration-(--motion-dur-fast) cursor-pointer border-0 bg-transparent shrink-0 whitespace-nowrap',
                       'text-(--color-muted) hover:text-(--color-fg)',
-                      isActive && 'text-(--color-fg) font-semibold',
+                      isActive && 'text-(--color-fg) font-normal',
                     )}
                   >
                     {isActive && (

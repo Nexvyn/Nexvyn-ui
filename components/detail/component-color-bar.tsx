@@ -426,7 +426,7 @@ export default function ComponentColorBar() {
               <button
                 type="button"
                 onClick={() => setRadius('0px')}
-                className="flex items-center justify-between w-full px-2 py-1 rounded-lg text-[11px] font-medium cursor-pointer hover:bg-(--color-surface-2) text-(--color-fg) transition-colors"
+                className="flex items-center justify-between w-full px-2 py-1 rounded-lg text-[11px] font-normal cursor-pointer hover:bg-(--color-surface-2) text-(--color-fg) transition-colors"
               >
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-none border border-(--color-fg)/50 flex items-center justify-center shrink-0" />
@@ -438,7 +438,7 @@ export default function ComponentColorBar() {
               <button
                 type="button"
                 onClick={() => setRadius('16px')}
-                className="flex items-center justify-between w-full px-2 py-1 rounded-lg text-[11px] font-medium cursor-pointer hover:bg-(--color-surface-2) text-(--color-fg) transition-colors"
+                className="flex items-center justify-between w-full px-2 py-1 rounded-lg text-[11px] font-normal cursor-pointer hover:bg-(--color-surface-2) text-(--color-fg) transition-colors"
               >
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-sm border border-(--color-fg)/50 flex items-center justify-center shrink-0" />
@@ -450,7 +450,7 @@ export default function ComponentColorBar() {
               <button
                 type="button"
                 onClick={() => setRadius(null)}
-                className="flex items-center justify-between w-full px-2 py-1 rounded-lg text-[11px] font-medium cursor-pointer hover:bg-(--color-surface-2) text-(--color-fg) transition-colors"
+                className="flex items-center justify-between w-full px-2 py-1 rounded-lg text-[11px] font-normal cursor-pointer hover:bg-(--color-surface-2) text-(--color-fg) transition-colors"
               >
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full border border-(--color-fg)/50 flex items-center justify-center shrink-0" />

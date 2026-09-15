@@ -105,7 +105,7 @@ export function InstallCommandBox({
                     className={cn(
                       'w-full text-left px-2 py-1 text-[11px] sm:text-[14px] transition-colors cursor-pointer rounded-[6px] hover:bg-(--color-surface-2)',
                       pm === option
-                        ? 'text-(--color-fg) font-semibold'
+                        ? 'text-(--color-fg) font-normal'
                         : 'text-(--color-muted) hover:text-(--color-fg)',
                     )}
                   >

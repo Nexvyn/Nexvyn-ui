@@ -179,7 +179,7 @@ export function StarsCount() {
         value={stars}
         format={{ notation: 'compact', maximumFractionDigits: 1 }}
         className="tabular-nums text-sm"
-        style={{ fontWeight: 500, letterSpacing: '-0.02em' }}
+        style={{ fontWeight: 400, letterSpacing: '-0.02em' }}
         transformTiming={{ duration: 600, easing: 'ease-out' }}
         spinTiming={{ duration: 500, easing: 'ease-out' }}
         opacityTiming={{ duration: 400, easing: 'ease-out' }}

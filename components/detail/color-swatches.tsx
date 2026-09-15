@@ -30,7 +30,7 @@ export default function ColorSwatches({ className = '', showLabel = false }: Col
       )}
     >
       {showLabel && (
-        <span className="mr-0.5 text-xs font-medium" style={{ color: 'var(--color-muted)' }}>
+        <span className="mr-0.5 text-xs font-normal" style={{ color: 'var(--color-muted)' }}>
           {prop.name}
         </span>
       )}

@@ -144,7 +144,7 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
                 </div>
                 <h3
                   id="feedback-modal-title"
-                  className="text-xl font-semibold text-(--color-fg) mb-1.5"
+                  className="text-xl font-normal text-(--color-fg) mb-1.5"
                 >
                   Thanks!
                 </h3>
@@ -161,7 +161,7 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
                 </div>
                 <h3
                   id="feedback-modal-title"
-                  className="text-xl font-semibold text-(--color-fg) mb-1.5"
+                  className="text-xl font-normal text-(--color-fg) mb-1.5"
                 >
                   Something went wrong
                 </h3>
@@ -171,7 +171,7 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
                 <button
                   type="button"
                   onClick={() => setStatus('idle')}
-                  className="w-full rounded-xl bg-(--color-accent) hover:opacity-90 text-(--color-bg) font-medium py-3 text-center transition-opacity cursor-pointer border-0 text-sm"
+                  className="w-full rounded-xl bg-(--color-accent) hover:opacity-90 text-(--color-bg) font-normal py-3 text-center transition-opacity cursor-pointer border-0 text-sm"
                 >
                   Try again
                 </button>
@@ -183,7 +183,7 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
                 <div className="flex items-center justify-between mb-2">
                   <h3
                     id="feedback-modal-title"
-                    className="text-[17px] font-semibold text-(--color-fg)"
+                    className="text-[17px] font-normal text-(--color-fg)"
                   >
                     Help us improve
                   </h3>
@@ -216,14 +216,14 @@ export function FeedbackModal({ isOpen, onClose, componentName }: FeedbackModalP
                   <button
                     type="button"
                     onClick={onClose}
-                    className="flex-1 rounded-xl bg-(--color-surface-2) hover:bg-(--color-surface-3) text-(--color-fg) font-semibold py-3 text-center transition-colors cursor-pointer border-0 text-xs tracking-wide"
+                    className="flex-1 rounded-xl bg-(--color-surface-2) hover:bg-(--color-surface-3) text-(--color-fg) font-normal py-3 text-center transition-colors cursor-pointer border-0 text-xs tracking-wide"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={submitting || !text.trim()}
-                    className="flex-1 rounded-xl bg-(--color-fg) text-(--color-bg) hover:opacity-90 font-semibold py-3 text-center transition-opacity cursor-pointer border-0 text-xs tracking-wide disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="flex-1 rounded-xl bg-(--color-fg) text-(--color-bg) hover:opacity-90 font-normal py-3 text-center transition-opacity cursor-pointer border-0 text-xs tracking-wide disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     {submitting ? 'Sending...' : 'Submit'}
                   </button>

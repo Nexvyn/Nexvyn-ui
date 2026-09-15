@@ -333,7 +333,7 @@ function NavSectionHeader({
       >
         {isNew && <NewStarIcon />}
         {title}
-        {isNew && <span className="text-[10px] font-medium text-(--color-new)">New</span>}
+        {isNew && <span className="text-[10px] font-normal text-(--color-new)">New</span>}
       </span>
     </Link>
   )
@@ -509,7 +509,7 @@ function NavItem({
       >
         {item.isNew && <NewStarIcon />}
         {typeof number === 'number' ? formatComponentLabel(number, item.name) : item.name}
-        {item.isNew && <span className="text-[10px] font-medium text-(--color-new)">New</span>}
+        {item.isNew && <span className="text-[10px] font-normal text-(--color-new)">New</span>}
       </span>
     </Link>
   )
@@ -647,7 +647,7 @@ function SidebarNav() {
 
             {sortById ? (
               <>
-                <NavSectionHeader title="All Components" active />
+                <NavSectionHeader title="Unique" active />
                 <Separator listKey="all" position={-0.5} />
                 {normalSorted.map((item, index) => {
                   const isActive = activeId === item.id

@@ -37,7 +37,7 @@ export function CopyButton({ value, label, idleIcon, className }: CopyButtonProp
       onClick={handleCopy}
       title={label}
       className={cn(
-        'detail-toolbar-btn detail-copy-btn hit-area-44 shrink-0 rounded-md px-2 py-1 text-xs font-medium transition-colors',
+        'detail-toolbar-btn detail-copy-btn hit-area-44 shrink-0 rounded-md px-2 py-1 text-xs font-normal transition-colors',
         className,
       )}
       style={{

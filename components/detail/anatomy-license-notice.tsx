@@ -105,7 +105,7 @@ export function AnatomyLicenseNotice({ className }: { className?: string }) {
                 }}
                 className="w-65 max-w-[calc(100vw-1rem)] rounded-lg squircle-corners border border-(--color-border) bg-(--color-bg) p-3 text-sm text-(--color-fg) shadow-lg"
               >
-                Anatomy diagrams are CC BY-NC 4.0 — not for commercial use.
+                Anatomy diagrams are CC BY-NC 4.0, not for commercial use.
               </motion.div>
             )}
           </AnimatePresence>,

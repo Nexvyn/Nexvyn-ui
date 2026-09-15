@@ -145,7 +145,7 @@ function PaddingStrips({ data }: { data: InspectData }) {
                   fontSize: 10,
                   fontFamily: 'ui-monospace, monospace',
                   color: fitsInside ? GREEN_LABEL : BLUE,
-                  fontWeight: 600,
+                  fontWeight: 400,
                   lineHeight: 1,
                 }}
               >
@@ -209,7 +209,7 @@ function GapStrips({ gaps }: { gaps: GapInfo[] }) {
                   fontSize: 10,
                   fontFamily: 'ui-monospace, monospace',
                   color: fitsInside ? GREEN_LABEL : BLUE,
-                  fontWeight: 600,
+                  fontWeight: 400,
                   lineHeight: 1,
                 }}
               >
@@ -360,7 +360,7 @@ function HorizontalRuler({
                   fill={BLUE}
                   fontSize={9}
                   fontFamily="ui-monospace, monospace"
-                  fontWeight={500}
+                  fontWeight={400}
                   textAnchor="middle"
                 >
                   {value}
@@ -447,7 +447,7 @@ function VerticalRuler({
                   fill={BLUE}
                   fontSize={9}
                   fontFamily="ui-monospace, monospace"
-                  fontWeight={500}
+                  fontWeight={400}
                   textAnchor="end"
                   dominantBaseline="middle"
                 >
