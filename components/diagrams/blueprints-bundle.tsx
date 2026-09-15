@@ -43,7 +43,12 @@ import { SwitchBlueprint } from './switch-diagram'
 import { TableOfContentsWireframe } from './table-of-contents-diagram'
 import { TabsSubtleBlueprint } from './tabs-subtle-diagram'
 
-const BLUEPRINTS: Record<string, ComponentType> = {
+export interface BlueprintProps {
+  anchorWidth?: number
+  text?: string
+}
+
+const BLUEPRINTS: Record<string, ComponentType<BlueprintProps>> = {
   'accordion-blueprint': AccordionBlueprint,
   'action-button-blueprint': ActionButtonBlueprint,
   'adaptive-actions-blueprint': AdaptiveActionsBlueprint,
@@ -80,7 +85,10 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'fluid-orb-blueprint': FluidOrbBlueprint,
 }
 
-export default function BlueprintsBundle({ render, ...props }: { render: string }) {
+export default function BlueprintsBundle({
+  render,
+  ...props
+}: { render: string } & BlueprintProps) {
   const Drawing = BLUEPRINTS[render]
   if (!Drawing) return null
   return <Drawing {...props} />
