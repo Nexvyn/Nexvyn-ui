@@ -1,6 +1,13 @@
-# Active Project — READ FIRST
+# Design Language, READ FIRST
 
-Before designing or building ANY component, read **`REBUILD_PLAN.md`** (repo root). It defines the active full-redesign project: the Nexvyn design language ("fluid precision, editorial restraint" — one signature motion moment per component, accent only on focus/selection/signature), the merged component inventory and batch order, the source-library paths (inspiration only, never import from them), and the brief → build → review workflow. Site/docs fixes are tracked separately in **`SITE_HARDENING_PLAN.md`**. Rules in those files build ON TOP of everything below — this file remains the authority on how components are built and shipped.
+Every component follows the Nexvyn design language: "fluid precision, editorial restraint".
+
+- One signature motion moment per component; everything else stays calm.
+- The accent appears only on focus, selection, or that signature moment. Everything else uses the neutral tokens.
+- Regular-weight type, `rounded-md` corners, a 4px grid, and token-only colors (see the rules below).
+- Workflow for new or reworked components: brief (what the signature moment is and which real parts exist), build (following this file), then review (the Definition of Done and the checklist at the end of this file).
+
+This file is the single authority on how components are designed, built, and shipped.
 
 # Role
 
@@ -11,7 +18,7 @@ You are an expert React UI library engineer. Your objective is to build producti
 Default to NO comments. Code should explain itself through clear names and structure. Only write a comment when the code genuinely cannot say it:
 
 - Allowed: legal/license headers (e.g. the diagrams' SPDX block), `TODO`/`FIXME` with context, and one-liners for non-obvious constraints or gotchas (e.g. "24 = 6 × dash period 4", hydration/SSR hazards, browser quirks).
-- Never: narration of what the next lines do, restating the JSX, change logs in comments, big banner blocks, or design-decision essays. If a decision matters that much, put it in the PR description or docs — not the source.
+- Never: narration of what the next lines do, restating the JSX, change logs in comments, big banner blocks, or design-decision essays. If a decision matters that much, put it in the PR description or docs, not the source.
 - Keep any surviving comment under ~2 lines.
 
 # Core Architecture & File Organization
@@ -41,19 +48,21 @@ Default to NO comments. Code should explain itself through clear names and struc
 # Styling, Theming, and Consistency
 
 - **Semantic Design Tokens**: NEVER hardcode hex colors (e.g., `#3b82f6`) or raw spacing in components. Use CSS variables mapped to semantic aliases (e.g., `bg-primary`, `text-foreground`).
-- **Restricted Palette**: The only colors allowed anywhere in a component are black, white, gray (via the neutral tokens — `--foreground`, `--background`, `--muted`, `--card`, `--border`, etc.) and the single accent color (`--color-accent` / `--accent`). Never introduce a new hue (no blues, greens, reds, etc.) unless it's a semantic state color already defined as a token (e.g. `--destructive`). Always reference these through their CSS variable (`var(--color-accent)`, `bg-muted`, etc.) — never write a literal hex/rgb/oklch value inline, even one that matches an existing token's current value, since tokens can be retuned per-theme and a literal won't follow.
+- **Restricted Palette**: The only colors allowed anywhere in a component are black, white, gray (via the neutral tokens, `--foreground`, `--background`, `--muted`, `--card`, `--border`, etc.) and the single accent color (`--color-accent` / `--accent`). Never introduce a new hue (no blues, greens, reds, etc.) unless it's a semantic state color already defined as a token (e.g. `--destructive`). Always reference these through their CSS variable (`var(--color-accent)`, `bg-muted`, etc.), never write a literal hex/rgb/oklch value inline, even one that matches an existing token's current value, since tokens can be retuned per-theme and a literal won't follow.
 - **Dark Mode**: Support dark mode via CSS variables scoped to a `.dark` parent class. Do not write component-level dark mode conditionals.
 - **Typography**: Use semantic typography tokens (e.g., `text-foreground`, `font-heading`, `text-sm`). Do not use raw font sizes or families directly in components.
+- **No Bold Text**: Never use bold or heavy weights (`font-bold`, `font-semibold`, `font-medium`, `fontWeight` of 500 or more) in components, previews, or site pages, including the homepage hero. Use regular weight and build hierarchy with size, color, and spacing instead.
+- **No Em Dashes**: Never write an em dash (U+2014) anywhere: UI copy, metadata/SEO strings, comments, or docs. Use a comma, colon, or period instead.
 - **Responsive Behavior**: Always write mobile-first CSS. Use breakpoint modifiers (e.g., `md:`, `lg:`) to scale up. Components must be fluid and tested on mobile widths.
 - **Internationalization (RTL)**: ALWAYS use CSS logical properties for layout. Use `ms-` (margin-inline-start) instead of `ml-`, and `start-0` instead of `left-0`.
 - **Spacing & Sizing**: Adhere strictly to a 4px/8px grid system via design tokens.
-- **Squircle Corners**: When a squircle corner treatment is wanted, add the `squircle-corners` utility class (defined in `app/globals.css`) alongside whatever `rounded-*` class controls the radius. Never write `style={{ cornerShape: 'squircle' } as CSSProperties}` inline — that duplicates the same object across files and forces an unnecessary `CSSProperties` cast/import. Reserve the separate `.squircle` class (full pill + squircle corners) for elements that are meant to be fully round.
+- **Corner Radius**: The standard radius for every component surface (buttons, inputs, dropdowns, menus, popovers, cards, badges) is `rounded-md`. Add the `squircle-corners` utility class (defined in `app/globals.css`) alongside `rounded-md` when a squircle corner treatment is wanted. Never write `style={{ cornerShape: 'squircle' } as CSSProperties}` inline, since it duplicates the same object across files and forces an unnecessary `CSSProperties` cast/import. Reserve the separate `.squircle` class (full pill + squircle corners) for elements that are genuinely round (switch tracks and thumbs, dots, avatars). Exception: the landing page (`app/home-page.tsx`, `components/home/*`, and the header's GitHub button, theme toggle, and sound toggle) keeps its own radii (`rounded-2xl`, `rounded-xl`, `squircle-corners`); never change roundness there.
 - **Icons**: Accept icons as React nodes (children or props) rather than hardcoding SVG paths, ensuring consumers can swap icon libraries.
 
 # Complex Patterns (Overlays & Portals)
 
 - **Portals**: Always render overlays (Modals, Tooltips, Popovers, Dropdowns) via `createPortal` to `document.body`. This avoids `z-index` wars and `overflow: hidden` clipping.
-- **Scroll Locking**: Modal overlays lock body scroll while open and restore it — together with focus — on close. Non-modal overlays (tooltips, hover cards) never lock scroll.
+- **Scroll Locking**: Modal overlays lock body scroll while open and restore it, together with focus, on close. Non-modal overlays (tooltips, hover cards) never lock scroll.
 - **Virtualization**: For dropdowns or selects with >100 items, integrate virtualization (e.g., `@tanstack/react-virtual`) to prevent DOM node bloating.
 - **Mobile & Touch**: Ensure interactive elements have a minimum touch target of 44x44 pixels. Handle `onTouchStart` / `onClick` dual-firing properly to avoid double-triggering. Implement swipe gestures for mobile-first overlays (Drawers, Carousels).
 
@@ -68,36 +77,47 @@ Default to NO comments. Code should explain itself through clear names and struc
 
 # Motion & Animation Craft
 
-- **Easing by context**: `ease-out` for anything entering/exiting the screen; `ease-in-out` for elements already on screen that move or morph; plain `ease` for hover color/opacity changes; `linear` only for genuinely constant motion (marquees, time-progress). Never `ease-in` for UI — it reads as sluggish.
+- **Easing by context**: `ease-out` for anything entering/exiting the screen; `ease-in-out` for elements already on screen that move or morph; plain `ease` for hover color/opacity changes; `linear` only for genuinely constant motion (marquees, time-progress). Never `ease-in` for UI, it reads as sluggish.
 - **Use the motion tokens** defined in `app/globals.css` (`--motion-dur-instant/fast/base/slow/showcase/ambient`, `--motion-ease-out`, `--motion-ease-in-out`) via `duration-(--motion-dur-base)` / `ease-(--motion-ease-out)`. Don't invent one-off durations inline.
 - **Durations**: UI animations under 300ms; hovers 100–150ms; exits shorter than entrances. Anything used dozens of times a day (keyboard-driven changes, frequent hovers) is better with no animation at all.
-- **Never `transition-all`** — list properties explicitly (`transition-colors`, `transition-[opacity,transform]`). `transition-all` silently animates properties you change later and makes the declared intent unreadable.
-- **Only animate `transform` / `opacity` / `clip-path` / `filter`.** Never animate `top`/`left`/`width`/`height` — if a position depends on layout math, move it with `transform: translateY(calc(...))` instead of animating `top`.
-- **No `scale(0)` entrances** — enter from 0.9–0.97 with an opacity fade; press feedback is `scale(0.97)`.
+- **Never `transition-all`**: list properties explicitly (`transition-colors`, `transition-[opacity,transform]`). `transition-all` silently animates properties you change later and makes the declared intent unreadable.
+- **Only animate `transform` / `opacity` / `clip-path` / `filter`.** Never animate `top`/`left`/`width`/`height`: if a position depends on layout math, move it with `transform: translateY(calc(...))` instead of animating `top`.
+- **No `scale(0)` entrances**: enter from 0.9–0.97 with an opacity fade; press feedback is `scale(0.97)`.
 - **State swaps morph, never cut**: keep both layers mounted and crossfade (opacity + a slight counter-scale); a subtle ~2px blur bridge makes two states read as one object transforming. Unmounting the old layer at swap time causes a blank-gap flash whenever timing slips.
 - **Reduced motion, both layers of it**: every transition pairs with `motion-reduce:transition-none` (plus `motion-reduce:transform-none` / `filter-none` when animating those), and JS-driven motion branches on `useReducedMotion()` from `motion/react`.
 
 # Lifecycle & Memory Safety
 
-- **Every timer is cleared on unmount** — including timers scheduled _inside another timer's callback_. The classic leak here: a recursive "schedule blink" loop whose outer handle is cleared but whose nested `setTimeout(() => setState(false), 150)` fires after unmount. Track every handle.
+- **Every timer is cleared on unmount**: including timers scheduled _inside another timer's callback_. The classic leak here: a recursive "schedule blink" loop whose outer handle is cleared but whose nested `setTimeout(() => setState(false), 150)` fires after unmount. Track every handle.
 - **Every `addEventListener` has a matching `removeEventListener`** in the effect cleanup; every `requestAnimationFrame` loop has `cancelAnimationFrame` plus a cancelled flag so the loop stops recursing.
-- **Imperative class widgets** (canvas/WebGL renderers, standalone pickers) must clear pending `setTimeout`s and listeners inside `destroy()` _before_ tearing down DOM/renderer references — a timer firing post-destroy touches dead objects.
+- **Imperative class widgets** (canvas/WebGL renderers, standalone pickers) must clear pending `setTimeout`s and listeners inside `destroy()` _before_ tearing down DOM/renderer references, a timer firing post-destroy touches dead objects.
 - **Release everything else on unmount**: `AudioContext.close()`, `MutationObserver`/`ResizeObserver`/`IntersectionObserver.disconnect()`, media pause, pointer-capture release.
 
 # Repo-Specific Pitfalls (Learned the Hard Way)
 
-- **`asChild`/Slot class merging**: `Button asChild` concatenates the Button's classes with the child `Link`'s — if both set the same property (`inline-flex` vs `flex`), the winner depends on Tailwind's stylesheet order, not your JSX order. Never set the same CSS property from both sides; when layout correctness matters (e.g. centering button content), set it once — an inline `style` on the child wins deterministically.
-- **Tailwind v4 variable syntax**: use the paren form `bg-(--color-fg)`, `text-(--color-muted)`, `duration-(--motion-dur-fast)` — never `bg-[var(--color-fg)]`. Prefer canonical utilities (`backface-hidden`, `z-1`) over arbitrary-value spellings.
+- **`asChild`/Slot class merging**: `Button asChild` concatenates the Button's classes with the child `Link`'s, if both set the same property (`inline-flex` vs `flex`), the winner depends on Tailwind's stylesheet order, not your JSX order. Never set the same CSS property from both sides; when layout correctness matters (e.g. centering button content), set it once, an inline `style` on the child wins deterministically.
+- **Tailwind v4 variable syntax**: use the paren form `bg-(--color-fg)`, `text-(--color-muted)`, `duration-(--motion-dur-fast)`: never `bg-[var(--color-fg)]`. Prefer canonical utilities (`backface-hidden`, `z-1`) over arbitrary-value spellings.
 - **Custom pointer widgets** (`div[role="slider"]` etc.): call `e.preventDefault()` in `onPointerDown` so mouse clicks don't move focus and flash the `focus-visible` ring; keyboard Tab focus is unaffected. Browsers only apply their "no ring on click" heuristic to native controls.
-- **Previews never guess asset URLs**: a card preview is a blueprint (wireframe → live reveal) or a registered live preview. If neither exists for a component, render nothing — do not fall back to speculative `/thumbnails/${id}.png` paths that 404 into broken-media icons.
+- **Previews never guess asset URLs**: a card preview is a blueprint (wireframe → live reveal) or a registered live preview. If neither exists for a component, render nothing, do not fall back to speculative `/thumbnails/${id}.png` paths that 404 into broken-media icons.
 - **Text over dynamic surfaces**: a label colored for contrast against a bar/fill must switch color when a compact/overflow state repositions it onto the page background. Verify contrast in the state it actually renders.
 - **Verify in BOTH themes**: every color decision gets checked in light and dark mode before shipping. Tokens differ per theme; a value that looks right in one theme routinely vanishes in the other.
 - **Never read the theme during render**: the `.dark` class is applied pre-hydration by the `beforeInteractive` script in `app/layout.tsx`. Components that need the current theme subscribe to it (`useSyncExternalStore` + a MutationObserver on `documentElement`, as `theme-toggle.tsx` does). Reading `document.documentElement.classList` in the render phase breaks SSR and causes hydration mismatches.
-- **Micro-interaction sound goes through the shared `lib/sound.ts`, never a colocated per-component `AudioContext`.** It's already wired as a shared `registry:lib` file — every sound-using component's `registry.json` entry lists both its own `components/ui/<name>.tsx` and `lib/sound.ts`, so `npx shadcn add <name>` copies it into the consumer's `lib/` once, the same way `lib/utils.ts`/`cn()` is already shared across virtually every component. Installing a second sound-using component doesn't duplicate the file — the CLI sees it already exists and skips it. Colocating a private `let audioCtx: AudioContext | null = null` inside each component instead would mean every sound-using component mounted on the same page (which happens routinely — this showcase site renders several together) creates its **own** `AudioContext` and its **own** `pointerdown`/`keydown`/`touchstart` unlock listeners on `window`, and browsers cap concurrent `AudioContext`s per page. Import `playHoverSound` / `playClickSound` / `playTickSound` / `playBounceSound` from `@/lib/sound`; add a new `play*Sound` export there rather than a local implementation if an existing one doesn't fit.
+- **Micro-interaction sound goes through the shared `lib/sound.ts`, never a colocated per-component `AudioContext`.** It's already wired as a shared `registry:lib` file, every sound-using component's `registry.json` entry lists both its own `components/ui/<name>.tsx` and `lib/sound.ts`, so `npx shadcn add <name>` copies it into the consumer's `lib/` once, the same way `lib/utils.ts`/`cn()` is already shared across virtually every component. Installing a second sound-using component doesn't duplicate the file, the CLI sees it already exists and skips it. Colocating a private `let audioCtx: AudioContext | null = null` inside each component instead would mean every sound-using component mounted on the same page (which happens routinely, this showcase site renders several together) creates its **own** `AudioContext` and its **own** `pointerdown`/`keydown`/`touchstart` unlock listeners on `window`, and browsers cap concurrent `AudioContext`s per page. Import `playHoverSound` / `playClickSound` / `playTickSound` / `playBounceSound` from `@/lib/sound`; add a new `play*Sound` export there rather than a local implementation if an existing one doesn't fit.
+- **Entrance animations play once.** Never replay a card or section entrance when it scrolls back into view (no IntersectionObserver "replay" keys), and never put `content-visibility: auto` on elements that run CSS entrance animations: the browser restarts those animations every time the element re-enters the viewport.
+- **Motion from `none`**: never `animate(el, { transform: '...' })` on an element whose computed transform is `none`; motion interpolates from `none` as `scale(0)` and the element visibly collapses. Animate independent values (`{ scale, y }`) and only settle what was actually pressed.
+- **Tailwind v4 `scale-*` / `translate-*` / `rotate-*` use the individual `scale` / `translate` / `rotate` properties**, not `transform`. List those in `transition-[...]`, or the change snaps instead of animating. `blur-0` is not a v4 utility; use `blur-none`.
+- **Borders on SVG-filtered (goo) surfaces**: a CSS border inside an element with a goo filter gets blurred away. Chain token-colored `drop-shadow()` outlines after the filter on the same wrapper instead.
+- **Clipboard**: `navigator.clipboard` is undefined on insecure origins and can reject in iframes. Always fall back (select + `execCommand('copy')`), show a failed state, and announce the result through an `aria-live` region.
+- **Static by default (Vercel edge budget)**: every page must prerender. Dynamic routes export `generateStaticParams` + `dynamicParams = false`; client pages live in a `*-page.tsx` file wrapped by a server `page.tsx` that exports metadata. Long link lists (sidebar, grids) use `prefetch={false}`. The only server function is `app/api/feedback`.
+- **Social images are static PNGs**: `app/opengraph-image.png` / `app/twitter-image.png` are generated from `scripts/build-og-image.tsx` with `npm run build:og`. Never reintroduce a runtime `opengraph-image.tsx` route.
+- **SEO metadata goes through `lib/seo.ts`** (`pageMetadata()` for every page, `SITE_*` constants for names, keywords, and the description). A page that sets its own `openGraph` must include `images`, because a child's `openGraph` replaces the parent's instead of merging.
+- **Licensing**: code is MIT with the Commons Clause (commercial use allowed, keep the copyright and license notice in source, no selling the components themselves as a kit/library/template). Diagrams in `components/diagrams/**` are CC BY-NC 4.0 and must never be listed in a component's `registry.json` `files[]`.
+- **Never remove diagram annotations.** Gap measurements, `MeasureH`/`MeasureV`/`MeasureNote` labels, `InsetGuide` padding guides, `GripFrame`s, and construction lines in `components/diagrams/*` are part of the design. Fix overlaps or off-canvas labels by moving, re-laning, or correcting the value to real px, never by deleting them.
+- **Anatomy diagrams use the shared API**: `AnatomyFrame` (required `ariaLabel`, automatic 1.2x scale, fixed-height info line so hovering never shifts the layout) and `AnatomyCallout` (tag + leader from an anchor on the part's edge, with a real-px `measure` and one-line `caption`). Anatomy exports are lazy-loaded from the demo files with `next/dynamic`; never re-export them from `components/ui/previews/index.ts`.
+- **Positioning + motion**: never put a centering `transform` (`translate(-50%, ...)`) on the same element that motion animates with `x`/`y`/`scale`; motion overwrites `transform` and the element jumps off position. Position an outer wrapper (fixed, clamped to the viewport) and animate an inner element.
+- **Hover must not change layout.** Anything that appears on hover (info lines, captions, tooltips) reserves its space up front (fixed height, `line-clamp`) or lives in a portal, so surrounding content never shifts.
 
 # Forms, Testing, and Documentation
-
-- **No em-dashes in user-facing copy**: Never use "—" in READMEs, site text, labels, docs, or metadata. Use commas, colons, or parentheses instead.
 
 - **Native Form Integration**: Custom selects/inputs MUST expose a hidden native `<input>` or properly forward refs so libraries like `react-hook-form` can register them.
 - **Validation Support**: Inputs must accept `aria-invalid` and `aria-describedby` to link error messages. If `aria-invalid` is true, apply visual error states (e.g., `border-destructive`).
@@ -112,36 +132,36 @@ Default to NO comments. Code should explain itself through clear names and struc
 
 # Shipping a New Component in This Repo
 
-The sections above describe how a component should be _built_. Building it is not enough to make it appear anywhere — this repo wires each component through 9 separate files. Verified against existing shipped components (`ratio-slider`, `password-input`, `table-of-contents`, `goo-dropdown`); follow this order:
+The sections above describe how a component should be _built_. Building it is not enough to make it appear anywhere, this repo wires each component through 9 separate files. Verified against existing shipped components (`ratio-slider`, `password-input`, `table-of-contents`, `goo-dropdown`); follow this order:
 
-1. **`components/ui/<name>.tsx`** — the component itself (single file, not a folder in this repo). Export the component, its `<Name>Props` interface, and by convention a `<Name>Preview` function at the bottom for fallback preview use.
-2. **`components/ui/previews/<name>-preview.tsx`** — standalone client preview wrapper (imports the component, centers it in a `div`), re-exported from **`components/ui/previews/index.ts`**. Used by the detail page.
-3. **`components/ui/Doc/<name>-metadata.ts`** — a `ComponentItem` object: `id`, `name`, `collection`, `previewType`, `description`, `registry`, `dependencies`, `interaction`, `props[]`, `usage` (code string shown in docs).
-4. **`lib/components-registry.ts`** — import the metadata object and add it to the central registry array. This is the single source of truth every other file below reads from.
-5. **`components/diagrams/<name>-diagram.tsx`** — wireframe/skeleton version for the blueprint gallery, registered by key in the `BLUEPRINTS` map in **`components/diagrams/blueprints-bundle.tsx`** (which ships all blueprints as one lazily-loaded chunk via the single `dynamic()` in **`components/showcase/preview-map.tsx`** — do not add per-component `dynamic()` calls).
-6. **`components/showcase/component-preview.tsx`** — add to `LIVE_PREVIEW_IDS`, add a `dynamic()` import, add a `case '<name>':` in the `LivePreview` switch (grid/showcase card rendering).
-7. **`app/components/[component]/page.tsx`** — add a `case '<name>':` rendering `<DemoFrame><NamePreview /></DemoFrame>` (the component detail page).
-8. **Source for "view source"** — the code drawer fetches the static **`public/r/<name>.json`** files (generated, cached, no serverless function). Just make sure step 9 below is done; no source-map registration needed.
-9. **`registry.json`** (root, hand-maintained) — add an item entry (`name`, `type`, `title`, `description`, `dependencies`, `files[].path`). If the component imports from `@/lib/sound`, also add `{"path": "lib/sound.ts", "type": "registry:lib"}` to its `files[]` (see `bounce-sidebar`/`ratio-slider`/`badge`/`fader` for the pattern — do not colocate a separate sound module, see "Repo-Specific Pitfalls"). Run `npm run build:registry` (also a `prebuild` hook) to auto-generate **`public/r/<name>.json`** and update **`public/r/registry.json`** — do not hand-write these two.
+1. **`components/ui/<name>.tsx`**: the component itself (single file, not a folder in this repo). Export the component, its `<Name>Props` interface, and by convention a `<Name>Preview` function at the bottom for fallback preview use.
+2. **`components/ui/previews/<name>-preview.tsx`**: standalone client preview wrapper (imports the component, centers it in a `div`), re-exported from **`components/ui/previews/index.ts`**. Used by the detail page.
+3. **`components/ui/Doc/<name>-metadata.ts`**: a `ComponentItem` object: `id`, `name`, `collection`, `previewType`, `description`, `registry`, `dependencies`, `interaction`, `props[]`, `usage` (code string shown in docs).
+4. **`lib/components-registry.ts`**: import the metadata object and add it to the central registry array. This is the single source of truth every other file below reads from.
+5. **`components/diagrams/<name>-diagram.tsx`**: wireframe/skeleton version for the blueprint gallery, registered by key in the `BLUEPRINTS` map in **`components/diagrams/blueprints-bundle.tsx`** (which ships all blueprints as one lazily-loaded chunk via the single `dynamic()` in **`components/showcase/preview-map.tsx`**: do not add per-component `dynamic()` calls).
+6. **`components/showcase/component-preview.tsx`**: add to `LIVE_PREVIEW_IDS`, add a `dynamic()` import, add a `case '<name>':` in the `LivePreview` switch (grid/showcase card rendering).
+7. **`app/components/[component]/page.tsx`**: add a `case '<name>':` rendering `<DemoFrame><NamePreview /></DemoFrame>` (the component detail page).
+8. **Source for "view source"**: the code drawer fetches the static **`public/r/<name>.json`** files (generated, cached, no serverless function). Just make sure step 9 below is done; no source-map registration needed.
+9. **`registry.json`** (root, hand-maintained), add an item entry (`name`, `type`, `title`, `description`, `dependencies`, `files[].path`). If the component imports from `@/lib/sound`, also add `{"path": "lib/sound.ts", "type": "registry:lib"}` to its `files[]` (see `bounce-sidebar`/`ratio-slider`/`badge`/`fader` for the pattern, do not colocate a separate sound module, see "Repo-Specific Pitfalls"). Run `npm run build:registry` (also a `prebuild` hook) to auto-generate **`public/r/<name>.json`** and update **`public/r/registry.json`**: do not hand-write these two.
 
 Optional, not required:
 
-- **`app/sitemap.ts`** — add a `/components/<name>` entry (SEO only).
-- **`lib/component-media.ts`** — thumbnail/video path override; most shipped components don't have one (falls back to `/thumbnails/<id>.png` / `/videos/<id>.mp4`, which render as an empty box if the files don't exist — see `MediaPreview` in `component-preview.tsx`).
+- **`app/sitemap.ts`**: add a `/components/<name>` entry (SEO only).
+- **`lib/component-media.ts`**: thumbnail/video path override; most shipped components don't have one (falls back to `/thumbnails/<id>.png` / `/videos/<id>.mp4`, which render as an empty box if the files don't exist, see `MediaPreview` in `component-preview.tsx`).
 
-**Reality check on the Forms/Testing/Documentation section above:** this repo has zero test files, zero Storybook stories, and zero MDX docs (`*.test.*`, `*.stories.*`, `*.mdx` all absent outside `node_modules`). That guidance is aspirational, not current practice — don't assume test/story files exist for a component just because AGENTS.md says they should. Ship-readiness here is enforced entirely through the registry/metadata/preview wiring above.
+**Reality check on the Forms/Testing/Documentation section above:** this repo has zero test files, zero Storybook stories, and zero MDX docs (`*.test.*`, `*.stories.*`, `*.mdx` all absent outside `node_modules`). That guidance is aspirational, not current practice, don't assume test/story files exist for a component just because AGENTS.md says they should. Ship-readiness here is enforced entirely through the registry/metadata/preview wiring above.
 
 # Definition of Done (Before Any Component Ships)
 
-Run, in order — all must pass:
+Run, in order, all must pass:
 
-1. `npm run format` (Prettier) and `npm run lint` (ESLint) — clean.
-2. `npm run build` — the `prebuild` hook regenerates `public/r/*.json` from `registry.json`; never hand-edit those generated outputs.
+1. `npm run format` (Prettier) and `npm run lint` (ESLint), clean.
+2. `npm run build`: the `prebuild` hook regenerates `public/r/*.json` from `registry.json`; never hand-edit those generated outputs.
 3. Manual pass in the dev server: light **and** dark theme, a keyboard-only walkthrough (Tab / Shift+Tab / arrows / Escape), `prefers-reduced-motion` enabled, a ~375px viewport, and hover behavior under touch emulation.
 
 Last-mile details that separate "works" from production:
 
-- User-facing strings (labels, placeholders, `aria-label`s) are props with sensible defaults — never hardcoded deep in markup where consumers can't localize them.
+- User-facing strings (labels, placeholders, `aria-label`s) are props with sensible defaults, never hardcoded deep in markup where consumers can't localize them.
 - External links always carry `target="_blank" rel="noopener noreferrer"`; never use `dangerouslySetInnerHTML` with dynamic content.
 - Update `CHANGELOG.md` when a component ships or its public API changes.
 
@@ -161,9 +181,9 @@ Last-mile details that separate "works" from production:
 12. [ ] Are forms supporting validation states (`aria-invalid`, `aria-describedby`)?
 13. [ ] Is it wrapped in `React.memo` if appropriate to prevent re-renders?
 14. [ ] Are touch targets at least 44x44px?
-15. [ ] No `transition-all` — explicit properties, tokenized durations/easings?
+15. [ ] No `transition-all`: explicit properties, tokenized durations/easings?
 16. [ ] Correct easing per context (ease-out enter/exit, ease-in-out on-screen morph, ease for hovers)?
-17. [ ] Every timer/listener/rAF — including nested timers — cleaned up on unmount/destroy?
+17. [ ] Every timer/listener/rAF, including nested timers, cleaned up on unmount/destroy?
 18. [ ] Reduced motion handled in both CSS (`motion-reduce:`) and JS (`useReducedMotion`)?
 19. [ ] Checked in both light AND dark themes?
 20. [ ] Colors restricted to neutral tokens + accent, referenced via CSS variables (paren syntax `bg-(--token)`)?

@@ -56,8 +56,16 @@ pnpm lint            # Run ESLint
 
 ## License
 
-MIT © Nexvyn/ui all installable components (`components/ui/**`) and everything
-else in this repository, including what ships through the shadcn registry.
+All installable components (`components/ui/**`) and everything else in this
+repository, including what ships through the shadcn registry, are licensed under
+[MIT with the Commons Clause](LICENSE):
+
+- Use the components in personal and commercial products, including paid apps
+  and client work.
+- Keep the copyright and license notice in the source files you copy
+  (attribution). No visible credit in your product is required.
+- Do not sell the components themselves, for example as a UI kit, component
+  library, template, or any product whose value comes mainly from them.
 
 **Exception:** the wireframe/anatomy diagram source in `components/diagrams/**`
 and its shared drawing primitives (`components/diagrams/lib/diagram-parts.tsx`,

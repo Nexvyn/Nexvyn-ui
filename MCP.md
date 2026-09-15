@@ -68,7 +68,7 @@ https://ui.nexvyn.dev/r/registry.json
 
 ## Best Practices
 
-1. **Clear Descriptions** — Add concise, informative descriptions that help AI assistants understand what each component does
-2. **Proper Dependencies** — List all `dependencies` accurately so MCP can install them automatically
-3. **Registry Dependencies** — Use `registryDependencies` to indicate relationships between items
-4. **Consistent Naming** — Use kebab-case for component names and maintain consistency across your registry
+1. **Clear Descriptions**: Add concise, informative descriptions that help AI assistants understand what each component does
+2. **Proper Dependencies**: List all `dependencies` accurately so MCP can install them automatically
+3. **Registry Dependencies**: Use `registryDependencies` to indicate relationships between items
+4. **Consistent Naming**: Use kebab-case for component names and maintain consistency across your registry

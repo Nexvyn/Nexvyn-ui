@@ -81,7 +81,7 @@ Then run `pnpm build:registry` to generate the `public/r/my-component.json` file
 
 ### 7. Verify the registry JSON
 
-Run `pnpm build:registry` to generate the `public/r/my-component.json` file automatically. The code drawer fetches this static file for "view source" — no source-map registration needed.
+Run `pnpm build:registry` to generate the `public/r/my-component.json` file automatically. The code drawer fetches this static file for "view source", no source-map registration needed.
 
 ### 8. Set collection category
 
@@ -139,7 +139,7 @@ pnpm build        # Verify production build
 - **Dark Mode**: Support via CSS variables scoped to a `.dark` parent class. No component-level conditionals.
 - **Typography**: Use semantic typography tokens (`text-foreground`, `font-heading`, `text-sm`). No raw font sizes or families.
 - **Responsive Behavior**: Always write mobile-first CSS. Use breakpoint modifiers (`md:`, `lg:`) to scale up. Test on mobile widths.
-- **RTL Support**: Always use CSS logical properties — `ms-` instead of `ml-`, `start-` instead of `left-`, `pe-` instead of `pr-`.
+- **RTL Support**: Always use CSS logical properties, `ms-` instead of `ml-`, `start-` instead of `left-`, `pe-` instead of `pr-`.
 - **Grid System**: Follow the 4px/8px spacing grid via design tokens.
 - **Icons**: Accept icons as React nodes (children or props) rather than hardcoding SVG paths.
 
