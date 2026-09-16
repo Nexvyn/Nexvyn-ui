@@ -152,7 +152,7 @@ export const ClipboardField = forwardRef<HTMLButtonElement, ClipboardFieldProps>
         }}
         className={cn(
           'clipboard-field group relative inline-grid max-w-full cursor-pointer items-center gap-x-2',
-          'rounded-md squircle-corners border border-(--color-border) bg-(--color-surface-2)',
+          'rounded-md border border-(--color-border) bg-(--color-surface-2)',
           'px-3 py-2.5 font-mono text-[13px] leading-none text-(--color-fg)',
           'outline-none select-none',
           hideIcon ? 'grid-cols-[auto_1fr]' : 'grid-cols-[auto_1fr_auto]',

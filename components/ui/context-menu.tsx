@@ -306,7 +306,7 @@ const ContextMenuPanel = forwardRef<HTMLDivElement, ContextMenuPanelProps>(
         role="menu"
         data-context-menu-content
         className={cn(
-          'fixed z-300 min-w-48 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-md squircle-corners border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
+          'fixed z-300 min-w-48 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-md border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
           'shadow-lg',
           className,
         )}
@@ -329,7 +329,7 @@ const ContextMenuPanel = forwardRef<HTMLDivElement, ContextMenuPanelProps>(
           highlightSize={highlightSize}
           highlightOpacity={highlightOpacity}
           axis={axis}
-          className="mx-1.5 rounded-md squircle-corners bg-(--color-surface-2)"
+          className="mx-1.5 rounded-md bg-(--color-surface-2)"
         />
         {items.map((item, i) => {
           if (item.separatorAfter) {
@@ -395,7 +395,7 @@ function ContextMenuItemComponent({
       tabIndex={-1}
       disabled={item.disabled}
       className={cn(
-        'relative flex min-h-11 w-full cursor-default select-none items-center gap-3 rounded-md squircle-corners px-3 py-2.5 text-left text-sm outline-none transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
+        'relative flex min-h-11 w-full cursor-default select-none items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm outline-none transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
         'data-disabled:pointer-events-none data-disabled:opacity-50',
         item.destructive
           ? 'text-(--color-error) focus-visible:text-(--color-error)'
@@ -439,7 +439,7 @@ export function ContextMenuPreview() {
           { label: 'Delete', destructive: true },
         ]}
       >
-        <div className="flex h-32 w-48 items-center justify-center rounded-md squircle-corners border border-(--color-border) bg-(--color-bg) text-sm text-(--color-muted)">
+        <div className="flex h-32 w-48 items-center justify-center rounded-md border border-(--color-border) bg-(--color-bg) text-sm text-(--color-muted)">
           Right-click me
         </div>
       </ContextMenu>

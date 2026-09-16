@@ -214,7 +214,7 @@ export const InputCopy = forwardRef<HTMLDivElement, InputCopyProps>(
           aria-label={variant === 'icon' ? copyLabel : undefined}
           aria-controls={inputId}
           className={cn(
-            'flex min-h-11 min-w-11 items-center justify-center rounded-md squircle-corners px-2 text-[13px] font-normal text-muted-foreground outline-none cursor-pointer',
+            'flex min-h-11 min-w-11 items-center justify-center rounded-md px-2 text-[13px] font-normal text-muted-foreground outline-none cursor-pointer',
             'transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none hover:text-foreground',
             'focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--color-accent)',
             'disabled:cursor-not-allowed',
@@ -231,7 +231,7 @@ export const InputCopy = forwardRef<HTMLDivElement, InputCopyProps>(
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 2 }}
                 transition={tooltipTransition}
-                className="pointer-events-none absolute top-full mt-1.5 inset-e-0 z-20 whitespace-nowrap rounded-md squircle-corners bg-foreground px-2 py-1 text-[11px] font-normal text-background"
+                className="pointer-events-none absolute top-full mt-1.5 inset-e-0 z-20 whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-[11px] font-normal text-background"
               >
                 {copied ? copiedLabel : copyLabel}
               </motion.span>
@@ -274,7 +274,7 @@ export const InputCopy = forwardRef<HTMLDivElement, InputCopyProps>(
         )}
         <div
           className={cn(
-            'flex w-full items-center rounded-md squircle-corners border border-border bg-card px-0.5',
+            'flex w-full items-center rounded-md border border-border bg-card px-0.5',
             'transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
             'has-[input:focus-visible]:border-(--color-accent)',
           )}
