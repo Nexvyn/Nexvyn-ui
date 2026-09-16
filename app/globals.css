@@ -144,7 +144,7 @@
   --media-brightness: 1;
 
   --goo-dropdown-fill: var(--color-border);
-  --goo-dropdown-outline: var(--color-border-strong);
+  --goo-dropdown-outline: transparent;
   --brand-mintlify: #18e299;
   --brand-mintlify-deep: #0c8c5e;
   --sponsor-mintlify-surface: radial-gradient(

@@ -318,8 +318,11 @@ export const GooDropdown = React.forwardRef<HTMLDivElement, GooDropdownProps>(
                   tabIndex={open && activeIndex === index ? 0 : -1}
                   onClick={() => select(item)}
                   onKeyDown={(e) => onItemKeyDown(e, index)}
-                  style={{ height: itemHeight }}
-                  className="flex w-full items-center rounded-md px-3 text-left text-[15px] text-(--color-muted) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none hover:bg-(--color-surface) hover:text-(--color-card-foreground) focus-visible:outline-none focus-visible:bg-(--color-surface) focus-visible:text-(--color-card-foreground)"
+                  style={{
+                    height: itemHeight,
+                    borderRadius: Math.max(0, panelRadius - PANEL_PAD),
+                  }}
+                  className="flex w-full items-center px-3 text-left text-[15px] text-(--color-muted) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none hover:bg-(--color-fg)/8 hover:text-(--color-card-foreground) focus-visible:outline-none focus-visible:bg-(--color-fg)/8 focus-visible:text-(--color-card-foreground)"
                 >
                   {item.label}
                 </button>
