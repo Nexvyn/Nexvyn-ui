@@ -29,7 +29,7 @@ import {
 } from '@/components/diagrams/lib/anatomy-parts'
 
 const BOX = { size: 20, r: 4 } as const
-const ROW = { labelGap: 12, labelFont: 16, labelLine: 20, labelW: 90, h: 44 } as const
+const ROW = { labelGap: 12, labelFont: 16, labelLine: 20, labelW: 104, h: 44 } as const
 const BP_LABEL = 'Buy groceries'
 const BP_LABEL_W = 100
 const BP_ROW_W = BOX.size + ROW.labelGap + BP_LABEL_W
@@ -201,6 +201,14 @@ export function CheckboxBlueprint() {
 
 const AN = { x: 130, y: 67 } as const
 const AN_MID_Y = AN.y + BOX.size / 2
+const AN_TARGET_PAD = 12
+const AN_TARGET = {
+  x: AN.x - AN_TARGET_PAD,
+  y: AN_MID_Y - ROW.h / 2,
+  w: BOX.size + ROW.labelGap + ROW.labelW + AN_TARGET_PAD * 2,
+  h: ROW.h,
+} as const
+const AN_INPUT = { w: 28, h: 12, y: AN_TARGET.y + ROW.h + 6 } as const
 
 function BoxShape() {
   const { hovered, setHovered } = useAnatomy()
@@ -294,10 +302,10 @@ function HiddenInputShape() {
       style={{ pointerEvents: 'all', filter: spotlight.style.filter }}
     >
       <rect
-        x={AN.x - 4}
-        y={AN.y + BOX.size + 8}
-        width={28}
-        height={12}
+        x={AN.x + BOX.size / 2 - AN_INPUT.w / 2}
+        y={AN_INPUT.y}
+        width={AN_INPUT.w}
+        height={AN_INPUT.h}
         rx={2}
         stroke="currentColor"
         strokeWidth={hovered === 'hidden-input' ? 1.5 : 0.75}
@@ -307,8 +315,8 @@ function HiddenInputShape() {
         className={spotlight.className}
       />
       <text
-        x={AN.x + 10}
-        y={AN.y + BOX.size + 17}
+        x={AN.x + BOX.size / 2}
+        y={AN_INPUT.y + 8.5}
         fontSize={7}
         fontFamily="var(--font-mono)"
         textAnchor="middle"
@@ -327,10 +335,10 @@ function TouchTargetShape() {
 
   return (
     <rect
-      x={AN.x}
-      y={AN.y}
-      width={BOX.size + ROW.labelGap + ROW.labelW}
-      height={ROW.h}
+      x={AN_TARGET.x}
+      y={AN_TARGET.y}
+      width={AN_TARGET.w}
+      height={AN_TARGET.h}
       rx={4}
       stroke="currentColor"
       strokeWidth={hovered === 'touch-target' ? 1.5 : draftTheme.guide.strokeWidth}
@@ -359,7 +367,7 @@ export function CheckboxAnatomy() {
       <AnatomyCallout
         part="box"
         label="Checkbox.Box"
-        anchor={[AN.x, AN_MID_Y]}
+        anchor={[AN_TARGET.x, AN_MID_Y]}
         side="start"
         distance={40}
         measure="size-5 · 20 × 20 · rounded-md"
@@ -378,7 +386,7 @@ export function CheckboxAnatomy() {
       <AnatomyCallout
         part="label"
         label="Label Text"
-        anchor={[AN.x + BOX.size + ROW.labelGap + ROW.labelW - 22, AN.y]}
+        anchor={[AN.x + BOX.size + ROW.labelGap + ROW.labelW - 12, AN.y]}
         side="top"
         distance={30}
         measure="text-base · gap 12 from box"
@@ -387,7 +395,7 @@ export function CheckboxAnatomy() {
       <AnatomyCallout
         part="hidden-input"
         label="Hidden Input"
-        anchor={[AN.x + BOX.size / 2, AN.y + BOX.size + 20]}
+        anchor={[AN.x + BOX.size / 2, AN_INPUT.y + AN_INPUT.h]}
         side="bottom"
         distance={24}
         measure="native input · opacity 0"
@@ -396,7 +404,7 @@ export function CheckboxAnatomy() {
       <AnatomyCallout
         part="touch-target"
         label="Touch Target 44px"
-        anchor={[AN.x + BOX.size + ROW.labelGap + ROW.labelW, AN_MID_Y]}
+        anchor={[AN_TARGET.x + AN_TARGET.w, AN_MID_Y]}
         side="end"
         distance={30}
         isAccent

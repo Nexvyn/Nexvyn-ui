@@ -22,6 +22,7 @@ import {
   MeasureNote,
   MeasureV,
   GripFrame,
+  InsetGuide,
   beat,
   DRAFT_BEAT,
   DRAFT_DETAIL_BEAT,
@@ -233,6 +234,20 @@ export function IconBarBlueprint() {
           style={beat(stampBeat(1))}
         />
 
+        <InsetGuide
+          x={BP_X + ICON_Y}
+          y={BP_Y + ICON_Y}
+          w={BP_PE_X - BP_X - ICON_Y}
+          h={IB.btnH - ICON_Y * 2}
+          boxX={BP_X}
+          boxY={BP_Y}
+          boxW={BTN1_W}
+          boxH={IB.btnH}
+          boxRx={IB.itemRx}
+          clipOffset={0.8}
+          className="dash-march"
+          style={beat(DRAFT_BEAT.guide)}
+        />
         <line
           x1={BP_PE_X}
           y1={BP_Y}
