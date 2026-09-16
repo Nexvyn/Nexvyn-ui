@@ -11,7 +11,7 @@ import { ILLUSTRATION_COMPONENTS, getComponentHref } from '@/lib/components-regi
 function IllustrationThumbnail({ id }: { id: string }) {
   if (id === 'phone-mockup') {
     return (
-      <PhoneMockupCard variant="accent" className="pointer-events-none scale-75">
+      <PhoneMockupCard variant="titanium" className="pointer-events-none scale-75">
         <div className="h-full w-full bg-(--color-accent)/10" />
       </PhoneMockupCard>
     )

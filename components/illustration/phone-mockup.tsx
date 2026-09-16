@@ -4,19 +4,13 @@ import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react
 import { cn } from '@/lib/utils'
 
 const mockupChassisVariants = {
-  black: {
+  gray: {
+    frame: 'bg-(--color-border)',
+    button: 'bg-(--color-border)',
+  },
+  titanium: {
     frame: 'bg-(--color-foreground)',
     button: 'bg-(--color-foreground)',
-  },
-  white: {
-    frame: 'bg-(--color-card)',
-    button: 'bg-(--color-card)',
-  },
-  accent: {
-    frame:
-      'bg-(--color-accent) dark:bg-[color-mix(in_srgb,var(--color-accent)_60%,var(--color-card))]',
-    button:
-      'bg-(--color-accent) dark:bg-[color-mix(in_srgb,var(--color-accent)_60%,var(--color-card))]',
   },
 } as const
 
@@ -100,7 +94,7 @@ export const PhoneMockupCard = forwardRef<HTMLDivElement, PhoneMockupCardProps>(
     {
       className,
       children,
-      variant = 'accent',
+      variant = 'titanium',
       visibleRatio = 1,
       showDynamicIsland = true,
       style,
