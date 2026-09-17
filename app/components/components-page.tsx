@@ -9,6 +9,7 @@ import { AnatomyLicenseNotice } from '@/components/detail/anatomy-license-notice
 import { useComponentSearch, useShortcutLabel } from '@/components/detail/component-search'
 import {
   BASIC_COMPONENTS,
+  BLOCKS,
   COMPONENTS,
   NORMAL_COMPONENTS,
   compareComponentsByCollection,
@@ -135,6 +136,7 @@ function ComponentsPageContent() {
     [sortByCategory, illustrationSlots],
   )
 
+  const blockVariants = useMemo(() => BLOCKS.filter((item) => item.parent), [])
   const basicSorted = useMemo(
     () => [...BASIC_COMPONENTS].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)),
     [],
@@ -224,6 +226,22 @@ function ComponentsPageContent() {
                 </div>
               </div>
             )}
+            {blockVariants.length > 0 && (
+              <div id="blocks" className="scroll-mt-24">
+                <div className="mb-4">
+                  <AnimatedTitle
+                    title="Blocks"
+                    right={`${blockVariants.length}`}
+                    className="text-lg font-normal tracking-tight"
+                  />
+                </div>
+                <div className="components-grid">
+                  {blockVariants.map((item, i) => (
+                    <ComponentCard key={item.id} item={item} index={i} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <div className="space-y-10">
@@ -252,6 +270,22 @@ function ComponentsPageContent() {
                 </div>
                 <div className="components-grid">
                   {basicSorted.map((item, i) => (
+                    <ComponentCard key={item.id} item={item} index={i} />
+                  ))}
+                </div>
+              </div>
+            )}
+            {blockVariants.length > 0 && (
+              <div id="blocks" className="scroll-mt-24">
+                <div className="mb-4">
+                  <AnimatedTitle
+                    title="Blocks"
+                    right={`${blockVariants.length}`}
+                    className="text-lg font-normal tracking-tight"
+                  />
+                </div>
+                <div className="components-grid">
+                  {blockVariants.map((item, i) => (
                     <ComponentCard key={item.id} item={item} index={i} />
                   ))}
                 </div>
