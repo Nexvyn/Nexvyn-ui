@@ -6,5 +6,6 @@ export interface ComponentExample {
   group: string
   code: string
   render: () => ReactNode
-  span?: 1 | 2
+  span?: 1 | 2 | 4
+  align?: 'center' | 'stretch'
 }

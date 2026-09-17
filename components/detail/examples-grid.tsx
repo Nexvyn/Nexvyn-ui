@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback, useMemo } from 'react'
-import { Copy } from 'lucide-react'
+import { useEffect, useRef, useState, useCallback, useMemo, type KeyboardEvent } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { Check, Copy } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { ComponentExample } from './examples-types'
 
@@ -14,126 +15,214 @@ const examplesMap: Record<string, () => Promise<{ examples: ComponentExample[] }
     import('@/components/ui/examples/switch-examples').then((m) => ({ examples: m.examples })),
 }
 
+const EASE = [0.22, 1, 0.36, 1] as const
+
 interface ExamplesGridProps {
   id: string
 }
 
-function ExampleCell({ example }: { example: ComponentExample }) {
-  const [isVisible, setIsVisible] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const cellRef = useRef<HTMLLIElement>(null)
-  const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+async function copyText(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text)
+    return true
+  } catch {
+    const textarea = document.createElement('textarea')
+    textarea.value = text
+    textarea.setAttribute('readonly', '')
+    textarea.style.position = 'fixed'
+    textarea.style.opacity = '0'
+    document.body.appendChild(textarea)
+    textarea.select()
+    let ok = false
+    try {
+      ok = document.execCommand('copy')
+    } catch {}
+    document.body.removeChild(textarea)
+    return ok
+  }
+}
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1 },
-    )
-
-    if (cellRef.current) {
-      observer.observe(cellRef.current)
-    }
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [])
+function CopyCodeButton({ example }: { example: ComponentExample }) {
+  const [state, setState] = useState<'idle' | 'copied' | 'failed'>('idle')
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(
     () => () => {
-      const timerId = copyTimerRef.current
-      if (timerId) clearTimeout(timerId)
+      if (timerRef.current) clearTimeout(timerRef.current)
     },
     [],
   )
 
-  const handleCopy = useCallback(async (code: string) => {
-    try {
-      await navigator.clipboard.writeText(code)
-    } catch {
-      // Fallback to execCommand
-      const textarea = document.createElement('textarea')
-      textarea.value = code
-      document.body.appendChild(textarea)
-      textarea.select()
-      try {
-        document.execCommand('copy')
-      } catch {}
-      document.body.removeChild(textarea)
-    }
-
-    setCopied(true)
-    if (copyTimerRef.current) clearTimeout(copyTimerRef.current)
-    copyTimerRef.current = setTimeout(() => setCopied(false), 1500)
-  }, [])
+  const handleCopy = async () => {
+    const ok = await copyText(example.code)
+    setState(ok ? 'copied' : 'failed')
+    if (timerRef.current) clearTimeout(timerRef.current)
+    timerRef.current = setTimeout(() => setState('idle'), 1500)
+  }
 
   return (
-    <li
-      ref={cellRef}
-      className="group flex flex-col rounded-md bg-(--color-surface-2) border border-(--color-border) overflow-hidden"
-      style={{ gridColumn: `span ${example.span ?? 1}` }}
-    >
-      <div className="flex-1 flex items-center justify-center p-4 min-h-24">
-        {isVisible && example.render()}
-      </div>
-      <div className="border-t border-(--color-border) bg-(--color-surface) px-3 py-2 flex items-center justify-between gap-2">
-        <p className="text-xs text-(--color-muted) font-mono truncate">{example.title}</p>
-        <button
-          type="button"
-          onClick={() => handleCopy(example.code)}
-          aria-label={`Copy ${example.title} code`}
-          className={cn(
-            'hit-area-44 p-1.5 rounded-md flex items-center justify-center shrink-0',
-            'text-(--color-muted) hover:text-(--color-fg)',
-            'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100 [@media(hover:none)]:opacity-100',
-            'transition-opacity duration-(--motion-dur-fast) ease motion-reduce:transition-none',
-            'hover:bg-(--color-surface-2)',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent)',
-          )}
-        >
-          {copied ? '✓' : <Copy className="h-4 w-4" />}
-        </button>
-      </div>
-    </li>
+    <>
+      <button
+        type="button"
+        onClick={handleCopy}
+        aria-label={`Copy ${example.title} code`}
+        className="hit-area-44 flex items-center gap-1.5 rounded-md px-1.5 py-1 text-xs text-(--color-muted) transition-colors duration-(--motion-dur-fast) hover:text-(--color-fg) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) motion-reduce:transition-none"
+      >
+        {state === 'copied' ? (
+          <Check className="size-3.5" aria-hidden="true" />
+        ) : (
+          <Copy className="size-3.5" aria-hidden="true" />
+        )}
+        {state === 'copied' ? 'Copied' : state === 'failed' ? 'Failed' : 'Copy code'}
+      </button>
+      <span className="sr-only" aria-live="polite">
+        {state === 'copied'
+          ? `${example.title} code copied`
+          : state === 'failed'
+            ? `Could not copy ${example.title} code`
+            : ''}
+      </span>
+    </>
   )
 }
 
 function ExamplesGridContent({ examples }: { examples: ComponentExample[] }) {
-  const groupedExamples = useMemo(() => {
-    const groups: Record<string, ComponentExample[]> = {}
-    examples.forEach((ex) => {
-      if (!groups[ex.group]) groups[ex.group] = []
-      groups[ex.group].push(ex)
+  const [active, setActive] = useState(0)
+  const reduceMotion = useReducedMotion()
+  const listRef = useRef<HTMLDivElement>(null)
+
+  const groups = useMemo(() => {
+    const result: { name: string; items: { example: ComponentExample; index: number }[] }[] = []
+    examples.forEach((example, index) => {
+      let group = result.find((entry) => entry.name === example.group)
+      if (!group) {
+        group = { name: example.group, items: [] }
+        result.push(group)
+      }
+      group.items.push({ example, index })
     })
-    return groups
+    return result
   }, [examples])
 
-  const groups = Object.keys(groupedExamples).sort()
+  const order = useMemo(
+    () => groups.flatMap((group) => group.items.map((item) => item.index)),
+    [groups],
+  )
+  const position = Math.max(0, order.indexOf(active))
+  const current = examples[active]
+
+  const select = useCallback((index: number, focus = false) => {
+    setActive(index)
+    if (focus) {
+      listRef.current?.querySelector<HTMLButtonElement>(`[data-example-index="${index}"]`)?.focus()
+    }
+  }, [])
+
+  const selectPosition = (next: number) => {
+    const wrapped = (next + order.length) % order.length
+    select(order[wrapped], true)
+  }
+
+  const onListKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+      event.preventDefault()
+      selectPosition(position + 1)
+    } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+      event.preventDefault()
+      selectPosition(position - 1)
+    } else if (event.key === 'Home') {
+      event.preventDefault()
+      selectPosition(0)
+    } else if (event.key === 'End') {
+      event.preventDefault()
+      selectPosition(order.length - 1)
+    }
+  }
 
   return (
-    <div className="h-full flex flex-col overflow-y-auto">
-      {groups.map((group) => (
-        <div key={group} className="flex flex-col">
-          <h3 className="sticky top-0 z-10 px-4 py-3 text-sm font-normal uppercase tracking-wider text-(--color-muted) bg-(--color-surface) border-b border-(--color-border)">
-            {group}
-          </h3>
-          <ul
-            className={cn(
-              'grid gap-3 p-4',
-              'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
-            )}
-          >
-            {groupedExamples[group].map((example) => (
-              <ExampleCell key={example.id} example={example} />
-            ))}
-          </ul>
+    <section aria-label="Examples" className="relative flex h-full flex-col md:block">
+      <div
+        className={cn(
+          'z-10 shrink-0 px-4 md:absolute md:end-4 md:top-0 md:w-60 md:px-0',
+          'md:rounded-md md:border md:border-(--color-fg)/10 md:bg-(--color-panel-float) md:p-1.5',
+        )}
+      >
+        <div className="hidden items-center justify-between px-2 pt-1 pb-2 md:flex">
+          <p className="text-sm text-(--color-fg)">Examples</p>
+          <span className="font-mono text-xs tabular-nums text-(--color-muted)">
+            {position + 1} / {examples.length}
+          </span>
         </div>
-      ))}
-    </div>
+        <div
+          ref={listRef}
+          role="radiogroup"
+          aria-label="Choose an example"
+          onKeyDown={onListKeyDown}
+          className="no-scrollbar flex gap-1 overflow-x-auto md:flex-col md:overflow-visible"
+        >
+          {groups.map((group) => (
+            <div key={group.name} className="flex shrink-0 gap-1 md:flex-col">
+              <p className="hidden px-2 pt-2 pb-1 font-mono text-[11px] text-(--color-muted) md:block">
+                {group.name}
+              </p>
+              {group.items.map(({ example, index }) => {
+                const selected = index === active
+                return (
+                  <button
+                    key={example.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={selected}
+                    tabIndex={selected ? 0 : -1}
+                    data-example-index={index}
+                    onClick={() => select(index)}
+                    className={cn(
+                      'shrink-0 rounded-md px-2.5 py-1.5 text-start text-sm transition-colors duration-(--motion-dur-fast) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) motion-reduce:transition-none',
+                      selected
+                        ? 'bg-(--color-fg)/8 text-(--color-fg)'
+                        : 'text-(--color-muted) hover:text-(--color-fg)',
+                    )}
+                  >
+                    {example.title}
+                  </button>
+                )
+              })}
+            </div>
+          ))}
+        </div>
+        {current && (
+          <div className="mt-1.5 hidden border-t border-(--color-fg)/8 px-1 pt-1.5 md:block">
+            <CopyCodeButton example={current} />
+          </div>
+        )}
+      </div>
+
+      <div className="relative min-h-0 flex-1 md:absolute md:inset-0 md:pe-64">
+        <AnimatePresence initial={false}>
+          {current && (
+            <motion.div
+              key={current.id}
+              className="absolute inset-0 flex items-center justify-center overflow-y-auto px-6 pt-6 pb-28 no-scrollbar"
+              initial={
+                reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98, filter: 'blur(2px)' }
+              }
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              exit={
+                reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.01, filter: 'blur(2px)' }
+              }
+              transition={{ duration: reduceMotion ? 0 : 0.22, ease: EASE }}
+            >
+              {current.render()}
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {current && (
+          <div className="absolute inset-x-0 bottom-24 flex justify-center md:hidden">
+            <CopyCodeButton example={current} />
+          </div>
+        )}
+      </div>
+    </section>
   )
 }
 
