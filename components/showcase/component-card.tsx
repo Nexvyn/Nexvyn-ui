@@ -11,7 +11,7 @@ import { NewStarIcon } from '@/components/layout/new-star'
 import { cn } from '@/lib/utils'
 
 const CARD_CLASS =
-  'group relative flex min-w-0 flex-col rounded-2xl bg-(--color-surface-2) p-5 outline-none transition-[background-color,scale] duration-(--motion-dur-fast) ease-(--motion-ease-out) hover:bg-(--color-surface) active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-background'
+  'group relative flex min-w-0 flex-col rounded-2xl bg-(--color-panel) p-5 outline-none transition-[background-color,scale] duration-(--motion-dur-fast) ease-(--motion-ease-out) hover:bg-(--color-panel-float) active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-background'
 function cardName(item: ComponentItem): string {
   const parent = item.parent ? BLOCKS.find((entry) => entry.id === item.parent) : undefined
   return parent ? `${parent.name} ${item.name}` : item.name

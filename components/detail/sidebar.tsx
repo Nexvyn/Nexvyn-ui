@@ -950,7 +950,7 @@ export function Sidebar() {
           <button
             type="button"
             className="detail-toolbar-btn cursor-pointer rounded-xl p-2"
-            style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
+            style={{ backgroundColor: 'transparent', color: 'var(--color-muted)' }}
             onMouseEnter={() => playHoverSound()}
             onClick={() => {
               playClickSound()

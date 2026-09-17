@@ -226,7 +226,7 @@ export default function DesignPage() {
               Aa
             </p>
             <div className="flex items-baseline justify-between gap-2">
-              <p className="text-sm text-(--color-fg)">Instrument Sans</p>
+              <p className="text-sm text-(--color-fg)">Geist</p>
               <Token>regular only</Token>
             </div>
           </BentoCard>

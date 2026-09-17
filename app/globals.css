@@ -128,7 +128,10 @@
   --color-subtle: oklch(0.62 0 0);
   --color-border: oklch(0.88 0 0);
   --color-border-strong: oklch(0.84 0 0);
-  --color-accent: #3859fd;
+  --color-accent: oklch(0.55 0.17 268);
+  --color-page: #ffffff;
+  --color-panel: #f5f4f3;
+  --color-panel-float: #fcfcfc;
   --color-error: #dc2626;
   --color-success: #16a34a;
   --color-new: #b8953a;
@@ -302,7 +305,10 @@ html.dark,
   --color-subtle: #737373;
   --color-border: #333333;
   --color-border-strong: #404040;
-  --color-accent: #567eff;
+  --color-accent: oklch(0.74 0.13 268);
+  --color-page: #080808;
+  --color-panel: #121212;
+  --color-panel-float: #161616;
   --color-new: #c9b06a;
 
   --panel-border: rgb(255 255 255 / 0.08);

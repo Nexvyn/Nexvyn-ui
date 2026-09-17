@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Caveat, Instrument_Sans, JetBrains_Mono } from 'next/font/google'
+import { Caveat, Geist, Geist_Mono } from 'next/font/google'
 import { Providers } from '@/components/providers'
 import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
@@ -21,13 +21,13 @@ const caveat = Caveat({
   display: 'swap',
 })
 
-const jetbrainsMono = JetBrains_Mono({
+const geistMono = Geist_Mono({
   subsets: ['latin'],
   variable: '--font-mono-loaded',
   display: 'swap',
 })
 
-const instrumentSans = Instrument_Sans({
+const geistSans = Geist({
   subsets: ['latin'],
   variable: '--font-sans-loaded',
   display: 'swap',
@@ -133,7 +133,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${caveat.variable} ${jetbrainsMono.variable} ${instrumentSans.variable}`}
+      className={`${caveat.variable} ${geistMono.variable} ${geistSans.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -166,7 +166,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         suppressHydrationWarning
       >
         <Providers>{children}</Providers>
-        {process.env.NODE_ENV === 'development' && <Agentation />}
+        {process.env.NODE_ENV === 'development' && <Agentation endpoint="http://localhost:4747" />}
         <svg
           width="0"
           height="0"
