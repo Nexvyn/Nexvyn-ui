@@ -9,6 +9,7 @@
     "prebuild": "npx tsx scripts/build-registry.ts",
     "build:registry": "npx tsx scripts/build-registry.ts",
     "build:og": "npx tsx scripts/build-og-image.tsx",
+    "build:history": "npx tsx scripts/build-git-history.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "start": "next start",
