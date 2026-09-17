@@ -100,6 +100,197 @@
       ]
     },
     {
+      "name": "banner",
+      "type": "registry:ui",
+      "title": "Banner",
+      "description": "Banner primitives: a full-width dismissible strip, a link and a tag, shared by every banner block.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "motion",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-link.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-tag.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "banner-filled",
+      "type": "registry:block",
+      "title": "Banner Filled",
+      "description": "A filled announcement banner on the inverted foreground surface.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "motion",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner-filled.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-link.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "banner-outline",
+      "type": "registry:block",
+      "title": "Banner Outline",
+      "description": "A quiet outline announcement banner with a hairline bottom border.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "motion",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner-outline.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-link.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "banner-tagged",
+      "type": "registry:block",
+      "title": "Banner Tagged",
+      "description": "An outline banner led by a small tag, with an arrow link.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "motion",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner-tagged.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-link.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-tag.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "banner-notice",
+      "type": "registry:block",
+      "title": "Banner Notice",
+      "description": "Info and error status banners with icons and the right live-region roles.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "motion",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner-notice.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-link.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "banner-cookie",
+      "type": "registry:block",
+      "title": "Banner Cookie",
+      "description": "A cookie consent card with accept and decline actions that lifts in once and lifts away on a choice.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner-cookie.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "banner-subscribe",
+      "type": "registry:block",
+      "title": "Banner Subscribe",
+      "description": "An email signup banner with inline validation that crossfades into a confirmation on success.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner-subscribe.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",

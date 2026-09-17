@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "banner-filled",
+  "title": "Banner Filled",
+  "description": "A filled announcement banner on the inverted foreground surface.",
+  "dependencies": [
+    "@radix-ui/react-slot",
+    "class-variance-authority",
+    "motion",
+    "@hugeicons/react",
+    "@hugeicons/core-free-icons"
+  ],
+  "files": [
+    {
+      "path": "components/blocks/banner/banner-filled.tsx",
+      "type": "registry:ui",
+      "content": "'use client'\n\nimport { forwardRef, type ReactNode } from 'react'\nimport { Banner, type BannerProps } from '@/components/blocks/banner/banner'\nimport { BannerLink } from '@/components/blocks/banner/banner-link'\n\nexport interface BannerFilledProps extends Omit<BannerProps, 'variant' | 'children'> {\n  message?: ReactNode\n  linkLabel?: string\n  href?: string\n}\n\nexport const BannerFilled = forwardRef<HTMLElement, BannerFilledProps>(\n  (\n    {\n      message = 'New blocks are landing in Nexvyn UI, ready to copy into your project.',\n      linkLabel = 'Browse blocks',\n      href = '#',\n      ...props\n    },\n    ref,\n  ) => (\n    <Banner ref={ref} variant=\"filled\" {...props}>\n      {message}\n      {linkLabel && <BannerLink href={href}>{linkLabel}</BannerLink>}\n    </Banner>\n  ),\n)\nBannerFilled.displayName = 'BannerFilled'\n"
+    },
+    {
+      "path": "components/blocks/banner/banner.tsx",
+      "type": "registry:ui",
+      "content": "'use client'\n\nimport { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react'\nimport { cva, type VariantProps } from 'class-variance-authority'\nimport { AnimatePresence, motion, useReducedMotion } from 'motion/react'\nimport { HugeiconsIcon } from '@hugeicons/react'\nimport { Cancel01Icon } from '@hugeicons/core-free-icons'\nimport { cn } from '@/lib/utils'\nimport { useControlledState } from '@/lib/hooks/use-controlled-state'\n\nconst bannerVariants = cva('relative w-full', {\n  variants: {\n    variant: {\n      filled: 'bg-(--color-fg) text-(--color-bg)',\n      outline: 'border-b border-(--color-border) bg-(--color-bg) text-(--color-fg)',\n      destructive:\n        'border-b border-(--color-destructive) bg-(--color-bg) text-(--color-destructive)',\n    },\n  },\n  defaultVariants: { variant: 'filled' },\n})\n\nexport interface BannerProps\n  extends\n    Omit<ComponentPropsWithoutRef<'section'>, 'children'>,\n    VariantProps<typeof bannerVariants> {\n  children: ReactNode\n  icon?: ReactNode\n  open?: boolean\n  defaultOpen?: boolean\n  onOpenChange?: (open: boolean) => void\n  dismissible?: boolean\n  dismissLabel?: string\n}\n\nexport const Banner = forwardRef<HTMLElement, BannerProps>(\n  (\n    {\n      children,\n      className,\n      variant,\n      icon,\n      open,\n      defaultOpen = true,\n      onOpenChange,\n      dismissible = true,\n      dismissLabel = 'Dismiss banner',\n      'aria-label': ariaLabel = 'Announcement',\n      ...props\n    },\n    ref,\n  ) => {\n    const [isOpen, setOpen] = useControlledState(open, defaultOpen, onOpenChange)\n    const reduceMotion = useReducedMotion()\n\n    return (\n      <AnimatePresence initial={false}>\n        {isOpen && (\n          <motion.section\n            ref={ref}\n            aria-label={ariaLabel}\n            className={cn(bannerVariants({ variant }), className)}\n            exit={\n              reduceMotion\n                ? { opacity: 0, transition: { duration: 0 } }\n                : {\n                    opacity: 0,\n                    y: -8,\n                    filter: 'blur(2px)',\n                    transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] },\n                  }\n            }\n            {...(props as object)}\n          >\n            <div\n              className={cn(\n                'mx-auto flex max-w-7xl items-center justify-center px-4 py-3 text-sm',\n                dismissible && 'pe-12 ps-4 sm:px-12',\n              )}\n            >\n              {icon && (\n                <span aria-hidden=\"true\" className=\"me-2 inline-flex shrink-0\">\n                  {icon}\n                </span>\n              )}\n              <p className=\"text-balance text-center leading-snug\">{children}</p>\n            </div>\n            {dismissible && (\n              <button\n                type=\"button\"\n                aria-label={dismissLabel}\n                onClick={() => setOpen(false)}\n                onPointerDown={(event) => event.preventDefault()}\n                className=\"absolute end-2 top-1/2 inline-flex size-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md text-current transition-[background-color,scale] duration-(--motion-dur-fast) ease-(--motion-ease-out) after:absolute after:-inset-1.5 hover:bg-current/10 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) motion-reduce:transition-none\"\n              >\n                <HugeiconsIcon icon={Cancel01Icon} size={16} strokeWidth={1.5} aria-hidden=\"true\" />\n              </button>\n            )}\n          </motion.section>\n        )}\n      </AnimatePresence>\n    )\n  },\n)\nBanner.displayName = 'Banner'\n"
+    },
+    {
+      "path": "components/blocks/banner/banner-link.tsx",
+      "type": "registry:ui",
+      "content": "'use client'\n\nimport { forwardRef, type ComponentPropsWithoutRef } from 'react'\nimport { Slot } from '@radix-ui/react-slot'\nimport { cn } from '@/lib/utils'\n\nexport interface BannerLinkProps extends ComponentPropsWithoutRef<'a'> {\n  asChild?: boolean\n}\n\nexport const BannerLink = forwardRef<HTMLAnchorElement, BannerLinkProps>(\n  ({ asChild, className, ...props }, ref) => {\n    const Comp = asChild ? Slot : 'a'\n\n    return (\n      <Comp\n        ref={ref}\n        className={cn(\n          'ms-1 rounded-md underline underline-offset-4 transition-opacity duration-(--motion-dur-fast) hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) motion-reduce:transition-none',\n          className,\n        )}\n        {...props}\n      />\n    )\n  },\n)\nBannerLink.displayName = 'BannerLink'\n"
+    },
+    {
+      "path": "lib/hooks/use-controlled-state.ts",
+      "type": "registry:hook",
+      "content": "import { useCallback, useEffect, useRef, useState } from 'react'\r\n\r\nexport function useControlledState<T>(\r\n  value: T | undefined,\r\n  defaultValue: T,\r\n  onChange?: (next: T) => void,\r\n): [T, (next: T) => void] {\r\n  const [inner, setInner] = useState(defaultValue)\r\n  const isControlled = value !== undefined\r\n  const current = isControlled ? value : inner\r\n  const onChangeRef = useRef(onChange)\r\n\r\n  useEffect(() => {\r\n    onChangeRef.current = onChange\r\n  })\r\n\r\n  const set = useCallback(\r\n    (next: T) => {\r\n      if (!isControlled) setInner(next)\r\n      onChangeRef.current?.(next)\r\n    },\r\n    [isControlled],\r\n  )\r\n\r\n  return [current, set]\r\n}\r\n"
+    }
+  ],
+  "type": "registry:block"
+}
