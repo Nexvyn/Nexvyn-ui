@@ -121,16 +121,22 @@ export function InstallCommandBox({
           className="flex-1 overflow-x-auto whitespace-nowrap pr-4 text-(--color-muted) select-all text-[11px] sm:text-[14px] flex items-center leading-none"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          <span>
-            {pm === 'npm' ? 'npx ' : ''}
-            {pm === 'pnpm' ? 'pnpm dlx ' : ''}
-            {pm === 'yarn' ? 'yarn dlx ' : ''}
-            {pm === 'bun' ? 'bunx ' : ''}
-            shadcn@latest add
-          </span>
-          <span className="text-(--color-accent) font-normal ms-1">
-            {REGISTRY_URL}/r/{registry}.json
-          </span>
+          {getCommand ? (
+            <span>{command}</span>
+          ) : (
+            <>
+              <span>
+                {pm === 'npm' ? 'npx ' : ''}
+                {pm === 'pnpm' ? 'pnpm dlx ' : ''}
+                {pm === 'yarn' ? 'yarn dlx ' : ''}
+                {pm === 'bun' ? 'bunx ' : ''}
+                shadcn@latest add
+              </span>
+              <span className="text-(--color-accent) font-normal ms-1">
+                {REGISTRY_URL}/r/{registry}.json
+              </span>
+            </>
+          )}
         </div>
       </div>
 

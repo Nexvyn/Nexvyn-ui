@@ -1,10 +1,21 @@
 'use client'
 
+import { useId, useState, type ReactNode } from 'react'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
-import { AnimatedTitle } from '@/components/showcase/animated-title'
+import { CopyButton } from '@/components/detail/copy-button'
 import { InstallCommandBox } from '@/components/detail/install-command-box'
+import { cn } from '@/lib/utils'
 
-const examplePrompts = [
+const CLIENTS = ['cursor', 'claude', 'vscode', 'opencode'] as const
+type Client = (typeof CLIENTS)[number]
+
+const REGISTRY_SNIPPET = `{
+  "registries": {
+    "@nexvyn": "https://ui.nexvyn.dev/r/{name}.json"
+  }
+}`
+
+const EXAMPLE_PROMPTS = [
   'Add a bounce sidebar component',
   'Add a goo dropdown animation',
   'Add a color picker with petals',
@@ -12,135 +23,133 @@ const examplePrompts = [
   'Add a scroll indicator with tick marks',
 ]
 
-export default function MCPPage() {
+const RUNNERS = { npm: 'npx', pnpm: 'pnpm dlx', yarn: 'yarn dlx', bun: 'bunx' } as const
+
+function Step({ index, title, children }: { index: number; title: string; children: ReactNode }) {
   return (
-    <div className="h-full w-full flex flex-col">
-      <div className="absolute top-4 right-4 z-10">
+    <section className="grid gap-4 md:grid-cols-[3.5rem_1fr] md:gap-6">
+      <p
+        aria-hidden="true"
+        className="font-mono text-sm tabular-nums text-(--color-subtle) md:pt-1.5"
+      >
+        {String(index).padStart(2, '0')}
+      </p>
+      <div className="min-w-0">
+        <h2 className="text-xl tracking-tight text-(--color-fg) md:text-2xl">{title}</h2>
+        <div className="mt-3 flex flex-col gap-4 text-sm leading-relaxed text-(--color-muted) md:text-base">
+          {children}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function ClientSwitch({ value, onChange }: { value: Client; onChange: (next: Client) => void }) {
+  const groupId = useId()
+
+  return (
+    <div
+      role="radiogroup"
+      aria-label="AI client"
+      className="flex w-fit flex-wrap gap-1 rounded-md bg-(--color-fg)/5 p-1"
+    >
+      {CLIENTS.map((client) => {
+        const checked = client === value
+        return (
+          <label
+            key={client}
+            className={cn(
+              'relative cursor-pointer rounded-md px-3 py-1.5 font-mono text-xs transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
+              'has-focus-visible:ring-2 has-focus-visible:ring-(--color-accent)',
+              checked
+                ? 'bg-(--color-bg) text-(--color-fg)'
+                : 'text-(--color-muted) hover:text-(--color-fg)',
+            )}
+          >
+            <input
+              type="radio"
+              name={groupId}
+              value={client}
+              checked={checked}
+              onChange={() => onChange(client)}
+              className="sr-only"
+            />
+            {client}
+          </label>
+        )
+      })}
+    </div>
+  )
+}
+
+function CodeBlock({ code }: { code: string }) {
+  return (
+    <div className="relative rounded-md bg-(--color-fg)/4">
+      <CopyButton value={code} label="Copy snippet" className="absolute end-2 top-2" />
+      <pre className="overflow-x-auto p-4 pe-14 font-mono text-[13px] leading-relaxed text-(--color-fg)">
+        <code>{code}</code>
+      </pre>
+    </div>
+  )
+}
+
+export default function MCPPage() {
+  const [client, setClient] = useState<Client>('cursor')
+
+  return (
+    <div className="relative h-full w-full">
+      <div className="absolute end-4 top-4 z-10">
         <ThemeToggle showShortcut={false} />
       </div>
-      <div
-        id="mcp-scroll-viewport"
-        className="min-h-0 flex-1 overflow-y-auto h-full relative"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `#mcp-scroll-viewport::-webkit-scrollbar { display: none; }`,
-          }}
-        />
-        <div className="max-w-xl mx-auto py-4 md:py-6 px-3 sm:px-4">
-          <AnimatedTitle
-            title="MCP"
-            className="text-2xl sm:text-3xl font-normal tracking-tight mb-4"
-          />
 
-          <p className="text-sm text-(--color-muted) mb-8 max-w-2xl">
-            Integrating MCP with Nexvyn lets you control it via AI.
-          </p>
-
-          <section className="mb-8">
-            <h2 className="border-b pb-1 md:pb-1.5 tracking-tight text-lg md:text-2xl text-(--color-fg) border-(--color-border) mb-3">
-              Installation
-            </h2>
-            <p className="mt-1 md:mt-2 font-sans text-sm md:text-base leading-relaxed text-(--color-muted) mb-4">
-              Install the shadcn MCP server, then restart your AI client. Swap{' '}
-              <code className="text-(--color-fg)">cursor</code> for{' '}
-              <code className="text-(--color-fg)">claude</code>,{' '}
-              <code className="text-(--color-fg)">vscode</code>, or{' '}
-              <code className="text-(--color-fg)">opencode</code> as needed.
+      <div className="no-scrollbar h-full overflow-y-auto">
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-14 px-4 pt-20 pb-40 sm:px-8 md:pt-24">
+          <header className="flex flex-col gap-4">
+            <p className="w-fit rounded-md bg-(--color-fg)/5 px-2 py-1 font-mono text-xs text-(--color-muted)">
+              Model Context Protocol
             </p>
-            <InstallCommandBox
-              getCommand={(pm) => {
-                const run =
-                  pm === 'npm'
-                    ? 'npx'
-                    : pm === 'pnpm'
-                      ? 'pnpm dlx'
-                      : pm === 'yarn'
-                        ? 'yarn dlx'
-                        : 'bunx'
-                return `${run} shadcn@latest mcp init --client cursor`
-              }}
-            />
-          </section>
-
-          <section className="mb-8">
-            <h2 className="border-b pb-1 md:pb-1.5 tracking-tight text-lg md:text-2xl text-(--color-fg) border-(--color-border) mb-3">
-              Add the registry to your project
-            </h2>
-            <p className="mt-1 md:mt-2 font-sans text-sm md:text-base leading-relaxed text-(--color-muted) mb-4">
-              Add the following to your components.json file.
+            <h1 className="text-4xl tracking-tight text-(--color-fg) md:text-5xl">
+              Build with your AI editor
+            </h1>
+            <p className="max-w-xl text-base leading-relaxed text-(--color-muted) md:text-lg">
+              Connect the shadcn MCP server and ask for any Nexvyn component by name. Your editor
+              searches the registry and installs it for you.
             </p>
+          </header>
 
-            <div className="relative rounded-lg overflow-hidden border border-(--color-border) bg-(--color-surface)">
-              <pre className="p-4 overflow-x-auto">
-                <code className="text-sm font-mono leading-relaxed">
-                  <span className="text-(--color-fg)">{'{'}</span>
-                  {'\n'}
-                  <span className="text-(--color-fg)"> </span>
-                  <span className="text-(--color-accent)">&quot;registries&quot;</span>
-                  <span className="text-(--color-fg)">: {'{'}</span>
-                  {'\n'}
-                  <span className="text-(--color-fg)"> </span>
-                  <span className="text-(--color-accent)">&quot;@nexvyn&quot;</span>
-                  <span className="text-(--color-fg)">: </span>
-                  <span className="text-(--color-muted)">
-                    &quot;https://ui.nexvyn.dev/r/{'{name}'}.json&quot;
-                  </span>
-                  {'\n'}
-                  <span className="text-(--color-fg)"> {'}'}</span>
-                  {'\n'}
-                  <span className="text-(--color-fg)">{'}'}</span>
-                </code>
-              </pre>
-              <button
-                type="button"
-                onClick={() =>
-                  navigator.clipboard.writeText(`{
-  "registries": {
-    "@nexvyn": "https://ui.nexvyn.dev/r/{name}.json"
-  }
-}`)
-                }
-                className="absolute top-3 right-3 p-1.5 rounded-md hover:bg-(--color-surface-2) transition-colors text-(--color-muted) hover:text-(--color-fg)"
-                aria-label="Copy"
-              >
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                </svg>
-              </button>
-            </div>
-          </section>
+          <div className="flex flex-col gap-14">
+            <Step index={1} title="Install the MCP server">
+              <p>Pick your AI client, run the command, then restart the client.</p>
+              <ClientSwitch value={client} onChange={setClient} />
+              <InstallCommandBox
+                getCommand={(pm) => `${RUNNERS[pm]} shadcn@latest mcp init --client ${client}`}
+              />
+            </Step>
 
-          <section className="mb-8">
-            <h2 className="border-b pb-1 md:pb-1.5 tracking-tight text-lg md:text-2xl text-(--color-fg) border-(--color-border) mb-3">
-              Usage
-            </h2>
-            <p className="mt-1 md:mt-2 font-sans text-sm md:text-base leading-relaxed text-(--color-muted) mb-4">
-              You can now ask your IDE to use any Nexvyn component. Here are some examples:
-            </p>
+            <Step index={2} title="Add the registry to your project">
+              <p>
+                Add the snippet to your{' '}
+                <span className="font-mono text-(--color-fg)">components.json</span> file so the
+                server can find Nexvyn components.
+              </p>
+              <CodeBlock code={REGISTRY_SNIPPET} />
+            </Step>
 
-            <ul className="space-y-1.5 text-sm text-(--color-muted)">
-              {examplePrompts.map((prompt) => (
-                <li key={prompt} className="flex items-start gap-2">
-                  <span className="text-(--color-accent) mt-0.5">•</span>
-                  {prompt}
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <div className="h-16 md:h-25" />
+            <Step index={3} title="Ask for a component">
+              <p>Describe what you want. A few prompts to start with:</p>
+              <ul className="flex flex-col gap-2">
+                {EXAMPLE_PROMPTS.map((prompt) => (
+                  <li
+                    key={prompt}
+                    className="flex items-center justify-between gap-3 rounded-md bg-(--color-fg)/4 py-1.5 ps-4 pe-2"
+                  >
+                    <span className="min-w-0 text-(--color-fg)">{prompt}</span>
+                    <CopyButton value={prompt} label={`Copy prompt: ${prompt}`} />
+                  </li>
+                ))}
+              </ul>
+            </Step>
+          </div>
         </div>
       </div>
     </div>
