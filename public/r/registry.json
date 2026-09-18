@@ -981,6 +981,46 @@
           "type": "registry:lib"
         }
       ]
+    },
+    {
+      "name": "cta",
+      "type": "registry:ui",
+      "title": "CTA",
+      "description": "Call to action primitives: Cta section, CtaAction links and the sliding CtaActionIcon.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/cta/cta.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "cta-centered",
+      "type": "registry:block",
+      "title": "CTA Centered",
+      "description": "A centered call to action with eyebrow, heading, supporting text and two actions.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/cta/cta-centered.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/cta/cta.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

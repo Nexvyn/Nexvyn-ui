@@ -8,6 +8,7 @@ import { BannerTaggedDemo } from '@/components/blocks/banner/demos/banner-tagged
 import { BannerNoticeDemo } from '@/components/blocks/banner/demos/banner-notice-demo'
 import { BannerCookieDemo } from '@/components/blocks/banner/demos/banner-cookie-demo'
 import { BannerSubscribeDemo } from '@/components/blocks/banner/demos/banner-subscribe-demo'
+import { CtaCenteredDemo } from '@/components/blocks/cta/demos/cta-centered-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -23,6 +24,8 @@ function BlockDemo({ id }: { id: string }) {
       return <BannerCookieDemo />
     case 'banner-subscribe':
       return <BannerSubscribeDemo />
+    case 'cta-centered':
+      return <CtaCenteredDemo />
     default:
       return null
   }

@@ -39,6 +39,8 @@ import { bannerTaggedMetadata } from '@/components/blocks/banner/meta/banner-tag
 import { bannerNoticeMetadata } from '@/components/blocks/banner/meta/banner-notice'
 import { bannerCookieMetadata } from '@/components/blocks/banner/meta/banner-cookie'
 import { bannerSubscribeMetadata } from '@/components/blocks/banner/meta/banner-subscribe'
+import { ctaMetadata } from '@/components/blocks/cta/meta/cta'
+import { ctaCenteredMetadata } from '@/components/blocks/cta/meta/cta-centered'
 
 export type ComponentItem = {
   id: string
@@ -219,6 +221,8 @@ export const BLOCKS: ComponentItem[] = [
   bannerNoticeMetadata,
   bannerCookieMetadata,
   bannerSubscribeMetadata,
+  ctaMetadata,
+  ctaCenteredMetadata,
 ]
 
 export function getComponentHref(id: string): string {

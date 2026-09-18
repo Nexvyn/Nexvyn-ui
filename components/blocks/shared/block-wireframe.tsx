@@ -6,6 +6,7 @@ import { BannerTaggedBlueprint } from '@/components/diagrams/banner-tagged-diagr
 import { BannerNoticeBlueprint } from '@/components/diagrams/banner-notice-diagram'
 import { BannerCookieBlueprint } from '@/components/diagrams/banner-cookie-diagram'
 import { BannerSubscribeBlueprint } from '@/components/diagrams/banner-subscribe-diagram'
+import { CtaCenteredBlueprint } from '@/components/diagrams/cta-centered-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -15,6 +16,8 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'banner-notice': BannerNoticeBlueprint,
   'banner-cookie': BannerCookieBlueprint,
   'banner-subscribe': BannerSubscribeBlueprint,
+  cta: CtaCenteredBlueprint,
+  'cta-centered': CtaCenteredBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {

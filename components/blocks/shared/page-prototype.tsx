@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 export interface PagePrototypeProps {
   top?: ReactNode
   inline?: ReactNode
+  bottom?: ReactNode
   overlay?: ReactNode
   address?: string
   className?: string
@@ -89,6 +90,23 @@ function SectionHead() {
   )
 }
 
+function PageFooter() {
+  return (
+    <div
+      aria-hidden="true"
+      className="mx-auto flex w-full max-w-4xl shrink-0 items-center gap-3 px-4 py-6 sm:px-8"
+    >
+      <span className={cn('squircle size-5 shrink-0', FILL)} />
+      <Block className="h-2 w-20" />
+      <div className="ms-auto hidden items-center gap-5 sm:flex">
+        <Block className="h-2 w-10" />
+        <Block className="h-2 w-12" />
+        <Block className="h-2 w-9" />
+      </div>
+    </div>
+  )
+}
+
 function BrowserBar({ address }: { address: string }) {
   return (
     <div className={cn('flex h-10 shrink-0 items-center gap-3 px-4', FILL_SOFT)}>
@@ -108,6 +126,7 @@ function BrowserBar({ address }: { address: string }) {
 export function PagePrototype({
   top,
   inline,
+  bottom,
   overlay,
   address = 'acme.app',
   className,
@@ -143,7 +162,12 @@ export function PagePrototype({
             </div>
           </div>
 
-          <div className="mx-auto flex w-full max-w-4xl min-h-0 flex-1 flex-col gap-6 px-4 pb-8 pt-2 sm:px-8 [&>*]:shrink-0">
+          <div
+            className={cn(
+              'relative mx-auto flex w-full max-w-4xl min-h-0 flex-1 flex-col gap-6 overflow-hidden px-4 pb-8 pt-2 sm:px-8 *:shrink-0',
+              bottom && 'justify-end',
+            )}
+          >
             <div aria-hidden="true" className="flex items-center gap-3">
               <div className={cn('squircle flex h-10 flex-1 items-center gap-2 px-4', FILL)}>
                 <Glyph icon={Search01Icon} size={16} />
@@ -180,12 +204,22 @@ export function PagePrototype({
               <ListCard />
               <ListCard />
             </div>
+
+            <div
+              aria-hidden="true"
+              className={cn(
+                'pointer-events-none absolute inset-x-0 h-20 from-(--color-bg) to-transparent',
+                bottom ? 'top-0 bg-linear-to-b' : 'bottom-0 bg-linear-to-t',
+              )}
+            />
           </div>
 
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-(--color-bg) to-transparent"
-          />
+          {bottom && (
+            <>
+              <div className="mx-auto w-full max-w-4xl shrink-0 px-4 sm:px-8">{bottom}</div>
+              <PageFooter />
+            </>
+          )}
 
           {overlay && (
             <div className="pointer-events-none absolute inset-x-3 bottom-3 z-1 flex justify-end sm:inset-x-4 sm:bottom-4">
