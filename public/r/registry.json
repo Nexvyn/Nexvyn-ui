@@ -1021,6 +1021,32 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "cta-split",
+      "type": "registry:block",
+      "title": "CTA Split",
+      "description": "A two column call to action with a phone showing your app screen.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/cta/cta-split.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/cta/cta.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/illustration/phone-mockup.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

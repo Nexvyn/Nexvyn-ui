@@ -41,6 +41,7 @@ import { bannerCookieMetadata } from '@/components/blocks/banner/meta/banner-coo
 import { bannerSubscribeMetadata } from '@/components/blocks/banner/meta/banner-subscribe'
 import { ctaMetadata } from '@/components/blocks/cta/meta/cta'
 import { ctaCenteredMetadata } from '@/components/blocks/cta/meta/cta-centered'
+import { ctaSplitMetadata } from '@/components/blocks/cta/meta/cta-split'
 
 export type ComponentItem = {
   id: string
@@ -223,6 +224,7 @@ export const BLOCKS: ComponentItem[] = [
   bannerSubscribeMetadata,
   ctaMetadata,
   ctaCenteredMetadata,
+  ctaSplitMetadata,
 ]
 
 export function getComponentHref(id: string): string {
