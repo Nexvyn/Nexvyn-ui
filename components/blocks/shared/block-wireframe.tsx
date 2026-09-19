@@ -8,6 +8,7 @@ import { BannerCookieBlueprint } from '@/components/diagrams/banner-cookie-diagr
 import { BannerSubscribeBlueprint } from '@/components/diagrams/banner-subscribe-diagram'
 import { CtaCenteredBlueprint } from '@/components/diagrams/cta-centered-diagram'
 import { CtaSplitBlueprint } from '@/components/diagrams/cta-split-diagram'
+import { FooterSimpleBlueprint } from '@/components/diagrams/footer-simple-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -20,6 +21,8 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   cta: CtaCenteredBlueprint,
   'cta-centered': CtaCenteredBlueprint,
   'cta-split': CtaSplitBlueprint,
+  footer: FooterSimpleBlueprint,
+  'footer-simple': FooterSimpleBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {

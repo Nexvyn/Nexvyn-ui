@@ -10,6 +10,7 @@ import { BannerCookieDemo } from '@/components/blocks/banner/demos/banner-cookie
 import { BannerSubscribeDemo } from '@/components/blocks/banner/demos/banner-subscribe-demo'
 import { CtaCenteredDemo } from '@/components/blocks/cta/demos/cta-centered-demo'
 import { CtaSplitDemo } from '@/components/blocks/cta/demos/cta-split-demo'
+import { FooterSimpleDemo } from '@/components/blocks/footer/demos/footer-simple-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -29,6 +30,8 @@ function BlockDemo({ id }: { id: string }) {
       return <CtaCenteredDemo />
     case 'cta-split':
       return <CtaSplitDemo />
+    case 'footer-simple':
+      return <FooterSimpleDemo />
     default:
       return null
   }

@@ -13,6 +13,7 @@ export interface PagePrototypeProps {
   top?: ReactNode
   inline?: ReactNode
   bottom?: ReactNode
+  footer?: ReactNode
   overlay?: ReactNode
   address?: string
   className?: string
@@ -127,10 +128,13 @@ export function PagePrototype({
   top,
   inline,
   bottom,
+  footer,
   overlay,
   address = 'acme.app',
   className,
 }: PagePrototypeProps) {
+  const endOfPage = Boolean(bottom || footer)
+
   return (
     <div className="flex h-full w-full justify-center px-1 pb-16 sm:px-4 md:pb-20">
       <div
@@ -165,7 +169,7 @@ export function PagePrototype({
           <div
             className={cn(
               'relative mx-auto flex w-full max-w-4xl min-h-0 flex-1 flex-col gap-6 overflow-hidden px-4 pb-8 pt-2 sm:px-8 *:shrink-0',
-              bottom && 'justify-end',
+              endOfPage && 'justify-end',
             )}
           >
             <div aria-hidden="true" className="flex items-center gap-3">
@@ -209,17 +213,13 @@ export function PagePrototype({
               aria-hidden="true"
               className={cn(
                 'pointer-events-none absolute inset-x-0 h-20 from-(--color-bg) to-transparent',
-                bottom ? 'top-0 bg-linear-to-b' : 'bottom-0 bg-linear-to-t',
+                endOfPage ? 'top-0 bg-linear-to-b' : 'bottom-0 bg-linear-to-t',
               )}
             />
           </div>
 
-          {bottom && (
-            <>
-              <div className="mx-auto w-full max-w-4xl shrink-0 px-4 sm:px-8">{bottom}</div>
-              <PageFooter />
-            </>
-          )}
+          {bottom && <div className="mx-auto w-full max-w-4xl shrink-0 px-4 sm:px-8">{bottom}</div>}
+          {endOfPage && <div className="shrink-0">{footer ?? <PageFooter />}</div>}
 
           {overlay && (
             <div className="pointer-events-none absolute inset-x-3 bottom-3 z-1 flex justify-end sm:inset-x-4 sm:bottom-4">

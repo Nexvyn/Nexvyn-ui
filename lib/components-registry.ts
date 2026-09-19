@@ -42,6 +42,8 @@ import { bannerSubscribeMetadata } from '@/components/blocks/banner/meta/banner-
 import { ctaMetadata } from '@/components/blocks/cta/meta/cta'
 import { ctaCenteredMetadata } from '@/components/blocks/cta/meta/cta-centered'
 import { ctaSplitMetadata } from '@/components/blocks/cta/meta/cta-split'
+import { footerMetadata } from '@/components/blocks/footer/meta/footer'
+import { footerSimpleMetadata } from '@/components/blocks/footer/meta/footer-simple'
 
 export type ComponentItem = {
   id: string
@@ -225,6 +227,8 @@ export const BLOCKS: ComponentItem[] = [
   ctaMetadata,
   ctaCenteredMetadata,
   ctaSplitMetadata,
+  footerMetadata,
+  footerSimpleMetadata,
 ]
 
 export function getComponentHref(id: string): string {
