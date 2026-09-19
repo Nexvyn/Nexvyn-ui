@@ -45,6 +45,7 @@ import { ctaSplitMetadata } from '@/components/blocks/cta/meta/cta-split'
 import { footerMetadata } from '@/components/blocks/footer/meta/footer'
 import { footerSimpleMetadata } from '@/components/blocks/footer/meta/footer-simple'
 import { footerColumnsMetadata } from '@/components/blocks/footer/meta/footer-columns'
+import { footerCenteredMetadata } from '@/components/blocks/footer/meta/footer-centered'
 
 export type ComponentItem = {
   id: string
@@ -231,6 +232,7 @@ export const BLOCKS: ComponentItem[] = [
   footerMetadata,
   footerSimpleMetadata,
   footerColumnsMetadata,
+  footerCenteredMetadata,
 ]
 
 export function getComponentHref(id: string): string {

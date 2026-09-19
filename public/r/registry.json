@@ -1106,6 +1106,27 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "footer-centered",
+      "type": "registry:block",
+      "title": "Footer Centered",
+      "description": "A centered footer stack with links, icon links and copyright.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer-centered.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
