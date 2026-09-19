@@ -1085,6 +1085,27 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "footer-columns",
+      "type": "registry:block",
+      "title": "Footer Columns",
+      "description": "A sitemap footer with link columns, icon links and a legal bar.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer-columns.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

@@ -9,6 +9,7 @@ import { BannerSubscribeBlueprint } from '@/components/diagrams/banner-subscribe
 import { CtaCenteredBlueprint } from '@/components/diagrams/cta-centered-diagram'
 import { CtaSplitBlueprint } from '@/components/diagrams/cta-split-diagram'
 import { FooterSimpleBlueprint } from '@/components/diagrams/footer-simple-diagram'
+import { FooterColumnsBlueprint } from '@/components/diagrams/footer-columns-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -23,6 +24,7 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'cta-split': CtaSplitBlueprint,
   footer: FooterSimpleBlueprint,
   'footer-simple': FooterSimpleBlueprint,
+  'footer-columns': FooterColumnsBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {

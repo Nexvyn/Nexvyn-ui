@@ -11,6 +11,7 @@ import { BannerSubscribeDemo } from '@/components/blocks/banner/demos/banner-sub
 import { CtaCenteredDemo } from '@/components/blocks/cta/demos/cta-centered-demo'
 import { CtaSplitDemo } from '@/components/blocks/cta/demos/cta-split-demo'
 import { FooterSimpleDemo } from '@/components/blocks/footer/demos/footer-simple-demo'
+import { FooterColumnsDemo } from '@/components/blocks/footer/demos/footer-columns-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -32,6 +33,8 @@ function BlockDemo({ id }: { id: string }) {
       return <CtaSplitDemo />
     case 'footer-simple':
       return <FooterSimpleDemo />
+    case 'footer-columns':
+      return <FooterColumnsDemo />
     default:
       return null
   }
