@@ -49,6 +49,7 @@ import { footerCenteredMetadata } from '@/components/blocks/footer/meta/footer-c
 import { faqMetadata } from '@/components/blocks/faq/meta/faq'
 import { faqAccordionMetadata } from '@/components/blocks/faq/meta/faq-accordion'
 import { faqGroupedMetadata } from '@/components/blocks/faq/meta/faq-grouped'
+import { faqNumberedMetadata } from '@/components/blocks/faq/meta/faq-numbered'
 
 export type ComponentItem = {
   id: string
@@ -239,6 +240,7 @@ export const BLOCKS: ComponentItem[] = [
   faqMetadata,
   faqAccordionMetadata,
   faqGroupedMetadata,
+  faqNumberedMetadata,
 ]
 
 export function getComponentHref(id: string): string {

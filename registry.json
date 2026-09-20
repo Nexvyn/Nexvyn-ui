@@ -1194,6 +1194,27 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "faq-numbered",
+      "type": "registry:block",
+      "title": "FAQ Numbered",
+      "description": "An open FAQ grid with plain numbered markers under hairline rules.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/blocks/faq/faq-numbered.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq-grid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
