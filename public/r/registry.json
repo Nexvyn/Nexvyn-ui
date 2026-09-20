@@ -1215,6 +1215,30 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "faq-icons",
+      "type": "registry:block",
+      "title": "FAQ Icons",
+      "description": "An open FAQ grid with topic icons under hairline rules.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/faq/faq-icons.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq-grid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
