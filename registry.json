@@ -1167,6 +1167,33 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "faq-grouped",
+      "type": "registry:block",
+      "title": "FAQ Grouped",
+      "description": "A two column FAQ grouped by topic, one hairline list per group.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/faq/faq-grouped.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq-list.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

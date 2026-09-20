@@ -12,6 +12,7 @@ import { FooterSimpleBlueprint } from '@/components/diagrams/footer-simple-diagr
 import { FooterColumnsBlueprint } from '@/components/diagrams/footer-columns-diagram'
 import { FooterCenteredBlueprint } from '@/components/diagrams/footer-centered-diagram'
 import { FaqAccordionBlueprint } from '@/components/diagrams/faq-accordion-diagram'
+import { FaqGroupedBlueprint } from '@/components/diagrams/faq-grouped-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -30,6 +31,7 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'footer-centered': FooterCenteredBlueprint,
   faq: FaqAccordionBlueprint,
   'faq-accordion': FaqAccordionBlueprint,
+  'faq-grouped': FaqGroupedBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {

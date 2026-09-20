@@ -14,6 +14,7 @@ import { FooterSimpleDemo } from '@/components/blocks/footer/demos/footer-simple
 import { FooterColumnsDemo } from '@/components/blocks/footer/demos/footer-columns-demo'
 import { FooterCenteredDemo } from '@/components/blocks/footer/demos/footer-centered-demo'
 import { FaqAccordionDemo } from '@/components/blocks/faq/demos/faq-accordion-demo'
+import { FaqGroupedDemo } from '@/components/blocks/faq/demos/faq-grouped-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -41,6 +42,8 @@ function BlockDemo({ id }: { id: string }) {
       return <FooterCenteredDemo />
     case 'faq-accordion':
       return <FaqAccordionDemo />
+    case 'faq-grouped':
+      return <FaqGroupedDemo />
     default:
       return null
   }
