@@ -46,6 +46,8 @@ import { footerMetadata } from '@/components/blocks/footer/meta/footer'
 import { footerSimpleMetadata } from '@/components/blocks/footer/meta/footer-simple'
 import { footerColumnsMetadata } from '@/components/blocks/footer/meta/footer-columns'
 import { footerCenteredMetadata } from '@/components/blocks/footer/meta/footer-centered'
+import { faqMetadata } from '@/components/blocks/faq/meta/faq'
+import { faqAccordionMetadata } from '@/components/blocks/faq/meta/faq-accordion'
 
 export type ComponentItem = {
   id: string
@@ -233,6 +235,8 @@ export const BLOCKS: ComponentItem[] = [
   footerSimpleMetadata,
   footerColumnsMetadata,
   footerCenteredMetadata,
+  faqMetadata,
+  faqAccordionMetadata,
 ]
 
 export function getComponentHref(id: string): string {

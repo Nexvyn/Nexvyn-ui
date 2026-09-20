@@ -14,6 +14,7 @@ export interface PagePrototypeProps {
   inline?: ReactNode
   bottom?: ReactNode
   footer?: ReactNode
+  main?: ReactNode
   overlay?: ReactNode
   address?: string
   className?: string
@@ -129,6 +130,7 @@ export function PagePrototype({
   inline,
   bottom,
   footer,
+  main,
   overlay,
   address = 'acme.app',
   className,
@@ -166,60 +168,71 @@ export function PagePrototype({
             </div>
           </div>
 
-          <div
-            className={cn(
-              'relative mx-auto flex w-full max-w-4xl min-h-0 flex-1 flex-col gap-6 overflow-hidden px-4 pb-8 pt-2 sm:px-8 *:shrink-0',
-              endOfPage && 'justify-end',
-            )}
-          >
-            <div aria-hidden="true" className="flex items-center gap-3">
-              <div className={cn('squircle flex h-10 flex-1 items-center gap-2 px-4', FILL)}>
-                <Glyph icon={Search01Icon} size={16} />
-                <Block className="h-2 w-24 bg-(--color-fg)/8" />
-              </div>
-              <span className={cn('squircle size-10 shrink-0', FILL)} />
+          {main ? (
+            <div className="min-h-0 flex-1 overflow-y-auto">
+              {main}
+              {footer ?? <PageFooter />}
             </div>
-
-            <div aria-hidden="true" className="flex gap-4 overflow-hidden">
-              {[0, 1, 2, 3, 4, 5, 6].map((index) => (
-                <div key={index} className="flex shrink-0 flex-col items-center gap-2">
-                  <span className={cn('squircle size-12 sm:size-14', FILL)} />
-                  <Block className="h-1.5 w-8" />
+          ) : (
+            <>
+              <div
+                className={cn(
+                  'relative mx-auto flex w-full max-w-4xl min-h-0 flex-1 flex-col gap-6 overflow-hidden px-4 pb-8 pt-2 sm:px-8 *:shrink-0',
+                  endOfPage && 'justify-end',
+                )}
+              >
+                <div aria-hidden="true" className="flex items-center gap-3">
+                  <div className={cn('squircle flex h-10 flex-1 items-center gap-2 px-4', FILL)}>
+                    <Glyph icon={Search01Icon} size={16} />
+                    <Block className="h-2 w-24 bg-(--color-fg)/8" />
+                  </div>
+                  <span className={cn('squircle size-10 shrink-0', FILL)} />
                 </div>
-              ))}
-            </div>
 
-            {inline}
+                <div aria-hidden="true" className="flex gap-4 overflow-hidden">
+                  {[0, 1, 2, 3, 4, 5, 6].map((index) => (
+                    <div key={index} className="flex shrink-0 flex-col items-center gap-2">
+                      <span className={cn('squircle size-12 sm:size-14', FILL)} />
+                      <Block className="h-1.5 w-8" />
+                    </div>
+                  ))}
+                </div>
 
-            <SectionHead />
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-              <ProductCard />
-              <ProductCard />
-              <div className="hidden md:block">
-                <ProductCard />
+                {inline}
+
+                <SectionHead />
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                  <ProductCard />
+                  <ProductCard />
+                  <div className="hidden md:block">
+                    <ProductCard />
+                  </div>
+                  <div className="hidden md:block">
+                    <ProductCard />
+                  </div>
+                </div>
+
+                <SectionHead />
+                <div className="grid gap-3 md:grid-cols-2">
+                  <ListCard />
+                  <ListCard />
+                </div>
+
+                <div
+                  aria-hidden="true"
+                  className={cn(
+                    'pointer-events-none absolute inset-x-0 h-20 from-(--color-bg) to-transparent',
+                    endOfPage ? 'top-0 bg-linear-to-b' : 'bottom-0 bg-linear-to-t',
+                  )}
+                />
               </div>
-              <div className="hidden md:block">
-                <ProductCard />
-              </div>
-            </div>
 
-            <SectionHead />
-            <div className="grid gap-3 md:grid-cols-2">
-              <ListCard />
-              <ListCard />
-            </div>
-
-            <div
-              aria-hidden="true"
-              className={cn(
-                'pointer-events-none absolute inset-x-0 h-20 from-(--color-bg) to-transparent',
-                endOfPage ? 'top-0 bg-linear-to-b' : 'bottom-0 bg-linear-to-t',
+              {bottom && (
+                <div className="mx-auto w-full max-w-4xl shrink-0 px-4 sm:px-8">{bottom}</div>
               )}
-            />
-          </div>
-
-          {bottom && <div className="mx-auto w-full max-w-4xl shrink-0 px-4 sm:px-8">{bottom}</div>}
-          {endOfPage && <div className="shrink-0">{footer ?? <PageFooter />}</div>}
+              {endOfPage && <div className="shrink-0">{footer ?? <PageFooter />}</div>}
+            </>
+          )}
 
           {overlay && (
             <div className="pointer-events-none absolute inset-x-3 bottom-3 z-1 flex justify-end sm:inset-x-4 sm:bottom-4">

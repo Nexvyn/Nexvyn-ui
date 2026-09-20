@@ -1127,6 +1127,46 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "faq",
+      "type": "registry:ui",
+      "title": "FAQ",
+      "description": "FAQ primitives: FaqSection, FaqHeader, FaqSupport and FaqTextLink.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/blocks/faq/faq.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "faq-accordion",
+      "type": "registry:block",
+      "title": "FAQ Accordion",
+      "description": "A two column FAQ accordion with a contact line.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/faq/faq-accordion.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq-list.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

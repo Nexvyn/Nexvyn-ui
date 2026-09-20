@@ -11,6 +11,7 @@ import { CtaSplitBlueprint } from '@/components/diagrams/cta-split-diagram'
 import { FooterSimpleBlueprint } from '@/components/diagrams/footer-simple-diagram'
 import { FooterColumnsBlueprint } from '@/components/diagrams/footer-columns-diagram'
 import { FooterCenteredBlueprint } from '@/components/diagrams/footer-centered-diagram'
+import { FaqAccordionBlueprint } from '@/components/diagrams/faq-accordion-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -27,6 +28,8 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'footer-simple': FooterSimpleBlueprint,
   'footer-columns': FooterColumnsBlueprint,
   'footer-centered': FooterCenteredBlueprint,
+  faq: FaqAccordionBlueprint,
+  'faq-accordion': FaqAccordionBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {
