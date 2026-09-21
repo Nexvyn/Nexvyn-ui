@@ -42,7 +42,7 @@ export const FooterCentered = forwardRef<HTMLElement, FooterCenteredProps>(
   ) => (
     <footer
       ref={ref}
-      className={cn('w-full border-t border-(--color-border)', className)}
+      className={cn('w-full border-t border-(--color-border) bg-(--color-bg)', className)}
       {...props}
     >
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 px-6 py-12 text-center sm:px-8">

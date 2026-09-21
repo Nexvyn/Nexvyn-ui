@@ -51,6 +51,7 @@ import { faqAccordionMetadata } from '@/components/blocks/faq/meta/faq-accordion
 import { faqGroupedMetadata } from '@/components/blocks/faq/meta/faq-grouped'
 import { faqNumberedMetadata } from '@/components/blocks/faq/meta/faq-numbered'
 import { faqIconsMetadata } from '@/components/blocks/faq/meta/faq-icons'
+import { footerNewsletterMetadata } from '@/components/blocks/footer/meta/footer-newsletter'
 
 export type ComponentItem = {
   id: string
@@ -243,6 +244,7 @@ export const BLOCKS: ComponentItem[] = [
   faqGroupedMetadata,
   faqNumberedMetadata,
   faqIconsMetadata,
+  footerNewsletterMetadata,
 ]
 
 export function getComponentHref(id: string): string {

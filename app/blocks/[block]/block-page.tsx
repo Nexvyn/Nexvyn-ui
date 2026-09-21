@@ -17,6 +17,7 @@ import { FaqAccordionDemo } from '@/components/blocks/faq/demos/faq-accordion-de
 import { FaqGroupedDemo } from '@/components/blocks/faq/demos/faq-grouped-demo'
 import { FaqNumberedDemo } from '@/components/blocks/faq/demos/faq-numbered-demo'
 import { FaqIconsDemo } from '@/components/blocks/faq/demos/faq-icons-demo'
+import { FooterNewsletterDemo } from '@/components/blocks/footer/demos/footer-newsletter-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -50,6 +51,8 @@ function BlockDemo({ id }: { id: string }) {
       return <FaqNumberedDemo />
     case 'faq-icons':
       return <FaqIconsDemo />
+    case 'footer-newsletter':
+      return <FooterNewsletterDemo />
     default:
       return null
   }

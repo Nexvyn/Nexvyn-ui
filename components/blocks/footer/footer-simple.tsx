@@ -32,7 +32,7 @@ export const FooterSimple = forwardRef<HTMLElement, FooterSimpleProps>(
   ) => (
     <footer
       ref={ref}
-      className={cn('w-full border-t border-(--color-border)', className)}
+      className={cn('w-full border-t border-(--color-border) bg-(--color-bg)', className)}
       {...props}
     >
       <div className="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-8 sm:px-8 md:flex-row md:items-baseline md:justify-between md:gap-8">

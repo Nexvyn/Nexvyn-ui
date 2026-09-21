@@ -23,7 +23,8 @@ import {
   stampBeat,
 } from '@/components/diagrams/lib/diagram-parts'
 
-export type FooterKind = 'simple' | 'columns' | 'centered'
+export type FooterKind =
+  'simple' | 'columns' | 'centered' | 'newsletter' | 'language' | 'wordmark' | 'signature'
 
 const W = 172
 const LANE = 18
@@ -32,7 +33,15 @@ const BP_X = (220 - W - LANE) / 2 + LANE
 const RIGHT = BP_X + W - PAD
 const LINK_H = 3
 
-const HEIGHT: Record<FooterKind, number> = { simple: 44, columns: 92, centered: 84 }
+const HEIGHT: Record<FooterKind, number> = {
+  simple: 44,
+  columns: 92,
+  centered: 84,
+  newsletter: 90,
+  language: 88,
+  wordmark: 94,
+  signature: 40,
+}
 
 const BORDER = `${DRAFT_INK_MORPH} stroke-current group-hover:stroke-(--color-border) group-focus-visible:stroke-(--color-border)`
 const LINK = `${DRAFT_INK_MORPH} fill-current opacity-25 group-hover:opacity-40 group-focus-visible:opacity-40`
@@ -183,10 +192,168 @@ function Centered({ top }: { top: number }) {
   )
 }
 
+function Sitemap({ x, w, top, cols = 4 }: { x: number; w: number; top: number; cols?: number }) {
+  const colW = (w - (cols - 1) * 6) / cols
+  return (
+    <>
+      {Array.from({ length: cols }, (_, i) => (
+        <g key={i}>
+          <Bar x={x + i * (colW + 6)} y={top} w={colW * 0.7} title />
+          {[0.9, 0.65, 0.8].map((f, j) => (
+            <Bar
+              key={j}
+              x={x + i * (colW + 6)}
+              y={top + 9 + j * 7}
+              w={colW * f}
+              lit={i === 0 && j === 0}
+            />
+          ))}
+        </g>
+      ))}
+    </>
+  )
+}
+
+function BottomBar({ y }: { y: number }) {
+  return (
+    <>
+      <path
+        d={`M${BP_X + PAD} ${y} H${RIGHT}`}
+        strokeWidth={draftTheme.guide.strokeWidth}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`fade-note ${BORDER}`}
+      />
+      <Bar x={BP_X + PAD} y={y + 9} w={34} />
+      <Row widths={[14, 12]} end={RIGHT} y={y + 9} lit={-1} />
+    </>
+  )
+}
+
+function Field({ x, y, w }: { x: number; y: number; w: number }) {
+  return (
+    <rect
+      x={x}
+      y={y}
+      width={w}
+      height={11}
+      rx={2.5}
+      strokeWidth={draftTheme.guide.strokeWidth}
+      style={beat(DRAFT_BEAT.anatomy)}
+      className={`fade-note ${DRAFT_INK_MORPH} fill-transparent stroke-current opacity-60 group-hover:stroke-(--color-border-strong) group-hover:opacity-100 group-focus-visible:stroke-(--color-border-strong) group-focus-visible:opacity-100`}
+    />
+  )
+}
+
+const LEFT_W = (W - PAD * 2) / 3
+const MAP_X = BP_X + PAD + LEFT_W + 8
+const MAP_W = RIGHT - MAP_X
+
+function Newsletter({ top }: { top: number }) {
+  const x = BP_X + PAD
+  return (
+    <>
+      <Brand x={x} y={top + 16} />
+      <Bar x={x} y={top + 22} w={40} />
+      <Bar x={x} y={top + 34} w={30} title />
+      <Field x={x} y={top + 40} w={34} />
+      <rect
+        x={x + 37}
+        y={top + 40}
+        width={11}
+        height={11}
+        rx={2.5}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-50 group-hover:opacity-100 group-focus-visible:opacity-100`}
+      />
+      <Sitemap x={MAP_X} w={MAP_W} top={top + 11} />
+      <BottomBar y={top + 68} />
+    </>
+  )
+}
+
+function Language({ top }: { top: number }) {
+  const x = BP_X + PAD
+  return (
+    <>
+      <Brand x={x} y={top + 16} />
+      <Icons x={x} y={top + 22} />
+      <Field x={x} y={top + 40} w={40} />
+      <path
+        d={`M${x + 34} ${top + 44.5} L${x + 36} ${top + 46.5} L${x + 38} ${top + 44.5}`}
+        strokeWidth={0.9}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_INK_MORPH} stroke-current opacity-60`}
+      />
+      <Bar x={x} y={top + 64} w={30} />
+      <Bar x={x} y={top + 71} w={34} />
+      <Sitemap x={MAP_X} w={MAP_W} top={top + 11} />
+    </>
+  )
+}
+
+function Wordmark({ top }: { top: number }) {
+  const x = BP_X + PAD
+  return (
+    <>
+      <Sitemap x={x} w={W - PAD * 2 - 22} top={top + 11} />
+      <rect
+        x={RIGHT - 11}
+        y={top + 10}
+        width={11}
+        height={11}
+        rx={2.5}
+        style={beat(DRAFT_BEAT.anatomy)}
+        className={`fade-note ${DRAFT_INK_MORPH} fill-current opacity-50 group-hover:opacity-100 group-focus-visible:opacity-100`}
+      />
+      <BottomBar y={top + 42} />
+      <text
+        x={x}
+        y={top + 86}
+        textLength={W - PAD * 2}
+        lengthAdjust="spacing"
+        fontSize={30}
+        letterSpacing="-0.01em"
+        fontFamily="var(--font-sans)"
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
+      >
+        Nexvyn UI
+      </text>
+    </>
+  )
+}
+
+function SignatureRow({ top }: { top: number }) {
+  const mid = top + HEIGHT.signature / 2
+  return (
+    <>
+      <Bar x={BP_X + PAD} y={mid - 1.5} w={30} />
+      <text
+        x={BP_X + W / 2}
+        y={mid + 5}
+        fontSize={20}
+        textAnchor="middle"
+        fontFamily="var(--font-handwriting), cursive"
+        style={beat(DRAFT_LABEL_BEAT)}
+        className={`fade-note ${DRAFT_TEXT_SOFT}`}
+      >
+        Nexvyn
+      </text>
+      <Icons x={RIGHT - 24} y={mid - 5} />
+    </>
+  )
+}
+
 const NOTES: Record<FooterKind, string> = {
   simple: 'border-t · py 32 · links gap 24',
   columns: 'border-t · 1.4fr + 3 cols · py 48',
   centered: 'border-t · py 48 · gap 24 · icons 44',
+  newsletter: 'lg 1fr + 2fr · field h44 · 4 cols',
+  language: 'select h44 · native · 4 cols',
+  wordmark: 'bold wordmark · w-full · cap to descent',
+  signature: 'draw 1000ms · fill 700ms · once',
 }
 
 export function FooterBlueprint({ kind }: { kind: FooterKind }) {
@@ -198,6 +365,10 @@ export function FooterBlueprint({ kind }: { kind: FooterKind }) {
   if (kind === 'simple') body = <Simple top={top} />
   if (kind === 'columns') body = <Columns top={top} />
   if (kind === 'centered') body = <Centered top={top} />
+  if (kind === 'newsletter') body = <Newsletter top={top} />
+  if (kind === 'language') body = <Language top={top} />
+  if (kind === 'wordmark') body = <Wordmark top={top} />
+  if (kind === 'signature') body = <SignatureRow top={top} />
 
   return (
     <DraftSurface>

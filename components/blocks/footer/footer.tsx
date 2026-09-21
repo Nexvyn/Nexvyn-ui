@@ -91,3 +91,96 @@ export function FooterColumn({ title, links }: FooterColumnItem) {
 export function FooterBrand({ children = 'Nexvyn UI' }: { children?: ReactNode }) {
   return <span className="text-base leading-6 text-(--color-fg)">{children}</span>
 }
+
+export const FOOTER_SITEMAP: FooterColumnItem[] = [
+  {
+    title: 'Library',
+    links: [
+      { label: 'Components', href: '#' },
+      { label: 'Blocks', href: '#' },
+      { label: 'Illustrations', href: '#' },
+      { label: 'Changelog', href: '#' },
+    ],
+  },
+  {
+    title: 'Guides',
+    links: [
+      { label: 'Installation', href: '#' },
+      { label: 'Theming', href: '#' },
+      { label: 'MCP setup', href: '#' },
+    ],
+  },
+  {
+    title: 'Project',
+    links: [
+      { label: 'GitHub', href: '#' },
+      { label: 'Feedback', href: '#' },
+      { label: 'Design language', href: '#' },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      { label: 'License', href: '#' },
+      { label: 'Privacy', href: '#' },
+      { label: 'Terms', href: '#' },
+    ],
+  },
+]
+
+export const FOOTER_LEGAL: FooterLinkItem[] = [
+  { label: 'Privacy', href: '#' },
+  { label: 'Terms', href: '#' },
+]
+
+export function FooterSitemap({
+  columns,
+  className,
+}: {
+  columns: FooterColumnItem[]
+  className?: string
+}) {
+  return (
+    <div className={cn('grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4', className)}>
+      {columns.map((column) => (
+        <FooterColumn key={column.title} {...column} />
+      ))}
+    </div>
+  )
+}
+
+export function FooterBottomBar({
+  copyright,
+  links,
+  label = 'Legal',
+  className,
+}: {
+  copyright?: ReactNode
+  links: FooterLinkItem[]
+  label?: string
+  className?: string
+}) {
+  return (
+    <div
+      className={cn(
+        'flex flex-col gap-3 border-t border-(--color-border) py-6 sm:flex-row sm:items-center sm:justify-between',
+        className,
+      )}
+    >
+      {copyright && <p className="text-xs leading-5 text-(--color-muted)">{copyright}</p>}
+      {links.length > 0 && (
+        <nav aria-label={label}>
+          <ul className="flex items-center gap-6">
+            {links.map((link) => (
+              <li key={link.label}>
+                <FooterLink href={link.href} className="text-xs">
+                  {link.label}
+                </FooterLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </div>
+  )
+}

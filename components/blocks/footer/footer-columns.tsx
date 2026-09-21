@@ -72,7 +72,7 @@ export const FooterColumns = forwardRef<HTMLElement, FooterColumnsProps>(
   ) => (
     <footer
       ref={ref}
-      className={cn('w-full border-t border-(--color-border)', className)}
+      className={cn('w-full border-t border-(--color-border) bg-(--color-bg)', className)}
       {...props}
     >
       <div className="mx-auto max-w-5xl px-6 sm:px-8">

@@ -15,6 +15,7 @@ import { FaqAccordionBlueprint } from '@/components/diagrams/faq-accordion-diagr
 import { FaqGroupedBlueprint } from '@/components/diagrams/faq-grouped-diagram'
 import { FaqNumberedBlueprint } from '@/components/diagrams/faq-numbered-diagram'
 import { FaqIconsBlueprint } from '@/components/diagrams/faq-icons-diagram'
+import { FooterNewsletterBlueprint } from '@/components/diagrams/footer-newsletter-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -36,6 +37,7 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'faq-grouped': FaqGroupedBlueprint,
   'faq-numbered': FaqNumberedBlueprint,
   'faq-icons': FaqIconsBlueprint,
+  'footer-newsletter': FooterNewsletterBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {

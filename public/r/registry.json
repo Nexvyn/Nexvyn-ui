@@ -1239,6 +1239,27 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "footer-newsletter",
+      "type": "registry:block",
+      "title": "Footer Newsletter",
+      "description": "A footer with a release notes signup, four link columns and a bottom bar.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer-newsletter.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
