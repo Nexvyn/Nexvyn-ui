@@ -66,7 +66,7 @@ export const FaqSection = forwardRef<
   <section
     ref={ref}
     aria-labelledby={labelledBy}
-    className={cn('w-full px-6 py-16 sm:px-8 md:py-24', className)}
+    className={cn('w-full bg-(--color-bg) px-6 py-16 sm:px-8 md:py-24', className)}
     {...props}
   >
     <div className="mx-auto w-full max-w-5xl">{children}</div>

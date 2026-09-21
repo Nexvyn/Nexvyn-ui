@@ -19,7 +19,10 @@ export const Cta = forwardRef<HTMLElement, CtaProps>(
       <section
         ref={ref}
         aria-labelledby={headingId}
-        className={cn('w-full rounded-md border border-(--color-border)', className)}
+        className={cn(
+          'w-full rounded-md border border-(--color-border) bg-(--color-bg)',
+          className,
+        )}
         {...props}
       >
         <div className="mx-auto flex max-w-xl flex-col items-center px-6 py-16 text-center md:py-20">

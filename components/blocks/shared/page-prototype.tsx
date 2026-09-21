@@ -1,4 +1,6 @@
-import type { ReactNode } from 'react'
+'use client'
+
+import { useEffect, useRef, type ReactNode } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
   FavouriteIcon,
@@ -125,6 +127,69 @@ function BrowserBar({ address }: { address: string }) {
   )
 }
 
+function PageContent({ className, children }: { className?: string; children?: ReactNode }) {
+  return (
+    <div
+      className={cn(
+        'mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 pt-2 sm:px-8 *:shrink-0',
+        className,
+      )}
+    >
+      <div aria-hidden="true" className="flex items-center gap-3">
+        <div className={cn('squircle flex h-10 flex-1 items-center gap-2 px-4', FILL)}>
+          <Glyph icon={Search01Icon} size={16} />
+          <Block className="h-2 w-24 bg-(--color-fg)/8" />
+        </div>
+        <span className={cn('squircle size-10 shrink-0', FILL)} />
+      </div>
+
+      <div aria-hidden="true" className="flex gap-4 overflow-hidden">
+        {[0, 1, 2, 3, 4, 5, 6].map((index) => (
+          <div key={index} className="flex shrink-0 flex-col items-center gap-2">
+            <span className={cn('squircle size-12 sm:size-14', FILL)} />
+            <Block className="h-1.5 w-8" />
+          </div>
+        ))}
+      </div>
+
+      {children}
+
+      <SectionHead />
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        <ProductCard />
+        <ProductCard />
+        <div className="hidden md:block">
+          <ProductCard />
+        </div>
+        <div className="hidden md:block">
+          <ProductCard />
+        </div>
+      </div>
+
+      <SectionHead />
+      <div className="grid gap-3 md:grid-cols-2">
+        <ListCard />
+        <ListCard />
+      </div>
+    </div>
+  )
+}
+
+function ScrollToEnd({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const node = ref.current
+    if (node) node.scrollTop = node.scrollHeight
+  }, [])
+
+  return (
+    <div ref={ref} className="min-h-0 flex-1 overflow-y-auto">
+      <div className="flex min-h-full flex-col">{children}</div>
+    </div>
+  )
+}
+
 export function PagePrototype({
   top,
   inline,
@@ -173,65 +238,22 @@ export function PagePrototype({
               {main}
               {footer ?? <PageFooter />}
             </div>
-          ) : (
-            <>
-              <div
-                className={cn(
-                  'relative mx-auto flex w-full max-w-4xl min-h-0 flex-1 flex-col gap-6 overflow-hidden px-4 pb-8 pt-2 sm:px-8 *:shrink-0',
-                  endOfPage && 'justify-end',
-                )}
-              >
-                <div aria-hidden="true" className="flex items-center gap-3">
-                  <div className={cn('squircle flex h-10 flex-1 items-center gap-2 px-4', FILL)}>
-                    <Glyph icon={Search01Icon} size={16} />
-                    <Block className="h-2 w-24 bg-(--color-fg)/8" />
-                  </div>
-                  <span className={cn('squircle size-10 shrink-0', FILL)} />
-                </div>
-
-                <div aria-hidden="true" className="flex gap-4 overflow-hidden">
-                  {[0, 1, 2, 3, 4, 5, 6].map((index) => (
-                    <div key={index} className="flex shrink-0 flex-col items-center gap-2">
-                      <span className={cn('squircle size-12 sm:size-14', FILL)} />
-                      <Block className="h-1.5 w-8" />
-                    </div>
-                  ))}
-                </div>
-
-                {inline}
-
-                <SectionHead />
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                  <ProductCard />
-                  <ProductCard />
-                  <div className="hidden md:block">
-                    <ProductCard />
-                  </div>
-                  <div className="hidden md:block">
-                    <ProductCard />
-                  </div>
-                </div>
-
-                <SectionHead />
-                <div className="grid gap-3 md:grid-cols-2">
-                  <ListCard />
-                  <ListCard />
-                </div>
-
-                <div
-                  aria-hidden="true"
-                  className={cn(
-                    'pointer-events-none absolute inset-x-0 h-20 from-(--color-bg) to-transparent',
-                    endOfPage ? 'top-0 bg-linear-to-b' : 'bottom-0 bg-linear-to-t',
-                  )}
-                />
+          ) : endOfPage ? (
+            <ScrollToEnd>
+              <PageContent className="pb-8" />
+              <div className="mt-auto">
+                {bottom && <div className="mx-auto w-full max-w-4xl px-4 sm:px-8">{bottom}</div>}
+                {footer ?? <PageFooter />}
               </div>
-
-              {bottom && (
-                <div className="mx-auto w-full max-w-4xl shrink-0 px-4 sm:px-8">{bottom}</div>
-              )}
-              {endOfPage && <div className="shrink-0">{footer ?? <PageFooter />}</div>}
-            </>
+            </ScrollToEnd>
+          ) : (
+            <div className="relative min-h-0 flex-1 overflow-hidden">
+              <PageContent className="pb-8">{inline}</PageContent>
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-(--color-bg) to-transparent"
+              />
+            </div>
           )}
 
           {overlay && (

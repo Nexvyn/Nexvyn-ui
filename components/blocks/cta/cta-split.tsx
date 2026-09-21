@@ -82,7 +82,7 @@ export const CtaSplit = forwardRef<HTMLElement, CtaSplitProps>(
         ref={ref}
         aria-labelledby={headingId}
         className={cn(
-          'w-full overflow-hidden rounded-md border border-(--color-border)',
+          'w-full overflow-hidden rounded-md border border-(--color-border) bg-(--color-bg)',
           className,
         )}
         {...props}
