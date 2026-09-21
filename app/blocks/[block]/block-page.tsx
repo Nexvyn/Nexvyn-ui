@@ -18,6 +18,7 @@ import { FaqGroupedDemo } from '@/components/blocks/faq/demos/faq-grouped-demo'
 import { FaqNumberedDemo } from '@/components/blocks/faq/demos/faq-numbered-demo'
 import { FaqIconsDemo } from '@/components/blocks/faq/demos/faq-icons-demo'
 import { FooterNewsletterDemo } from '@/components/blocks/footer/demos/footer-newsletter-demo'
+import { FooterLanguageDemo } from '@/components/blocks/footer/demos/footer-language-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -53,6 +54,8 @@ function BlockDemo({ id }: { id: string }) {
       return <FaqIconsDemo />
     case 'footer-newsletter':
       return <FooterNewsletterDemo />
+    case 'footer-language':
+      return <FooterLanguageDemo />
     default:
       return null
   }

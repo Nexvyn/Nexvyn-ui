@@ -52,6 +52,7 @@ import { faqGroupedMetadata } from '@/components/blocks/faq/meta/faq-grouped'
 import { faqNumberedMetadata } from '@/components/blocks/faq/meta/faq-numbered'
 import { faqIconsMetadata } from '@/components/blocks/faq/meta/faq-icons'
 import { footerNewsletterMetadata } from '@/components/blocks/footer/meta/footer-newsletter'
+import { footerLanguageMetadata } from '@/components/blocks/footer/meta/footer-language'
 
 export type ComponentItem = {
   id: string
@@ -245,6 +246,7 @@ export const BLOCKS: ComponentItem[] = [
   faqNumberedMetadata,
   faqIconsMetadata,
   footerNewsletterMetadata,
+  footerLanguageMetadata,
 ]
 
 export function getComponentHref(id: string): string {

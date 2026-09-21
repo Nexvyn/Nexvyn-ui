@@ -1260,6 +1260,31 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "footer-language",
+      "type": "registry:block",
+      "title": "Footer Language",
+      "description": "A footer with icon links, a native language select, cookie link and four link columns.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer-language.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
     }
   ]
 }
