@@ -19,6 +19,7 @@ import { FaqNumberedDemo } from '@/components/blocks/faq/demos/faq-numbered-demo
 import { FaqIconsDemo } from '@/components/blocks/faq/demos/faq-icons-demo'
 import { FooterNewsletterDemo } from '@/components/blocks/footer/demos/footer-newsletter-demo'
 import { FooterLanguageDemo } from '@/components/blocks/footer/demos/footer-language-demo'
+import { FooterWordmarkDemo } from '@/components/blocks/footer/demos/footer-wordmark-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -56,6 +57,8 @@ function BlockDemo({ id }: { id: string }) {
       return <FooterNewsletterDemo />
     case 'footer-language':
       return <FooterLanguageDemo />
+    case 'footer-wordmark':
+      return <FooterWordmarkDemo />
     default:
       return null
   }
