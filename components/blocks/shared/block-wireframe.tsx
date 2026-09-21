@@ -18,6 +18,7 @@ import { FaqIconsBlueprint } from '@/components/diagrams/faq-icons-diagram'
 import { FooterNewsletterBlueprint } from '@/components/diagrams/footer-newsletter-diagram'
 import { FooterLanguageBlueprint } from '@/components/diagrams/footer-language-diagram'
 import { FooterWordmarkBlueprint } from '@/components/diagrams/footer-wordmark-diagram'
+import { FooterSignatureBlueprint } from '@/components/diagrams/footer-signature-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -42,6 +43,7 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'footer-newsletter': FooterNewsletterBlueprint,
   'footer-language': FooterLanguageBlueprint,
   'footer-wordmark': FooterWordmarkBlueprint,
+  'footer-signature': FooterSignatureBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {

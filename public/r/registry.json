@@ -1306,6 +1306,28 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "footer-signature",
+      "type": "registry:block",
+      "title": "Footer Signature",
+      "description": "A one row footer with a handwritten signature that draws itself once.",
+      "dependencies": [
+        "motion",
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer-signature.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

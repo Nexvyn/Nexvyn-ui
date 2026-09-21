@@ -20,6 +20,7 @@ import { FaqIconsDemo } from '@/components/blocks/faq/demos/faq-icons-demo'
 import { FooterNewsletterDemo } from '@/components/blocks/footer/demos/footer-newsletter-demo'
 import { FooterLanguageDemo } from '@/components/blocks/footer/demos/footer-language-demo'
 import { FooterWordmarkDemo } from '@/components/blocks/footer/demos/footer-wordmark-demo'
+import { FooterSignatureDemo } from '@/components/blocks/footer/demos/footer-signature-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -59,6 +60,8 @@ function BlockDemo({ id }: { id: string }) {
       return <FooterLanguageDemo />
     case 'footer-wordmark':
       return <FooterWordmarkDemo />
+    case 'footer-signature':
+      return <FooterSignatureDemo />
     default:
       return null
   }
