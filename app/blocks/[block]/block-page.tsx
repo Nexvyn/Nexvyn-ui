@@ -24,6 +24,7 @@ import { FooterSignatureDemo } from '@/components/blocks/footer/demos/footer-sig
 import { LoginSocialDemo } from '@/components/blocks/login/demos/login-social-demo'
 import { LoginEmailDemo } from '@/components/blocks/login/demos/login-email-demo'
 import { LoginSplitDemo } from '@/components/blocks/login/demos/login-split-demo'
+import { LoginQuoteDemo } from '@/components/blocks/login/demos/login-quote-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -71,6 +72,8 @@ function BlockDemo({ id }: { id: string }) {
       return <LoginEmailDemo />
     case 'login-split':
       return <LoginSplitDemo />
+    case 'login-quote':
+      return <LoginQuoteDemo />
     default:
       return null
   }
