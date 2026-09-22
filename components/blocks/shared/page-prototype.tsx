@@ -17,6 +17,7 @@ export interface PagePrototypeProps {
   bottom?: ReactNode
   footer?: ReactNode
   main?: ReactNode
+  page?: ReactNode
   overlay?: ReactNode
   address?: string
   className?: string
@@ -196,6 +197,7 @@ export function PagePrototype({
   bottom,
   footer,
   main,
+  page,
   overlay,
   address = 'acme.app',
   className,
@@ -211,57 +213,61 @@ export function PagePrototype({
         )}
       >
         <BrowserBar address={address} />
-        <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
-          {top}
+        {page ? (
+          <div className="min-h-0 flex-1 overflow-y-auto">{page}</div>
+        ) : (
+          <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+            {top}
 
-          <div aria-hidden="true" className="flex items-center gap-3 px-4 py-4 sm:px-8">
-            <span className={cn('squircle size-7 shrink-0', FILL)} />
-            <Block className="h-3 w-16" />
-            <div className="ms-6 hidden items-center gap-5 md:flex">
-              <Block className="h-2 w-10" />
-              <Block className="h-2 w-12" />
-              <Block className="h-2 w-9" />
+            <div aria-hidden="true" className="flex items-center gap-3 px-4 py-4 sm:px-8">
+              <span className={cn('squircle size-7 shrink-0', FILL)} />
+              <Block className="h-3 w-16" />
+              <div className="ms-6 hidden items-center gap-5 md:flex">
+                <Block className="h-2 w-10" />
+                <Block className="h-2 w-12" />
+                <Block className="h-2 w-9" />
+              </div>
+              <div className="ms-auto flex items-center gap-2">
+                <span className={cn('squircle flex size-8 items-center justify-center', FILL)}>
+                  <Glyph icon={Notification01Icon} size={14} />
+                </span>
+                <span className={cn('squircle flex size-8 items-center justify-center', FILL)}>
+                  <Glyph icon={ShoppingBag01Icon} size={14} />
+                </span>
+                <span className={cn('squircle size-8', FILL)} />
+              </div>
             </div>
-            <div className="ms-auto flex items-center gap-2">
-              <span className={cn('squircle flex size-8 items-center justify-center', FILL)}>
-                <Glyph icon={Notification01Icon} size={14} />
-              </span>
-              <span className={cn('squircle flex size-8 items-center justify-center', FILL)}>
-                <Glyph icon={ShoppingBag01Icon} size={14} />
-              </span>
-              <span className={cn('squircle size-8', FILL)} />
-            </div>
-          </div>
 
-          {main ? (
-            <div className="min-h-0 flex-1 overflow-y-auto">
-              {main}
-              {footer ?? <PageFooter />}
-            </div>
-          ) : endOfPage ? (
-            <ScrollToEnd>
-              <PageContent className="pb-8" />
-              <div className="mt-auto">
-                {bottom && <div className="mx-auto w-full max-w-4xl px-4 sm:px-8">{bottom}</div>}
+            {main ? (
+              <div className="min-h-0 flex-1 overflow-y-auto">
+                {main}
                 {footer ?? <PageFooter />}
               </div>
-            </ScrollToEnd>
-          ) : (
-            <div className="relative min-h-0 flex-1 overflow-hidden">
-              <PageContent className="pb-8">{inline}</PageContent>
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-(--color-bg) to-transparent"
-              />
-            </div>
-          )}
+            ) : endOfPage ? (
+              <ScrollToEnd>
+                <PageContent className="pb-8" />
+                <div className="mt-auto">
+                  {bottom && <div className="mx-auto w-full max-w-4xl px-4 sm:px-8">{bottom}</div>}
+                  {footer ?? <PageFooter />}
+                </div>
+              </ScrollToEnd>
+            ) : (
+              <div className="relative min-h-0 flex-1 overflow-hidden">
+                <PageContent className="pb-8">{inline}</PageContent>
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-(--color-bg) to-transparent"
+                />
+              </div>
+            )}
 
-          {overlay && (
-            <div className="pointer-events-none absolute inset-x-3 bottom-3 z-1 flex justify-end sm:inset-x-4 sm:bottom-4">
-              <div className="pointer-events-auto w-full max-w-sm">{overlay}</div>
-            </div>
-          )}
-        </div>
+            {overlay && (
+              <div className="pointer-events-none absolute inset-x-3 bottom-3 z-1 flex justify-end sm:inset-x-4 sm:bottom-4">
+                <div className="pointer-events-auto w-full max-w-sm">{overlay}</div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )

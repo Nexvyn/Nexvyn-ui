@@ -1328,6 +1328,42 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "login",
+      "type": "registry:ui",
+      "title": "Login",
+      "description": "LoginForm: labelled email and password fields, a password toggle, provider buttons and error state.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/login/login.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "login-social",
+      "type": "registry:block",
+      "title": "Login Social first",
+      "description": "A centered sign in page that leads with Google and Apple buttons.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/login/login-social.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/login/login.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

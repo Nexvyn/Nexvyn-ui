@@ -19,6 +19,7 @@ import { FooterNewsletterBlueprint } from '@/components/diagrams/footer-newslett
 import { FooterLanguageBlueprint } from '@/components/diagrams/footer-language-diagram'
 import { FooterWordmarkBlueprint } from '@/components/diagrams/footer-wordmark-diagram'
 import { FooterSignatureBlueprint } from '@/components/diagrams/footer-signature-diagram'
+import { LoginSocialBlueprint } from '@/components/diagrams/login-social-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -44,6 +45,8 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'footer-language': FooterLanguageBlueprint,
   'footer-wordmark': FooterWordmarkBlueprint,
   'footer-signature': FooterSignatureBlueprint,
+  login: LoginSocialBlueprint,
+  'login-social': LoginSocialBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {

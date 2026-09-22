@@ -21,6 +21,7 @@ import { FooterNewsletterDemo } from '@/components/blocks/footer/demos/footer-ne
 import { FooterLanguageDemo } from '@/components/blocks/footer/demos/footer-language-demo'
 import { FooterWordmarkDemo } from '@/components/blocks/footer/demos/footer-wordmark-demo'
 import { FooterSignatureDemo } from '@/components/blocks/footer/demos/footer-signature-demo'
+import { LoginSocialDemo } from '@/components/blocks/login/demos/login-social-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -62,6 +63,8 @@ function BlockDemo({ id }: { id: string }) {
       return <FooterWordmarkDemo />
     case 'footer-signature':
       return <FooterSignatureDemo />
+    case 'login-social':
+      return <LoginSocialDemo />
     default:
       return null
   }

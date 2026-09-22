@@ -55,6 +55,8 @@ import { footerNewsletterMetadata } from '@/components/blocks/footer/meta/footer
 import { footerLanguageMetadata } from '@/components/blocks/footer/meta/footer-language'
 import { footerWordmarkMetadata } from '@/components/blocks/footer/meta/footer-wordmark'
 import { footerSignatureMetadata } from '@/components/blocks/footer/meta/footer-signature'
+import { loginMetadata } from '@/components/blocks/login/meta/login'
+import { loginSocialMetadata } from '@/components/blocks/login/meta/login-social'
 
 export type ComponentItem = {
   id: string
@@ -251,6 +253,8 @@ export const BLOCKS: ComponentItem[] = [
   footerLanguageMetadata,
   footerWordmarkMetadata,
   footerSignatureMetadata,
+  loginMetadata,
+  loginSocialMetadata,
 ]
 
 export function getComponentHref(id: string): string {
