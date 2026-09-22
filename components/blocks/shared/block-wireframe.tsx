@@ -20,6 +20,7 @@ import { FooterLanguageBlueprint } from '@/components/diagrams/footer-language-d
 import { FooterWordmarkBlueprint } from '@/components/diagrams/footer-wordmark-diagram'
 import { FooterSignatureBlueprint } from '@/components/diagrams/footer-signature-diagram'
 import { LoginSocialBlueprint } from '@/components/diagrams/login-social-diagram'
+import { LoginEmailBlueprint } from '@/components/diagrams/login-email-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -47,6 +48,7 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'footer-signature': FooterSignatureBlueprint,
   login: LoginSocialBlueprint,
   'login-social': LoginSocialBlueprint,
+  'login-email': LoginEmailBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {

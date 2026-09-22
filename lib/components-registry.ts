@@ -57,6 +57,7 @@ import { footerWordmarkMetadata } from '@/components/blocks/footer/meta/footer-w
 import { footerSignatureMetadata } from '@/components/blocks/footer/meta/footer-signature'
 import { loginMetadata } from '@/components/blocks/login/meta/login'
 import { loginSocialMetadata } from '@/components/blocks/login/meta/login-social'
+import { loginEmailMetadata } from '@/components/blocks/login/meta/login-email'
 
 export type ComponentItem = {
   id: string
@@ -255,6 +256,7 @@ export const BLOCKS: ComponentItem[] = [
   footerSignatureMetadata,
   loginMetadata,
   loginSocialMetadata,
+  loginEmailMetadata,
 ]
 
 export function getComponentHref(id: string): string {

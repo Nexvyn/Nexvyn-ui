@@ -1364,6 +1364,26 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "login-email",
+      "type": "registry:block",
+      "title": "Login Email first",
+      "description": "A centered sign in page that leads with the email form, providers side by side below.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/login/login-email.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/login/login.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
