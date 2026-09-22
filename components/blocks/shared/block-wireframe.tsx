@@ -21,6 +21,7 @@ import { FooterWordmarkBlueprint } from '@/components/diagrams/footer-wordmark-d
 import { FooterSignatureBlueprint } from '@/components/diagrams/footer-signature-diagram'
 import { LoginSocialBlueprint } from '@/components/diagrams/login-social-diagram'
 import { LoginEmailBlueprint } from '@/components/diagrams/login-email-diagram'
+import { LoginSplitBlueprint } from '@/components/diagrams/login-split-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -49,6 +50,7 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   login: LoginSocialBlueprint,
   'login-social': LoginSocialBlueprint,
   'login-email': LoginEmailBlueprint,
+  'login-split': LoginSplitBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {

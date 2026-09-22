@@ -1384,6 +1384,26 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "login-split",
+      "type": "registry:block",
+      "title": "Login Split",
+      "description": "A two column sign in page with a full height photo panel.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/login/login-split.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/login/login.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
