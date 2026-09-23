@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, type ReactNode } from 'react'
+import { useLayoutEffect, useRef, type ReactNode, type RefObject } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
   FavouriteIcon,
@@ -176,17 +176,78 @@ function PageContent({ className, children }: { className?: string; children?: R
   )
 }
 
-function ScrollToEnd({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null)
+type FitMode = 'none' | 'content' | 'end'
 
-  useEffect(() => {
-    const node = ref.current
-    if (node) node.scrollTop = node.scrollHeight
-  }, [])
+const MIN_ZOOM = 0.4
 
+function useFitToFrame(mode: FitMode) {
+  const bodyRef = useRef<HTMLDivElement>(null)
+  const innerRef = useRef<HTMLDivElement>(null)
+  const headRef = useRef<HTMLDivElement>(null)
+  const endRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const body = bodyRef.current
+    const inner = innerRef.current
+    if (!body || !inner || mode === 'none') return
+
+    let frame = 0
+    const fit = () => {
+      let zoom = 1
+      for (let pass = 0; pass < 6; pass++) {
+        inner.style.zoom = String(zoom)
+        inner.style.height = `${body.clientHeight / zoom}px`
+        const ratio =
+          mode === 'end'
+            ? body.getBoundingClientRect().height /
+              ((headRef.current?.getBoundingClientRect().height ?? 0) +
+                (endRef.current?.getBoundingClientRect().height ?? 0))
+            : inner.clientHeight / inner.scrollHeight
+        if (ratio >= 0.995) break
+        zoom = Math.max(MIN_ZOOM, zoom * ratio)
+      }
+    }
+    const schedule = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(fit)
+    }
+
+    fit()
+    const observer = new ResizeObserver(schedule)
+    observer.observe(body)
+    for (const child of Array.from(inner.children)) observer.observe(child)
+    return () => {
+      cancelAnimationFrame(frame)
+      observer.disconnect()
+    }
+  }, [mode])
+
+  return { bodyRef, innerRef, headRef, endRef }
+}
+
+function PageHeader({ headRef }: { headRef: RefObject<HTMLDivElement | null> }) {
   return (
-    <div ref={ref} className="min-h-0 flex-1 overflow-y-auto">
-      <div className="flex min-h-full flex-col">{children}</div>
+    <div
+      ref={headRef}
+      aria-hidden="true"
+      className="flex shrink-0 items-center gap-3 px-4 py-4 sm:px-8"
+    >
+      <span className={cn('squircle size-7 shrink-0', FILL)} />
+      <Block className="h-3 w-16" />
+      <div className="ms-6 hidden items-center gap-5 md:flex">
+        <Block className="h-2 w-10" />
+        <Block className="h-2 w-12" />
+        <Block className="h-2 w-9" />
+      </div>
+      <div className="ms-auto flex items-center gap-2">
+        <span className={cn('squircle flex size-8 items-center justify-center', FILL)}>
+          <Glyph icon={Notification01Icon} size={14} />
+        </span>
+        <span className={cn('squircle flex size-8 items-center justify-center', FILL)}>
+          <Glyph icon={ShoppingBag01Icon} size={14} />
+        </span>
+        <span className={cn('squircle size-8', FILL)} />
+      </div>
     </div>
   )
 }
@@ -202,7 +263,9 @@ export function PagePrototype({
   address = 'acme.app',
   className,
 }: PagePrototypeProps) {
-  const endOfPage = Boolean(bottom || footer)
+  const endOfPage = Boolean(bottom || footer) && !main && !page
+  const mode: FitMode = page || main ? 'content' : endOfPage ? 'end' : 'none'
+  const { bodyRef, innerRef, headRef, endRef } = useFitToFrame(mode)
 
   return (
     <div className="flex h-full w-full justify-center px-1 pb-16 sm:px-4 md:pb-20">
@@ -213,61 +276,56 @@ export function PagePrototype({
         )}
       >
         <BrowserBar address={address} />
-        {page ? (
-          <div className="min-h-0 flex-1 overflow-y-auto">{page}</div>
-        ) : (
-          <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
-            {top}
-
-            <div aria-hidden="true" className="flex items-center gap-3 px-4 py-4 sm:px-8">
-              <span className={cn('squircle size-7 shrink-0', FILL)} />
-              <Block className="h-3 w-16" />
-              <div className="ms-6 hidden items-center gap-5 md:flex">
-                <Block className="h-2 w-10" />
-                <Block className="h-2 w-12" />
-                <Block className="h-2 w-9" />
-              </div>
-              <div className="ms-auto flex items-center gap-2">
-                <span className={cn('squircle flex size-8 items-center justify-center', FILL)}>
-                  <Glyph icon={Notification01Icon} size={14} />
-                </span>
-                <span className={cn('squircle flex size-8 items-center justify-center', FILL)}>
-                  <Glyph icon={ShoppingBag01Icon} size={14} />
-                </span>
-                <span className={cn('squircle size-8', FILL)} />
-              </div>
-            </div>
-
-            {main ? (
-              <div className="min-h-0 flex-1 overflow-y-auto">
-                {main}
-                {footer ?? <PageFooter />}
-              </div>
-            ) : endOfPage ? (
-              <ScrollToEnd>
-                <PageContent className="pb-8" />
-                <div className="mt-auto">
-                  {bottom && <div className="mx-auto w-full max-w-4xl px-4 sm:px-8">{bottom}</div>}
-                  {footer ?? <PageFooter />}
-                </div>
-              </ScrollToEnd>
+        <div ref={bodyRef} className="relative min-h-0 flex-1 overflow-hidden">
+          <div ref={innerRef} className="flex h-full flex-col overflow-hidden *:shrink-0">
+            {page ? (
+              page
             ) : (
-              <div className="relative min-h-0 flex-1 overflow-hidden">
-                <PageContent className="pb-8">{inline}</PageContent>
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-(--color-bg) to-transparent"
-                />
-              </div>
-            )}
-
-            {overlay && (
-              <div className="pointer-events-none absolute inset-x-3 bottom-3 z-1 flex justify-end sm:inset-x-4 sm:bottom-4">
-                <div className="pointer-events-auto w-full max-w-sm">{overlay}</div>
-              </div>
+              <>
+                {top}
+                <PageHeader headRef={headRef} />
+                {main ? (
+                  <>
+                    {main}
+                    {footer ?? <PageFooter />}
+                  </>
+                ) : endOfPage ? (
+                  <>
+                    <div className="relative min-h-0 flex-1 shrink overflow-hidden">
+                      <div className="absolute inset-x-0 bottom-0">
+                        <PageContent className="pb-8" />
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-linear-to-b from-(--color-bg) to-transparent"
+                      />
+                    </div>
+                    <div ref={endRef}>
+                      {bottom && (
+                        <div className="mx-auto w-full max-w-4xl px-4 sm:px-8">{bottom}</div>
+                      )}
+                      {footer ?? <PageFooter />}
+                    </div>
+                  </>
+                ) : (
+                  <div className="relative min-h-0 flex-1 shrink overflow-hidden">
+                    <PageContent className="pb-8">{inline}</PageContent>
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-(--color-bg) to-transparent"
+                    />
+                  </div>
+                )}
+              </>
             )}
           </div>
-        )}
+
+          {overlay && (
+            <div className="pointer-events-none absolute inset-x-3 bottom-3 z-1 flex justify-end sm:inset-x-4 sm:bottom-4">
+              <div className="pointer-events-auto w-full max-w-sm">{overlay}</div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
