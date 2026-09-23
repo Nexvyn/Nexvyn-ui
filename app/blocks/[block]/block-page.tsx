@@ -25,6 +25,7 @@ import { LoginSocialDemo } from '@/components/blocks/login/demos/login-social-de
 import { LoginEmailDemo } from '@/components/blocks/login/demos/login-email-demo'
 import { LoginSplitDemo } from '@/components/blocks/login/demos/login-split-demo'
 import { LoginQuoteDemo } from '@/components/blocks/login/demos/login-quote-demo'
+import { SidebarWorkspaceDemo } from '@/components/blocks/sidebar/demos/sidebar-workspace-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -74,6 +75,8 @@ function BlockDemo({ id }: { id: string }) {
       return <LoginSplitDemo />
     case 'login-quote':
       return <LoginQuoteDemo />
+    case 'sidebar-workspace':
+      return <SidebarWorkspaceDemo />
     default:
       return null
   }

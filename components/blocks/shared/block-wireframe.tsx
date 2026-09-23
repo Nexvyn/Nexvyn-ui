@@ -23,6 +23,7 @@ import { LoginSocialBlueprint } from '@/components/diagrams/login-social-diagram
 import { LoginEmailBlueprint } from '@/components/diagrams/login-email-diagram'
 import { LoginSplitBlueprint } from '@/components/diagrams/login-split-diagram'
 import { LoginQuoteBlueprint } from '@/components/diagrams/login-quote-diagram'
+import { SidebarWorkspaceBlueprint } from '@/components/diagrams/sidebar-workspace-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -53,6 +54,8 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'login-email': LoginEmailBlueprint,
   'login-split': LoginSplitBlueprint,
   'login-quote': LoginQuoteBlueprint,
+  sidebar: SidebarWorkspaceBlueprint,
+  'sidebar-workspace': SidebarWorkspaceBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {

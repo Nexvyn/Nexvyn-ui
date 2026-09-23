@@ -1428,6 +1428,56 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "Sidebar primitives: nav lists with aria-current links, icon buttons, the page area that follows the panel, and a mobile sheet with a focus trap.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/sidebar/sidebar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-focus-trap.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "sidebar-workspace",
+      "type": "registry:block",
+      "title": "Sidebar Workspace",
+      "description": "A sectioned workspace sidebar with a workspace select, page groups and pinned settings that slides away.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/sidebar/sidebar-workspace.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/sidebar/sidebar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/hooks/use-focus-trap.ts",
+          "type": "registry:hook"
+        }
+      ]
     }
   ]
 }
