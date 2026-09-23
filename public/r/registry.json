@@ -1507,6 +1507,35 @@
           "type": "registry:hook"
         }
       ]
+    },
+    {
+      "name": "sidebar-collapsible",
+      "type": "registry:block",
+      "title": "Sidebar Collapsible",
+      "description": "A sidebar that folds down to its icons, with recent pages and the account at the bottom.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/sidebar/sidebar-collapsible.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/sidebar/sidebar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/hooks/use-focus-trap.ts",
+          "type": "registry:hook"
+        }
+      ]
     }
   ]
 }

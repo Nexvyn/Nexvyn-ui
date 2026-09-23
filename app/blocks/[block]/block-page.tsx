@@ -27,6 +27,7 @@ import { LoginSplitDemo } from '@/components/blocks/login/demos/login-split-demo
 import { LoginQuoteDemo } from '@/components/blocks/login/demos/login-quote-demo'
 import { SidebarWorkspaceDemo } from '@/components/blocks/sidebar/demos/sidebar-workspace-demo'
 import { SidebarRailDemo } from '@/components/blocks/sidebar/demos/sidebar-rail-demo'
+import { SidebarCollapsibleDemo } from '@/components/blocks/sidebar/demos/sidebar-collapsible-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -80,6 +81,8 @@ function BlockDemo({ id }: { id: string }) {
       return <SidebarWorkspaceDemo />
     case 'sidebar-rail':
       return <SidebarRailDemo />
+    case 'sidebar-collapsible':
+      return <SidebarCollapsibleDemo />
     default:
       return null
   }

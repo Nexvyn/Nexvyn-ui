@@ -25,6 +25,7 @@ import { LoginSplitBlueprint } from '@/components/diagrams/login-split-diagram'
 import { LoginQuoteBlueprint } from '@/components/diagrams/login-quote-diagram'
 import { SidebarWorkspaceBlueprint } from '@/components/diagrams/sidebar-workspace-diagram'
 import { SidebarRailBlueprint } from '@/components/diagrams/sidebar-rail-diagram'
+import { SidebarCollapsibleBlueprint } from '@/components/diagrams/sidebar-collapsible-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -58,6 +59,7 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   sidebar: SidebarWorkspaceBlueprint,
   'sidebar-workspace': SidebarWorkspaceBlueprint,
   'sidebar-rail': SidebarRailBlueprint,
+  'sidebar-collapsible': SidebarCollapsibleBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {
