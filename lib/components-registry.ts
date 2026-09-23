@@ -62,6 +62,7 @@ import { loginSplitMetadata } from '@/components/blocks/login/meta/login-split'
 import { loginQuoteMetadata } from '@/components/blocks/login/meta/login-quote'
 import { sidebarMetadata } from '@/components/blocks/sidebar/meta/sidebar'
 import { sidebarWorkspaceMetadata } from '@/components/blocks/sidebar/meta/sidebar-workspace'
+import { sidebarRailMetadata } from '@/components/blocks/sidebar/meta/sidebar-rail'
 
 export type ComponentItem = {
   id: string
@@ -265,6 +266,7 @@ export const BLOCKS: ComponentItem[] = [
   loginQuoteMetadata,
   sidebarMetadata,
   sidebarWorkspaceMetadata,
+  sidebarRailMetadata,
 ]
 
 export function getComponentHref(id: string): string {

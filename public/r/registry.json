@@ -1478,6 +1478,35 @@
           "type": "registry:hook"
         }
       ]
+    },
+    {
+      "name": "sidebar-rail",
+      "type": "registry:block",
+      "title": "Sidebar Rail",
+      "description": "A full width header over an icon rail that opens over the page on hover and can be kept open.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/sidebar/sidebar-rail.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/sidebar/sidebar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/hooks/use-focus-trap.ts",
+          "type": "registry:hook"
+        }
+      ]
     }
   ]
 }
