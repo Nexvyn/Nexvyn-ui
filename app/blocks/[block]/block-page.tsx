@@ -32,6 +32,7 @@ import { SocialProofLogosDemo } from '@/components/blocks/social-proof/demos/soc
 import { SocialProofLogosRevealDemo } from '@/components/blocks/social-proof/demos/social-proof-logos-reveal-demo'
 import { SocialProofLogosHoverDemo } from '@/components/blocks/social-proof/demos/social-proof-logos-hover-demo'
 import { SocialProofLogosMarqueeDemo } from '@/components/blocks/social-proof/demos/social-proof-logos-marquee-demo'
+import { SocialProofTestimonialsDemo } from '@/components/blocks/social-proof/demos/social-proof-testimonials-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -95,6 +96,8 @@ function BlockDemo({ id }: { id: string }) {
       return <SocialProofLogosHoverDemo />
     case 'social-proof-logos-marquee':
       return <SocialProofLogosMarqueeDemo />
+    case 'social-proof-testimonials':
+      return <SocialProofTestimonialsDemo />
     default:
       return null
   }

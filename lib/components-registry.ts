@@ -69,6 +69,7 @@ import { socialProofLogosMetadata } from '@/components/blocks/social-proof/meta/
 import { socialProofLogosRevealMetadata } from '@/components/blocks/social-proof/meta/social-proof-logos-reveal'
 import { socialProofLogosHoverMetadata } from '@/components/blocks/social-proof/meta/social-proof-logos-hover'
 import { socialProofLogosMarqueeMetadata } from '@/components/blocks/social-proof/meta/social-proof-logos-marquee'
+import { socialProofTestimonialsMetadata } from '@/components/blocks/social-proof/meta/social-proof-testimonials'
 
 export type ComponentItem = {
   id: string
@@ -279,6 +280,7 @@ export const BLOCKS: ComponentItem[] = [
   socialProofLogosRevealMetadata,
   socialProofLogosHoverMetadata,
   socialProofLogosMarqueeMetadata,
+  socialProofTestimonialsMetadata,
 ]
 
 export function getComponentHref(id: string): string {

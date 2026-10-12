@@ -1633,6 +1633,27 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "social-proof-testimonials",
+      "type": "registry:block",
+      "title": "Social Proof Testimonial grid",
+      "description": "Testimonial cards in two or three columns, with a Show more toggle on mobile.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/social-proof-testimonials.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/social-proof/testimonials.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/shared/name-avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

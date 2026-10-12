@@ -30,6 +30,7 @@ import { SocialProofLogosBlueprint } from '@/components/diagrams/social-proof-lo
 import { SocialProofLogosRevealBlueprint } from '@/components/diagrams/social-proof-logos-reveal-diagram'
 import { SocialProofLogosHoverBlueprint } from '@/components/diagrams/social-proof-logos-hover-diagram'
 import { SocialProofLogosMarqueeBlueprint } from '@/components/diagrams/social-proof-logos-marquee-diagram'
+import { SocialProofTestimonialsBlueprint } from '@/components/diagrams/social-proof-testimonials-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -69,6 +70,7 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'social-proof-logos-reveal': SocialProofLogosRevealBlueprint,
   'social-proof-logos-hover': SocialProofLogosHoverBlueprint,
   'social-proof-logos-marquee': SocialProofLogosMarqueeBlueprint,
+  'social-proof-testimonials': SocialProofTestimonialsBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {
