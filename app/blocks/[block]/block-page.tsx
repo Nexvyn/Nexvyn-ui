@@ -29,6 +29,7 @@ import { SidebarWorkspaceDemo } from '@/components/blocks/sidebar/demos/sidebar-
 import { SidebarRailDemo } from '@/components/blocks/sidebar/demos/sidebar-rail-demo'
 import { SidebarCollapsibleDemo } from '@/components/blocks/sidebar/demos/sidebar-collapsible-demo'
 import { SocialProofLogosDemo } from '@/components/blocks/social-proof/demos/social-proof-logos-demo'
+import { SocialProofLogosRevealDemo } from '@/components/blocks/social-proof/demos/social-proof-logos-reveal-demo'
 
 function BlockDemo({ id }: { id: string }) {
   switch (id) {
@@ -86,6 +87,8 @@ function BlockDemo({ id }: { id: string }) {
       return <SidebarCollapsibleDemo />
     case 'social-proof-logos':
       return <SocialProofLogosDemo />
+    case 'social-proof-logos-reveal':
+      return <SocialProofLogosRevealDemo />
     default:
       return null
   }

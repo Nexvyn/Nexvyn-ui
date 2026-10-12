@@ -1574,6 +1574,25 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "social-proof-logos-reveal",
+      "type": "registry:block",
+      "title": "Social Proof Logo reveal",
+      "description": "The logo grid with a staggered rise and fade that plays once when it first scrolls into view.",
+      "dependencies": [
+        "runeicons-brands"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/social-proof-logos-reveal.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/social-proof/logos.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
