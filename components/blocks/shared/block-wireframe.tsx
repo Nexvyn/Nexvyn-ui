@@ -26,6 +26,7 @@ import { LoginQuoteBlueprint } from '@/components/diagrams/login-quote-diagram'
 import { SidebarWorkspaceBlueprint } from '@/components/diagrams/sidebar-workspace-diagram'
 import { SidebarRailBlueprint } from '@/components/diagrams/sidebar-rail-diagram'
 import { SidebarCollapsibleBlueprint } from '@/components/diagrams/sidebar-collapsible-diagram'
+import { SocialProofLogosBlueprint } from '@/components/diagrams/social-proof-logos-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -60,6 +61,8 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'sidebar-workspace': SidebarWorkspaceBlueprint,
   'sidebar-rail': SidebarRailBlueprint,
   'sidebar-collapsible': SidebarCollapsibleBlueprint,
+  'social-proof': SocialProofLogosBlueprint,
+  'social-proof-logos': SocialProofLogosBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {

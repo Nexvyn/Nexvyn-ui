@@ -1536,6 +1536,44 @@
           "type": "registry:hook"
         }
       ]
+    },
+    {
+      "name": "social-proof",
+      "type": "registry:ui",
+      "title": "Social Proof",
+      "description": "NameAvatar: an abstract avatar generated from a name, token colored and SSR safe.",
+      "dependencies": [
+        "runeicons-brands"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/logos.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/shared/name-avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "social-proof-logos",
+      "type": "registry:block",
+      "title": "Social Proof Logo grid",
+      "description": "The tools a product is built with, as a quiet hairline logo grid under a short heading.",
+      "dependencies": [
+        "runeicons-brands"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/social-proof-logos.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/social-proof/logos.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

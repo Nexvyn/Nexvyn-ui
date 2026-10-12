@@ -64,6 +64,8 @@ import { sidebarMetadata } from '@/components/blocks/sidebar/meta/sidebar'
 import { sidebarWorkspaceMetadata } from '@/components/blocks/sidebar/meta/sidebar-workspace'
 import { sidebarRailMetadata } from '@/components/blocks/sidebar/meta/sidebar-rail'
 import { sidebarCollapsibleMetadata } from '@/components/blocks/sidebar/meta/sidebar-collapsible'
+import { socialProofMetadata } from '@/components/blocks/social-proof/meta/social-proof'
+import { socialProofLogosMetadata } from '@/components/blocks/social-proof/meta/social-proof-logos'
 
 export type ComponentItem = {
   id: string
@@ -269,6 +271,8 @@ export const BLOCKS: ComponentItem[] = [
   sidebarWorkspaceMetadata,
   sidebarRailMetadata,
   sidebarCollapsibleMetadata,
+  socialProofMetadata,
+  socialProofLogosMetadata,
 ]
 
 export function getComponentHref(id: string): string {
