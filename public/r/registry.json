@@ -1654,6 +1654,27 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "social-proof-testimonials-marquee",
+      "type": "registry:block",
+      "title": "Social Proof Testimonial marquee",
+      "description": "Two rows of testimonial cards drifting in opposite directions, pausable.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/social-proof-testimonials-marquee.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/social-proof/testimonials.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/shared/name-avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
