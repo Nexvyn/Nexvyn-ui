@@ -1593,6 +1593,27 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "social-proof-logos-hover",
+      "type": "registry:block",
+      "title": "Social Proof Logo hover",
+      "description": "The logo grid where the logos step back on hover or focus and a link fades in over them.",
+      "dependencies": [
+        "runeicons-brands",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/social-proof-logos-hover.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/social-proof/logos.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
