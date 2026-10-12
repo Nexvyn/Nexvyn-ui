@@ -29,6 +29,7 @@ import { SidebarCollapsibleBlueprint } from '@/components/diagrams/sidebar-colla
 import { SocialProofLogosBlueprint } from '@/components/diagrams/social-proof-logos-diagram'
 import { SocialProofLogosRevealBlueprint } from '@/components/diagrams/social-proof-logos-reveal-diagram'
 import { SocialProofLogosHoverBlueprint } from '@/components/diagrams/social-proof-logos-hover-diagram'
+import { SocialProofLogosMarqueeBlueprint } from '@/components/diagrams/social-proof-logos-marquee-diagram'
 
 const BLUEPRINTS: Record<string, ComponentType> = {
   banner: BannerFilledBlueprint,
@@ -67,6 +68,7 @@ const BLUEPRINTS: Record<string, ComponentType> = {
   'social-proof-logos': SocialProofLogosBlueprint,
   'social-proof-logos-reveal': SocialProofLogosRevealBlueprint,
   'social-proof-logos-hover': SocialProofLogosHoverBlueprint,
+  'social-proof-logos-marquee': SocialProofLogosMarqueeBlueprint,
 }
 
 export function BlockBlueprint({ id }: { id: string }) {

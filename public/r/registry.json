@@ -1614,6 +1614,25 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "social-proof-logos-marquee",
+      "type": "registry:block",
+      "title": "Social Proof Logo marquee",
+      "description": "The tools a product is built with, drifting in a slow seamless marquee with soft edges.",
+      "dependencies": [
+        "runeicons-brands"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/social-proof-logos-marquee.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/social-proof/logos.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }
