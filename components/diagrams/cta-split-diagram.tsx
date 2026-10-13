@@ -24,7 +24,7 @@ import {
 } from '@/components/diagrams/lib/diagram-parts'
 
 const SPLIT = {
-  w: 170,
+  w: 166,
   h: 96,
   ps: 14,
   py: 14,
@@ -41,9 +41,9 @@ const SPLIT = {
   phonePe: 14,
 } as const
 
-const LANE = 18
+const LANE = 22
 const BP_X = (220 - SPLIT.w - LANE) / 2 + LANE
-const BP_Y = 20
+const BP_Y = 25
 const BOTTOM = BP_Y + SPLIT.h
 const TEXT_X = BP_X + SPLIT.ps
 const TITLE_Y = BP_Y + SPLIT.py + 20

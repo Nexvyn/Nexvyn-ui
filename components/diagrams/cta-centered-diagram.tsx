@@ -41,7 +41,7 @@ const CTA = {
 
 const LANE = 18
 const BP_X = (220 - CTA.w - LANE) / 2 + LANE
-const BP_Y = 22
+const BP_Y = 23
 const BOTTOM = BP_Y + CTA.h
 const CX = BP_X + CTA.w / 2
 const TITLE_Y = BP_Y + CTA.py + 11
@@ -54,7 +54,7 @@ const SECONDARY_X = BTN_X + CTA.primaryW + CTA.gap
 const LABEL_W = 6 * CTA.btnFont * 0.55
 const LABEL_X = BTN_X + (CTA.primaryW - LABEL_W - CTA.arrowGap - CTA.arrowW) / 2
 const ARROW_X = LABEL_X + LABEL_W + CTA.arrowGap
-const NOTE_Y = BOTTOM + 12
+const NOTE_Y = BOTTOM + 10
 
 const TEXT_ON_SOLID = `${DRAFT_TEXT_SOFT} group-hover:fill-(--color-bg) group-focus-visible:fill-(--color-bg)`
 const INK_ON_SOLID = `${DRAFT_INK_MORPH} stroke-current group-hover:stroke-(--color-bg) group-focus-visible:stroke-(--color-bg)`
@@ -180,7 +180,7 @@ export function CtaCenteredBlueprint() {
         y={BTN_CY + CTA.btnFont * 0.35}
         size={CTA.btnFont}
       >
-        Docs
+        MCP
       </Label>
 
       <g className={DRAFT_SCAFFOLD_FADE}>
@@ -202,7 +202,7 @@ export function CtaCenteredBlueprint() {
         <MeasureH
           x1={BP_X}
           x2={BP_X + CTA.w}
-          y={BP_Y - 10}
+          y={BP_Y - 8}
           label="w-full"
           className="note-stamp"
           style={beat(stampBeat(0))}

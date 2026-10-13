@@ -185,6 +185,7 @@ function Marquee() {
   const clipId = `bp-testimonials-clip-${id}`
   const fadeId = `bp-testimonials-fade-${id}`
   const rowsH = ROW_2_Y + MARQUEE_CARD_H - CARDS_Y
+  const edge = 20 / CLIP_W
 
   return (
     <>
@@ -192,34 +193,38 @@ function Marquee() {
         <clipPath id={clipId}>
           <rect x={CLIP_X} y={CARDS_Y - 2} width={CLIP_W} height={rowsH + 4} />
         </clipPath>
-        <linearGradient id={fadeId} x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" stopColor="var(--color-bg)" stopOpacity={1} />
-          <stop offset="1" stopColor="var(--color-bg)" stopOpacity={0} />
+        <linearGradient id={`${fadeId}-ramp`} x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stopColor="currentColor" stopOpacity={0} />
+          <stop offset={edge} stopColor="currentColor" stopOpacity={1} />
+          <stop offset={1 - edge} stopColor="currentColor" stopOpacity={1} />
+          <stop offset="1" stopColor="currentColor" stopOpacity={0} />
         </linearGradient>
+        <mask id={fadeId} style={{ maskType: 'alpha' }}>
+          <rect
+            x={CLIP_X}
+            y={CARDS_Y - 2}
+            width={CLIP_W}
+            height={rowsH + 4}
+            fill={`url(#${fadeId}-ramp)`}
+          />
+        </mask>
       </defs>
       <Heading title="In their words" />
       <PauseButton />
       <g clipPath={`url(#${clipId})`}>
-        <Row
-          y={CARDS_Y}
-          offset={0}
-          drift="group-hover:-translate-x-3 group-focus-visible:-translate-x-3"
-        />
-        <Row
-          y={ROW_2_Y}
-          offset={-MARQUEE_PITCH / 2}
-          drift="group-hover:translate-x-3 group-focus-visible:translate-x-3"
-        />
+        <g mask={`url(#${fadeId})`}>
+          <Row
+            y={CARDS_Y}
+            offset={0}
+            drift="group-hover:-translate-x-3 group-focus-visible:-translate-x-3"
+          />
+          <Row
+            y={ROW_2_Y}
+            offset={-MARQUEE_PITCH / 2}
+            drift="group-hover:translate-x-3 group-focus-visible:translate-x-3"
+          />
+        </g>
       </g>
-      <rect x={CLIP_X} y={CARDS_Y - 2} width={20} height={rowsH + 4} fill={`url(#${fadeId})`} />
-      <rect
-        x={CLIP_X + CLIP_W - 20}
-        y={CARDS_Y - 2}
-        width={20}
-        height={rowsH + 4}
-        fill={`url(#${fadeId})`}
-        transform={`rotate(180 ${CLIP_X + CLIP_W - 10} ${CARDS_Y - 2 + (rowsH + 4) / 2})`}
-      />
     </>
   )
 }

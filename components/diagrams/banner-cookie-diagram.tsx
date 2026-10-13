@@ -45,7 +45,7 @@ const CARD_H =
 
 const LANE = 18
 const BP_X = (220 - CARD.w - LANE) / 2 + LANE
-const BP_Y = (140 - CARD_H) / 2 + 2
+const BP_Y = 23
 const CONTENT_X = BP_X + CARD.pad
 const TITLE_Y = BP_Y + CARD.pad + CARD.titleLine / 2 + CARD.titleFont * 0.35
 const DESC_TOP = BP_Y + CARD.pad + CARD.titleLine + CARD.descGap
@@ -230,13 +230,13 @@ export function BannerCookieBlueprint() {
         <MeasureH
           x1={BP_X}
           x2={BP_X + CARD.w}
-          y={BP_Y - 10}
+          y={BP_Y - 8.5}
           label="w-full · max 448"
           className="note-stamp"
           style={beat(stampBeat(0))}
         />
         <MeasureV
-          x={BP_X - 12}
+          x={BP_X - 8}
           y1={BP_Y}
           y2={BP_Y + CARD_H}
           label="152"

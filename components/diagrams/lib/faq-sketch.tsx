@@ -23,8 +23,8 @@ import {
 
 export type FaqKind = 'accordion' | 'grouped' | 'numbered' | 'icons'
 
-const W = 176
-const LANE = 18
+const W = 168
+const LANE = 22
 const BP_X = (220 - W - LANE) / 2 + LANE
 const LINE_H = 3
 const ROW = 13
@@ -232,8 +232,8 @@ const NOTES: Record<FaqKind, string> = {
 
 export function FaqBlueprint({ kind }: { kind: FaqKind }) {
   const grid = kind === 'numbered' || kind === 'icons'
-  const top = 26
   const h = grid ? 94 : 86
+  const top = (153 - h) / 2
 
   return (
     <DraftSurface>

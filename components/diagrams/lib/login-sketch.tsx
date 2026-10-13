@@ -106,6 +106,14 @@ function Eye({ cx, cy }: { cx: number; cy: number }) {
   )
 }
 
+function formHeight(kind: LoginKind) {
+  const field = ROW + 4 + GAP
+  const submit = ROW + GAP
+  const divider = GAP + 2
+  const providers = kind === 'social' ? ROW * 2 + 4 + GAP : ROW + GAP
+  return 20 + providers + divider + field * 2 + submit - GAP
+}
+
 function Form({ x, top, kind }: { x: number; top: number; kind: LoginKind }) {
   const cx = x + FORM_W / 2
   const providersFirst = kind === 'social'
@@ -195,12 +203,13 @@ export function LoginBlueprint({ kind }: { kind: LoginKind }) {
   const hatchId = `bp-hatch-login-${useId().replace(/:/g, '')}`
   const split = kind === 'split' || kind === 'quote'
   const W = split ? 176 : 120
-  const H = 108
+  const H = formHeight(kind) + 14
   const X = (220 - W - 18) / 2 + 18
-  const Y = 12
+  const Y = Math.round((128 - H) / 2)
   const formX = split ? X + 12 : X + (W - FORM_W) / 2
   const panelX = X + 94
   const panelW = W - 94
+  const fieldY = Y + 26 + (kind === 'social' ? 0 : 4)
 
   return (
     <DraftSurface>
@@ -275,11 +284,11 @@ export function LoginBlueprint({ kind }: { kind: LoginKind }) {
         </g>
       )}
       <g className={DRAFT_SCAFFOLD_FADE}>
-        <GripFrame x={formX} y={Y + 26} w={FORM_W} h={ROW} style={beat(DRAFT_BEAT.handle)} />
+        <GripFrame x={formX} y={fieldY} w={FORM_W} h={ROW} style={beat(DRAFT_BEAT.handle)} />
         <MeasureV
           x={X - 10}
-          y1={Y + 26}
-          y2={Y + 26 + ROW}
+          y1={fieldY}
+          y2={fieldY + ROW}
           label="44"
           className="note-stamp"
           style={beat(stampBeat(1))}

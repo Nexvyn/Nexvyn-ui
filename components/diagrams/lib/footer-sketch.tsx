@@ -26,8 +26,8 @@ import {
 export type FooterKind =
   'simple' | 'columns' | 'centered' | 'newsletter' | 'language' | 'wordmark' | 'signature'
 
-const W = 172
-const LANE = 18
+const W = 168
+const LANE = 22
 const PAD = 12
 const BP_X = (220 - W - LANE) / 2 + LANE
 const RIGHT = BP_X + W - PAD
@@ -143,14 +143,14 @@ function Simple({ top }: { top: number }) {
     <>
       <Brand x={BP_X + PAD} y={mid + 1} />
       <Bar x={BP_X + PAD} y={mid + 6} w={34} />
-      <Row widths={[22, 16, 12, 20]} end={RIGHT} y={mid - 1.5} />
+      <Row widths={[18, 14, 10, 16]} end={RIGHT} y={mid - 1.5} />
     </>
   )
 }
 
 function Columns({ top }: { top: number }) {
-  const unit = (W - PAD * 2 - 3 * 8) / 4.4
-  const colX = (i: number) => BP_X + PAD + unit * 1.4 + 8 + i * (unit + 8)
+  const unit = (W - PAD * 2 - 3 * 8) / 5
+  const colX = (i: number) => BP_X + PAD + unit * 2 + 8 + i * (unit + 8)
   const sepY = top + 66
   return (
     <>
@@ -359,7 +359,7 @@ const NOTES: Record<FooterKind, string> = {
 export function FooterBlueprint({ kind }: { kind: FooterKind }) {
   const theme = draftTheme
   const h = HEIGHT[kind]
-  const top = (140 - h) / 2 - 4
+  const top = (146.5 - h) / 2
   const bottom = top + h
   let body: ReactNode = null
   if (kind === 'simple') body = <Simple top={top} />
