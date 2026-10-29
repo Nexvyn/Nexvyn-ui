@@ -125,7 +125,7 @@ export function Fader({
             slider.controlProps?.onPointerDown?.(e)
           }}
           className={cn(
-            'group/control relative block w-full cursor-grab touch-pan-y select-none rounded-md outline-none data-disabled:cursor-default data-dragging:cursor-grabbing has-[&:focus-visible]:ring-2 has-[&:focus-visible]:ring-ring has-[&:focus-visible]:ring-offset-2 has-[&:focus-visible]:ring-offset-background bg-(--color-surface-2)',
+            'group/control relative block w-full cursor-grab touch-pan-y select-none rounded-md outline-none data-disabled:cursor-default data-dragging:cursor-grabbing has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-offset-2 has-focus-visible:ring-offset-background bg-(--color-surface-2)',
             sizeStyle.control,
           )}
         >
@@ -140,7 +140,7 @@ export function Fader({
             }
             className={cn(
               'h-full w-full overflow-hidden rounded-md bg-(--color-surface-2) border border-border/50',
-              bordered && '!border-border',
+              bordered && 'border-border!',
             )}
           >
             <motion.div
@@ -191,7 +191,7 @@ export function Fader({
                 />
               ))}
             </div>
-            <BaseSlider.Thumb {...slider.thumbProps} className="h-8 w-5 outline-none" />
+            <BaseSlider.Thumb {...slider.thumbProps} className="h-8 w-5 rounded-md outline-none" />
           </BaseSlider.Track>
         </BaseSlider.Control>
 

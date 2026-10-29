@@ -225,7 +225,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           onPointerCancel={handlePointerCancel}
           onPointerLeave={handlePointerLeave}
           className={cn(
-            'relative inline-block h-6 w-11 shrink-0 rounded-full transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out)',
+            'relative inline-block h-6 w-11 shrink-0 squircle transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out)',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
             'disabled:cursor-not-allowed disabled:opacity-50',
             readOnly && 'cursor-default opacity-75',
@@ -239,7 +239,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
             animate={{ x: checked ? (isRtl ? -THUMB_TRAVEL : THUMB_TRAVEL) : 0 }}
             transition={reduceMotion ? { duration: 0 } : springs.settle}
             className={cn(
-              'pointer-events-none absolute inset-y-0.5 start-0.5 block size-5 rounded-full bg-(--color-bg) shadow-sm',
+              'pointer-events-none absolute inset-y-0.5 start-0.5 block size-5 squircle bg-(--color-bg) shadow-sm',
               thumbClassName,
             )}
             style={{ scaleX: thumbScaleX }}

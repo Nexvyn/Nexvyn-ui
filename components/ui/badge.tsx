@@ -154,7 +154,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
             type="button"
             aria-label={dismissLabel}
             className={cn(
-              'relative -me-0.5 inline-flex shrink-0 items-center justify-center rounded-full text-current/70 transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none hover:text-current focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-(--color-accent)',
+              'relative -me-0.5 inline-flex shrink-0 items-center justify-center squircle text-current/70 transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none hover:text-current focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-(--color-accent)',
               dismissSizeFor(size),
             )}
             onMouseEnter={() => playHoverSound()}

@@ -100,6 +100,197 @@
       ]
     },
     {
+      "name": "banner",
+      "type": "registry:ui",
+      "title": "Banner",
+      "description": "Banner primitives: a full-width dismissible strip, a link and a tag, shared by every banner block.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "motion",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-link.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-tag.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "banner-filled",
+      "type": "registry:block",
+      "title": "Banner Filled",
+      "description": "A filled announcement banner on the inverted foreground surface.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "motion",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner-filled.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-link.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "banner-outline",
+      "type": "registry:block",
+      "title": "Banner Outline",
+      "description": "A quiet outline announcement banner with a hairline bottom border.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "motion",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner-outline.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-link.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "banner-tagged",
+      "type": "registry:block",
+      "title": "Banner Tagged",
+      "description": "An outline banner led by a small tag, with an arrow link.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "motion",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner-tagged.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-link.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-tag.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "banner-notice",
+      "type": "registry:block",
+      "title": "Banner Notice",
+      "description": "Info and error status banners with icons and the right live-region roles.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "motion",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner-notice.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/banner/banner-link.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "banner-cookie",
+      "type": "registry:block",
+      "title": "Banner Cookie",
+      "description": "A cookie consent card with accept and decline actions that lifts in once and lifts away on a choice.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner-cookie.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "banner-subscribe",
+      "type": "registry:block",
+      "title": "Banner Subscribe",
+      "description": "An email signup banner with inline validation that crossfades into a confirmation on success.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/blocks/banner/banner-subscribe.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",
@@ -788,6 +979,700 @@
         {
           "path": "lib/motion-tokens.ts",
           "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "cta",
+      "type": "registry:ui",
+      "title": "CTA",
+      "description": "Call to action primitives: Cta section, CtaAction links and the sliding CtaActionIcon.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/cta/cta.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "cta-centered",
+      "type": "registry:block",
+      "title": "CTA Centered",
+      "description": "A centered call to action with eyebrow, heading, supporting text and two actions.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/cta/cta-centered.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/cta/cta.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "cta-split",
+      "type": "registry:block",
+      "title": "CTA Split",
+      "description": "A two column call to action with a phone showing your app screen.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/cta/cta-split.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/cta/cta.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/illustration/phone-mockup.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "footer",
+      "type": "registry:ui",
+      "title": "Footer",
+      "description": "Footer primitives: FooterLink, FooterColumn, FooterSocialLinks and FooterBrand.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "footer-simple",
+      "type": "registry:block",
+      "title": "Footer Simple",
+      "description": "A one row footer with wordmark, copyright and a row of links.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer-simple.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "footer-columns",
+      "type": "registry:block",
+      "title": "Footer Columns",
+      "description": "A sitemap footer with link columns, icon links and a legal bar.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer-columns.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "footer-centered",
+      "type": "registry:block",
+      "title": "Footer Centered",
+      "description": "A centered footer stack with links, icon links and copyright.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer-centered.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "faq",
+      "type": "registry:ui",
+      "title": "FAQ",
+      "description": "FAQ primitives: FaqSection, FaqHeader, FaqSupport and FaqTextLink.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/blocks/faq/faq.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "faq-accordion",
+      "type": "registry:block",
+      "title": "FAQ Accordion",
+      "description": "A two column FAQ accordion with a contact line.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/faq/faq-accordion.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq-list.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "faq-grouped",
+      "type": "registry:block",
+      "title": "FAQ Grouped",
+      "description": "A two column FAQ grouped by topic, one hairline list per group.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/faq/faq-grouped.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq-list.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "faq-numbered",
+      "type": "registry:block",
+      "title": "FAQ Numbered",
+      "description": "An open FAQ grid with plain numbered markers under hairline rules.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/blocks/faq/faq-numbered.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq-grid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "faq-icons",
+      "type": "registry:block",
+      "title": "FAQ Icons",
+      "description": "An open FAQ grid with topic icons under hairline rules.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/faq/faq-icons.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq-grid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/faq/faq.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "footer-newsletter",
+      "type": "registry:block",
+      "title": "Footer Newsletter",
+      "description": "A footer with a release notes signup, four link columns and a bottom bar.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer-newsletter.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "footer-language",
+      "type": "registry:block",
+      "title": "Footer Language",
+      "description": "A footer with icon links, a native language select, cookie link and four link columns.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer-language.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "footer-wordmark",
+      "type": "registry:block",
+      "title": "Footer Wordmark",
+      "description": "A footer that ends on an edge to edge wordmark below the link columns.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer-wordmark.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "footer-signature",
+      "type": "registry:block",
+      "title": "Footer Signature",
+      "description": "A one row footer with a handwritten signature that draws itself once.",
+      "dependencies": [
+        "motion",
+        "@radix-ui/react-slot",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/footer/footer-signature.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/footer/footer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "login",
+      "type": "registry:ui",
+      "title": "Login",
+      "description": "LoginForm: labelled email and password fields, a password toggle, provider buttons and error state.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/login/login.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "login-social",
+      "type": "registry:block",
+      "title": "Login Social first",
+      "description": "A centered sign in page that leads with Google and Apple buttons.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/login/login-social.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/login/login.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "login-email",
+      "type": "registry:block",
+      "title": "Login Email first",
+      "description": "A centered sign in page that leads with the email form, providers side by side below.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/login/login-email.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/login/login.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "login-split",
+      "type": "registry:block",
+      "title": "Login Split",
+      "description": "A two column sign in page with a full height photo panel.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/login/login-split.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/login/login.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "login-quote",
+      "type": "registry:block",
+      "title": "Login Testimonial",
+      "description": "The split sign in page with a customer quote over the photo.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/login/login-quote.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/login/login-split.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/login/login.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "Sidebar primitives: nav lists with aria-current links, icon buttons, the page area that follows the panel, and a mobile sheet with a focus trap.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/sidebar/sidebar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-focus-trap.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "sidebar-workspace",
+      "type": "registry:block",
+      "title": "Sidebar Workspace",
+      "description": "A sectioned workspace sidebar with a workspace select, page groups and pinned settings that slides away.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/sidebar/sidebar-workspace.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/sidebar/sidebar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/hooks/use-focus-trap.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "sidebar-rail",
+      "type": "registry:block",
+      "title": "Sidebar Rail",
+      "description": "A full width header over an icon rail that opens over the page on hover and can be kept open.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/sidebar/sidebar-rail.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/sidebar/sidebar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/hooks/use-focus-trap.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "sidebar-collapsible",
+      "type": "registry:block",
+      "title": "Sidebar Collapsible",
+      "description": "A sidebar that folds down to its icons, with recent pages and the account at the bottom.",
+      "dependencies": [
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/sidebar/sidebar-collapsible.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/sidebar/sidebar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "lib/hooks/use-controlled-state.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "lib/hooks/use-focus-trap.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "social-proof",
+      "type": "registry:ui",
+      "title": "Social Proof",
+      "description": "NameAvatar: an abstract avatar generated from a name, token colored and SSR safe.",
+      "dependencies": [
+        "runeicons-brands"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/logos.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/shared/name-avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "social-proof-logos",
+      "type": "registry:block",
+      "title": "Social Proof Logo grid",
+      "description": "The tools a product is built with, as a quiet hairline logo grid under a short heading.",
+      "dependencies": [
+        "runeicons-brands"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/social-proof-logos.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/social-proof/logos.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "social-proof-logos-reveal",
+      "type": "registry:block",
+      "title": "Social Proof Logo reveal",
+      "description": "The logo grid with a staggered rise and fade that plays once when it first scrolls into view.",
+      "dependencies": [
+        "runeicons-brands"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/social-proof-logos-reveal.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/social-proof/logos.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "social-proof-logos-hover",
+      "type": "registry:block",
+      "title": "Social Proof Logo hover",
+      "description": "The logo grid where the logos step back on hover or focus and a link fades in over them.",
+      "dependencies": [
+        "runeicons-brands",
+        "@hugeicons/react",
+        "@hugeicons/core-free-icons"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/social-proof-logos-hover.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/social-proof/logos.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "social-proof-logos-marquee",
+      "type": "registry:block",
+      "title": "Social Proof Logo marquee",
+      "description": "The tools a product is built with, drifting in a slow seamless marquee with soft edges.",
+      "dependencies": [
+        "runeicons-brands"
+      ],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/social-proof-logos-marquee.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/social-proof/logos.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "social-proof-testimonials",
+      "type": "registry:block",
+      "title": "Social Proof Testimonial grid",
+      "description": "Testimonial cards in two or three columns, with a Show more toggle on mobile.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/social-proof-testimonials.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/social-proof/testimonials.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/shared/name-avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "social-proof-testimonials-marquee",
+      "type": "registry:block",
+      "title": "Social Proof Testimonial marquee",
+      "description": "Two rows of testimonial cards drifting in opposite directions, pausable.",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "components/blocks/social-proof/social-proof-testimonials-marquee.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/social-proof/testimonials.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "components/blocks/shared/name-avatar.tsx",
+          "type": "registry:ui"
         }
       ]
     }

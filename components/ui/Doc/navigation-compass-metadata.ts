@@ -5,7 +5,6 @@ export const navigationCompassMetadata: ComponentItem = {
   name: 'Navigation Compass',
   collection: 'illustration',
   previewType: 'default',
-  size: 'lg',
   isNew: true,
   description:
     'A draggable compass dial that doubles as a nav menu: scroll rotates it with physical lag, and links entering the active zone scale up and light with the accent.',

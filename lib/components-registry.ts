@@ -32,6 +32,45 @@ import { laptopMockupMetadata } from '@/components/ui/Doc/laptop-mockup-metadata
 import { rocketLaunchMetadata } from '@/components/ui/Doc/rocket-launch-metadata'
 import { diaTextMetadata } from '@/components/ui/Doc/dia-text-metadata'
 import { navigationCompassMetadata } from '@/components/ui/Doc/navigation-compass-metadata'
+import { bannerMetadata } from '@/components/blocks/banner/meta/banner'
+import { bannerFilledMetadata } from '@/components/blocks/banner/meta/banner-filled'
+import { bannerOutlineMetadata } from '@/components/blocks/banner/meta/banner-outline'
+import { bannerTaggedMetadata } from '@/components/blocks/banner/meta/banner-tagged'
+import { bannerNoticeMetadata } from '@/components/blocks/banner/meta/banner-notice'
+import { bannerCookieMetadata } from '@/components/blocks/banner/meta/banner-cookie'
+import { bannerSubscribeMetadata } from '@/components/blocks/banner/meta/banner-subscribe'
+import { ctaMetadata } from '@/components/blocks/cta/meta/cta'
+import { ctaCenteredMetadata } from '@/components/blocks/cta/meta/cta-centered'
+import { ctaSplitMetadata } from '@/components/blocks/cta/meta/cta-split'
+import { footerMetadata } from '@/components/blocks/footer/meta/footer'
+import { footerSimpleMetadata } from '@/components/blocks/footer/meta/footer-simple'
+import { footerColumnsMetadata } from '@/components/blocks/footer/meta/footer-columns'
+import { footerCenteredMetadata } from '@/components/blocks/footer/meta/footer-centered'
+import { faqMetadata } from '@/components/blocks/faq/meta/faq'
+import { faqAccordionMetadata } from '@/components/blocks/faq/meta/faq-accordion'
+import { faqGroupedMetadata } from '@/components/blocks/faq/meta/faq-grouped'
+import { faqNumberedMetadata } from '@/components/blocks/faq/meta/faq-numbered'
+import { faqIconsMetadata } from '@/components/blocks/faq/meta/faq-icons'
+import { footerNewsletterMetadata } from '@/components/blocks/footer/meta/footer-newsletter'
+import { footerLanguageMetadata } from '@/components/blocks/footer/meta/footer-language'
+import { footerWordmarkMetadata } from '@/components/blocks/footer/meta/footer-wordmark'
+import { footerSignatureMetadata } from '@/components/blocks/footer/meta/footer-signature'
+import { loginMetadata } from '@/components/blocks/login/meta/login'
+import { loginSocialMetadata } from '@/components/blocks/login/meta/login-social'
+import { loginEmailMetadata } from '@/components/blocks/login/meta/login-email'
+import { loginSplitMetadata } from '@/components/blocks/login/meta/login-split'
+import { loginQuoteMetadata } from '@/components/blocks/login/meta/login-quote'
+import { sidebarMetadata } from '@/components/blocks/sidebar/meta/sidebar'
+import { sidebarWorkspaceMetadata } from '@/components/blocks/sidebar/meta/sidebar-workspace'
+import { sidebarRailMetadata } from '@/components/blocks/sidebar/meta/sidebar-rail'
+import { sidebarCollapsibleMetadata } from '@/components/blocks/sidebar/meta/sidebar-collapsible'
+import { socialProofMetadata } from '@/components/blocks/social-proof/meta/social-proof'
+import { socialProofLogosMetadata } from '@/components/blocks/social-proof/meta/social-proof-logos'
+import { socialProofLogosRevealMetadata } from '@/components/blocks/social-proof/meta/social-proof-logos-reveal'
+import { socialProofLogosHoverMetadata } from '@/components/blocks/social-proof/meta/social-proof-logos-hover'
+import { socialProofLogosMarqueeMetadata } from '@/components/blocks/social-proof/meta/social-proof-logos-marquee'
+import { socialProofTestimonialsMetadata } from '@/components/blocks/social-proof/meta/social-proof-testimonials'
+import { socialProofTestimonialsMarqueeMetadata } from '@/components/blocks/social-proof/meta/social-proof-testimonials-marquee'
 
 export type ComponentItem = {
   id: string
@@ -43,6 +82,8 @@ export type ComponentItem = {
   previewType?: 'video' | 'icons' | 'pixels' | 'toggle' | 'default'
   isNew?: boolean
   basic?: boolean
+  href?: string
+  parent?: string
   /** Showcase grid card size: 'lg' spans two rows, 'xl' two rows and two columns. */
   size?: 'default' | 'lg' | 'xl'
   description?: string
@@ -201,11 +242,55 @@ export function formatComponentLabel(index: number, name: string): string {
   return `${prefix} ${name}`
 }
 
+/** Flat, display-ordered list: each group is followed by its variants (`parent` = group id). */
+export const BLOCKS: ComponentItem[] = [
+  bannerMetadata,
+  bannerFilledMetadata,
+  bannerOutlineMetadata,
+  bannerTaggedMetadata,
+  bannerNoticeMetadata,
+  bannerCookieMetadata,
+  bannerSubscribeMetadata,
+  ctaMetadata,
+  ctaCenteredMetadata,
+  ctaSplitMetadata,
+  footerMetadata,
+  footerSimpleMetadata,
+  footerColumnsMetadata,
+  footerCenteredMetadata,
+  faqMetadata,
+  faqAccordionMetadata,
+  faqGroupedMetadata,
+  faqNumberedMetadata,
+  faqIconsMetadata,
+  footerNewsletterMetadata,
+  footerLanguageMetadata,
+  footerWordmarkMetadata,
+  footerSignatureMetadata,
+  loginMetadata,
+  loginSocialMetadata,
+  loginEmailMetadata,
+  loginSplitMetadata,
+  loginQuoteMetadata,
+  sidebarMetadata,
+  sidebarWorkspaceMetadata,
+  sidebarRailMetadata,
+  sidebarCollapsibleMetadata,
+  socialProofMetadata,
+  socialProofLogosMetadata,
+  socialProofLogosRevealMetadata,
+  socialProofLogosHoverMetadata,
+  socialProofLogosMarqueeMetadata,
+  socialProofTestimonialsMetadata,
+  socialProofTestimonialsMarqueeMetadata,
+]
+
 export function getComponentHref(id: string): string {
   return `/components/${id}`
 }
 
 export function activeComponent(pathname: string): ComponentItem | undefined {
+  if (pathname.startsWith('/blocks/')) return BLOCKS.find((c) => c.href === pathname)
   return COMPONENTS.find((c) => pathname.endsWith(c.id))
 }
 

@@ -3,7 +3,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion } from 'motion/react'
-import { Maximize, Minimize, ExternalLink, Copy, Check, MessageSquare, Frame } from 'lucide-react'
+import {
+  Maximize,
+  Minimize,
+  ExternalLink,
+  Copy,
+  Check,
+  MessageSquare,
+  Frame,
+  LayoutGrid,
+} from 'lucide-react'
 import { activeComponent, PANEL_INFO } from '@/lib/components-registry'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
@@ -197,7 +206,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
             onClick={() => setOpen((value) => !value)}
             aria-label={open ? 'Close description' : 'Open description'}
             className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl p-1.5"
-            style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
+            style={{ backgroundColor: 'transparent', color: 'var(--color-muted)' }}
           >
             {open ? <Maximize className="h-5 w-5" /> : <Minimize className="h-5 w-5" />}
           </button>
@@ -210,7 +219,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               onClick={toggleCode}
               aria-label={codeOpen ? 'Hide code' : 'Get code'}
               className="detail-toolbar-btn group hit-area-44 cursor-pointer rounded-xl p-1.5"
-              style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
+              style={{ backgroundColor: 'transparent', color: 'var(--color-muted)' }}
             >
               <CodeIcon className="h-5 w-5" />
             </button>
@@ -229,11 +238,11 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               aria-pressed={currentView === 'examples'}
               className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl p-1.5"
               style={{
-                backgroundColor: 'var(--color-bg)',
+                backgroundColor: 'transparent',
                 color: currentView === 'examples' ? 'var(--color-fg)' : 'var(--color-muted)',
               }}
             >
-              <Frame className="h-5 w-5" />
+              <LayoutGrid className="h-5 w-5" />
             </button>
           </Tooltip>
         )}
@@ -250,7 +259,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               aria-pressed={currentView === 'anatomy'}
               className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl p-1.5"
               style={{
-                backgroundColor: 'var(--color-bg)',
+                backgroundColor: 'transparent',
                 color: currentView === 'anatomy' ? 'var(--color-fg)' : 'var(--color-muted)',
               }}
             >
@@ -268,7 +277,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               rel="noopener noreferrer"
               aria-label="View standalone preview"
               className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl p-1.5 flex items-center justify-center"
-              style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
+              style={{ backgroundColor: 'transparent', color: 'var(--color-muted)' }}
             >
               <ExternalLink className="h-5 w-5" />
             </Link>
@@ -283,7 +292,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
               rel="noopener noreferrer"
               aria-label="GitHub Repository"
               className="detail-toolbar-btn hit-area-44 cursor-pointer rounded-xl px-2 h-8 flex items-center gap-1 text-xs font-normal"
-              style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
+              style={{ backgroundColor: 'transparent', color: 'var(--color-muted)' }}
             >
               <StarsCount />
             </a>
@@ -307,7 +316,7 @@ export function DescriptionPanel({ open, setOpen }: DescriptionPanelProps) {
           'detail-panel pointer-events-auto flex h-full flex-col overflow-hidden rounded-2xl',
           isMobile ? 'fixed inset-y-0 right-0 w-full z-40' : 'relative w-full sm:w-140',
         )}
-        style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-fg)' }}
+        style={{ backgroundColor: 'transparent', color: 'var(--color-fg)' }}
       >
         <div
           className="pointer-events-none absolute inset-x-0 top-0 z-10 h-12"

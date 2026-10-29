@@ -106,7 +106,7 @@ function Kbd({ className, children }: { className?: string; children: ReactNode 
   return (
     <kbd
       className={cn(
-        'inline-flex h-5 min-w-5 select-none items-center justify-center rounded-md squircle-corners',
+        'inline-flex h-5 min-w-5 select-none items-center justify-center rounded-md',
         'border border-(--color-border) bg-(--color-surface) px-1.5',
         'font-mono text-xs leading-none text-(--color-muted)',
         className,
@@ -377,7 +377,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
               aria-labelledby={titleId}
               className={cn(
                 'relative z-10 flex max-h-[min(70dvh,32rem)] w-full max-w-xl flex-col overflow-hidden',
-                'rounded-md squircle-corners border border-(--color-border) bg-(--color-bg)',
+                'rounded-md border border-(--color-border) bg-(--color-bg)',
                 'shadow-xl outline-none',
                 className,
               )}
@@ -484,7 +484,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
                             }}
                             onClick={() => performAction(action)}
                             className={cn(
-                              'relative flex min-h-10 w-full items-center gap-3 rounded-md squircle-corners px-3 py-2 text-start pointer-coarse:min-h-11',
+                              'relative flex min-h-10 w-full items-center gap-3 rounded-md px-3 py-2 text-start pointer-coarse:min-h-11',
                               'text-sm outline-none',
                               'before:absolute before:inset-y-2 before:inset-s-0 before:w-0.5 before:rounded-full before:bg-(--color-accent) before:opacity-0',
                               'data-active:bg-(--color-surface) data-active:before:opacity-100',
@@ -567,7 +567,7 @@ export function CommandPalettePreview() {
         type="button"
         onClick={() => setOpen(true)}
         className={cn(
-          'flex min-h-11 items-center gap-2 rounded-md squircle-corners border border-(--color-border) bg-(--color-surface)',
+          'flex min-h-11 items-center gap-2 rounded-md border border-(--color-border) bg-(--color-surface)',
           'px-4 py-2.5 text-sm text-(--color-muted) transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out)',
           'hover:text-(--color-fg) motion-reduce:transition-none',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',

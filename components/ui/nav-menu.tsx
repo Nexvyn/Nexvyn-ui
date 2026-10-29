@@ -210,7 +210,7 @@ export const NavMenu = forwardRef<HTMLElement, NavMenuProps>(
           >
             <motion.div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-x-1 rounded-md squircle-corners bg-(--color-accent)/12"
+              className="pointer-events-none absolute inset-x-1 rounded-md bg-(--color-accent)/12"
               style={{ y: activeX, height: activeSize, opacity: activeOpacity }}
             />
             <ProximityHighlight
@@ -218,7 +218,7 @@ export const NavMenu = forwardRef<HTMLElement, NavMenuProps>(
               highlightSize={highlightSize}
               highlightOpacity={highlightOpacity}
               axis={axis}
-              className="mx-1 rounded-md squircle-corners bg-(--color-fg)/8"
+              className="mx-1 rounded-md bg-(--color-fg)/8"
             />
             {children}
           </nav>
@@ -273,7 +273,7 @@ export const NavMenuItem = forwardRef<HTMLAnchorElement, NavMenuItemProps>(
     const weight = 400
 
     const itemClassName = cn(
-      'group relative flex min-h-11 items-center gap-2.5 rounded-md squircle-corners px-3 py-2 text-sm outline-none transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
+      'group relative flex min-h-11 items-center gap-2.5 rounded-md px-3 py-2 text-sm outline-none transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
       'text-(--color-muted) hover:text-(--color-fg)',
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
       isActive && 'text-(--color-fg)',

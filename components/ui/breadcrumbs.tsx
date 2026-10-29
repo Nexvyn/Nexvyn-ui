@@ -175,7 +175,7 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
                         setTimeout(() => firstHiddenItemRef.current?.focus(), 0)
                       }}
                       className={cn(
-                        'inline-flex items-center justify-center rounded-md squircle-corners text-(--color-muted) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none hover:text-(--color-fg) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent)',
+                        'inline-flex items-center justify-center rounded-md text-(--color-muted) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none hover:text-(--color-fg) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent)',
                         size === 'sm' && 'size-7',
                         size === 'lg' && 'size-10',
                       )}

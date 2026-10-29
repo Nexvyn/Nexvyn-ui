@@ -166,7 +166,7 @@ export const DropdownMenuTrigger = forwardRef<HTMLButtonElement, DropdownMenuTri
         aria-controls={open ? contentId : undefined}
         style={itemsWidth ? { width: itemsWidth } : undefined}
         className={cn(
-          'flex min-h-11 w-full items-center justify-between gap-2 rounded-md squircle-corners border border-(--color-border) bg-(--color-surface) px-4 py-3 text-left text-sm font-normal text-(--color-fg) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
+          'flex min-h-11 w-full items-center justify-between gap-2 rounded-md border border-(--color-border) bg-(--color-surface) px-4 py-3 text-left text-sm font-normal text-(--color-fg) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
           'hover:bg-(--color-surface-2)',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
           className,
@@ -399,7 +399,7 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuConten
               aria-hidden="true"
               className={cn(
                 'pointer-events-none invisible fixed top-0 left-0 min-w-48 border border-(--color-border) bg-(--color-bg) p-1.5 **:min-w-max',
-                'rounded-md squircle-corners',
+                'rounded-md',
                 className,
               )}
             >
@@ -419,7 +419,7 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuConten
           aria-labelledby={triggerId}
           data-dropdown-content
           className={cn(
-            'relative z-300 min-w-48 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-md squircle-corners border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
+            'relative z-300 min-w-48 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-md border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
             'shadow-lg',
             className,
           )}
@@ -438,7 +438,7 @@ export const DropdownMenuContent = forwardRef<HTMLDivElement, DropdownMenuConten
             highlightSize={highlightSize}
             highlightOpacity={highlightOpacity}
             axis={axis}
-            className="mx-1.5 rounded-md squircle-corners bg-(--color-surface-2)"
+            className="mx-1.5 rounded-md bg-(--color-surface-2)"
           />
           {children}
         </div>
@@ -498,7 +498,7 @@ export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps
         aria-disabled={disabled || undefined}
         aria-label={textValue}
         className={cn(
-          'relative flex min-h-11 w-full cursor-default select-none scroll-m-1 items-center justify-between gap-3 rounded-md squircle-corners px-3 py-2.5 text-left text-sm outline-none transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
+          'relative flex min-h-11 w-full cursor-default select-none scroll-m-1 items-center justify-between gap-3 rounded-md px-3 py-2.5 text-left text-sm outline-none transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
           'data-disabled:pointer-events-none data-disabled:opacity-50',
           destructive
             ? 'text-(--color-error) focus-visible:text-(--color-error)'

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { COMPONENTS, getComponentHref } from '@/lib/components-registry'
+import { BLOCKS, COMPONENTS, getComponentHref } from '@/lib/components-registry'
 import { SITE_URL } from '@/lib/seo'
 
 const STATIC_ROUTES: { path: string; priority: number }[] = [
@@ -23,6 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...COMPONENTS.map((item) => ({
       url: `${SITE_URL}${getComponentHref(item.id)}`,
+      lastModified,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
+    ...BLOCKS.filter((item) => item.parent).map((item) => ({
+      url: `${SITE_URL}${item.href}`,
       lastModified,
       changeFrequency: 'monthly' as const,
       priority: 0.8,

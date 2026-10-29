@@ -209,7 +209,7 @@ function OverflowMenu({
         aria-controls={open ? contentId : undefined}
         aria-label={moreLabel}
         className={cn(
-          'inline-flex min-h-11 min-w-11 items-center justify-center rounded-md squircle-corners px-3 text-sm font-normal text-(--color-fg)',
+          'inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-3 text-sm font-normal text-(--color-fg)',
           'transition-colors duration-(--motion-dur-fast) ease motion-reduce:transition-none',
           'hover:bg-(--color-surface-2)',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
@@ -251,7 +251,7 @@ function OverflowMenu({
                 insetInlineEnd: menuPos.insetInlineEnd,
                 zIndex: 50,
               }}
-              className="flex min-w-44 flex-col gap-0.5 rounded-md squircle-corners border border-(--color-border) bg-(--color-surface) p-1 shadow-lg"
+              className="flex min-w-44 flex-col gap-0.5 rounded-md border border-(--color-border) bg-(--color-surface) p-1 shadow-lg"
               onKeyDown={handleMenuKeyDown}
             >
               {actions.map((action, i) => (
@@ -263,7 +263,7 @@ function OverflowMenu({
                   disabled={action.disabled}
                   aria-disabled={action.disabled || undefined}
                   className={cn(
-                    'flex min-h-9 w-full items-center gap-2.5 rounded-md squircle-corners px-2.5 py-1.5 text-start text-sm pointer-coarse:min-h-11',
+                    'flex min-h-9 w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-start text-sm pointer-coarse:min-h-11',
                     'transition-colors duration-(--motion-dur-fast) ease motion-reduce:transition-none',
                     action.disabled
                       ? 'cursor-not-allowed opacity-50'
@@ -340,7 +340,7 @@ function VisibleAction({ action, index, itemRef, measureRef, visible }: VisibleA
         aria-disabled={action.disabled || undefined}
         aria-label={!action.icon ? undefined : action.label}
         className={cn(
-          'inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-md squircle-corners px-3 text-sm font-normal',
+          'inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-md px-3 text-sm font-normal',
           'transition-colors duration-(--motion-dur-fast) ease motion-reduce:transition-none',
           action.disabled
             ? 'cursor-not-allowed opacity-50'

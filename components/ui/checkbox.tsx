@@ -161,7 +161,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           onKeyDown={handleKeyDown}
           onPointerDown={handlePointerDown}
           className={cn(
-            'relative inline-flex size-5 shrink-0 items-center justify-center rounded-md squircle-corners',
+            'relative inline-flex size-5 shrink-0 items-center justify-center rounded-md',
             'border border-(--color-border)',
             'transition-colors duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-1 focus-visible:ring-offset-(--color-bg)',

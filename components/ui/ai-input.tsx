@@ -390,7 +390,7 @@ export function AiInputPlusMenu({
         aria-label={label}
         style={{}}
         className={cn(
-          'inline-flex size-8 shrink-0 min-h-0 w-8 items-center justify-center rounded-full squircle-corners border-0 bg-transparent p-0 text-(--color-muted) hover:bg-(--color-surface-2) hover:text-(--color-fg)',
+          'inline-flex size-8 shrink-0 min-h-0 w-8 items-center justify-center squircle border-0 bg-transparent p-0 text-(--color-muted) hover:bg-(--color-surface-2) hover:text-(--color-fg)',
           className,
         )}
       >
@@ -448,7 +448,7 @@ export function AiInputAgentMenu({
         aria-label={label}
         style={{ width: 'auto' }}
         className={cn(
-          'inline-flex min-h-0 w-auto items-center gap-1.5 rounded-full border-0 bg-(--color-surface-2) px-3 py-1.5 text-sm font-normal text-(--color-fg) hover:bg-(--color-border)',
+          'inline-flex min-h-0 w-auto items-center gap-1.5 squircle border-0 bg-(--color-surface-2) px-3 py-1.5 text-sm font-normal text-(--color-fg) hover:bg-(--color-border)',
           className,
         )}
       >
@@ -578,7 +578,7 @@ export function AiInputSettingsDropdown({
         aria-label={`${label}: ${triggerLabel}`}
         style={{ width: 'auto' }}
         className={cn(
-          'inline-flex min-h-0 w-auto items-center gap-1.5 rounded-full border-0 bg-transparent px-2 py-1 text-sm text-(--color-muted) hover:bg-(--color-surface-2) hover:text-(--color-fg)',
+          'inline-flex min-h-0 w-auto items-center gap-1.5 squircle border-0 bg-transparent px-2 py-1 text-sm text-(--color-muted) hover:bg-(--color-surface-2) hover:text-(--color-fg)',
           className,
         )}
       >
@@ -854,7 +854,7 @@ export const AiInput = forwardRef<HTMLTextAreaElement, AiInputProps>(
                         ? { duration: 0 }
                         : { type: 'spring', stiffness: 420, damping: 34 }
                     }
-                    className="max-w-[85%] self-end rounded-md rounded-br-lg bg-(--color-surface-2) px-4 py-2.5 text-sm leading-relaxed wrap-break-word whitespace-pre-wrap text-foreground"
+                    className="max-w-[85%] self-end rounded-md bg-(--color-surface-2) px-4 py-2.5 text-sm leading-relaxed wrap-break-word whitespace-pre-wrap text-foreground"
                   >
                     {message.text}
                   </motion.div>
@@ -865,7 +865,7 @@ export const AiInput = forwardRef<HTMLTextAreaElement, AiInputProps>(
 
           <div
             className={cn(
-              'relative rounded-md squircle-corners border border-(--color-border) bg-(--color-card)',
+              'relative rounded-md border border-(--color-border) bg-(--color-card)',
               'transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
               'focus-within:border-(--color-accent)',
               disabled && 'opacity-50 pointer-events-none',
@@ -904,7 +904,7 @@ export const AiInput = forwardRef<HTMLTextAreaElement, AiInputProps>(
                     onClick={onMicClick}
                     aria-label="Use voice input"
                     className={cn(
-                      'inline-flex size-8 shrink-0 items-center justify-center rounded-full border-0 bg-transparent text-(--color-muted) outline-none',
+                      'inline-flex size-8 shrink-0 items-center justify-center squircle border-0 bg-transparent text-(--color-muted) outline-none',
                       'hover:bg-(--color-surface-2) hover:text-(--color-fg)',
                       'focus-visible:ring-2 focus-visible:ring-(--color-accent)',
                       'transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
@@ -921,7 +921,7 @@ export const AiInput = forwardRef<HTMLTextAreaElement, AiInputProps>(
                   disabled={buttonDisabled}
                   aria-label={showStop ? 'Stop generation' : 'Send message'}
                   className={cn(
-                    'relative flex shrink-0 items-center justify-center size-8 rounded-full squircle cursor-pointer outline-none',
+                    'relative flex shrink-0 items-center justify-center size-8 squircle cursor-pointer outline-none',
                     'bg-foreground text-background',
                     'transition-[opacity,transform] duration-(--motion-dur-fast) motion-reduce:transition-none',
                     'active:scale-95 motion-reduce:active:scale-100',

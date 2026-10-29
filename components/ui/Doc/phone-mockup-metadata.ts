@@ -13,8 +13,8 @@ export const phoneMockupMetadata: ComponentItem = {
   props: [
     {
       name: 'variant',
-      type: '"black" | "white" | "accent"',
-      description: 'Chassis color. Defaults to "accent".',
+      type: '"gray" | "titanium"',
+      description: 'Chassis color, matching the Laptop Mockup. Defaults to "titanium".',
     },
     {
       name: 'visibleRatio',
@@ -37,7 +37,7 @@ export const phoneMockupMetadata: ComponentItem = {
 
 export function Example() {
   return (
-    <PhoneMockupCard variant="accent">
+    <PhoneMockupCard variant="titanium">
       <YourAppScreen />
     </PhoneMockupCard>
   )

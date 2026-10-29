@@ -271,18 +271,25 @@ export const RadioGroupItem = forwardRef<HTMLDivElement, RadioGroupItemProps>(
           }}
           onPointerDown={(e) => e.preventDefault()}
           className={cn(
-            'relative flex size-5 shrink-0 items-center justify-center rounded-full border-2 border-(--color-border) p-0',
-            'transition-[border-color,transform] duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none',
+            'relative flex size-5 shrink-0 items-center justify-center rounded-full p-0',
+            'transition-transform duration-(--motion-dur-fast) ease-(--motion-ease-out) motion-reduce:transition-none',
             'active:scale-[0.97] motion-reduce:active:scale-100 motion-reduce:transform-none',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
             'disabled:cursor-not-allowed disabled:opacity-50',
-            isSelected && 'border-(--color-fg)',
           )}
+          style={{
+            backgroundImage: `radial-gradient(circle closest-side, transparent calc(100% - 2px), ${
+              isSelected ? 'var(--color-fg)' : 'var(--color-border)'
+            } calc(100% - 1.5px))`,
+          }}
         >
           {isSelected && (
             <motion.div
               layoutId={reduceMotion ? undefined : `${groupId}-dot`}
-              className="size-2.5 rounded-full bg-(--color-fg)"
+              className="absolute inset-0 rounded-full"
+              style={{
+                backgroundImage: 'radial-gradient(circle, var(--color-fg) 4.5px, transparent 5px)',
+              }}
               transition={reduceMotion ? { duration: 0 } : springs.moderate}
             />
           )}

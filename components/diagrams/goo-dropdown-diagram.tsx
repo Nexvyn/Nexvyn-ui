@@ -37,7 +37,7 @@ const GD = {
   btnRx: 12,
   gap: 18,
   itemH: 40,
-  itemRx: 4,
+  itemRx: 14,
   itemPadX: 12,
   panelPad: 6,
   panelRx: 20,
@@ -325,7 +325,7 @@ function PanelShape({ theme }: { theme: DraftTheme }) {
       x={10}
       y={54}
       width={156}
-      height={120}
+      height={132}
       rx={20}
       stroke="currentColor"
       strokeWidth={hovered === 'panel' ? 2 : theme.wireframe.strokeWidth}
@@ -381,7 +381,7 @@ function ItemShape({ theme, index, label }: { theme: DraftTheme; index: number; 
         y={itemY}
         width={144}
         height={40}
-        rx={4}
+        rx={GD.itemRx}
         stroke="currentColor"
         strokeWidth={hovered === partId ? 1 : theme.wireframe.strokeWidth}
         fill={hovered === partId ? 'currentColor' : 'transparent'}
@@ -430,21 +430,21 @@ function AnnotationsLayer() {
         boxX={10}
         boxY={54}
         boxW={156}
-        boxH={120}
+        boxH={132}
         boxRx={20}
         clipOffset={0.8}
       />
       <MeasureNote x={100} y={51} anchor="start">
         18
       </MeasureNote>
-      <MeasureNote x={22} y={184} anchor="middle">
+      <MeasureNote x={6} y={73} anchor="end">
         6
       </MeasureNote>
       <GripFrame x={10} y={10} w={78} h={34} />
-      <GripFrame x={10} y={54} w={156} h={120} />
+      <GripFrame x={10} y={54} w={156} h={132} />
       <MeasureH x1={10} x2={166} y={5} label="240" />
       <MeasureV x={170} y1={10} y2={44} label="34" labelXOffset={5} labelAnchor="start" />
-      <MeasureV x={170} y1={54} y2={174} label="120" labelXOffset={5} labelAnchor="start" />
+      <MeasureV x={170} y1={54} y2={186} label="132" labelXOffset={5} labelAnchor="start" />
     </g>
   )
 }
@@ -452,7 +452,7 @@ function AnnotationsLayer() {
 export function GooDropdownBreakdown() {
   return (
     <AnatomyFrame
-      viewBox="-70 -2 340 184"
+      viewBox="-70 -2 340 196"
       ariaLabel="Gooey dropdown anatomy: trigger, panel, goo bridge, menu item"
     >
       <g transform="translate(60, 20)">
@@ -491,16 +491,16 @@ export function GooDropdownBreakdown() {
         anchor={[166, 80]}
         side="end"
         distance={32}
-        measure="40 tall · rounded-md 4"
-        caption="Menu row with hover and focus highlight"
+        measure="40 tall · r14 · panel r20 minus pad 6"
+        caption="Menu row with a soft tint on hover and focus"
       />
       <AnatomyCallout
         part="panel"
         label="Dropdown.Panel"
-        anchor={[88, 174]}
+        anchor={[70, 170]}
         side="start"
         distance={30}
-        measure="240 wide · r20 · pad 6"
+        measure="240 × 132 · r20 · pad 6"
         caption="Menu surface that grows out of the trigger"
       />
     </AnatomyFrame>

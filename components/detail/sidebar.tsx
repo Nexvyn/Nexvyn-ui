@@ -28,6 +28,7 @@ import { useClickOutside } from '@/hooks/use-click-outside'
 import { Tooltip } from './tooltip'
 import {
   BASIC_COMPONENTS,
+  BLOCKS,
   COLLECTIONS,
   ILLUSTRATION_COMPONENTS,
   NORMAL_COMPONENTS,
@@ -40,6 +41,7 @@ import {
 import { cn } from '@/lib/utils'
 import { playHoverSound, playClickSound } from '@/lib/sound'
 import { NewStarIcon } from '@/components/layout/new-star'
+import { BlockWireframe } from '@/components/blocks/shared/block-wireframe'
 
 const SIDEBAR_EASE = [0.23, 0.88, 0.26, 0.92] as const
 const LINE_SPRING = { stiffness: 250, damping: 30 }
@@ -348,6 +350,9 @@ function NavItem({
   number,
   listKey,
   position,
+  branch,
+  onSelect,
+  expanded,
 }: {
   item: ComponentItem
   isActive: boolean
@@ -357,6 +362,9 @@ function NavItem({
   number?: number
   listKey: string
   position: number
+  branch?: 'parent' | 'child'
+  onSelect?: () => void
+  expanded?: boolean
 }) {
   const baseWidth = isActive ? NAV_LINE_ACTIVE : NAV_LINE_BASE
   const lineWidth = useSpring(baseWidth, LINE_SPRING)
@@ -448,24 +456,24 @@ function NavItem({
     }
   }
 
-  return (
-    <Link
-      prefetch={false}
-      ref={itemRef}
-      href={getComponentHref(item.id)}
-      className="group sidebar-nav-item relative flex h-px cursor-pointer items-center gap-3"
-      onMouseEnter={() => {
-        playHoverSound()
-        lineWidth.set(NAV_LINE_ACTIVE)
-        onHover()
-        startWave()
-      }}
-      onMouseLeave={() => {
-        if (!isActive) lineWidth.set(NAV_LINE_BASE)
-        stopWave()
-        onLeave()
-      }}
-    >
+  const itemClassName =
+    'group sidebar-nav-item relative flex h-px cursor-pointer items-center gap-3'
+  const pointerHandlers = {
+    onMouseEnter: () => {
+      playHoverSound()
+      lineWidth.set(NAV_LINE_ACTIVE)
+      onHover()
+      startWave()
+    },
+    onMouseLeave: () => {
+      if (!isActive) lineWidth.set(NAV_LINE_BASE)
+      stopWave()
+      onLeave()
+    },
+  }
+
+  const content = (
+    <>
       <motion.svg
         viewBox={`0 0 ${LINE_LENGTH} 8`}
         className="h-2 overflow-visible"
@@ -510,16 +518,69 @@ function NavItem({
         {item.isNew && <NewStarIcon />}
         {typeof number === 'number' ? formatComponentLabel(number, item.name) : item.name}
         {item.isNew && <span className="text-[10px] font-normal text-(--color-new)">New</span>}
+        {branch === 'parent' && (
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 12 12"
+            className={cn(
+              'ms-0.5 size-3 transition-[rotate] duration-(--motion-dur-base) ease-(--motion-ease-in-out) motion-reduce:transition-none',
+              expanded && 'rotate-90',
+            )}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.25}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M4.5 3 7.5 6 4.5 9" />
+          </svg>
+        )}
       </span>
+    </>
+  )
+
+  if (branch === 'parent') {
+    return (
+      <button
+        type="button"
+        aria-expanded={expanded}
+        data-branch={branch}
+        onClick={onSelect}
+        className={cn(itemClassName, 'text-start')}
+        {...pointerHandlers}
+      >
+        {content}
+      </button>
+    )
+  }
+
+  return (
+    <Link
+      prefetch={false}
+      ref={itemRef}
+      href={item.href ?? getComponentHref(item.id)}
+      className={itemClassName}
+      data-branch={branch}
+      onClick={onSelect}
+      {...pointerHandlers}
+    >
+      {content}
     </Link>
   )
 }
 
 function SidebarNav() {
+  const prefersReducedMotion = useReducedMotion()
   const params = useParams()
   const pathname = usePathname()
-  const activeId = typeof params?.component === 'string' ? params.component : null
+  const activeId =
+    typeof params?.component === 'string'
+      ? params.component
+      : typeof params?.block === 'string'
+        ? params.block
+        : null
   const [sortById, setSortById] = useState(true)
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({})
   const [hoveredItem, setHoveredItem] = useState<ComponentItem | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const activeRef = useRef<HTMLAnchorElement>(null)
@@ -588,9 +649,13 @@ function SidebarNav() {
               opacity: previewOpacity,
             }}
           >
-            <div className="flex h-full w-full scale-75 items-center justify-center">
-              <ComponentPreview item={hoveredItem} />
-            </div>
+            {hoveredItem.collection === 'blocks' ? (
+              <BlockWireframe id={hoveredItem.id} className="h-full w-full p-2" />
+            ) : (
+              <div className="flex h-full w-full scale-75 items-center justify-center">
+                <ComponentPreview item={hoveredItem} />
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
@@ -619,6 +684,115 @@ function SidebarNav() {
 
             <NavSectionHeader title="MCP" active={isMcpPage} href="/mcp" isNew />
             <Separator />
+            <NavSectionHeader title="Blocks" href="/components#blocks" isNew />
+            <Separator listKey="blocks" position={-0.5} />
+            {BLOCKS.filter((group) => !group.parent).map((group, groupIndex, groups) => {
+              const children = BLOCKS.filter((child) => child.parent === group.id)
+              const isOpen = openGroups[group.id] ?? pathname.startsWith(group.href ?? '')
+              const toggle = () => setOpenGroups((prev) => ({ ...prev, [group.id]: !isOpen }))
+              const renderItem = (
+                item: ComponentItem,
+                branch: 'parent' | 'child',
+                onSelect?: () => void,
+              ) => {
+                const index = BLOCKS.indexOf(item)
+                const isActive = pathname === item.href
+                return (
+                  <NavItem
+                    item={item}
+                    isActive={isActive}
+                    itemRef={isActive ? activeRef : undefined}
+                    listKey="blocks"
+                    position={index}
+                    branch={branch}
+                    onSelect={onSelect}
+                    expanded={branch === 'parent' ? isOpen : undefined}
+                    {...hoverHandlers(item, 'blocks', index)}
+                  />
+                )
+              }
+              const lastItem = children[children.length - 1] ?? group
+              return (
+                <Fragment key={group.id}>
+                  {renderItem(group, 'parent', toggle)}
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.ul
+                        key={`${group.id}-children`}
+                        aria-label={`${group.name} variants`}
+                        className="relative flex flex-col py-1"
+                        initial={
+                          group.id in openGroups && !prefersReducedMotion
+                            ? { opacity: 0, y: -4 }
+                            : false
+                        }
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: prefersReducedMotion ? 0 : 0.18 }}
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute inset-y-0 start-0 w-6"
+                          style={{
+                            backgroundImage:
+                              'repeating-linear-gradient(to bottom, var(--color-border) 0 1px, transparent 1px 9px)',
+                          }}
+                        />
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute inset-y-0 start-8 w-px bg-(--color-fg)/12"
+                        />
+                        {children.map((child) => {
+                          const index = BLOCKS.indexOf(child)
+                          const isActive = pathname === child.href
+                          const handlers = hoverHandlers(child, 'blocks', index)
+                          return (
+                            <li key={child.id}>
+                              <Link
+                                prefetch={false}
+                                href={child.href ?? getComponentHref(child.id)}
+                                ref={isActive ? activeRef : undefined}
+                                aria-current={isActive ? 'page' : undefined}
+                                onMouseEnter={() => {
+                                  playHoverSound()
+                                  handlers.onHover()
+                                }}
+                                onMouseLeave={handlers.onLeave}
+                                className="group/child relative flex h-7 items-center ps-11 focus-visible:outline-none"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                  className={cn(
+                                    'absolute inset-y-1 start-8 w-px transition-colors duration-150 ease motion-reduce:transition-none',
+                                    isActive
+                                      ? 'bg-(--color-accent)'
+                                      : 'bg-transparent group-hover/child:bg-(--color-fg)/30',
+                                  )}
+                                />
+                                <span
+                                  className={cn(
+                                    'rounded-md transition-[color,opacity] duration-150 ease group-hover/child:text-(--color-accent) group-hover/child:opacity-100 group-focus-visible/child:ring-2 group-focus-visible/child:ring-(--color-accent) motion-reduce:transition-none',
+                                    isActive
+                                      ? 'text-(--color-accent) opacity-100'
+                                      : 'text-foreground opacity-40',
+                                  )}
+                                >
+                                  {child.name}
+                                </span>
+                              </Link>
+                            </li>
+                          )
+                        })}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                  {groupIndex !== groups.length - 1 && (
+                    <Separator listKey="blocks" position={BLOCKS.indexOf(lastItem) + 0.5} />
+                  )}
+                </Fragment>
+              )
+            })}
+            <Separator count={4} />
             <NavSectionHeader title="Illustration" isNew />
             {ILLUSTRATION_COMPONENTS.length > 0 && (
               <>
@@ -743,6 +917,7 @@ export function Sidebar() {
   const pathname = usePathname()
   const shouldShowSidebar =
     (pathname.startsWith('/components/') && pathname !== '/components') ||
+    pathname.startsWith('/blocks/') ||
     pathname === '/mcp' ||
     pathname === '/illustration' ||
     pathname === '/changelog' ||
@@ -775,7 +950,7 @@ export function Sidebar() {
           <button
             type="button"
             className="detail-toolbar-btn cursor-pointer rounded-xl p-2"
-            style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-muted)' }}
+            style={{ backgroundColor: 'transparent', color: 'var(--color-muted)' }}
             onMouseEnter={() => playHoverSound()}
             onClick={() => {
               playClickSound()

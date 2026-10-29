@@ -4,10 +4,10 @@
   --detail-code-muted: var(--color-muted);
   --detail-code-border: var(--color-border);
   --detail-code-keyword: var(--color-accent);
-  --detail-install-bg: var(--color-surface-2);
+  --detail-install-bg: var(--color-panel-float);
   --detail-install-fg: var(--color-fg);
 
-  background: var(--color-bg);
+  background: var(--color-page);
   color: var(--color-fg);
   -webkit-font-smoothing: antialiased;
 }
@@ -18,23 +18,19 @@
   --detail-code-muted: var(--color-muted);
   --detail-code-border: var(--color-border);
   --detail-code-keyword: var(--color-accent);
-  --detail-install-bg: var(--color-surface-2);
+  --detail-install-bg: var(--color-panel-float);
   --detail-install-fg: var(--color-fg);
 }
 
 .detail-page .detail-preview-card {
   corner-shape: squircle;
-  background-color: var(--color-surface-2);
-  box-shadow:
-    0 1px 2px rgb(0 0 0 / 0.04),
-    0 8px 24px rgb(0 0 0 / 0.06);
+  background-color: var(--color-panel);
+  box-shadow: none;
 }
 
 .dark .detail-page .detail-preview-card {
-  background-color: var(--color-surface-2);
-  box-shadow:
-    0 1px 2px rgb(0 0 0 / 0.2),
-    0 12px 32px rgb(0 0 0 / 0.35);
+  background-color: var(--color-panel);
+  box-shadow: none;
 }
 
 .detail-page .detail-demo-frame {
@@ -49,13 +45,8 @@
 
 .detail-page .detail-elevated-pill {
   corner-shape: squircle;
-  background-color: var(--color-bg);
-  border: none;
-  box-shadow: none;
-}
-
-.dark .detail-page .detail-elevated-pill {
-  border: none;
+  background-color: var(--color-panel-float);
+  border: 1px solid color-mix(in oklab, var(--color-fg) 10%, transparent);
   box-shadow: none;
 }
 

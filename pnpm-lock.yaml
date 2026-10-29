@@ -52,6 +52,9 @@ importers:
       react-dom:
         specifier: 19.2.4
         version: 19.2.4(react@19.2.4)
+      runeicons-brands:
+        specifier: 0.1.0
+        version: 0.1.0
       tailwind-merge:
         specifier: ^3.6.0
         version: 3.7.0
@@ -3283,6 +3286,12 @@ packages:
         integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==,
       }
 
+  runeicons-brands@0.1.0:
+    resolution:
+      {
+        integrity: sha512-eztyXNGoWO4yaPlkk7H+3AY2n2deK8CroUsvbKqz5+vFXe7eS5FxJcePJqWxEKMbNErrPOiHwR1qxiN+ip44eg==,
+      }
+
   safe-array-concat@1.1.4:
     resolution:
       {
@@ -5688,6 +5697,8 @@ snapshots:
   run-parallel@1.2.0:
     dependencies:
       queue-microtask: 1.2.3
+
+  runeicons-brands@0.1.0: {}
 
   safe-array-concat@1.1.4:
     dependencies:

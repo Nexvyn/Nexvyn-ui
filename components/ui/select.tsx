@@ -263,7 +263,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
         style={itemsWidth ? { width: itemsWidth } : undefined}
         className={cn(
           'flex min-h-11 w-full items-center justify-between gap-2 border border-(--color-border) bg-(--color-surface) px-4 py-3 text-start text-sm font-normal text-(--color-fg) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
-          'rounded-md squircle-corners supports-[corner-shape:squircle]:rounded-md',
+          'rounded-md supports-[corner-shape:squircle]:rounded-md',
           'hover:bg-(--color-surface-2)',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
           'disabled:cursor-not-allowed disabled:opacity-50',
@@ -669,7 +669,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
               aria-hidden="true"
               className={cn(
                 'pointer-events-none invisible fixed top-0 start-0 min-w-48 border border-(--color-border) bg-(--color-bg) p-1 **:min-w-max',
-                'rounded-md squircle-corners supports-[corner-shape:squircle]:rounded-md',
+                'rounded-md supports-[corner-shape:squircle]:rounded-md',
                 className,
               )}
             >
@@ -708,7 +708,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                 data-select-content
                 className={cn(
                   'relative w-full min-w-48 overflow-hidden border border-(--color-border) bg-(--color-bg) p-1 outline-none',
-                  'rounded-md squircle-corners supports-[corner-shape:squircle]:rounded-md',
+                  'rounded-md supports-[corner-shape:squircle]:rounded-md',
                   'shadow-md',
                   className,
                 )}
@@ -724,7 +724,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                   {selectedRect && (
                     <motion.div
                       aria-hidden="true"
-                      className="pointer-events-none absolute inset-x-1 top-0 rounded-md squircle-corners bg-(--color-accent)/15"
+                      className="pointer-events-none absolute inset-x-1 top-0 rounded-md bg-(--color-accent)/15"
                       initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
                       animate={{ opacity: 1, y: selectedRect.top, height: selectedRect.height }}
                       exit={
@@ -746,14 +746,14 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
                   highlightSize={highlightSize}
                   highlightOpacity={highlightOpacity}
                   axis={axis}
-                  className="mx-1 rounded-md squircle-corners bg-(--color-surface-2)"
+                  className="mx-1 rounded-md bg-(--color-surface-2)"
                 />
 
                 <AnimatePresence>
                   {focusRect && showFocusRing && (
                     <motion.div
                       aria-hidden="true"
-                      className="pointer-events-none z-20 rounded-md squircle-corners border-2 border-(--color-accent)"
+                      className="pointer-events-none z-20 rounded-md border-2 border-(--color-accent)"
                       initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
                       animate={{
                         opacity: 1,
@@ -850,7 +850,7 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
         tabIndex={focusedIndex === index ? 0 : -1}
         className={cn(
           'relative flex min-h-11 w-full cursor-default select-none scroll-m-1 items-center justify-between gap-3 px-3 py-2.5 text-start text-sm outline-none transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
-          'rounded-md squircle-corners supports-[corner-shape:squircle]:rounded-md',
+          'rounded-md supports-[corner-shape:squircle]:rounded-md',
           'data-disabled:pointer-events-none data-disabled:opacity-50',
           isSelected ? 'text-(--color-fg)' : 'text-(--color-muted)',
           className,

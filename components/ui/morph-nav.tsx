@@ -149,7 +149,7 @@ export const MorphNav = forwardRef<HTMLDivElement, MorphNavProps>(
             aria-haspopup="menu"
             aria-label={triggerAriaLabel}
             className={cn(
-              'flex size-11 items-center justify-center rounded-full squircle-corners bg-(--color-fg) text-(--color-bg) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
+              'flex size-11 items-center justify-center squircle bg-(--color-fg) text-(--color-bg) transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-accent) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-bg)',
             )}
             onClick={() => {
@@ -327,7 +327,7 @@ const MorphNavPanel = forwardRef<HTMLDivElement, MorphNavPanelProps>(
         id={id}
         role="menu"
         className={cn(
-          'fixed z-300 min-w-[12rem] max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-md squircle-corners border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
+          'fixed z-300 min-w-[12rem] max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-md border border-(--color-border) bg-(--color-bg) p-1.5 outline-none',
           'shadow-lg',
           className,
         )}
@@ -346,7 +346,7 @@ const MorphNavPanel = forwardRef<HTMLDivElement, MorphNavPanelProps>(
           highlightSize={highlightSize}
           highlightOpacity={highlightOpacity}
           axis={axis}
-          className="mx-1.5 rounded-md squircle-corners bg-(--color-surface-2)"
+          className="mx-1.5 rounded-md bg-(--color-surface-2)"
         />
         {displayItems.map((item) => (
           <MorphNavItemComponent
@@ -395,7 +395,7 @@ function MorphNavItemComponent({
       role="menuitem"
       tabIndex={-1}
       className={cn(
-        'relative flex min-h-11 w-full cursor-default select-none items-center gap-3 rounded-md squircle-corners px-3 py-2.5 text-left text-sm outline-none transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
+        'relative flex min-h-11 w-full cursor-default select-none items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm outline-none transition-colors duration-(--motion-dur-fast) motion-reduce:transition-none',
         'text-(--color-fg)',
       )}
       onClick={() => {

@@ -155,7 +155,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
           data-state={isExpanded ? 'open' : 'closed'}
           data-disabled={disabled || undefined}
           className={cn(
-            'rounded-md squircle-corners border border-(--color-border) bg-(--color-card) overflow-hidden',
+            'rounded-md border border-(--color-border) bg-(--color-card) overflow-hidden',
             disabled && 'opacity-50 pointer-events-none',
             className,
           )}
