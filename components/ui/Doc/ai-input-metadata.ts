@@ -5,7 +5,6 @@ export const aiInputMetadata: ComponentItem = {
   name: 'AI Input',
   collection: 'inputs',
   previewType: 'default',
-  isNew: true,
   description:
     'AI composer textarea with auto-grow, send/stop button morph, attachment slots, and Enter-to-send.',
   registry: 'ai-input',

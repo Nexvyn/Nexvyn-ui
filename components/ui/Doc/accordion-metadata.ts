@@ -6,7 +6,6 @@ export const accordionMetadata: ComponentItem = {
   collection: 'overlays',
   basic: true,
   previewType: 'default',
-  isNew: true,
   description:
     'A vertically stacked set of interactive headings that each reveal a section of content. Supports single/multiple expand modes, controlled and uncontrolled state, and a signature grid-rows unfold animation with y-settle.',
   registry: 'accordion',

@@ -153,6 +153,23 @@ function ComponentsPageContent() {
     return map
   }, [normalSorted, sortByCategory])
 
+  const blocksSection = blockVariants.length > 0 && (
+    <div id="blocks" className="scroll-mt-24">
+      <div className="mb-4">
+        <AnimatedTitle
+          title="Blocks"
+          right={`${blockVariants.length}`}
+          className="text-lg font-normal tracking-tight"
+        />
+      </div>
+      <div className="components-grid">
+        {blockVariants.map((item, i) => (
+          <ComponentCard key={item.id} item={item} index={i} />
+        ))}
+      </div>
+    </div>
+  )
+
   return (
     <div
       className="flex min-h-screen w-full flex-col font-sans"
@@ -194,6 +211,7 @@ function ComponentsPageContent() {
 
         {sortByCategory && grouped ? (
           <div className="space-y-10">
+            {blocksSection}
             {Array.from(grouped.entries()).map(([collection, items]) => (
               <div key={collection}>
                 <div className="mb-4">
@@ -226,25 +244,10 @@ function ComponentsPageContent() {
                 </div>
               </div>
             )}
-            {blockVariants.length > 0 && (
-              <div id="blocks" className="scroll-mt-24">
-                <div className="mb-4">
-                  <AnimatedTitle
-                    title="Blocks"
-                    right={`${blockVariants.length}`}
-                    className="text-lg font-normal tracking-tight"
-                  />
-                </div>
-                <div className="components-grid">
-                  {blockVariants.map((item, i) => (
-                    <ComponentCard key={item.id} item={item} index={i} />
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         ) : (
           <div className="space-y-10">
+            {blocksSection}
             <div>
               <div className="mb-4">
                 <AnimatedTitle
@@ -270,22 +273,6 @@ function ComponentsPageContent() {
                 </div>
                 <div className="components-grid">
                   {basicSorted.map((item, i) => (
-                    <ComponentCard key={item.id} item={item} index={i} />
-                  ))}
-                </div>
-              </div>
-            )}
-            {blockVariants.length > 0 && (
-              <div id="blocks" className="scroll-mt-24">
-                <div className="mb-4">
-                  <AnimatedTitle
-                    title="Blocks"
-                    right={`${blockVariants.length}`}
-                    className="text-lg font-normal tracking-tight"
-                  />
-                </div>
-                <div className="components-grid">
-                  {blockVariants.map((item, i) => (
                     <ComponentCard key={item.id} item={item} index={i} />
                   ))}
                 </div>

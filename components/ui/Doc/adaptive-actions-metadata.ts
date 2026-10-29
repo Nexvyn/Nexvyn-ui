@@ -5,7 +5,6 @@ export const adaptiveActionsMetadata: ComponentItem = {
   name: 'Adaptive Actions',
   collection: 'menus',
   previewType: 'default',
-  isNew: true,
   description:
     'A responsive action toolbar that measures its available inline size with ResizeObserver and smoothly moves overflowed items into an accessible dropdown menu. Priority and pinned flags ensure critical actions always remain visible. Items animate with opacity/transform when crossing the visible↔overflow boundary, no width animation.',
   registry: 'adaptive-actions',

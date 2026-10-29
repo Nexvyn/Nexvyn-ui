@@ -682,7 +682,7 @@ function SidebarNav() {
               </button>
             </div>
 
-            <NavSectionHeader title="MCP" active={isMcpPage} href="/mcp" isNew />
+            <NavSectionHeader title="MCP" active={isMcpPage} href="/mcp" />
             <Separator />
             <NavSectionHeader title="Blocks" href="/components#blocks" isNew />
             <Separator listKey="blocks" position={-0.5} />
@@ -793,7 +793,7 @@ function SidebarNav() {
               )
             })}
             <Separator count={4} />
-            <NavSectionHeader title="Illustration" isNew />
+            <NavSectionHeader title="Illustration" />
             {ILLUSTRATION_COMPONENTS.length > 0 && (
               <>
                 <Separator listKey="illustration" position={-0.5} />

@@ -5,7 +5,6 @@ export const actionButtonMetadata: ComponentItem = {
   name: 'Action Button',
   collection: 'primitives',
   previewType: 'default',
-  isNew: true,
   description:
     'An async-aware button with an idle → pending → success/error state machine. Composes over Button, adding promise tracking, abort support, minimum-pending opt-in, auto-reset, layered crossfade transitions, and live screen-reader announcements.',
   registry: 'action-button',

@@ -5,7 +5,6 @@ export const diaTextMetadata: ComponentItem = {
   name: 'Dia Text',
   collection: 'text-effects',
   previewType: 'default',
-  isNew: true,
   description:
     'Diagonal clip-path reveal for bold display typography. Text sweeps into view with an angled edge as the component enters the viewport, creating a striking editorial entrance effect.',
   registry: 'dia-text',
